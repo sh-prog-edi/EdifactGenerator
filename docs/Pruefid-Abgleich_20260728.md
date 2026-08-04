@@ -2448,3 +2448,26 @@ Vorschau vorhanden, Speichern gesperrt, Sammelmeldung; BGM/IDE grün; „31.13.2
 → rot „kein gültiges Datum"; MaLo „123" → rot „11-stellig numerisch"; nach
 vollständiger Eingabe alle Felder grün und Speichern frei. Golden unverändert,
 volle Regression grün (32 Läufe).
+
+## 46. Versionsanzeige auf allen Seiten, Version 0.10.0-beta (04.08.2026)
+
+**Auftrag.** Die Versionsnummer sichtbar machen — Entscheidung: auf ALLEN Seiten
+(nicht nur der Startseite), weil Nutzer über direkte Links auf den
+Generatorseiten landen und Rückfragen („mit welcher Version erzeugt?") sonst ins
+Leere laufen.
+
+**Umsetzung.** Neue zentrale Datei `_engine/version.js` (EINE Pflegestelle):
+definiert `EDIGEN_VERSION` und blendet auf jeder Seite unten rechts ein dezentes
+Badge ein — Version plus, wo das Formatstand-Modul geladen ist, der aktive
+Stand („EdifactGenerator v0.10.0-beta · Formatstand 202604"). Eingebunden in
+alle 23 Seiten (Startseite, Validator, Umbau, alle Generatorseiten) neben
+theme.js. `scripts/pruefe_paket.js` wacht darüber, dass version.js und
+package.json dieselbe Nummer führen. Version im Zuge dessen von 0.9.0-beta auf
+**0.10.0-beta** angehoben (der Sprung fasst die heutige Serie zusammen:
+Phasen 2–4 des Umbauplans, Phase-5-Einstieg, Suchfeld/Sortierung, Feld-Ampel
+mit Speicherfreigabe). Der erste Release-Tag (`v0.10.0-beta`) ist Sache des
+Auftraggebers — der Release-Workflow baut daraus das ZIP.
+
+**Nachweis.** Badge auf Startseite/Maske/Validator korrekt (mit bzw. ohne
+Formatstand), keine JS-Fehler; Paketprüfung mit neuem Versions-Check grün;
+volle Regression grün (32 Läufe).

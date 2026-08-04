@@ -79,5 +79,13 @@ const pw = (pkg.devDependencies || {}).playwright || '';
 pruefe(`Playwright exakt gepinnt (${pw})`, /^\d/.test(pw),
     'Version muss exakt sein (ohne ^/~), damit der Browser-Build passt');
 
+// 7. Versionsnummer: die Anzeige auf den Seiten (_engine/version.js) muss mit
+//    package.json übereinstimmen — EINE Pflegestelle, kein Auseinanderlaufen.
+const versionJs = fs.readFileSync(path.join(wurzel, '_engine/version.js'), 'utf8');
+const vAnzeige = (/EDIGEN_VERSION = "([^"]+)"/.exec(versionJs) || [])[1] || '';
+pruefe(`Versionsnummer einheitlich (package.json ${pkg.version} = version.js ${vAnzeige})`,
+    vAnzeige === pkg.version,
+    'Version in _engine/version.js und package.json gemeinsam pflegen');
+
 console.log(fehler === 0 ? '\nPAKET-PRÜFUNG BESTANDEN.' : `\nPAKET-PRÜFUNG: ${fehler} Fehler.`);
 process.exit(fehler === 0 ? 0 : 1);

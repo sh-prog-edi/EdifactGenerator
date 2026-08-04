@@ -5,6 +5,13 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **04.08.2026** – **Version 0.10.0-beta; Versionsanzeige auf allen Seiten.** Neue
+  zentrale Pflegestelle `_engine/version.js`: Alle 23 Seiten zeigen unten rechts ein
+  dezentes Badge mit Version und (wo vorhanden) aktivem Formatstand. Die
+  Paketprüfung wacht über die Übereinstimmung mit package.json. Die Version springt
+  auf 0.10.0-beta (Zusammenfassung der heutigen Serie: Phasen 2–4, Phase-5-Einstieg,
+  Suchfeld/Sortierung, Feld-Ampel mit Speicherfreigabe); der Release-Tag
+  `v0.10.0-beta` löst den Release-Workflow aus. → Protokoll Abschnitt 46.
 - **04.08.2026** – **Maske: optische Feldprüfung, MP-IDs ohne Vorbelegung,
   Speicherfreigabe.** Eingabefelder der kuratierten UTILMD-Masken zeigen ihren
   Zustand farblich: grün = befüllt und formatgültig (MIG-Feldformate plus MP-ID
