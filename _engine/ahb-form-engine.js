@@ -1406,7 +1406,9 @@
     const mailEl = EL('kontaktMail'), nameEl = EL('kontaktName');
     const mail = mailEl ? mailEl.value.trim() : "";
     const kontaktName = nameEl ? nameEl.value.trim() : "";
-    if (!abs || !emp) errors.push("MP-ID Absender und Empfänger sind Pflicht.");
+    // Kuratierte Masken (Testmodus): Die Vorschau entsteht auch ohne MP-IDs —
+    // die Speicherfreigabe der Maske sperrt, solange Pflichtangaben fehlen.
+    if (!abs || !emp) (CFG.testmodus ? warn : errors).push("MP-ID Absender und Empfänger sind Pflicht.");
     // Der Ansprechpartner ist in den meisten Prüf-IDs eine Kann-Angabe (SG3 „Kann").
     // Pflicht ist er nur in den Gruppen, die der AHB als „Muss" führt — welche das
     // sind, steht am CTA-Segment der jeweiligen Segmentgruppe.

@@ -232,6 +232,7 @@
             else if (r.id === 'LOC_Z21') ph = ' placeholder="ID der Tranche..."';
             else if (r.id === 'FTX') ph = ' placeholder="Freitext / Bemerkung (optional)..."';
             else if (r.id === 'RFF_TN') ph = ' placeholder="Vorgangsnummer aus Anfrage..."';
+            else if (eintrag.typ === 'mpid') ph = ` placeholder="${esc(eintrag.platzhalter || 'MP-ID (13-stellig)...')}"`;
             html += `<input type="text" id="${domId}" value="${esc(vorbelegung || '')}"${ph} oninput="generateEdifact()">`;
         }
         if (r.rule) html += `<div class="hint">Regelhinweis: ${esc(r.rule)}</div>`;
@@ -378,6 +379,7 @@
             if (codes.length && codes.indexOf(codevergabeStelle(mpDefaults[feld]).nad) < 0 && codes.indexOf('9') >= 0)
                 mpDefaults[feld] = gln;
         });
+        Z.mpVorschlag = mpDefaults;   // Beispiel-IDs für Platzhalter und Test-Läufe
 
         const heute = isoZuDe(new Date().toISOString().split('T')[0]);
 
@@ -387,12 +389,18 @@
             if (!eintrag) return;   // Feld ohne Grundlage in der Meta - nicht anbieten
             const domId = r.id;
             eintrag.domId = domId;
+            if (eintrag.typ === 'mpid')
+                eintrag.platzhalter = `MP-ID ${r.id === 'NAD_MS' ? 'Absender' : 'Empfänger'}, `
+                    + `13-stellig – z. B. ${mpDefaults[r.id]} ...`;
 
             // Vorbelegung und Optionslisten je Feldtyp
             let vorbelegung = '';
             if (r.id === 'UNH') vorbelegung = `Referenz: ${dar} | ${fmt().unhKennung}`;
             else if (r.id === 'BGM') vorbelegung = dar;
-            else if (r.id === 'NAD_MS' || r.id === 'NAD_MR') vorbelegung = mpDefaults[r.id];
+            // MP-IDs werden NICHT mehr vorbelegt: Test-Empfangssysteme prüfen auf
+            // angelegte Marktpartnercodes (sonst negative CONTRL, Code 23) — hier
+            // gehören die echten Test-MP-IDs hinein. Der Platzhalter zeigt das
+            // sparten-/AHB-gerechte Beispiel (E6-Logik) nur noch als Hinweis.
             else if (r.id === 'IDE') vorbelegung = vorgangsNummer(dar, 1);
             else if (r.id === 'DTM_137') vorbelegung = heute;
             else if (r.id === 'RFF_TN') vorbelegung = 'REF' + Math.floor(100000 + Math.random() * 900000);
@@ -787,12 +795,22 @@
             if (!wert(f.domId))
                 fehler.push(`<b>Pflichtangabe fehlt:</b> ${esc(f.regel.name)} (Bedingung [${esc(f.regel.abhaengig.bedingung || '')}] ist erfüllt).`);
         });
-        if (fehler.length) {
+        // Optische Feldprüfung (Ampel) und Speicherfreigabe; fehlende Pflichtangaben
+        // und Formatverstöße erscheinen zusätzlich als Meldung über der Vorschau.
+        const bewertung = bewerteFelder(fehler);
+        const meldungen = fehler.slice();
+        if (bewertung.fehlend.length)
+            meldungen.push('<b>Pflichtangaben fehlen:</b> ' + bewertung.fehlend.map(esc).join(' · '));
+        bewertung.fehlerhaft.forEach(m => meldungen.push('<b>Format:</b> ' + esc(m)));
+        if (meldungen.length) {
             const box = $('errorBox');
             if (box) {
                 box.style.display = 'block';
-                box.innerHTML = fehler.join('<br>') + (box.innerHTML ? '<br>' + box.innerHTML : '');
+                box.innerHTML = meldungen.join('<br>') + (box.innerHTML ? '<br>' + box.innerHTML : '');
             }
+        }
+        if (meldungen.length || !speicherFrei) {
+            // Unvollständige Quellnachricht: keine Folgenachrichten anbieten.
             const fn = $('folgeNachrichten'); if (fn) fn.style.display = 'none';
         }
 
@@ -805,10 +823,112 @@
         return ok;
     }
 
+    // ---- Optische Feldprüfung (Ampel) und Speicherfreigabe ------------------
+    // Grün: befüllt und formatgültig. Rot: Pflichtangabe leer (Muss bzw. Muss mit
+    // erfüllter Bedingung) oder Wert verletzt das Feldformat (MIG-Format bzw.
+    // bekannte ID-Formate). Neutral: optionale Angabe ohne Wert. Die Vorschau
+    // entsteht weiterhin immer; SPEICHERN ist erst freigegeben, wenn keine roten
+    // Felder und keine harten Fachregel-Fehler vorliegen — Test-Empfangssysteme
+    // quittieren unvollständige Nachrichten sonst mit negativer CONTRL (Code 23).
+    let speicherFrei = false;
+
+    function stileEinbinden() {
+        if (typeof document.createElement !== 'function' || typeof document.head === 'undefined'
+            || !document.head || $('utilmdAmpelStil')) return;
+        const s = document.createElement('style');
+        s.id = 'utilmdAmpelStil';
+        s.textContent = '.feld-ok{background-color:rgba(92,184,92,.16) !important;}'
+            + '.feld-fehler{background-color:rgba(217,83,79,.20) !important;}';
+        document.head.appendChild(s);
+    }
+
+    // MIG-Feldformat (Zeichenart/Länge) eines Instanzfeldes, z. B. "an..35".
+    function migFormat(seg, de) {
+        const alle = (typeof migFormate !== 'undefined') ? migFormate : global.migFormate;
+        if (!alle) return null;
+        const stand = fmt().stand || (global.EdiStand && global.EdiStand.aktiv()) || '';
+        const schluessel = (String(fmt().sparte).toUpperCase() === 'GAS') ? 'UTILMD_GAS' : 'UTILMD_STROM';
+        const felder = ((alle[stand] || {})[schluessel] || {}).felder || {};
+        const f = felder[`${seg} ${de}`];
+        const m = f && f.fmt && /^(an|a|n)(\.\.)?(\d+)$/.exec(f.fmt);
+        if (!m) return null;
+        return { art: m[1], variabel: !!m[2], laenge: Number(m[3]), fmt: f.fmt };
+    }
+
+    // Formatprüfung eines befüllten Feldes; liefert null (gültig) oder die Meldung.
+    function formatBefund(f, wert) {
+        if (f.typ === 'mpid')
+            return /^\d{13}$/.test(wert) ? null : 'MP-ID muss 13-stellig numerisch sein';
+        if (f.typ === 'datum') {
+            const m = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(wert);
+            if (!m) return 'Datum im Format TT.MM.JJJJ angeben';
+            const t = Number(m[1]), mo = Number(m[2]);
+            return (t >= 1 && t <= 31 && mo >= 1 && mo <= 12) ? null : 'kein gültiges Datum';
+        }
+        if (f.regel && f.regel.id === 'LOC_Z16')
+            return /^\d{11}$/.test(wert) ? null : 'Marktlokations-ID muss 11-stellig numerisch sein';
+        if (f.typ === 'select' || f.typ === 'antwort') return null;
+        if (f.e && f.k >= 0) {
+            const mig = migFormat(f.e.inst.seg, (f.e.inst.des[f.k] || {}).de);
+            if (mig) {
+                if (mig.art === 'n' && !/^-?\d+([.,]\d+)?$/.test(wert))
+                    return `nur numerische Angabe erlaubt (MIG: ${mig.fmt})`;
+                if (wert.length > mig.laenge)
+                    return `zu lang: ${wert.length} von max. ${mig.laenge} Zeichen (MIG: ${mig.fmt})`;
+                if (!mig.variabel && wert.length !== mig.laenge)
+                    return `Länge muss genau ${mig.laenge} Zeichen sein (MIG: ${mig.fmt})`;
+            }
+        }
+        return null;
+    }
+
+    // Bewertet alle sichtbaren Felder, färbt sie und schaltet das Speichern.
+    function bewerteFelder(fachFehler) {
+        stileEinbinden();
+        const fehlend = [], fehlerhaft = [];
+        Z.felder.forEach(f => {
+            const el = $(f.domId);
+            if (!el || f.typ === 'info' || f.typ === 'unh' || !el.classList) return;
+            el.classList.remove('feld-ok', 'feld-fehler');
+            if ('title' in el) el.title = '';
+            if (!feldAktiv(f)) return;                    // ausgeblendet: neutral
+            const wert = String(el.value || '').trim();
+            // Pflicht: Muss ohne Abhängigkeit, oder Muss(-bedingt) mit erfüllter Bedingung.
+            const pflicht = f.typ === 'mpid' || (/^Muss/.test(f.regel.status || '')
+                && (!f.regel.abhaengig || feldAktiv(f)) && (f.regel.status === 'Muss' || f.regel.abhaengig));
+            if (!wert) {
+                if (pflicht) {
+                    el.classList.add('feld-fehler');
+                    if ('title' in el) el.title = 'Pflichtangabe fehlt';
+                    fehlend.push(f.regel ? f.regel.name : f.domId);
+                }
+                return;
+            }
+            const befund = formatBefund(f, wert);
+            if (befund) {
+                el.classList.add('feld-fehler');
+                if ('title' in el) el.title = befund;
+                fehlerhaft.push(`${f.regel ? f.regel.name : f.domId}: ${befund}`);
+            } else {
+                el.classList.add('feld-ok');
+            }
+        });
+        speicherFrei = !fehlend.length && !fehlerhaft.length && !(fachFehler && fachFehler.length);
+        const knopf = (typeof document.querySelector === 'function')
+            ? document.querySelector('button[onclick^="downloadEdifact"]') : null;
+        if (knopf) {
+            knopf.disabled = !speicherFrei;
+            knopf.title = speicherFrei ? ''
+                : 'Speichern gesperrt: erst alle Pflichtangaben korrekt füllen (rote Felder).';
+        }
+        return { fehlend, fehlerhaft };
+    }
+
     // Erzeugte Nachricht als marktkonforme Übertragungsdatei sichern
     // (_engine/nachricht-speichern.js, Allgemeine Festlegungen 2.12).
+    // Gesperrt, solange Pflichtangaben fehlen oder Feldformate verletzt sind.
     function downloadEdifact() {
-        if (typeof EdiSpeichern === 'undefined') return;
+        if (!speicherFrei || typeof EdiSpeichern === 'undefined') return;
         EdiSpeichern.speichere('edifactOutput', 'speicherHinweis');
     }
 
@@ -937,6 +1057,13 @@
     global.generateEdifact = generateEdifact;
     global.downloadEdifact = downloadEdifact;
     global.aktualisiereAbhaengigkeiten = aktualisiereAbhaengigkeiten;
+    // Test-/Werkzeug-Schnittstelle: Beispiel-MP-IDs der aktuellen Prüf-ID
+    // (sparten-/AHB-gerecht, E6-Logik) — genutzt vom Test-Harness, um wie bisher
+    // vollständige Testnachrichten zu erzeugen (Golden-Regression).
+    global.EdiUtilmdMaske = {
+        mpVorschlaege: () => (Z && Z.mpVorschlag) ? Z.mpVorschlag : null,
+        speicherFrei: () => speicherFrei,
+    };
 
     if (typeof document !== 'undefined') {
         if (document.readyState === 'loading') {

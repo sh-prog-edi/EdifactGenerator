@@ -86,6 +86,8 @@ async function befuelle(page) {
       if (/ZZRB/.test(ph || '')) return '30TM';
       if (/^ *JJJJ *$/.test(ph || '')) return '2026';
       if (/^ *MM *$/.test(ph || '')) return '06';
+      if (/MP-ID/.test(p)) return '9900000000001';
+      if (/11-stellig/.test(p)) return '50052281648';
       if (/IBAN/i.test(p)) return 'DE89370400440532013000';
       if (/BIC/i.test(p)) return 'MARKDEF1100';
       if (/E-Mail|Mail/i.test(p)) return 'mako@beispiel.de';
@@ -182,6 +184,10 @@ async function befuelle(page) {
   await page.goto('file://' + path.join(ROOT, 'Stammdaten/UTILMD/Strom/index.html?stand=202604'));
   await page.selectOption('#prufId', '55016');
   await page.waitForTimeout(400);
+  // MP-IDs sind nicht mehr vorbelegt — ohne sie bleibt die Nachricht gesperrt
+  // (keine Folgenachrichten, kein Speichern).
+  await page.fill('#NAD_MS', '9900000000001');
+  await page.fill('#NAD_MR', '9900000000002');
   await page.fill('#LOC_Z16', '50052281648');
   await page.fill('#DTM_93', '01.09.2026');
   await page.evaluate(() => generateEdifact());

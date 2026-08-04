@@ -154,6 +154,14 @@ function ladeGenerator(engineDir, dataDir, opts = {}){
         const w = sandbox.window || {};
         (w.renderForm || sandbox.renderForm)();
         applyValues(get);
+        // MP-IDs sind im Formular nicht mehr vorbelegt (echte Test-MP-IDs sind
+        // Nutzereingabe); für reproduzierbare Testnachrichten setzt der Harness
+        // die sparten-/AHB-gerechten Beispiel-IDs der Maske (E6-Logik).
+        const mp = w.EdiUtilmdMaske && w.EdiUtilmdMaske.mpVorschlaege && w.EdiUtilmdMaske.mpVorschlaege();
+        if (mp) {
+            if (beiId('NAD_MS') && !beiId('NAD_MS').value) beiId('NAD_MS').value = mp.NAD_MS;
+            if (beiId('NAD_MR') && !beiId('NAD_MR').value) beiId('NAD_MR').value = mp.NAD_MR;
+        }
         (w.generateEdifact || sandbox.generateEdifact)();
         return get('edifactOutput').value;
     }

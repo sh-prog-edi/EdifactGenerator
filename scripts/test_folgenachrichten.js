@@ -24,6 +24,8 @@ const MALO = '51238696781';
     const quelle = await page.evaluate(async ([malo]) => {
       document.getElementById('prufId').value = '55001';
       renderForm();
+      // MP-IDs sind nicht mehr vorbelegt - Beispiel-IDs wie fruehere Vorgabe setzen
+      ['NAD_MS','NAD_MR'].forEach((id, i) => { const mp = document.getElementById(id); if (mp && !mp.value) mp.value = '990000000000' + (i + 1); });
       document.querySelectorAll('#dynamicForm input[id^="DTM_"]').forEach(el => { if (!el.readOnly) el.value = '01.10.2026'; });
       const loc = document.getElementById('LOC_Z16'); if (loc) loc.value = malo;
       generateEdifact();
@@ -188,6 +190,8 @@ const MALO = '51238696781';
     const kuendigung = await page.evaluate(async () => {
       document.getElementById('prufId').value = '55017';
       renderForm();
+      // MP-IDs sind nicht mehr vorbelegt - Beispiel-IDs wie fruehere Vorgabe setzen
+      ['NAD_MS','NAD_MR'].forEach((id, i) => { const mp = document.getElementById(id); if (mp && !mp.value) mp.value = '990000000000' + (i + 1); });
       document.querySelectorAll('#dynamicForm input[id^="DTM_"]').forEach(el => { if (!el.readOnly) el.value = '15.09.2026'; });
       generateEdifact();
       await new Promise(r => setTimeout(r, 80));

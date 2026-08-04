@@ -49,6 +49,8 @@ const fuelle = () => {
     const quelle = await p.evaluate(async (malo) => {
       document.getElementById('prufId').value = '55001';
       renderForm();
+      // MP-IDs sind nicht mehr vorbelegt - Beispiel-IDs wie fruehere Vorgabe setzen
+      ['NAD_MS','NAD_MR'].forEach((id, i) => { const mp = document.getElementById(id); if (mp && !mp.value) mp.value = '990000000000' + (i + 1); });
       document.querySelectorAll('#dynamicForm input[id^="DTM_"]').forEach(el => { if (!el.readOnly) el.value = '01.10.2026'; });
       const loc = document.getElementById('LOC_Z16'); if (loc) loc.value = malo;
       generateEdifact();
@@ -115,6 +117,8 @@ const fuelle = () => {
     const kur = await p.evaluate(() => {
       document.getElementById('prufId').value = '55616';
       renderForm();
+      // MP-IDs sind nicht mehr vorbelegt - Beispiel-IDs wie fruehere Vorgabe setzen
+      ['NAD_MS','NAD_MR'].forEach((id, i) => { const mp = document.getElementById(id); if (mp && !mp.value) mp.value = '990000000000' + (i + 1); });
       const setz = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; return !!el; };
       const da = setz('DTM_Z25', '30.07.2026') && setz('DTM_Z26', '01.10.2026')
               && setz('RFF_VZ_QUALITAET', 'Z53') && setz('DTM_Z25_2', '01.10.2026')
@@ -180,6 +184,8 @@ const fuelle = () => {
     const r = await seite.evaluate(() => {
       document.getElementById('prufId').value = '55137';   // Rückmeldung/Anfrage Daten der MaLo
       renderForm();
+      // MP-IDs sind nicht mehr vorbelegt - Beispiel-IDs wie fruehere Vorgabe setzen
+      ['NAD_MS','NAD_MR'].forEach((id, i) => { const mp = document.getElementById(id); if (mp && !mp.value) mp.value = '990000000000' + (i + 1); });
       const sel = document.getElementById('RFF_VZ_QUALITAET');
       const codes = sel ? Array.from(sel.options).map(o => o.value).filter(Boolean) : [];
       generateEdifact();

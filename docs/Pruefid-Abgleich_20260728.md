@@ -2411,3 +2411,40 @@ jetzt beim Start auf (202604 zeigt wieder Kapitel 9.2.1 statt 9.2.2).
 aufsteigend; Suche „55194" → 1 Treffer, sofort erzeugt (RFF+Z13:55194); Stichwort
 „kündigung" → 9 Treffer; kein Treffer → Hinweis, Formular unverändert; Filter
 leeren → vollständige Liste. Keine JS-Fehler; volle Regression grün (32 Läufe).
+
+## 45. Maske: optische Feldprüfung, MP-IDs ohne Vorbelegung, Speicherfreigabe (04.08.2026)
+
+**Auftrag.** Eingabefelder der kuratierten UTILMD-Masken farblich prüfen (grün =
+korrekt befüllt, rot = leer bei Pflicht oder Formatverstoß), NAD+MS/NAD+MR nicht
+mehr mit Beispiel-MP-IDs vorbelegen (Test-Empfangssysteme prüfen auf angelegte
+Marktpartnercodes; unbekannte Absender enden als negative CONTRL, Code 23, im
+Dateneingang), Vorschau weiterhin immer sichtbar, Speichern erst freigeben, wenn
+alle Muss-Angaben (ohne Abhängigkeit oder mit erfüllter Bedingung) korrekt sind.
+
+**Umsetzung** (zentral in `_engine/utilmd-maske.js`):
+
+1. **Ampel je Feld** nach jeder Eingabe: grün bei befülltem, formatgültigem Wert;
+   rot bei leerer Pflichtangabe (Muss, oder Muss-bedingt mit erfüllter
+   Abhängigkeit) oder Formatverstoß — mit Klartext am Feld (title). Geprüft wird
+   gegen die MIG-Feldformate (`mig-formate.js`: Zeichenart, exakte/maximale
+   Länge) plus Spezialformate: MP-ID 13-stellig numerisch, Marktlokations-ID
+   11-stellig numerisch, Datum TT.MM.JJJJ mit Plausibilität. Optionale leere
+   Felder bleiben neutral; die Vorbelegungen (BGM, IDE, DTM+137, STS-Auswahlen)
+   stehen damit von Beginn an grün.
+2. **MP-IDs sind Nutzereingabe**: keine Vorbelegung mehr; der Platzhalter nennt
+   Rolle, Format und die sparten-/AHB-gerechte Beispiel-ID (E6-Logik) nur noch
+   als Hinweis. Engine-Anpassung: Im Testmodus verhindert eine fehlende MP-ID
+   die VORSCHAU nicht mehr (weiche Meldung; UNB/NAD zeigen die leeren Stellen).
+3. **Speicherfreigabe**: „Als marktkonforme Datei speichern" ist deaktiviert
+   (samt Begründung), solange rote Felder oder harte Fachregel-Fehler vorliegen;
+   Folgenachrichten werden bei unvollständiger Quellnachricht nicht angeboten.
+   Fehlende Pflichtangaben und Formatverstöße stehen gesammelt über der Vorschau.
+4. Test-Harness und drei Browser-Tests setzen die Beispiel-MP-IDs jetzt aktiv
+   (`EdiUtilmdMaske.mpVorschlaege()` bzw. Befüll-Heuristik) — die
+   Golden-Snapshots bleiben dadurch unverändert.
+
+**Nachweis.** Browsertest 55001/202604: MP-Felder leer → rot mit Platzhalter,
+Vorschau vorhanden, Speichern gesperrt, Sammelmeldung; BGM/IDE grün; „31.13.2026"
+→ rot „kein gültiges Datum"; MaLo „123" → rot „11-stellig numerisch"; nach
+vollständiger Eingabe alle Felder grün und Speichern frei. Golden unverändert,
+volle Regression grün (32 Läufe).

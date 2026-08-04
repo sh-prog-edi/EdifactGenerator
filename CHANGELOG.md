@@ -5,6 +5,18 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **04.08.2026** – **Maske: optische Feldprüfung, MP-IDs ohne Vorbelegung,
+  Speicherfreigabe.** Eingabefelder der kuratierten UTILMD-Masken zeigen ihren
+  Zustand farblich: grün = befüllt und formatgültig (MIG-Feldformate plus MP-ID
+  13-stellig, Marktlokation 11-stellig, Datum TT.MM.JJJJ), rot = Pflichtangabe leer
+  (Muss bzw. Muss mit erfüllter Bedingung) oder Formatverstoß — mit Klartext am
+  Feld. NAD+MS/NAD+MR sind nicht mehr vorbelegt (Test-Empfangssysteme prüfen auf
+  angelegte Marktpartnercodes — negative CONTRL Code 23 bei unbekannten Absendern);
+  der Platzhalter nennt das Beispiel nur noch als Hinweis. Die Vorschau entsteht
+  weiterhin immer; **Speichern ist erst freigegeben**, wenn keine roten Felder und
+  keine Fachregel-Fehler vorliegen (Knopf deaktiviert samt Begründung, keine
+  Folgenachrichten aus unvollständigen Quellen). Golden unverändert (Harness/Tests
+  setzen die Beispiel-IDs aktiv). → Protokoll Abschnitt 45.
 - **04.08.2026** – **Maske: Prüf-ID-Suchfeld und umschaltbare Sortierung.** Die
   kuratierten UTILMD-Masken erhalten über der Auswahlliste ein Suchfeld (Live-Filter
   nach Prüf-ID-Anfang oder Stichwort; der erste Treffer wird sofort gerendert — die
