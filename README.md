@@ -48,7 +48,7 @@ nachgepflegt.
 ## Schnellstart
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/sh-prog-edi/EdifactGenerator.git
 cd EdifactGenerator
 # Entweder direkt öffnen …
 xdg-open index.html            # macOS: open index.html
