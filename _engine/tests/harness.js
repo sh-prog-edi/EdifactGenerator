@@ -54,10 +54,9 @@ function macheDeterministisch(sandbox, fixedNow){
 // opts.fixedNow (ms): setzt festes Datum + Math.random für reproduzierbare Ausgabe.
 function ladeGenerator(engineDir, dataDir, opts = {}){
     const pd = path.join(dataDir, 'pruef-ids');
-    const pidDateien = fs.readdirSync(pd)
-        .filter(f => /^\d{5}\.js$/.test(f))   // 5-stellige PID-Dateien (55xxx Strom, 44xxx Gas, …)
-        .sort();
-    // Ladereihenfolge wie in der Generator-index.html.
+    // Ladereihenfolge wie in der Generator-index.html. Die Regeln je Prüf-ID liegen
+    // seit dem Feldauswahl-Umbau (Phase 2) als EINE Datendatei _regeln.js vor —
+    // sie ersetzt die früheren Einzeldateien <PID>.js und die _pid-registry.js.
     const dateien = [
         path.join(pd, '_format.js'),
         path.join(pd, '_prozess-meta.js'),
@@ -66,9 +65,8 @@ function ladeGenerator(engineDir, dataDir, opts = {}){
         path.join(pd, '_bedingungen.js'),
         path.join(pd, '_produkte-55001.js'),
         path.join(pd, '_produktpaket.js'),
-        ...pidDateien.map(f => path.join(pd, f)),
+        path.join(pd, '_regeln.js'),         // Regel-Datenschicht (ahbRulesByPrufId)
         path.join(pd, '_nutzdaten-katalog.js'),  // Objekt-Nutzdaten-Katalog (falls vorhanden)
-        path.join(pd, '_pid-registry.js'),   // NACH den PID-Dateien
         path.join(pd, '_form-meta.js'),      // AHB-Struktur je Prüf-ID (Prüfgrundlage)
         path.join(engineDir, 'generator.js'),
         // Prüflogik: dieselbe wie in Masken und universellem Validator
@@ -104,7 +102,7 @@ function ladeGenerator(engineDir, dataDir, opts = {}){
     for (const f of dateien) combined += '\n' + fs.readFileSync(f,'utf8') + '\n';
     vm.runInContext(combined, sandbox, { filename:'combined.js' });
 
-    const pids = pidDateien.map(f => f.replace('.js',''));
+    const pids = Object.keys(require(path.join(pd, '_regeln.js'))).sort();
 
     // Erzeugt die Testnachricht einer PID (mit Zeilenumbrüchen).
     function generiere(pid){

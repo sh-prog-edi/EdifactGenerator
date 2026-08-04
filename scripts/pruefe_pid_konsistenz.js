@@ -73,12 +73,10 @@ for (const [stand, rel, dir] of ZIELE) {
     const stsStruktur = ((global.stsStruktur || {})[stand] || {})[migKey] || null;
     const pfade = (global.ebdPfade || {})[stand] || {};
 
-    // kuratierte Regeldateien (nur UTILMD)
-    const regeln = {};
-    for (const f of fs.readdirSync(pd)) {
-        if (!/^\d{5}\.js$/.test(f)) continue;
-        try { regeln[f.replace('.js', '')] = require(path.join(pd, f)); } catch (e) { /* keine Regeldatei */ }
-    }
+    // kuratierte Regel-Datenschicht (nur UTILMD): seit dem Feldauswahl-Umbau
+    // (Phase 2) eine Datendatei _regeln.js statt Einzeldateien je Prüf-ID.
+    const regelnDatei = path.join(pd, '_regeln.js');
+    const regeln = fs.existsSync(regelnDatei) ? require(regelnDatei) : {};
 
     for (const pruefi of Object.keys(meta)) {
         const eintrag = meta[pruefi];

@@ -5,6 +5,20 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **04.08.2026** – **Phase 2 (Fortsetzung): Regel-Datenschicht statt 553 Einzeldateien.**
+  Die handgepflegten `pruef-ids/<PID>.js` der vier kuratierten UTILMD-Masken (553
+  Dateien) und die vier `_pid-registry.js` sind durch je EINE generierte Datendatei
+  `pruef-ids/_regeln.js` ersetzt (Migration: `scripts/baue_pid_regeln.js`, mit
+  JSON-Roundtrip-Garantie — die Regeln sind reine Daten, kein Code mehr). Seiten,
+  Test-Harness und `pruefe_pid_konsistenz.js` laden die Datenschicht; die
+  UTILMD-Seiten schrumpfen von bis zu 221 auf 32 Script-Tags.
+  **Äquivalenznachweis: alle vier Golden-Snapshots blieben OHNE Update unverändert**
+  — die Umstellung ist nachweislich rein strukturell. Meta-Abgleich als Vorarbeit für
+  den Engine-Schritt: 93–99 % der Regel-Felder sind einer Meta-Instanz zuordenbar
+  (Strom 2672/2866 bzw. 2702/2900, Gas 1043/1048 bzw. 1045/1050).
+  `pruefe_paket.js` überspringt jetzt gelöschte, noch nicht committete Dateien.
+  Verbleibt aus Phase 2: `generator.js` durch Engine-Sicht ersetzen (inkl.
+  55194-Objektdaten ZF3/ZG0). → Protokoll Abschnitt 39.
 - **04.08.2026** – **Phase 2.2: Maske an die AHB-Meta gekoppelt — alle 224 fachlichen
   Befunde behoben.** Nach Freigabe der Entscheidungsliste erzeugt die kuratierte Maske
   die betroffenen Segmente jetzt datengetrieben aus der Formular-Meta: FTX mit dem

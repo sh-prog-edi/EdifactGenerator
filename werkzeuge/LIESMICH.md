@@ -127,3 +127,14 @@ node _engine/tests/golden.js            # Abweichungen zuerst lesen, dann ggf. -
 node scripts/test_utilmd_seiten.js
 node scripts/test_engine_pages.js
 ```
+
+## Hinweis nach dem Feldauswahl-Umbau (04.08.2026)
+
+Die kuratierten Regel-Einzeldateien `pruef-ids/<PID>.js` und die `_pid-registry.js`
+existieren nicht mehr — die Regeln liegen je Ziel in `pruef-ids/_regeln.js`
+(Datendatei, `ahbRulesByPrufId`). Nachbearbeitungsskripte, die bisher die
+Einzeldateien beschrieben (`aktualisiere_utilmd_regeln.py`, `ergaenze_zeitscheiben.py`,
+`ergaenze_bedingungstexte.py`, `teile_sts_positionen.py`, `saeubere_beschreibungen.py`),
+müssen vor dem nächsten Extraktionslauf auf die Datendatei umgestellt werden —
+eingeplant für die Pipeline-Formalisierung (Umbauplan Phase 4).
+

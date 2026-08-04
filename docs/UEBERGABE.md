@@ -60,9 +60,12 @@ Extraktionsläufe erwarten die Skripte den Bestand im Arbeitsordner oberhalb des
 (übersteuerbar per `EDIGEN_ARBEITSORDNER`). Reproduktionsweg der FV2610-Quellen:
 Protokoll Abschnitt 7.
 
-**Zwei Wege zum Formular** (bewusst, offener Punkt F): Die vier kuratierten UTILMD-Masken
-führen eigene Segmentlisten je Prüf-ID, alle übrigen Seiten arbeiten allein mit
-`_form-meta.js`. Die Zusammenführung ist Phase 2 des Umbauplans.
+**Zwei Wege zum Formular** (offener Punkt F, in Auflösung): Die vier kuratierten
+UTILMD-Masken beziehen ihre Regeln seit dem Feldauswahl-Umbau aus je EINER
+Datendatei `pruef-ids/_regeln.js` (die 553 Einzeldateien `<PID>.js` und die
+`_pid-registry.js` sind entfernt; Äquivalenz per unveränderter Golden bewiesen).
+Alle übrigen Seiten arbeiten allein mit `_form-meta.js`. Letzter Schritt der
+Zusammenführung: `generator.js` durch die Engine-Sicht ersetzen.
 
 ## 4. Regression
 
@@ -97,10 +100,11 @@ ist **A (externe Validierungs-Absicherung)**, dafür werden echte Beispielnachri
 oder ein Fremdvalidator gebraucht (Beschaffung: Auftraggeber). Strukturell: Phasen 2–5
 des [Umbauplans](NEUSTRUKTURIERUNG_PLAN_20260804.md). Phase 2 ist zur Hälfte
 umgesetzt: Die 224 fachlichen Befunde sind behoben (Kopplung der Maske an die Meta,
-Abschnitte 37/38); es verbleibt der **Feldauswahl-Umbau** (kuratierte `<PID>.js` →
-Instanz-Adressen auf der Meta, `generator.js` entfällt, inkl. inhaltlicher
-Neubelegung der 55194-Objektdaten mit SEQ+ZF3/ZG0) und danach Phase 3
-(Formatstand als Parameter).
+Abschnitte 37/38); die Regeln sind als Datenschicht
+konsolidiert (`_regeln.js`, Abschnitt 39); es verbleibt der **Engine-Schritt**
+(`generator.js` durch die Engine-Sicht ersetzen, inkl. inhaltlicher Neubelegung
+der 55194-Objektdaten mit SEQ+ZF3/ZG0) und danach Phase 3 (Formatstand als
+Parameter).
 
 ## 7. Fallstricke aus der bisherigen Arbeit
 

@@ -2128,3 +2128,43 @@ informative Muss-Befunde 1.100 → 982. Golden-Neubewertung als eigener Prüfblo
 UNT-Zähler); keine unerwartete Signatur. Snapshots neu eingefroren; volle
 Regression grün (32 Läufe).
 
+## 39. Phase 2 (Fortsetzung): Regel-Datenschicht statt 553 Einzeldateien (04.08.2026)
+
+**Auftrag.** Zweite Hälfte von Phase 2 (Feldauswahl-Umbau), erster Block: Die
+kuratierten Regel-Einzeldateien werden zur Datenschicht — ohne jede fachliche
+Änderung, beweisbar über unveränderte Golden-Snapshots.
+
+**Bestandsaufnahme der Nutzungswege.** Die `<PID>.js` wurden geladen von den vier
+UTILMD-Seiten (187/88/189/89 Script-Tags), dem Test-Harness (readdir-Muster
+`NNNNN.js` + `_pid-registry.js`) und `pruefe_pid_konsistenz.js` (require je Datei);
+`generator.js` und `test_bedingung_hilfe.js` nutzen nur die Registry-Globale
+`ahbRulesByPrufId`. Die Servicenachrichten-Masken sind nicht betroffen. Alle
+Regeldateien sind reine Daten (kein `function`/`=>` im Bestand).
+
+**Umsetzung.**
+
+1. `scripts/baue_pid_regeln.js`: Migration je Ziel — alle Einzeldateien laden,
+   JSON-Roundtrip-Garantie je Regel (bricht ab, wäre eine Regel kein reines Datum),
+   Ausgabe `pruef-ids/_regeln.js` (definiert `ahbRulesByPrufId` direkt); mit
+   `--loeschen` Entfernen der Einzeldateien und der `_pid-registry.js`.
+2. Verbraucher umgestellt: vier `index.html` (Script-Tags 219/116/221/117 → 32/28),
+   Harness (lädt `_regeln.js`, `pids` aus deren Schlüsseln),
+   `pruefe_pid_konsistenz.js` (require der Datendatei).
+3. 553 Einzeldateien + 4 Registries entfernt (557 Löschungen).
+4. `pruefe_paket.js` robust gegen den Umbau-Zwischenzustand (überspringt getrackte,
+   aber gelöschte Dateien).
+
+**Meta-Abgleich** (Vorarbeit für den Engine-Schritt): 93–99 % der Regel-Felder sind
+über Segment-Tag + Qualifier einer Instanz der Formular-Meta zuordenbar — Strom
+2672/2866 (202604) bzw. 2702/2900 (202610), Gas 1043/1048 bzw. 1045/1050. Der
+nicht adressierbare Rest sind v. a. Konventions-IDs (`IDE`, `RFF_VZ_QUALITAET`,
+`STS_7_grund` …), die der Engine-Schritt gesondert behandelt.
+
+**Nachweis.** Golden-Regression **ohne** Snapshot-Update über alle vier Ziele grün
+(187/88/189/89 PIDs unverändert) — die Umstellung ist rein strukturell. Volle
+Regression grün (32 Läufe).
+
+**Verbleibt aus Phase 2:** `generator.js` durch die Engine-Sicht ersetzen (kuratierte
+Maske rendert/erzeugt über `ahb-form-engine` auf Basis von `_regeln.js` + Meta),
+inkl. inhaltlicher Neubelegung der 55194-Objektdaten (SEQ+ZF3/ZG0); danach Phase 3.
+

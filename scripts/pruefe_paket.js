@@ -27,8 +27,11 @@ function pruefe(name, ok, detail) {
 }
 
 // Alle versionierten Dateien (Maßstab ist das Repo, nicht der Arbeitsordner).
+// Gelöschte, aber noch nicht committete Dateien werden übersprungen — sonst
+// bricht die Prüfung mitten in einer Umbau-Arbeitskopie ab.
 const tracked = execSync('git ls-files', { cwd: wurzel, encoding: 'utf8' })
-    .split('\n').filter(Boolean);
+    .split('\n').filter(Boolean)
+    .filter(f => fs.existsSync(path.join(wurzel, f)));
 
 // 1. Keine BDEW-Originaldokumente.
 const dokumente = tracked.filter(f => /\.(pdf|docx|xlsx)$/i.test(f));
