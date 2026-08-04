@@ -5,6 +5,20 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **04.08.2026** – **Phase 2.2: Maske an die AHB-Meta gekoppelt — alle 224 fachlichen
+  Befunde behoben.** Nach Freigabe der Entscheidungsliste erzeugt die kuratierte Maske
+  die betroffenen Segmente jetzt datengetrieben aus der Formular-Meta: FTX mit dem
+  AHB-Qualifier (ACB) und nur, wo der AHB es führt (E1/E2); Objektdaten-Blöcke
+  SEQ/CCI/CAV nur mit AHB-geführten Qualifiern je Prüf-ID (E3/E9); BGM-Dokumentenname
+  und STS+7 nach AHB (E7/E8); MP-ID-Vorbelegung folgt der zulässigen Codevergabestelle
+  (Modell 2: GS1-Beispiel-GLN statt 293, E6). Die Quellen-Prüfung am Original-AHB S2.1
+  (Wissensdatenbank in Google Drive) entschied E4/E5: Die Meta war korrekt, die Maske
+  belegte falsch — das Zugeordnete-Marktpartner-CAV heißt jetzt
+  `CAV+Z91:<MP-ID>::Z39` (MP-ID in DE1131, MSB-Art in DE7110). Nachmessung: 224 → 0;
+  informative Muss-Befunde 1.100 → 982. Golden-Neubewertung: 149 Nachrichten gewollt
+  geändert, jede Diff-Signatur einem beschlossenen Muster zugeordnet (keine
+  unerwarteten Abweichungen), Snapshots neu eingefroren. Volle Regression grün
+  (32 Läufe). → Protokoll Abschnitt 38.
 - **04.08.2026** – **Phase 2.1: Entscheidungsliste der fachlichen Befunde.** Neues
   Analysewerkzeug `scripts/analyse_selbstvalidierung.js` erhebt die Selbstvalidierungs-
   Befunde aller vier Golden-Ziele vollständig und klassifiziert sie: 1.100 informative

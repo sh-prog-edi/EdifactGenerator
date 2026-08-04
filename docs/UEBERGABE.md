@@ -1,6 +1,6 @@
 # Arbeitsstand / Übergabe
 
-Stand: 04.08.2026 · Projekt: **EdifactGenerator** · Auftraggeber: Steffen Haense
+Stand: 04.08.2026 (nach Phase 2.2) · Projekt: **EdifactGenerator** · Auftraggeber: Steffen Haense
 
 **Quelle der Wahrheit ist das Git-Repository**
 (<https://github.com/sh-prog-edi/EdifactGenerator>). Der Einstieg in eine neue Sitzung:
@@ -50,9 +50,15 @@ docs/               Arbeitsprotokoll, Statusdokumente, offene Punkte, Umbauplan,
 ```
 
 Die **Wissensdatenbank** (Originaldokumente, Spiegel `mirror/…`, `regelwerk/`) liegt
-außerhalb des Repositorys; die Extraktionsskripte erwarten sie im Arbeitsordner oberhalb
-des Repos (übersteuerbar per `EDIGEN_ARBEITSORDNER`). Zur Vollständigkeit und zum
-Reproduktionsweg der FV2610-Quellen: Protokoll Abschnitt 7.
+außerhalb des Repositorys — **chatübergreifend erreichbar in Google Drive**:
+Ordner „Meine Ablage → EdifactGenerator" (Unterordner `Wissensdatenbank/` mit
+Inhaltsverzeichnis `Wissensdatenbank_20260802_INHALT.md`, daneben `toolbox/` mit den
+modifizierten Hochfrequenz-Werkzeugen und `VERSIONEN.txt` der Basisversionen). Zugriff
+per Google-Drive-Connector; große DOCX per `download_file_content` vollständig laden
+(der Lese-Weg liefert bei sehr großen Dateien nur einen Ausschnitt). Für lokale
+Extraktionsläufe erwarten die Skripte den Bestand im Arbeitsordner oberhalb des Repos
+(übersteuerbar per `EDIGEN_ARBEITSORDNER`). Reproduktionsweg der FV2610-Quellen:
+Protokoll Abschnitt 7.
 
 **Zwei Wege zum Formular** (bewusst, offener Punkt F): Die vier kuratierten UTILMD-Masken
 führen eigene Segmentlisten je Prüf-ID, alle übrigen Seiten arbeiten allein mit
@@ -89,9 +95,12 @@ Fachlich: [`OFFENE_ASPEKTE.md`](OFFENE_ASPEKTE.md) (A–F), als GitHub-Issues vo
 in [`ISSUES_VORLAGEN.md`](ISSUES_VORLAGEN.md) — der wirksamste nächste fachliche Schritt
 ist **A (externe Validierungs-Absicherung)**, dafür werden echte Beispielnachrichten
 oder ein Fremdvalidator gebraucht (Beschaffung: Auftraggeber). Strukturell: Phasen 2–5
-des [Umbauplans](NEUSTRUKTURIERUNG_PLAN_20260804.md); als Nächstes **Phase 2**
-(ein Formularweg — kuratierte Maske als Sicht auf die Engine, 553 `<PID>.js` und
-`generator.js` entfallen, 114 fachliche Befunde als Entscheidungsliste).
+des [Umbauplans](NEUSTRUKTURIERUNG_PLAN_20260804.md). Phase 2 ist zur Hälfte
+umgesetzt: Die 224 fachlichen Befunde sind behoben (Kopplung der Maske an die Meta,
+Abschnitte 37/38); es verbleibt der **Feldauswahl-Umbau** (kuratierte `<PID>.js` →
+Instanz-Adressen auf der Meta, `generator.js` entfällt, inkl. inhaltlicher
+Neubelegung der 55194-Objektdaten mit SEQ+ZF3/ZG0) und danach Phase 3
+(Formatstand als Parameter).
 
 ## 7. Fallstricke aus der bisherigen Arbeit
 

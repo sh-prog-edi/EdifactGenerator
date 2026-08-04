@@ -2080,3 +2080,51 @@ Vorbelegungsfrage.
 Empfehlungen, Entscheidungsfelder), `docs/ENTSCHEIDUNGSLISTE_PHASE2.csv` (224
 Einzelbefunde). Generator, Validator und Golden unverändert — reine Analyse.
 
+## 38. Phase 2.2: Kopplung der Maske an die Meta — 224 Befunde behoben (04.08.2026)
+
+**Auftrag.** Umsetzung der freigegebenen Entscheidungsliste (Abschnitt 37, alle
+Empfehlungen bestätigt).
+
+**Quellen-Prüfung E4/E5** — erstmals direkt gegen die Wissensdatenbank in Google
+Drive (Ordner „Meine Ablage → EdifactGenerator"): Das Original-AHB S2.1
+(`AHB_UTILMD_S2.1_20260629…_12271.docx`, 4,5 MB) wurde vollständig heruntergeladen
+und mit python-docx aufgeschlossen. Ergebnis Segmentlayout SG10 CAV
+„Messstellenbetreiber": **DE7111 = Z91, DE1131 = MP-ID (frei), DE7110 = Z39/Z40/Z41**
+(grundzuständiger/wettbewerblicher/Auffang-MSB). Z39/Z40/Z41 kommen im gesamten AHB
+nirgends anders als CAV-DE7110-Codes vor. Damit war die **Meta korrekt** und die
+Maske falsch: Sie schrieb die MP-ID in die 4. Komponente (DE7110) statt in DE1131
+und ließ die MSB-Art weg. E5 analog: Die Meta führt je PID genau die CCI-Instanzen
+des AHB (55616 z. B. Spannungsebene, 55615 nur Zugeordnete Marktpartner) — die
+weiteren CCI der Maske waren pauschal erzeugt.
+
+**Umsetzung** (zentral in `_engine/generator.js`, wirksam für alle vier kuratierten
+Masken beider Sparten und Stände):
+
+1. Neue Kopplungshelfer `metaInstanzen`/`metaSegment`/`metaDeCodes`/`ahbFuehrt` —
+   ohne geladene Meta greift keine Kopplung (unverändertes Verhalten als Rückfall).
+2. **E1/E2**: FTX-Qualifier aus der Meta (ACB), Ablehnungs-FTX nur, wenn der AHB der
+   Prüf-ID ein FTX führt.
+3. **E3/E9**: Objektdaten-Block (SEQ/CCI/CAV) wird gegen die Meta gefiltert — nur
+   AHB-geführte SEQ-Objektcodes (DE1229), CCI-Merkmale (DE7037) und CAV-Codes
+   (DE7111) je Prüf-ID. (Hinweis: Die inhaltliche Neubelegung der 55194-Objektdaten
+   mit SEQ+ZF3/ZG0 samt Merkmalen bleibt dem Feldauswahl-Umbau vorbehalten; bis
+   dahin entsteht dort kein falscher Block mehr.)
+4. **E4**: Zugeordnete-Marktpartner-CAV komponentenrichtig:
+   `CAV+Z91:<MP-ID>::Z39` — erkannt daran, dass die Meta-Instanz DE1131 frei führt
+   und DE7110 eine Codeliste hat; Vorgabe der Art = erster AHB-Code (Z39).
+5. **E6**: MP-ID-Vorbelegung je Prüf-ID an die zulässige Codevergabestelle gekoppelt;
+   erlaubt der AHB die Sparten-Vorgabe nicht (Modell 2: nur 9), wird eine gültige
+   Beispiel-GLN vorbelegt (4012345000009/4012345000016) — UNB-Qualifier (14) zieht
+   über `codevergabeStelle` konsistent mit.
+6. **E7/E8**: BGM-Dokumentenname aus der Meta, wenn die Prozess-Meta-Vorgabe dort
+   nicht zulässig ist (55074: Z14, 44019: E06); STS+7 nur, wenn der AHB der Prüf-ID
+   es führt (DE9015-Code 7).
+
+**Nachweis.** `analyse_selbstvalidierung.js`: **224 → 0** fachliche Befunde;
+informative Muss-Befunde 1.100 → 982. Golden-Neubewertung als eigener Prüfblock:
+149 geänderte Nachrichten, Diff-Signaturen vollständig den Mustern E1–E9 zugeordnet
+(u. a. `FTX+ABO→FTX+ACB`, `CAV+Z91:::MP → CAV+Z91:MP::Z39`, `BGM+E03→Z14/E06`,
+`NAD+MR 990…::293 → GLN::9` inkl. UNB 500→14, entfallene Blöcke mit angepasstem
+UNT-Zähler); keine unerwartete Signatur. Snapshots neu eingefroren; volle
+Regression grün (32 Läufe).
+

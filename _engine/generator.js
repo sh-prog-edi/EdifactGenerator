@@ -103,6 +103,36 @@ function codevergabeStelle(mpId) {
     return regeln[0]; // konservativer Standard = Haupt-Vergabestelle der Sparte
 }
 
+// --- Phase 2: Kopplung der kuratierten Maske an die AHB-Meta (formMeta) ---
+// Die Formular-Meta ist die maschinell extrahierte Prüfgrundlage. Die Maske erzeugt
+// Segmente nur noch, wenn der AHB der Prüf-ID sie führt, und übernimmt Qualifier und
+// Codes von dort (Entscheidungsliste Phase 2, Muster E1–E9). Ist keine Meta geladen,
+// greift die Kopplung nicht ein — dann gilt das bisherige Verhalten.
+function metaInstanzen(prufId) {
+    if (typeof formMeta === 'undefined' || !formMeta[prufId]) return null;
+    return formMeta[prufId].instanzen || null;
+}
+function metaDeCodes(inst, de) {
+    const codes = [];
+    (inst.des || []).forEach(d => {
+        if (d.de === de) (d.codes || []).forEach(c => codes.push(Array.isArray(c) ? c[0] : c));
+    });
+    return codes;
+}
+// Instanzen eines Segments dieser Prüf-ID, optional gefiltert auf einen Code in einem DE.
+function metaSegment(prufId, seg, de, code) {
+    const inst = metaInstanzen(prufId);
+    if (!inst) return null;
+    let treffer = inst.filter(i => i.seg === seg);
+    if (de && code) treffer = treffer.filter(i => metaDeCodes(i, de).indexOf(code) >= 0);
+    return treffer;
+}
+// Führt der AHB der Prüf-ID das Segment (ggf. mit Code im DE)?
+function ahbFuehrt(prufId, seg, de, code) {
+    const t = metaSegment(prufId, seg, de, code);
+    return t === null ? true : t.length > 0;
+}
+
 // Datumsformat-Helfer: intern rechnen die Umrechnungsfunktionen mit JJJJ-MM-TT,
 // im Formular wird aber TT.MM.JJJJ angezeigt/eingegeben.
 function isoZuDe(iso) {
@@ -383,6 +413,18 @@ function renderForm() {
         refVorgang: "REF" + Math.floor(100000 + Math.random() * 900000),
         malo: "50052281648", qty: "3500", ftx: "AHB-konforme Marktnachricht"
     };
+    // MP-ID-Vorbelegung an die Codevergabestellen des AHB koppeln (Muster E6):
+    // Erlaubt der AHB der Prüf-ID für Absender/Empfänger die Vergabestelle der
+    // Sparten-Vorgabe nicht (z. B. Modell 2: nur 9 = GS1), wird eine Beispiel-GLN
+    // vorbelegt (gültige GS1-Prüfziffer), statt eine unzulässige 293/332 zu erzeugen.
+    [['MS', 'absender', '4012345000009'], ['MR', 'empfanger', '4012345000016']].forEach(([rolle, feld, gln]) => {
+        const inst = metaSegment(prufId, 'NAD', '3035', rolle);
+        if (!inst || !inst.length) return;
+        const codes = metaDeCodes(inst[0], '3055');
+        if (!codes.length) return;
+        if (codes.indexOf(codevergabeStelle(defaults[feld]).nad) < 0 && codes.indexOf('9') >= 0)
+            defaults[feld] = gln;
+    });
 
     const todayStr = new Date().toISOString().split('T')[0];
 
@@ -684,8 +726,13 @@ function generateEdifact() {
     // Reihenfolge: ...+<DAR>+<AnwRef>+<Empf.Ref>+<Verarb.Prio>+<Bestaetigung>+<Kennung>+<Testkz>
     segments.push(`UNB+UNOC:3+${absender}:${absQ.unb}+${empfanger}:${empQ.unb}+${unbDate}:${currentTimestamp}+${currentDAR}++++++1'`);
     segments.push(`UNH+${currentDAR}+${fmt().unhKennung}'`);
-    // BGM DE1001 je Prozess: E01=Anmeldung, E02=Abmeldung, E35=Kündigung.
-    segments.push(`BGM+${meta.bgm}+${docNum}'`);
+    // BGM DE1001 je Prozess: E01=Anmeldung, E02=Abmeldung, E35=Kündigung. Führt der
+    // AHB der Prüf-ID einen anderen Dokumentennamen (Muster E7 — 55074: Z14,
+    // 44019: E06), gilt der AHB vor der Prozess-Meta.
+    const bgmInst = metaSegment(prufId, 'BGM');
+    const bgmCodes = (bgmInst && bgmInst.length) ? metaDeCodes(bgmInst[0], '1001') : [];
+    const bgmCode = (bgmCodes.length && bgmCodes.indexOf(meta.bgm) < 0) ? bgmCodes[0] : meta.bgm;
+    segments.push(`BGM+${bgmCode}+${docNum}'`);
     
     if (rawDate137) segments.push(`DTM+137:${getLiveMessageUtcString(rawDate137)}:303'`);
     
@@ -718,7 +765,9 @@ function generateEdifact() {
     else if (!sts7grund && sts7) stsGrund = sts7;                       // STS_7 trägt den Grund (z. B. Z26)
     // STS+7 nur, wenn ein Transaktionsgrund existiert. MaBiS-/Listennachrichten (Kap. 13, BGM Z05/Z07/…)
     // tragen keinen Transaktionsgrund und dürfen daher kein leeres STS+7 erzeugen.
-    if (stsGrund) {
+    // Zusätzlich (Muster E8): nur, wenn der AHB der Prüf-ID das STS+7 überhaupt führt
+    // (55074/44019 führen gar kein STS, 55224 nur den Antwortstatus STS+E01).
+    if (stsGrund && ahbFuehrt(prufId, 'STS', '9015', '7')) {
         const stsTeile = [stsGrund, stsErgaenzung, sts7befristet];
         while (stsTeile.length && !stsTeile[stsTeile.length - 1]) stsTeile.pop();
         segments.push(`STS+7++${stsTeile.join("+")}'`);
@@ -774,11 +823,17 @@ function generateEdifact() {
         while (c556.length && !c556[c556.length - 1]) c556.pop();
         segments.push(`STS+E01++${c556.join(':')}'`);
     }
-    if (ftxText) segments.push(`FTX+ACB+++${ftxText}'`);
+    // FTX aus der Meta (Muster E1/E2): Der Qualifier (DE4451) kommt aus dem AHB der
+    // Prüf-ID (Bemerkung = ACB, nicht der frühere Platzhalter ABO); führt der AHB
+    // gar kein FTX, entsteht auch keines. Ohne geladene Meta bleibt das alte Verhalten.
+    const ftxInst = metaSegment(prufId, 'FTX');
+    const ftxQualifier = (ftxInst && ftxInst.length && metaDeCodes(ftxInst[0], '4451')[0]) || null;
+    if (ftxText) segments.push(`FTX+${ftxQualifier || 'ACB'}+++${ftxText}'`);
     // Ablehnungsbegründung: Bei Ablehnungen (insb. Antwortcode "Sonstiges" wie A99/E14) verlangt der
-    // AHB ([48]) eine Begründung im Freitext. Wird automatisch als SG4 FTX+ABO erzeugt, sofern die
-    // Ablehnung keinen eigenen Bemerkungstext trägt.
-    else if (meta.art === 'ablehnung') segments.push(`FTX+ABO+++Ablehnung - Begruendung (Beispiel)'`);
+    // AHB ([23]) eine Begründung im Freitext — als Beispieltext vorbelegt, sofern die
+    // Ablehnung keinen eigenen Bemerkungstext trägt und der AHB das FTX führt.
+    else if (meta.art === 'ablehnung' && (ftxInst === null || ftxQualifier))
+        segments.push(`FTX+${ftxQualifier || 'ABO'}+++Ablehnung - Begruendung (Beispiel)'`);
     // LOC-Segmente generisch aus den Regeln dieser PID erzeugen (Strom: LOC+Z16/Z21;
     // Gas: LOC+172 Meldepunkt). Nach der ID (DE3225) sind DE1131/DE3055 "Nicht benutzt".
     const aktRules = (typeof ahbRulesByPrufId !== 'undefined') ? ahbRulesByPrufId[prufId] : null;
@@ -863,6 +918,18 @@ function generateEdifact() {
         // der Transaktionsgrundergänzung den kompletten SG8/SG10-Block.
         nutzGruppen = nutzdatenKatalog[meta.transaktionsgrund] || nutzdatenKatalog[stsGrund] || null;
     }
+    // Kopplung an die Meta (Muster E3): nur Objektgruppen, Merkmale und Werte erzeugen,
+    // die der AHB der Prüf-ID führt — der generische Katalog gilt sonst pauschal und
+    // erzeugte Segmente ohne AHB-Grundlage (z. B. 55063 ohne jegliche Objektdaten).
+    if (nutzGruppen && metaInstanzen(prufId)) {
+        nutzGruppen = nutzGruppen
+            .filter(g => ahbFuehrt(prufId, 'SEQ', '1229', g.seq))
+            .map(g => Object.assign({}, g, { merkmale: (g.merkmale || [])
+                .filter(m => ahbFuehrt(prufId, 'CCI', '7037', m.cci))
+                .map(m => Object.assign({}, m, { cav: (m.cav || [])
+                    .filter(v => ahbFuehrt(prufId, 'CAV', '7111', v.code)) })) }));
+        if (!nutzGruppen.length) nutzGruppen = null;
+    }
     if (nutzGruppen) {
         nutzGruppen.forEach(gruppe => {
             segments.push(`SEQ+${gruppe.seq}'`);
@@ -877,9 +944,19 @@ function generateEdifact() {
                 // CCI-Merkmalform: Klassentyp (DE7059) leer, Merkmal (DE7037) in Element 3 -> CCI+++<Merkmal>.
                 segments.push(`CCI+++${m.cci || ''}'`);
                 (m.cav || []).forEach(v => {
-                    // CAV C889: Code (DE7111) in Komp.1, Wert (DE7110) in Komp.4 -> CAV+<Code>:::<Wert>
-                    // (Projekt-/MIG-Konvention, identisch zum Produktpaket CAV+ZH9:::<Wert>).
-                    segments.push(v.wert !== undefined ? `CAV+${v.code}:::${v.wert}'` : `CAV+${v.code}'`);
+                    // CAV C889: DE7111 (Code) : DE1131 : DE3055 : DE7110.
+                    // Regelfall: Wert im DE7110 (4. Komponente) -> CAV+<Code>:::<Wert>
+                    // (identisch zum Produktpaket CAV+ZH9:::<Wert>).
+                    // Zugeordnete-Marktpartner-CAV (Muster E4, quellengeprüft am AHB
+                    // S2.1, SG10 CAV Messstellenbetreiber): DE1131 = MP-ID (frei),
+                    // DE7110 = Art-Code (Z39 grundzuständig / Z40 wettbewerblich /
+                    // Z41 Auffang-MSB) -> CAV+<Code>:<MP-ID>::<Art>.
+                    const cavInst = (metaSegment(prufId, 'CAV', '7111', v.code) || [])[0];
+                    const codes7110 = cavInst ? metaDeCodes(cavInst, '7110') : [];
+                    const frei1131 = cavInst && (cavInst.des || []).some(d => d.de === '1131' && !(d.codes || []).length);
+                    if (v.wert !== undefined && frei1131 && codes7110.length)
+                        segments.push(`CAV+${v.code}:${v.wert}::${codes7110[0]}'`);
+                    else segments.push(v.wert !== undefined ? `CAV+${v.code}:::${v.wert}'` : `CAV+${v.code}'`);
                 });
             });
         });

@@ -3,6 +3,12 @@
 Stand: 04.08.2026 · Erhebung: `scripts/analyse_selbstvalidierung.js` über alle vier
 Golden-Ziele (202604/202610 × Strom/Gas) · Rohdaten: `ENTSCHEIDUNGSLISTE_PHASE2.csv`
 
+> **UMGESETZT am 04.08.2026** (Freigabe des Auftraggebers: alle Empfehlungen).
+> Nachmessung: **224 → 0 fachliche Befunde**. Die Quellen-Prüfung E4/E5 am
+> Original-AHB S2.1 (via Google Drive) ergab: Die Meta war korrekt — der Fehler lag
+> in der Maske (MP-ID an der DE7110- statt DE1131-Position, fehlende MSB-Art; bzw.
+> pauschal erzeugte CCI ohne AHB-Grundlage). Details: Protokoll Abschnitt 38.
+
 **224 fachliche Befunde** (Abschnitt 15 nannte 114 — das war nur ein Ziel; jetzt sind
 alle vier erhoben), gebündelt in **9 Muster E1–E9**. Nicht enthalten sind die 1.100
 informativen „Muss-Segment nicht befüllt"-Befunde (offener Punkt D, erwartbar).
