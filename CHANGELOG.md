@@ -5,6 +5,16 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **04.08.2026** – **Phase 2.1: Entscheidungsliste der fachlichen Befunde.** Neues
+  Analysewerkzeug `scripts/analyse_selbstvalidierung.js` erhebt die Selbstvalidierungs-
+  Befunde aller vier Golden-Ziele vollständig und klassifiziert sie: 1.100 informative
+  „Muss nicht befüllt" (offener Punkt D, erwartbar) und **224 fachlich zu prüfende**
+  Befunde, gebündelt in 9 Muster (E1–E9) — von falschen Platzhalter-Qualifiern
+  (FTX ABO→ACB) über pauschal erzeugte Objektdaten-Blöcke ohne AHB-Grundlage bis zu
+  zwei Mustern, die nur am Original-AHB entscheidbar sind (E4/E5). Ergebnis als
+  `docs/ENTSCHEIDUNGSLISTE_PHASE2.md` (je Muster: Befund, Quellenlage, Empfehlung,
+  Entscheidungsfeld) und `.csv` (alle 224 Einzelbefunde) — zur fachlichen Durchsicht
+  durch den Auftraggeber vor dem Phase-2-Umbau. → Protokoll Abschnitt 37.
 - **04.08.2026** – **CI und automatische Releases (Phase 1 der Neustrukturierung).**
   Die Auslieferungs-Konventionen sind jetzt Code statt Prosa: `scripts/pruefe_paket.js`
   prüft maschinell, dass keine BDEW-Originaldokumente versioniert sind, jede Seite mit

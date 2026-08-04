@@ -2043,3 +2043,40 @@ Issues vorbereiten. Keine fachlichen Änderungen an Engine oder Datenschicht.
 Workflow-YAML syntaktisch validiert; der erste echte CI-Lauf erfolgt mit dem Push
 dieses Stands, das erste automatische Release mit dem nächsten Tag.
 
+## 37. Phase 2.1: Erhebung und Entscheidungsliste der fachlichen Befunde (04.08.2026)
+
+**Auftrag.** Einstieg in Phase 2 des Umbauplans: die fachlichen Befunde der
+Selbstvalidierung aktuell erheben (die „114" aus Abschnitt 15 stammten vom 30.07. und
+umfassten nur ein Ziel) und als Entscheidungsliste für die Durchsicht des Auftraggebers
+aufbereiten. Noch keine Korrekturen — erst entscheiden, dann umbauen.
+
+**Umsetzung.** `scripts/analyse_selbstvalidierung.js` erzeugt und validiert alle PIDs
+der vier Golden-Ziele und klassifiziert die FEHLER-Befunde: „muss_fehlt" (1.100,
+informativ, offener Punkt D) wird ausgeklammert; übrig bleiben 224 Befunde
+(184 „nicht vorgesehen", 40 „Codewert außerhalb AHB-Liste"). Je Befund wurden die
+erzeugten Segmentzeilen und die AHB-Meta-Instanzen (Abschnitt, Status-Ausdruck,
+Qualifier-Codes) als Beleg erhoben. Ergebnis: 9 Muster —
+
+| Muster | Befunde | Kurzbeschreibung |
+|---|---|---|
+| E1 | 32 | FTX+ABO statt AHB-Qualifier ACB (Antwort-PIDs, beide Sparten) |
+| E2 | 30 | FTX erzeugt, obwohl der AHB keines führt |
+| E3 | 114 | Objektdaten-Block SEQ/CCI/CAV pauschal, ohne AHB-Grundlage je PID |
+| E4 | 13 | CAV DE7110: MP-ID-Wert vs. Codeliste Z39/Z40/Z41 — nur am Original entscheidbar |
+| E5 | 15 | CCI DE7037: Folge-CCI vs. ZB3/ZA9 — nur am Original entscheidbar |
+| E6 | 8 | NAD DE3055: Codevergabestelle 293 statt 9 (bzw. 9/332) |
+| E7 | 4 | BGM-Vorbelegung falsch (55074: Z14, 44019: E06) |
+| E8 | 6 | STS+7 erzeugt, obwohl der AHB keines führt |
+| E9 | 2 | SEQ+ZD5 statt ZF3/ZG0 (55194) |
+
+**Einordnung.** E1–E3 und E7–E9 (188 Befunde) sind dieselbe Fehlerklasse wie die
+ZW4/ZW3/ZW5-Platzhalter vom 28.07.: die kuratierte Maske erzeugt generisch statt
+AHB-getrieben. Sie werden nicht einzeln geflickt, sondern durch die Phase-2-Kopplung
+der Maske an die Meta strukturell beseitigt. E4/E5 (28) brauchen den Blick ins
+Original-AHB (Wissensdatenbank in der Umsetzungssitzung); E6 (8) ist eine
+Vorbelegungsfrage.
+
+**Nachweis/Artefakte.** `docs/ENTSCHEIDUNGSLISTE_PHASE2.md` (Muster, Belege,
+Empfehlungen, Entscheidungsfelder), `docs/ENTSCHEIDUNGSLISTE_PHASE2.csv` (224
+Einzelbefunde). Generator, Validator und Golden unverändert — reine Analyse.
+
