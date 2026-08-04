@@ -144,7 +144,7 @@ async function befuelle(page) {
 
   // --- QUOTES 15001 -> ORDERS 17001 (beide Stände) ---
   for (const stand of ['202604', '202610']) {
-    const res = await kette(`${stand}/Bestellvorgang/QUOTES/index.html`, '15001', stand, 0, [], `QUOTES->ORDERS ${stand}`);
+    const res = await kette(`Bestellvorgang/QUOTES/index.html?stand=${stand}`, '15001', stand, 0, [], `QUOTES->ORDERS ${stand}`);
     if (res) {
       // Referenzprüfung: ORDERS RFF+AAG == QUOTES BGM-Dokumentennummer, RFF+Z03 == LIN-Position
       const angebotsNr = /BGM\+310\+([^+']+)/.exec(res.quelle);
@@ -165,7 +165,7 @@ async function befuelle(page) {
 
   // --- INVOIC 31001 -> REMADV 33001 (Bestätigung) und 33002 (Abweisung) ---
   for (const [idx, zielLabel] of [[0, 'REMADV 33001'], [1, 'REMADV 33002']]) {
-    const res = await kette('202604/Rechnungsstellung/INVOIC/index.html', '31001', '202604', idx, [], `INVOIC->${zielLabel}`);
+    const res = await kette('Rechnungsstellung/INVOIC/index.html?stand=202604', '31001', '202604', idx, [], `INVOIC->${zielLabel}`);
     if (res) {
       const reNr = /BGM\+380\+([^+']+)/.exec(res.quelle);
       gesamt++;
@@ -193,7 +193,7 @@ async function befuelle(page) {
 
   // --- Generierte Mappings (Anwendungsübersicht): UTILMD Kündigung 55016 -> 55017 ---
   for (const stand of ['202604', '202610']) {
-    const res = await kette(`${stand}/Stammdaten/UTILMD/Strom/vollformular.html`, '55016', stand,
+    const res = await kette(`Stammdaten/UTILMD/Strom/vollformular.html?stand=${stand}`, '55016', stand,
       /UTILMD 55017/, [], `UTILMD 55016->55017 ${stand}`);
     if (res) {
       const vg = /IDE\+24\+([^'+]+)/.exec(res.quelle);
@@ -204,7 +204,7 @@ async function befuelle(page) {
   }
   // --- ORDERS Sperrauftrag 17115 -> ORDRSP 19116 (Heuristik-Mapping) ---
   {
-    const res = await kette('202604/Bestellvorgang/ORDERS/index.html', '17115', '202604',
+    const res = await kette('Bestellvorgang/ORDERS/index.html?stand=202604', '17115', '202604',
       /ORDRSP 19116/, [], 'ORDERS 17115->ORDRSP 19116');
     if (res) {
       const nr = /BGM\+[^+']*\+([^+']+)/.exec(res.quelle);
@@ -241,9 +241,9 @@ async function befuelle(page) {
     }
     await validiere(antwort, `${label} (Antwort)`);
   }
-  await serviceKette('202604/Bestellvorgang/QUOTES/index.html', '15001', '202604',
+  await serviceKette('Bestellvorgang/QUOTES/index.html?stand=202604', '15001', '202604',
     /CONTRL – Empfangsbestätigung/, () => generateContrl(), 'CONTRL-Empfangsbestätigung');
-  await serviceKette('202604/Bestellvorgang/QUOTES/index.html', '15001', '202604',
+  await serviceKette('Bestellvorgang/QUOTES/index.html?stand=202604', '15001', '202604',
     /APERAK – Ablehnung/, () => {
       const s = document.getElementById('ercCode');
       if (!s.value) { const o = Array.from(s.options).find(x => x.value); if (o) s.value = o.value; }

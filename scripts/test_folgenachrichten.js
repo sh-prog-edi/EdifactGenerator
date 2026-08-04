@@ -19,7 +19,7 @@ const MALO = '51238696781';
   for (const stand of ['202604', '202610']) {
     const page = await browser.newPage();
     page.on('pageerror', e => fehler.push(`${stand}: JS-Fehler ${e.message}`));
-    await page.goto(`file://${ROOT}/${stand}/Stammdaten/UTILMD/Strom/index.html`, { waitUntil: 'load' });
+    await page.goto(`file://${ROOT}/Stammdaten/UTILMD/Strom/index.html?stand=${stand}`, { waitUntil: 'load' });
 
     const quelle = await page.evaluate(async ([malo]) => {
       document.getElementById('prufId').value = '55001';
@@ -54,7 +54,7 @@ const MALO = '51238696781';
     // nicht — der Empfänger muss leer bleiben und als offen gekennzeichnet sein.
     const rollen = await page.evaluate(([n]) => {
       const e = EdiFolgenachrichten.baueEintraege(
-        /\b(20\d{4})\b/.exec(location.pathname)[1], '55001', n);
+        EdiStand.aktiv(), '55001', n);
       return e.eintraege.map(x => ({
         pid: x.pid, an: x.anRolle, von: x.vonRolle,
         abs: x.absender, emp: x.empfaenger, offen: x.offen,
@@ -79,7 +79,7 @@ const MALO = '51238696781';
       geprueft++;
       if (!treffer) { fehler.push(`${stand}: ${pid} wird nicht angeboten`); continue; }
 
-      const zielSeite = new URL(treffer.href, `file://${ROOT}/${stand}/Stammdaten/UTILMD/Strom/`).href;
+      const zielSeite = new URL(treffer.href, `file://${ROOT}/Stammdaten/UTILMD/Strom/`).href;
       const zp = await browser.newPage();
       const zFehler = [];
       zp.on('pageerror', e => zFehler.push(e.message));

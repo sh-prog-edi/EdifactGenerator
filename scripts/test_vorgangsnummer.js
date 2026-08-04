@@ -23,21 +23,21 @@ const PRAEFIX = 'EDIGEN{';
 const ENGINE_SEITEN = [];
 for (const stand of ['202604', '202610']) {
   ENGINE_SEITEN.push(
-    `${stand}/Stammdaten/UTILMD/Strom/vollformular.html`,
-    `${stand}/Stammdaten/UTILMD/Gas/vollformular.html`,
-    `${stand}/Bewegungsdaten/MSCONS/index.html`,
-    `${stand}/Bestellvorgang/ORDERS/index.html`,
-    `${stand}/Bestellvorgang/ORDRSP/index.html`,
-    `${stand}/Rechnungsstellung/INVOIC/index.html`,
-    `${stand}/Berichte/IFTSTA/index.html`,
-    `${stand}/Stammdaten/UTILTS/index.html`,
+    `Stammdaten/UTILMD/Strom/vollformular.html?stand=${stand}`,
+    `Stammdaten/UTILMD/Gas/vollformular.html?stand=${stand}`,
+    `Bewegungsdaten/MSCONS/index.html?stand=${stand}`,
+    `Bestellvorgang/ORDERS/index.html?stand=${stand}`,
+    `Bestellvorgang/ORDRSP/index.html?stand=${stand}`,
+    `Rechnungsstellung/INVOIC/index.html?stand=${stand}`,
+    `Berichte/IFTSTA/index.html?stand=${stand}`,
+    `Stammdaten/UTILTS/index.html?stand=${stand}`,
   );
 }
 const KURIERTE_SEITEN = [];
 for (const stand of ['202604', '202610']) {
   KURIERTE_SEITEN.push(
-    `${stand}/Stammdaten/UTILMD/Strom/index.html`,
-    `${stand}/Stammdaten/UTILMD/Gas/index.html`,
+    `Stammdaten/UTILMD/Strom/index.html?stand=${stand}`,
+    `Stammdaten/UTILMD/Gas/index.html?stand=${stand}`,
   );
 }
 
@@ -107,9 +107,12 @@ function pruefeIde(quelle, edi) {
 
   // ---- 2a. Engine-Seiten -------------------------------------------------
   for (const rel of ENGINE_SEITEN) {
-    const datei = path.join(ROOT, rel);
+    // Seit Phase 3 tragen die Seiten-URLs den Formatstand als Parameter —
+    // für die Existenzprüfung zählt nur der Dateipfad.
+    const [reinerPfad, abfrage] = rel.split('?');
+    const datei = path.join(ROOT, reinerPfad);
     if (!fs.existsSync(datei)) continue;
-    await page.goto('file://' + datei);
+    await page.goto('file://' + datei + (abfrage ? '?' + abfrage : ''));
     const pruefis = await page.evaluate(() =>
       Array.from(document.getElementById('pruefi').options).map(o => o.value));
     let mitIde = 0;
@@ -126,9 +129,12 @@ function pruefeIde(quelle, edi) {
 
   // ---- 2b. Kuratierte Masken --------------------------------------------
   for (const rel of KURIERTE_SEITEN) {
-    const datei = path.join(ROOT, rel);
+    // Seit Phase 3 tragen die Seiten-URLs den Formatstand als Parameter —
+    // für die Existenzprüfung zählt nur der Dateipfad.
+    const [reinerPfad, abfrage] = rel.split('?');
+    const datei = path.join(ROOT, reinerPfad);
     if (!fs.existsSync(datei)) continue;
-    await page.goto('file://' + datei);
+    await page.goto('file://' + datei + (abfrage ? '?' + abfrage : ''));
     const pruefis = await page.evaluate(() =>
       Array.from(document.getElementById('prufId').options).map(o => o.value).filter(Boolean));
     let mitIde = 0;
@@ -142,9 +148,9 @@ function pruefeIde(quelle, edi) {
   }
 
   // ---- 3. Mehrere Vorgänge je Nachricht ----------------------------------
-  const vf = path.join(ROOT, '202604/Stammdaten/UTILMD/Strom/vollformular.html');
+  const vf = path.join(ROOT, 'Stammdaten/UTILMD/Strom/vollformular.html');
   if (fs.existsSync(vf)) {
-    await page.goto('file://' + vf);
+    await page.goto('file://' + vf + '?stand=202604');
     await page.selectOption('#pruefi', '55017');
     await page.evaluate(() => onPruefi());
     await page.evaluate(() => { AhbFormEngine.addPos(); AhbFormEngine.addPos(); });

@@ -44,7 +44,7 @@ const fuelle = () => {
   for (const stand of ['202604', '202610']) {
     const p = await ctx.newPage();
     p.on('pageerror', e => fehler.push(`${stand}: JS-Fehler ${e.message}`));
-    await p.goto(`file://${ROOT}/${stand}/Stammdaten/UTILMD/Strom/index.html`, { waitUntil: 'load' });
+    await p.goto(`file://${ROOT}/Stammdaten/UTILMD/Strom/index.html?stand=${stand}`, { waitUntil: 'load' });
 
     const quelle = await p.evaluate(async (malo) => {
       document.getElementById('prufId').value = '55001';
@@ -145,7 +145,7 @@ const fuelle = () => {
       const seite = await ctx.newPage();
       const sFehler = [];
       seite.on('pageerror', e => sFehler.push(e.message));
-      await seite.goto(`file://${ROOT}/${stand}/Stammdaten/UTILMD/${sparte}/vollformular.html`, { waitUntil: 'load' });
+      await seite.goto(`file://${ROOT}/Stammdaten/UTILMD/${sparte}/vollformular.html?stand=${stand}`, { waitUntil: 'load' });
       const schlecht = [];
       for (const pid of betroffen) {
         const r = await seite.evaluate(async (id) => {
@@ -176,7 +176,7 @@ const fuelle = () => {
   // an und erzeugt den Verwendungszeitraum auch in den Rückmeldungen ---
   for (const stand of ['202604', '202610']) {
     const seite = await ctx.newPage();
-    await seite.goto(`file://${ROOT}/${stand}/Stammdaten/UTILMD/Strom/index.html`, { waitUntil: 'load' });
+    await seite.goto(`file://${ROOT}/Stammdaten/UTILMD/Strom/index.html?stand=${stand}`, { waitUntil: 'load' });
     const r = await seite.evaluate(() => {
       document.getElementById('prufId').value = '55137';   // Rückmeldung/Anfrage Daten der MaLo
       renderForm();

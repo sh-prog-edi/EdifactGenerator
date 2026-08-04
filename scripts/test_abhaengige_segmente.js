@@ -20,7 +20,7 @@ const ROOT = require('path').join(__dirname, '..');
   for (const stand of ['202604', '202610']) {
     const page = await browser.newPage();
     page.on('pageerror', e => fehler.push(`${stand}: JS-Fehler ${e.message}`));
-    await page.goto(`file://${ROOT}/${stand}/Stammdaten/UTILMD/Strom/index.html`, { waitUntil: 'load' });
+    await page.goto(`file://${ROOT}/Stammdaten/UTILMD/Strom/index.html?stand=${stand}`, { waitUntil: 'load' });
 
     for (const [ergaenzung, erwartet, verboten] of [['ZW4', 'LOC+Z16', 'LOC+Z22'], ['ZAP', 'LOC+Z22', 'LOC+Z16']]) {
       gesamt++;

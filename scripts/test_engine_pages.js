@@ -7,27 +7,27 @@ const ROOT = require('path').join(__dirname, '..');
 const SEITEN = [];
 for (const stand of ['202604', '202610']) {
   SEITEN.push(
-    `${stand}/Berichte/IFTSTA/index.html`,
-    `${stand}/Berichte/INSRPT/index.html`,
-    `${stand}/Rechnungsstellung/COMDIS/index.html`,
-    `${stand}/Rechnungsstellung/INVOIC/index.html`,
-    `${stand}/Rechnungsstellung/PRICAT/index.html`,
-    `${stand}/Rechnungsstellung/REMADV/index.html`,
-    `${stand}/Stammdaten/PARTIN/index.html`,
-    `${stand}/Stammdaten/UTILTS/index.html`,
-    `${stand}/Bestellvorgang/ORDERS/index.html`,
-    `${stand}/Bestellvorgang/ORDRSP/index.html`,
-    `${stand}/Bestellvorgang/ORDCHG/index.html`,
-    `${stand}/Bestellvorgang/QUOTES/index.html`,
-    `${stand}/Bestellvorgang/REQOTE/index.html`,
-    `${stand}/Bewegungsdaten/MSCONS/index.html`,
+    `Berichte/IFTSTA/index.html?stand=${stand}`,
+    `Berichte/INSRPT/index.html?stand=${stand}`,
+    `Rechnungsstellung/COMDIS/index.html?stand=${stand}`,
+    `Rechnungsstellung/INVOIC/index.html?stand=${stand}`,
+    `Rechnungsstellung/PRICAT/index.html?stand=${stand}`,
+    `Rechnungsstellung/REMADV/index.html?stand=${stand}`,
+    `Stammdaten/PARTIN/index.html?stand=${stand}`,
+    `Stammdaten/UTILTS/index.html?stand=${stand}`,
+    `Bestellvorgang/ORDERS/index.html?stand=${stand}`,
+    `Bestellvorgang/ORDRSP/index.html?stand=${stand}`,
+    `Bestellvorgang/ORDCHG/index.html?stand=${stand}`,
+    `Bestellvorgang/QUOTES/index.html?stand=${stand}`,
+    `Bestellvorgang/REQOTE/index.html?stand=${stand}`,
+    `Bewegungsdaten/MSCONS/index.html?stand=${stand}`,
   );
 }
 const SMOKE = [];
 for (const stand of ['202604', '202610']) {
   SMOKE.push(
-    [`${stand}/Servicenachrichten/APERAK/index.html`, 'generateAperak'],
-    [`${stand}/Servicenachrichten/CONTRL/index.html`, 'generateContrl'],
+    [`Servicenachrichten/APERAK/index.html?stand=${stand}`, 'generateAperak'],
+    [`Servicenachrichten/CONTRL/index.html?stand=${stand}`, 'generateContrl'],
   );
 }
 

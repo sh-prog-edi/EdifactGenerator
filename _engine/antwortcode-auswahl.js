@@ -24,6 +24,8 @@
     }
 
     function standAusPfad() {
+        // Formatstand der Seite: Stand-Modul (Phase 3, ?stand=…), sonst Seitenpfad.
+        if (global.EdiStand) return global.EdiStand.aktiv();
         const pfad = (global.location && global.location.pathname) || "";
         const m = /\b(20\d{4})\b/.exec(pfad);
         return m ? m[1] : "";

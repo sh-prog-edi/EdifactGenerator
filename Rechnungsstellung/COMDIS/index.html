@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COMDIS EDIFACT Test-Generator (AHB 1.0h (gültig ab 01.04.2026, kein neuer Stand zu 202610))</title>
+<link rel="stylesheet" href="../../_engine/edigen.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="crumbs"><a href="../../index.html">Startseite</a> / 202610 / Rechnungsstellung / <strong>COMDIS (AHB 1.0h (gültig ab 01.04.2026, kein neuer Stand zu 202610))</strong></div>
+  <div class="top-bar">
+    <h1>COMDIS EDIFACT Test-Generator</h1>
+    <div class="theme-toggle">
+      <button id="tL" onclick="setTheme('light')">Hell</button><button id="tD" onclick="setTheme('dark')">Dunkel</button>
+    </div>
+  </div>
+  <p class="sub">Handelsunstimmigkeit (COMDIS:D:17A:UN:1.0g) &middot; COMDIS AHB 1.0h (gültig ab 01.04.2026, kein neuer Stand zu 202610) &middot;
+     zentrale AHB-Formular-Engine (_engine/ahb-form-engine.js): jedes Feld stammt aus dem extrahierten Anwendungshandbuch</p>
+
+  <div class="container">
+  <div class="left-panel">
+  <div class="panel">
+    <h2>1. Anwendungsfall (Prüfidentifikator)</h2>
+    <div class="field">
+      <label for="pruefi">Prüf-ID</label>
+      <select id="pruefi" onchange="onPruefi()"></select>
+    </div>
+    <div class="hintbox" id="pruefiHint"></div>
+  </div>
+
+  <div class="panel">
+    <h2>2. Beteiligte</h2>
+    <div class="grid3">
+      <div class="field"><label for="absender">MP-ID Absender (NAD+MS)</label><input id="absender" value="9900000000001"></div>
+      <div class="field"><label for="empfaenger">MP-ID Empfänger (NAD+MR)</label><input id="empfaenger" value="9900000000002"></div>
+      <div class="field"><label for="kontaktName">Ansprechpartner Name (CTA, optional)</label>
+        <input id="kontaktName" value="" placeholder="leer = kein CTA/COM in der Nachricht"></div>
+      <div class="field"><label for="kontaktMail">Ansprechpartner E-Mail (COM, optional)</label>
+        <input id="kontaktMail" value="" placeholder="z. B. mako@beispiel.de"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>3. Nachrichtendaten (aus dem AHB dieser Prüf-ID)</h2>
+    <div id="kopfFelder"></div>
+  </div>
+
+  <div class="panel" id="panelPositionen" style="display:none">
+    <h2>4. Positionsteil</h2>
+    <div id="posListe"></div>
+    <button class="addrow" onclick="AhbFormEngine.addPos()">+ weitere Position hinzufügen</button>
+  </div>
+
+  </div><!-- /left-panel -->
+
+  <div class="right-panel">
+
+  <div class="panel">
+    <h2>Nachricht erzeugen</h2>
+    <button class="go" onclick="erzeuge()">COMDIS generieren</button>
+    <button class="go secondary" onclick="copyEdi()">In Zwischenablage kopieren</button>
+    <button class="go secondary" onclick="EdiSpeichern.speichere('ediOut','speicherHinweis')">Als marktkonforme Datei (.txt) speichern</button>
+    <div class="errbox" id="errorBox"></div>
+    <div class="field" style="margin-top:12px">
+      <label for="ediOut">EDIFACT-Ausgabe</label>
+      <textarea id="ediOut" class="edi" spellcheck="false"></textarea>
+    </div>
+    <span class="okbox" id="speicherHinweis" style="display:none"></span>
+    <span class="okbox" id="okBox" style="display:none">Nachricht erzeugt</span>
+  </div>
+
+  </div><!-- /right-panel -->
+
+  </div><!-- /container -->
+
+  <footer style="font-size:12px;color:var(--muted);border-top:1px solid var(--border);padding-top:12px;">
+    Datenquelle: COMDIS AHB 1.0h (gültig ab 01.04.2026, kein neuer Stand zu 202610), BDEW-MAKO. Erzeugt Testnachrichten (UNB-Testkennzeichen&nbsp;1).
+    Formular und Nachricht folgen segmentgenau der AHB-Struktur der gewählten Prüf-ID.
+  </footer>
+</div>
+
+<script src="../../_engine/stand.js"></script>
+<script>EdiStand.seite('Rechnungsstellung/COMDIS');</script>
+<script src="../../_engine/theme.js"></script>
+<script>EdiStand.lade('pruef-ids/_format.js');</script>
+<script>EdiStand.lade('pruef-ids/_form-meta.js');</script>
+<script src="../../_engine/daten/mig-formate.js"></script>
+<script src="../../_engine/daten/sts-struktur.js"></script>
+<script src="../../_engine/daten/ebd-antwortcodes.js"></script>
+<script src="../../_engine/daten/ebd-pfade.js"></script>
+<script src="../../_engine/antwortcode-auswahl.js"></script>
+<script src="../../_engine/kalender.js"></script>
+<script src="../../_engine/ahb-form-engine.js"></script>
+<script>EdiStand.lade('pruef-ids/_bedingungen.js');</script>
+<script src="../../_engine/bedingung-hilfe.js"></script>
+    <script src="../../_engine/daten/validator-registry.js"></script>
+    <script src="../../_engine/daten/prozessketten.js"></script>
+    <script src="../../_engine/folgenachrichten.js"></script>
+    <script src="../../_engine/layout.js"></script>
+    <script src="../../_engine/nachricht-speichern.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+
+const META = formMeta;
+AhbFormEngine.konfiguriere({
+  formatConfig: formatConfig,
+  darPrefix: "CDS",
+  posSgRegex: /^SG2$/
+});
+
+function onPruefi(){
+  const p = $('pruefi').value, m = META[p] || {instanzen: []};
+  $('pruefiHint').textContent = `${p} – ${m.beschreibung || ""}${m.kommunikation ? " · " + m.kommunikation : ""}`;
+  AhbFormEngine.renderFor(p, m);
+}
+function erzeuge(){
+  const p = $('pruefi').value;
+  AhbFormEngine.generate(p, META[p] || {instanzen: []});
+}
+function copyEdi(){ const t = $('ediOut'); t.select(); document.execCommand('copy'); }
+
+(function init(){
+  const sel = $('pruefi');
+  Object.keys(META).sort().forEach(p => {
+    const o = document.createElement('option'); o.value = p;
+    o.textContent = `${p} – ${META[p].beschreibung || ""}`;
+    sel.appendChild(o);
+  });
+  onPruefi();
+})();
+</script>
+</body>
+</html>

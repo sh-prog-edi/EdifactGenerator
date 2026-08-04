@@ -20,7 +20,7 @@ const ebdAlle = require(`${ROOT}/_engine/daten/ebd-antwortcodes.js`);
     const ebds = ebdAlle[stand].ebds;
     const page = await browser.newPage();
     page.on('pageerror', e => fehler.push(`${stand}: JS-Fehler ${e.message}`));
-    await page.goto(`file://${ROOT}/${stand}/Stammdaten/UTILMD/Strom/index.html`, { waitUntil: 'load' });
+    await page.goto(`file://${ROOT}/Stammdaten/UTILMD/Strom/index.html?stand=${stand}`, { waitUntil: 'load' });
 
     // Antwort-Prüf-IDs aus der Prozess-Meta der Seite
     const antworten = await page.evaluate(() => Object.keys(prozessMeta)

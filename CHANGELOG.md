@@ -5,6 +5,23 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **04.08.2026** – **Phase 3: Formatstand als Parameter — ein Seitenbaum statt zwei
+  Kopien.** Je Nachrichtentyp gibt es nur noch EINE Generatorseite
+  (`<Thema>/<Typ>[/Sparte]/index.html`, 43 → 23 HTML); der Formatstand kommt als
+  URL-Parameter `?stand=JJJJMM` (neues Modul `_engine/stand.js`, ohne Parameter gilt
+  die Kalender-Zuständigkeit: 202604 bis 30.09.2026, 202610 ab 01.10.2026). Die
+  Datenordner bleiben je Stand getrennt; die Seiten laden ihre Daten über
+  `EdiStand.lade` (synchron, file://-tauglich, kein Bauwerkzeug). Standabhängige
+  Beschriftungen als Textvarianten (`nur-202604`/`nur-202610`), Prüf-ID-Auswahl der
+  UTILMD-Masken dynamisch auf den geladenen Stand gefiltert, APERAK mit fachlicher
+  Stand-Weiche (SG2-/SG5-RFF+TN). Verweise nachgezogen (Startseite,
+  `validator-registry.js` samt Generator — dabei dessen veralteten ORDERS-Eintrag
+  `_orders-meta.js` berichtigt —, Folgenachrichten/Antwortcodes/Engine lesen den
+  Stand aus `EdiStand`/`formatConfig` statt aus dem Pfad). Alle Browser-Tests auf
+  Parameter-URLs umgestellt (inkl. Reparatur zweier dadurch still leerlaufender
+  Tests). Golden unverändert, volle Regression grün (32 Läufe). Ein künftiger
+  Formatstand ist ein Datenordner + Registry-Lauf + `STAENDE`-Eintrag — keine
+  Baumkopie. → Protokoll Abschnitt 41.
 - **04.08.2026** – **Phase 2 abgeschlossen (Engine-Schritt): ein Erzeugungsweg für alle
   Masken.** `_engine/generator.js` (der eigene Erzeugungsweg der vier kuratierten
   UTILMD-Masken, 1.037 Zeilen) ist entfernt. Die Masken sind jetzt eine **Sicht auf die

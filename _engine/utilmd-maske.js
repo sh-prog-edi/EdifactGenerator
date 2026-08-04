@@ -812,6 +812,26 @@
         EdiSpeichern.speichere('edifactOutput', 'speicherHinweis');
     }
 
+    // Prüf-ID-Auswahl an den geladenen Formatstand koppeln: Die Seite führt die
+    // Obermenge aller Stände; Prüf-IDs ohne Felddaten des aktiven Stands werden
+    // entfernt, leer gewordene Kapitelgruppen ausgeblendet (Phase 3 - eine Seite,
+    // Formatstand als Parameter).
+    function filterePruefIdAuswahl() {
+        const sel = $('prufId');
+        if (!sel || typeof ahbRulesByPrufId === 'undefined') return;
+        if (typeof sel.querySelectorAll !== 'function') return;   // Test-Harness ohne DOM-Baum
+        sel.querySelectorAll('option').forEach(o => {
+            if (o.value && !ahbRulesByPrufId[o.value]) o.remove();
+        });
+        sel.querySelectorAll('optgroup').forEach(g => {
+            if (!g.querySelector('option')) g.remove();
+        });
+        if (sel.value && !ahbRulesByPrufId[sel.value]) {
+            const erste = sel.querySelector('option[value]');
+            if (erste) sel.value = erste.value;
+        }
+    }
+
     // ---- Start -------------------------------------------------------------
     function startGenerator() {
         if (typeof formMeta === 'undefined' || typeof ahbRulesByPrufId === 'undefined') {
@@ -824,6 +844,7 @@
             }
             return;
         }
+        filterePruefIdAuswahl();
         renderForm();
     }
 

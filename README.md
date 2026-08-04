@@ -148,24 +148,23 @@ EdifactGenerator/
 ├── scripts/                       Regression (Node) und Hilfsskripte
 ├── werkzeuge/                     Extraktion aus den BDEW-Dokumenten (Python, siehe werkzeuge/LIESMICH.md)
 ├── docs/                          Dokumentation (Übersicht in docs/README.md)
-├── 202604/                        Formatstand JJJJMM (regulatorischer Stand 01.04.2026)
-└── 202610/                        Formatstand JJJJMM (regulatorischer Stand 01.10.2026)
-    ├── Berichte/                  IFTSTA, INSRPT
-    ├── Bestellvorgang/            ORDCHG, ORDERS, ORDRSP, QUOTES, REQOTE
-    ├── Bewegungsdaten/            MSCONS
-    ├── Rechnungsstellung/         COMDIS, INVOIC, PRICAT, REMADV
-    ├── Servicenachrichten/        APERAK, CONTRL
-    └── Stammdaten/                PARTIN, UTILMD (Strom + Gas), UTILTS
-        └── <Typ>/
-            ├── index.html         Generator-Seite (lädt Engine + lokale Daten)
-            ├── vollformular.html  Nur UTILMD: ungekürzte AHB-Struktur je Prüf-ID
-            ├── pruef-ids/         Formatspezifische Daten:
-            │   ├── _format.js         Nachrichtentyp, UNH-Kennung, Codevergabestellen
-            │   ├── _form-meta.js      AHB-Struktur je Prüf-ID (Prüfgrundlage für alles)
-            │   ├── _bedingungen.js    AHB-Bedingungen mit Klartext und auswertbarer Logik
-            │   ├── _prozess-meta.js   nur UTILMD: Vorbelegung je Prüf-ID (Grund, EBD, Antwortcode)
-            │   └── <PID>.js           nur UTILMD: kuratierte Segmentliste der Maske
-            └── golden/            Golden-Master-Snapshot der erzeugten Nachrichten
+├── <Thema>/<Typ>[/Sparte]/        GENERATOR-SEITEN — je Nachrichtentyp genau EINE Seite;
+│   ├── index.html                 der Formatstand kommt als URL-Parameter (?stand=JJJJMM,
+│   └── vollformular.html          Auflösung in _engine/stand.js). Themen: Berichte (IFTSTA,
+│                                  INSRPT), Bestellvorgang (ORDCHG, ORDERS, ORDRSP, QUOTES,
+│                                  REQOTE), Bewegungsdaten (MSCONS), Rechnungsstellung (COMDIS,
+│                                  INVOIC, PRICAT, REMADV), Servicenachrichten (APERAK, CONTRL),
+│                                  Stammdaten (PARTIN, UTILMD Strom + Gas, UTILTS)
+├── 202604/                        DATEN des Formatstands 202604 (gültig 01.04.–30.09.2026)
+└── 202610/                        DATEN des Formatstands 202610 (gültig ab 01.10.2026)
+    └── <Thema>/<Typ>[/Sparte]/
+        ├── pruef-ids/             Formatspezifische Daten:
+        │   ├── _format.js             Nachrichtentyp, UNH-Kennung, Codevergabestellen
+        │   ├── _form-meta.js          AHB-Struktur je Prüf-ID (Prüfgrundlage für alles)
+        │   ├── _bedingungen.js        AHB-Bedingungen mit Klartext und auswertbarer Logik
+        │   ├── _prozess-meta.js       nur UTILMD: Vorbelegung je Prüf-ID (Grund, EBD, Antwortcode)
+        │   └── _regeln.js             nur UTILMD: Feldauswahl-Daten der kuratierten Maske
+        └── golden/                Golden-Master-Snapshot der erzeugten Nachrichten
 ```
 
 Warum diese Trennung: **Formatanpassungen** (halbjährlich) betreffen fast nur *Daten*
@@ -179,9 +178,11 @@ Bedingungen unterscheiden.
 Startseite `index.html` über einen lokalen Webserver öffnen (VS Code „Live Server" oder
 `python3 -m http.server`), dann Formatstand → Thema → Nachrichtentyp → Sparte wählen und den
 Generator öffnen. Alternativ direkt eine Generator-Seite laden, z. B.
-`202610/Stammdaten/UTILMD/Strom/index.html`, oder den `validator.html` zum Prüfen/Beantworten
-vorhandener Nachrichten. Die Seiten laden die Engine relativ aus `_engine/` und ihre
-formatspezifischen Daten lokal.
+`Stammdaten/UTILMD/Strom/index.html?stand=202610`, oder den `validator.html` zum
+Prüfen/Beantworten vorhandener Nachrichten. Ohne `?stand=…` gilt die Kalender-Zuständigkeit
+der Formatstände (202604 bis 30.09.2026, 202610 ab 01.10.2026). Die Seiten laden die Engine
+relativ aus `_engine/` und ihre formatspezifischen Daten aus dem Datenordner des gewählten
+Stands.
 
 ## Regression (versionsfähig)
 
@@ -234,8 +235,9 @@ sofort an. So bleibt die Engine wartbar, ohne alte Versionen unbemerkt zu verän
 **Arbeitskonventionen** (bitte beibehalten): Beim Anlegen einer neuen Generierungsmöglichkeit
 wird im selben Schritt der MANIFEST-Eintrag der Startseite gepflegt – ohne ihn ist der Generator
 über die Startseite nicht erreichbar. Es wird immer zuerst die aktuell gültige Formatversion
-gebaut, dann die zukünftige; gibt es zum Formatwechsel keine neue Version, wird die bisherige in
-beide Formatstand-Bäume übernommen und in beiden Auswahlpfaden registriert. Kostenpflichtige
+gebaut, dann die zukünftige; gibt es zum Formatwechsel keine neue Version, werden die Daten der
+bisherigen in beide Formatstand-Datenordner übernommen und in beiden Auswahlpfaden registriert
+(die Seite selbst existiert seit Phase 3 nur einmal). Kostenpflichtige
 XML-/JSON-Fassungen der BDEW-Dokumente werden nicht verwendet – nur die frei verfügbaren
 Fassungen.
 

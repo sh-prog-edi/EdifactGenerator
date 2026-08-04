@@ -23,16 +23,16 @@ const GROESSEN = [
 const SEITEN = [];
 for (const stand of ['202604', '202610']) {
   SEITEN.push(
-    [`${stand}/Stammdaten/UTILMD/Strom/index.html`, '#prufId'],
-    [`${stand}/Stammdaten/UTILMD/Gas/index.html`, '#prufId'],
-    [`${stand}/Stammdaten/UTILMD/Strom/vollformular.html`, '#pruefi'],
-    [`${stand}/Stammdaten/UTILMD/Gas/vollformular.html`, '#pruefi'],
-    [`${stand}/Bewegungsdaten/MSCONS/index.html`, '#pruefi'],
-    [`${stand}/Bestellvorgang/ORDERS/index.html`, '#pruefi'],
-    [`${stand}/Rechnungsstellung/INVOIC/index.html`, '#pruefi'],
-    [`${stand}/Berichte/IFTSTA/index.html`, '#pruefi'],
-    [`${stand}/Stammdaten/PARTIN/index.html`, '#pruefi'],
-    [`${stand}/Stammdaten/UTILTS/index.html`, '#pruefi'],
+    [`Stammdaten/UTILMD/Strom/index.html?stand=${stand}`, '#prufId'],
+    [`Stammdaten/UTILMD/Gas/index.html?stand=${stand}`, '#prufId'],
+    [`Stammdaten/UTILMD/Strom/vollformular.html?stand=${stand}`, '#pruefi'],
+    [`Stammdaten/UTILMD/Gas/vollformular.html?stand=${stand}`, '#pruefi'],
+    [`Bewegungsdaten/MSCONS/index.html?stand=${stand}`, '#pruefi'],
+    [`Bestellvorgang/ORDERS/index.html?stand=${stand}`, '#pruefi'],
+    [`Rechnungsstellung/INVOIC/index.html?stand=${stand}`, '#pruefi'],
+    [`Berichte/IFTSTA/index.html?stand=${stand}`, '#pruefi'],
+    [`Stammdaten/PARTIN/index.html?stand=${stand}`, '#pruefi'],
+    [`Stammdaten/UTILTS/index.html?stand=${stand}`, '#pruefi'],
   );
 }
 
@@ -53,9 +53,12 @@ async function waehle(page, sel, wert) {
     const page = await browser.newPage({ viewport: { width: g.width, height: g.height } });
     page.on('pageerror', e => fehler.push(`JS-Fehler (${g.name}): ${e.message}`));
     for (const [rel, sel] of SEITEN) {
-      const datei = path.join(ROOT, rel);
+      // Seit Phase 3 tragen die Seiten-URLs den Formatstand als Parameter —
+      // für die Existenzprüfung zählt nur der Dateipfad.
+      const [reinerPfad, abfrage] = rel.split('?');
+      const datei = path.join(ROOT, reinerPfad);
       if (!fs.existsSync(datei)) continue;
-      await page.goto('file://' + datei);
+      await page.goto('file://' + datei + (abfrage ? '?' + abfrage : ''));
       await page.waitForTimeout(250);
       const opts = await page.$$eval(sel, s => s[0] ? Array.from(s[0].options).map(o => o.value).filter(Boolean) : []);
       if (!opts.length) continue;
@@ -82,9 +85,12 @@ async function waehle(page, sel, wert) {
   const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
   page.on('pageerror', e => fehler.push(`JS-Fehler (Kalender): ${e.message}`));
   for (const [rel, sel] of SEITEN) {
-    const datei = path.join(ROOT, rel);
+    // Seit Phase 3 tragen die Seiten-URLs den Formatstand als Parameter —
+    // für die Existenzprüfung zählt nur der Dateipfad.
+    const [reinerPfad, abfrage] = rel.split('?');
+    const datei = path.join(ROOT, reinerPfad);
     if (!fs.existsSync(datei)) continue;
-    await page.goto('file://' + datei);
+    await page.goto('file://' + datei + (abfrage ? '?' + abfrage : ''));
     await page.waitForTimeout(250);
     const opts = await page.$$eval(sel, s => s[0] ? Array.from(s[0].options).map(o => o.value).filter(Boolean) : []);
     if (!opts.length) continue;
@@ -128,7 +134,7 @@ async function waehle(page, sel, wert) {
   // ---- 3. Klapprichtung nach Bildschirmhälfte ---------------------------
   // Ein Feld wird gezielt in die obere und in die untere Bildschirmhälfte gebracht;
   // das Blatt muss jeweils in die andere Richtung aufklappen.
-  await page.goto('file://' + path.join(ROOT, '202604/Stammdaten/UTILMD/Strom/index.html'));
+  await page.goto('file://' + path.join(ROOT, 'Stammdaten/UTILMD/Strom/index.html?stand=202604'));
   await page.selectOption('#prufId', '55001');
   await page.waitForTimeout(400);
   for (const lage of ['oben', 'unten']) {

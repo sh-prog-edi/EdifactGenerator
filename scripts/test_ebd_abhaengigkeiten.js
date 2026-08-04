@@ -111,7 +111,7 @@ for (const stand of ['202604', '202610']) {
     page.on('pageerror', e => fehler.push(`JS-Fehler: ${e.message}`));
 
     // Kuratierte Maske: Wechsel der Ergänzung ändert die Auswahl
-    await page.goto(`file://${ROOT}/202604/Stammdaten/UTILMD/Strom/index.html`, { waitUntil: 'load' });
+    await page.goto(`file://${ROOT}/Stammdaten/UTILMD/Strom/index.html?stand=202604`, { waitUntil: 'load' });
     const kur = await page.evaluate(async () => {
         const aus = {};
         for (const erg of ['ZW4', 'ZW3']) {
@@ -131,7 +131,7 @@ for (const stand of ['202604', '202610']) {
     if (kur.ZW3 !== 'A12,A17') fehler.push(`kuratierte Maske 55017/ZW3: Auswahl "${kur.ZW3}" (erwartet A12,A17)`);
 
     // Vollformular: dieselbe Auswahl, auch beim Wechsel im laufenden Formular
-    await page.goto(`file://${ROOT}/202604/Stammdaten/UTILMD/Strom/vollformular.html`, { waitUntil: 'load' });
+    await page.goto(`file://${ROOT}/Stammdaten/UTILMD/Strom/vollformular.html?stand=202604`, { waitUntil: 'load' });
     const voll = await page.evaluate(async () => {
         const sel = document.getElementById('pruefi');
         sel.value = '55017'; onPruefi();

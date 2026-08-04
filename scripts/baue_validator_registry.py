@@ -19,7 +19,8 @@ for stand in ("202604", "202610"):
         (stand, "REMADV", "", f"{stand}/Rechnungsstellung/REMADV", "_form-meta.js", "formMeta", "REMADV"),
         (stand, "PARTIN", "", f"{stand}/Stammdaten/PARTIN", "_form-meta.js", "formMeta", "PARTIN"),
         (stand, "UTILTS", "", f"{stand}/Stammdaten/UTILTS", "_form-meta.js", "formMeta", "UTILTS"),
-        (stand, "ORDERS", "", f"{stand}/Bestellvorgang/ORDERS", "_orders-meta.js", "ordersMeta", "ORDERS"),
+        # ORDERS liest seit der Meta-Vereinheitlichung aus _form-meta.js (formMeta).
+        (stand, "ORDERS", "", f"{stand}/Bestellvorgang/ORDERS", "_form-meta.js", "formMeta", "ORDERS"),
         (stand, "ORDRSP", "", f"{stand}/Bestellvorgang/ORDRSP", "_form-meta.js", "formMeta", "ORDRSP"),
         (stand, "ORDCHG", "", f"{stand}/Bestellvorgang/ORDCHG", "_form-meta.js", "formMeta", "ORDCHG"),
         (stand, "QUOTES", "", f"{stand}/Bestellvorgang/QUOTES", "_form-meta.js", "formMeta", "QUOTES"),
@@ -44,9 +45,12 @@ for stand, fmt, sparte, seite, metadatei, metavar, migkey in SEITEN:
     mjs = (basis / "pruef-ids" / metadatei).read_text(encoding="utf-8")
     meta = json.loads(re.search(r"var \w+ = (\{.*?\});\n", mjs, re.S).group(1))
     ziel = "vollformular.html" if vollform else "index.html"
+    # Seiten liegen seit Phase 3 EINMAL (ohne Stand-Präfix); der Formatstand wird
+    # als URL-Parameter übergeben. Die Datenpfade bleiben je Stand getrennt.
+    seiten_pfad = seite.split("/", 1)[1]
     eintrag = {"stand": stand, "format": fmt, "sparte": sparte, "unh": unh,
                "metaPfad": f"{seite}/pruef-ids/{metadatei}", "metaVar": metavar,
-               "seite": f"{seite}/{ziel}", "pruefis": sorted(meta.keys())}
+               "seite": f"{seiten_pfad}/{ziel}?stand={stand}", "pruefis": sorted(meta.keys())}
     eintraege.append(eintrag)
     print(f"{stand} {fmt}{('/' + sparte) if sparte else ''}: {len(eintrag['pruefis'])} Prüf-IDs, UNH {unh}")
 

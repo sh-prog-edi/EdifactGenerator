@@ -1,6 +1,6 @@
 # Arbeitsstand / Übergabe
 
-Stand: 04.08.2026 (Phase 2 abgeschlossen) · Projekt: **EdifactGenerator** · Auftraggeber: Steffen Haense
+Stand: 04.08.2026 (Phasen 2 und 3 abgeschlossen) · Projekt: **EdifactGenerator** · Auftraggeber: Steffen Haense
 
 **Quelle der Wahrheit ist das Git-Repository**
 (<https://github.com/sh-prog-edi/EdifactGenerator>). Der Einstieg in eine neue Sitzung:
@@ -42,7 +42,9 @@ kostenpflichtige XML-/JSON-Fassungen werden nicht verwendet.
 
 ```
 _engine/            zentrale Engine + daten/ (Prüfgrundlagen) + tests/ (Golden, domsim, selfvalidate)
-<Formatstand>/<Thema>/<Typ>/   je Nachrichtentyp eine Seite + pruef-ids/_form-meta.js
+<Thema>/<Typ>[/Sparte]/        je Nachrichtentyp EINE Seite; Formatstand als Parameter
+                               (?stand=JJJJMM, Auflösung in _engine/stand.js)
+<Formatstand>/<Thema>/<Typ>/   DATEN je Stand: pruef-ids/ (Prüfgrundlagen) + golden/
 scripts/            Regression (Node/Playwright), Paket-Prüfung, Hilfsskripte
 werkzeuge/          Extraktion aus den BDEW-Dokumenten (Python) — werkzeuge/LIESMICH.md
 docs/               Arbeitsprotokoll, Statusdokumente, offene Punkte, Umbauplan, dieses Dokument
@@ -99,12 +101,13 @@ Fachlich: [`OFFENE_ASPEKTE.md`](OFFENE_ASPEKTE.md) (A–E; F ist mit dem Engine-
 geschlossen), als GitHub-Issues vorbereitet in [`ISSUES_VORLAGEN.md`](ISSUES_VORLAGEN.md)
 — der wirksamste nächste fachliche Schritt ist **A (externe Validierungs-Absicherung)**,
 dafür werden echte Beispielnachrichten oder ein Fremdvalidator gebraucht (Beschaffung:
-Auftraggeber). Strukturell: **Phase 2 ist abgeschlossen** (Abschnitte 37–40: Befunde
-behoben, Regel-Datenschicht, Engine-Schritt samt 55194-Neubelegung und
-Golden-Neubewertung); als Nächstes **Phase 3** des
-[Umbauplans](NEUSTRUKTURIERUNG_PLAN_20260804.md) (Formatstand als Parameter statt
-Ordnerkopie). Fachliche Folgearbeit aus Abschnitt 40: vollständige GDA-Testnachrichten
-(Kap. 9.5) über `nutzdaten`-Neubelegung je Prüf-ID — exemplarisch mit 55194 begonnen.
+Auftraggeber). Strukturell: **Phasen 2 und 3 sind abgeschlossen** (Abschnitte 37–41:
+Befunde behoben, Regel-Datenschicht, Engine-Schritt samt 55194-Neubelegung und
+Golden-Neubewertung, Formatstand als Parameter); als Nächstes **Phase 4** des
+[Umbauplans](NEUSTRUKTURIERUNG_PLAN_20260804.md) (Wissensdatenbank/Datenpipeline)
+oder die fachlichen Punkte A–E. Fachliche Folgearbeit aus Abschnitt 40: vollständige
+GDA-Testnachrichten (Kap. 9.5) über `nutzdaten`-Neubelegung je Prüf-ID — exemplarisch
+mit 55194 begonnen.
 
 ## 7. Fallstricke aus der bisherigen Arbeit
 

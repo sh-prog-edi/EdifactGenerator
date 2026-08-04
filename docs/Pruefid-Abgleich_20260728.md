@@ -2257,3 +2257,49 @@ emittiert je Instanz genau ein Segment und lässt Objektgruppen ohne
 Datengrundlage weg. Der Weg zu vollständigen GDA-Testnachrichten ist die
 inhaltliche Neubelegung über `nutzdaten`-Daten je Prüf-ID — exemplarisch mit
 55194 begonnen.
+
+## 41. Phase 3: Formatstand als Parameter — ein Seitenbaum statt zwei Kopien (04.08.2026)
+
+**Auftrag.** Phase 3 des Umbauplans („Schritt 4" der projekteigenen Konsolidierung):
+Je Nachrichtentyp genau eine Generatorseite; der Formatstand wird Parameter, die
+Datenordner bleiben je Stand getrennt.
+
+**Bauweise.**
+
+1. Neues Modul `_engine/stand.js` (`EdiStand`): löst den Formatstand aus dem
+   URL-Parameter `?stand=JJJJMM` auf; ohne Parameter gilt die
+   Kalender-Zuständigkeit (202604 bis 30.09.2026, 202610 ab 01.10.2026 — ein
+   künftiger Stand ist ein neuer Tabelleneintrag plus Datenordner). Die Seiten
+   melden ihre Lage (`EdiStand.seite('Stammdaten/UTILTS')`) und laden ihre
+   Datendateien über `EdiStand.lade('pruef-ids/…')` — synchron per
+   document.write, in Ladereihenfolge, ohne Bauwerkzeug, file://-tauglich.
+2. Die 40 Seitenkopien der beiden Standbäume sind zu 20 Seiten im standlosen
+   Baum `<Thema>/<Typ>[/Sparte]/` zusammengeführt (maschinell aus den Paaren,
+   Basis jeweils der 202610-Stand). Standabhängige Beschriftungen (AHB-Version,
+   Gültigkeitszeitraum, Kapitelnummern) stehen als Textvarianten in der Seite
+   (`<span class="nur-202604">…</span>` / `nur-202610`; ein von `stand.js`
+   geschriebenes Style-Tag zeigt genau die aktive Variante) bzw. als
+   `data-stand-…-label`-Attribute; der Seitentitel läuft über
+   `EdiStand.beschrifte`. Die Prüf-ID-Auswahl der kuratierten UTILMD-Masken
+   führt die Obermenge beider Stände; Prüf-IDs ohne Felddaten des aktiven Stands
+   entfernt die Maske beim Start (55693/55694 und 44183 erscheinen nur im
+   202610-Stand). Der APERAK-Inline-Generator erhielt eine fachliche
+   Stand-Weiche (AHB 1.0 führt SG2 RFF+TN als Pflicht, AHB 1.1 nur SG5 RFF+TN).
+3. Verweise nachgezogen: Startseite (MANIFEST-Links `…?stand=…`, Vorauswahl nach
+   Kalender-Zuständigkeit), `validator-registry.js` samt Generator
+   (`baue_validator_registry.py` — dabei den veralteten ORDERS-Eintrag
+   `_orders-meta.js`/`ordersMeta` auf die tatsächliche `_form-meta.js`/`formMeta`
+   berichtigt), Folgenachrichten/Antwortcode-Auswahl/Engine lesen den Stand
+   jetzt aus `EdiStand` bzw. `formatConfig` statt aus dem Seitenpfad.
+4. Alle Playwright-Tests auf die Parameter-URLs umgestellt. Falle dabei:
+   `fs.existsSync(pfad?stand=…)` ist immer falsch — zwei Tests (Vorgangsnummer,
+   Layout/Kalender) liefen dadurch zunächst still mit 0 Prüfungen und wurden auf
+   getrennte Dateipfad-/URL-Behandlung umgebaut (wieder 1.164 geprüfte
+   Vorgangsnummern bzw. 60 Layout-Messungen/120 Kalenderöffnungen).
+
+**Nachweis.** Golden-Snapshots aller vier Ziele unverändert (die Erzeugung liest
+dieselben Datenordner); volle Regression grün (32 Läufe); Stichprobe im Browser:
+dieselbe Seite liefert mit `?stand=202604` S2.1/187 Prüf-IDs und mit
+`?stand=202610` S2.2/189 Prüf-IDs, ohne JS-Fehler. Der Bestand sinkt von 43 auf
+23 HTML-Seiten; ein künftiger Formatstand (202704 …) ist ein Datenordner, ein
+Registry-Lauf und ein `STAENDE`-Eintrag — keine Baumkopie.

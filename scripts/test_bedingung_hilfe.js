@@ -9,26 +9,26 @@ const ROOT = require('path').join(__dirname, '..');
 const SEITEN = [];
 for (const stand of ['202604', '202610']) {
   SEITEN.push(
-    [`${stand}/Stammdaten/UTILMD/Strom/index.html`, 'prufId'],
-    [`${stand}/Stammdaten/UTILMD/Gas/index.html`, 'prufId'],
-    [`${stand}/Berichte/IFTSTA/index.html`, 'pruefi'],
-    [`${stand}/Berichte/INSRPT/index.html`, 'pruefi'],
-    [`${stand}/Rechnungsstellung/COMDIS/index.html`, 'pruefi'],
-    [`${stand}/Rechnungsstellung/INVOIC/index.html`, 'pruefi'],
-    [`${stand}/Rechnungsstellung/PRICAT/index.html`, 'pruefi'],
-    [`${stand}/Rechnungsstellung/REMADV/index.html`, 'pruefi'],
-    [`${stand}/Stammdaten/PARTIN/index.html`, 'pruefi'],
-    [`${stand}/Stammdaten/UTILTS/index.html`, 'pruefi'],
-    [`${stand}/Bestellvorgang/ORDERS/index.html`, 'pruefi'],
-    [`${stand}/Bestellvorgang/ORDRSP/index.html`, 'pruefi'],
-    [`${stand}/Bestellvorgang/ORDCHG/index.html`, 'pruefi'],
-    [`${stand}/Bestellvorgang/QUOTES/index.html`, 'pruefi'],
-    [`${stand}/Bestellvorgang/REQOTE/index.html`, 'pruefi'],
-    [`${stand}/Bewegungsdaten/MSCONS/index.html`, 'pruefi'],
+    [`Stammdaten/UTILMD/Strom/index.html?stand=${stand}`, 'prufId'],
+    [`Stammdaten/UTILMD/Gas/index.html?stand=${stand}`, 'prufId'],
+    [`Berichte/IFTSTA/index.html?stand=${stand}`, 'pruefi'],
+    [`Berichte/INSRPT/index.html?stand=${stand}`, 'pruefi'],
+    [`Rechnungsstellung/COMDIS/index.html?stand=${stand}`, 'pruefi'],
+    [`Rechnungsstellung/INVOIC/index.html?stand=${stand}`, 'pruefi'],
+    [`Rechnungsstellung/PRICAT/index.html?stand=${stand}`, 'pruefi'],
+    [`Rechnungsstellung/REMADV/index.html?stand=${stand}`, 'pruefi'],
+    [`Stammdaten/PARTIN/index.html?stand=${stand}`, 'pruefi'],
+    [`Stammdaten/UTILTS/index.html?stand=${stand}`, 'pruefi'],
+    [`Bestellvorgang/ORDERS/index.html?stand=${stand}`, 'pruefi'],
+    [`Bestellvorgang/ORDRSP/index.html?stand=${stand}`, 'pruefi'],
+    [`Bestellvorgang/ORDCHG/index.html?stand=${stand}`, 'pruefi'],
+    [`Bestellvorgang/QUOTES/index.html?stand=${stand}`, 'pruefi'],
+    [`Bestellvorgang/REQOTE/index.html?stand=${stand}`, 'pruefi'],
+    [`Bewegungsdaten/MSCONS/index.html?stand=${stand}`, 'pruefi'],
     // Die AHB-Vollformulare: Sie zeigen die ungekürzte Segmentstruktur und sind das
     // Ziel der Folgenachrichten-Verweise — die Hilfe muss auch dort greifen.
-    [`${stand}/Stammdaten/UTILMD/Strom/vollformular.html`, 'pruefi'],
-    [`${stand}/Stammdaten/UTILMD/Gas/vollformular.html`, 'pruefi'],
+    [`Stammdaten/UTILMD/Strom/vollformular.html?stand=${stand}`, 'pruefi'],
+    [`Stammdaten/UTILMD/Gas/vollformular.html?stand=${stand}`, 'pruefi'],
   );
 }
 

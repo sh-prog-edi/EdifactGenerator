@@ -50,26 +50,26 @@ if (Array.from(Speichern.alsLatin1('Zeichen 中')).includes(0x3F))
 const SEITEN = [];
 for (const stand of ['202604', '202610']) {
   SEITEN.push(
-    [`${stand}/Stammdaten/UTILMD/Strom/index.html`, '#prufId', 'edifactOutput', 'generateEdifact'],
-    [`${stand}/Stammdaten/UTILMD/Gas/index.html`, '#prufId', 'edifactOutput', 'generateEdifact'],
-    [`${stand}/Stammdaten/UTILMD/Strom/vollformular.html`, '#pruefi', 'ediOut', 'erzeuge'],
-    [`${stand}/Stammdaten/UTILMD/Gas/vollformular.html`, '#pruefi', 'ediOut', 'erzeuge'],
-    [`${stand}/Bewegungsdaten/MSCONS/index.html`, '#pruefi', 'ediOut', 'erzeuge'],
-    [`${stand}/Bestellvorgang/ORDERS/index.html`, '#pruefi', 'ediOut', 'erzeuge'],
-    [`${stand}/Bestellvorgang/ORDRSP/index.html`, '#pruefi', 'ediOut', 'erzeuge'],
-    [`${stand}/Bestellvorgang/ORDCHG/index.html`, '#pruefi', 'ediOut', 'erzeuge'],
-    [`${stand}/Bestellvorgang/QUOTES/index.html`, '#pruefi', 'ediOut', 'erzeuge'],
-    [`${stand}/Bestellvorgang/REQOTE/index.html`, '#pruefi', 'ediOut', 'erzeuge'],
-    [`${stand}/Rechnungsstellung/INVOIC/index.html`, '#pruefi', 'ediOut', 'erzeuge'],
-    [`${stand}/Rechnungsstellung/REMADV/index.html`, '#pruefi', 'ediOut', 'erzeuge'],
-    [`${stand}/Rechnungsstellung/COMDIS/index.html`, '#pruefi', 'ediOut', 'erzeuge'],
-    [`${stand}/Rechnungsstellung/PRICAT/index.html`, '#pruefi', 'ediOut', 'erzeuge'],
-    [`${stand}/Berichte/IFTSTA/index.html`, '#pruefi', 'ediOut', 'erzeuge'],
-    [`${stand}/Berichte/INSRPT/index.html`, '#pruefi', 'ediOut', 'erzeuge'],
-    [`${stand}/Stammdaten/PARTIN/index.html`, '#pruefi', 'ediOut', 'erzeuge'],
-    [`${stand}/Stammdaten/UTILTS/index.html`, '#pruefi', 'ediOut', 'erzeuge'],
-    [`${stand}/Servicenachrichten/APERAK/index.html`, null, 'ediOut', 'generateAperak'],
-    [`${stand}/Servicenachrichten/CONTRL/index.html`, null, 'ediOut', 'generateContrl'],
+    [`Stammdaten/UTILMD/Strom/index.html?stand=${stand}`, '#prufId', 'edifactOutput', 'generateEdifact'],
+    [`Stammdaten/UTILMD/Gas/index.html?stand=${stand}`, '#prufId', 'edifactOutput', 'generateEdifact'],
+    [`Stammdaten/UTILMD/Strom/vollformular.html?stand=${stand}`, '#pruefi', 'ediOut', 'erzeuge'],
+    [`Stammdaten/UTILMD/Gas/vollformular.html?stand=${stand}`, '#pruefi', 'ediOut', 'erzeuge'],
+    [`Bewegungsdaten/MSCONS/index.html?stand=${stand}`, '#pruefi', 'ediOut', 'erzeuge'],
+    [`Bestellvorgang/ORDERS/index.html?stand=${stand}`, '#pruefi', 'ediOut', 'erzeuge'],
+    [`Bestellvorgang/ORDRSP/index.html?stand=${stand}`, '#pruefi', 'ediOut', 'erzeuge'],
+    [`Bestellvorgang/ORDCHG/index.html?stand=${stand}`, '#pruefi', 'ediOut', 'erzeuge'],
+    [`Bestellvorgang/QUOTES/index.html?stand=${stand}`, '#pruefi', 'ediOut', 'erzeuge'],
+    [`Bestellvorgang/REQOTE/index.html?stand=${stand}`, '#pruefi', 'ediOut', 'erzeuge'],
+    [`Rechnungsstellung/INVOIC/index.html?stand=${stand}`, '#pruefi', 'ediOut', 'erzeuge'],
+    [`Rechnungsstellung/REMADV/index.html?stand=${stand}`, '#pruefi', 'ediOut', 'erzeuge'],
+    [`Rechnungsstellung/COMDIS/index.html?stand=${stand}`, '#pruefi', 'ediOut', 'erzeuge'],
+    [`Rechnungsstellung/PRICAT/index.html?stand=${stand}`, '#pruefi', 'ediOut', 'erzeuge'],
+    [`Berichte/IFTSTA/index.html?stand=${stand}`, '#pruefi', 'ediOut', 'erzeuge'],
+    [`Berichte/INSRPT/index.html?stand=${stand}`, '#pruefi', 'ediOut', 'erzeuge'],
+    [`Stammdaten/PARTIN/index.html?stand=${stand}`, '#pruefi', 'ediOut', 'erzeuge'],
+    [`Stammdaten/UTILTS/index.html?stand=${stand}`, '#pruefi', 'ediOut', 'erzeuge'],
+    [`Servicenachrichten/APERAK/index.html?stand=${stand}`, null, 'ediOut', 'generateAperak'],
+    [`Servicenachrichten/CONTRL/index.html?stand=${stand}`, null, 'ediOut', 'generateContrl'],
   );
 }
 
@@ -121,9 +121,12 @@ async function befuelle(page) {
 
   // ---- 2./3. Schaltfläche und Download je Seite --------------------------
   for (const [rel, sel, feld, fn] of SEITEN) {
-    const datei = path.join(ROOT, rel);
+    // Seit Phase 3 tragen die Seiten-URLs den Formatstand als Parameter —
+    // für die Existenzprüfung zählt nur der Dateipfad.
+    const [reinerPfad, abfrage] = rel.split('?');
+    const datei = path.join(ROOT, reinerPfad);
     if (!fs.existsSync(datei)) { fehler.push(`${rel}: Seite fehlt`); continue; }
-    await page.goto('file://' + datei);
+    await page.goto('file://' + datei + (abfrage ? '?' + abfrage : ''));
     await page.waitForTimeout(250);
 
     const knopf = await page.$('button:has-text("Als marktkonforme Datei")');
@@ -176,7 +179,7 @@ async function befuelle(page) {
   } catch (e) { fehler.push('validator.html: kein Download ausgelöst'); }
 
   // ---- 4. Folgenachricht -------------------------------------------------
-  await page.goto('file://' + path.join(ROOT, '202604/Stammdaten/UTILMD/Strom/index.html'));
+  await page.goto('file://' + path.join(ROOT, 'Stammdaten/UTILMD/Strom/index.html?stand=202604'));
   await page.selectOption('#prufId', '55016');
   await page.waitForTimeout(400);
   await page.fill('#LOC_Z16', '50052281648');

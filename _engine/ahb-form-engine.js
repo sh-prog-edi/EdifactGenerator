@@ -129,11 +129,16 @@
     try {
       const alle = global.migFormate;
       if (alle) {
-        const stand = ((global.location || {}).pathname || "").match(/\b(20\d{4})\b/);
+        // Formatstand: aus der Format-Konfiguration bzw. dem Stand-Modul (Phase 3:
+        // eine Seite je Typ, Stand als Parameter); Rückfall auf den Seitenpfad.
+        const pfadStand = ((global.location || {}).pathname || "").match(/\b(20\d{4})\b/);
+        const stand = (CFG.formatConfig || {}).stand
+          || (global.EdiStand && global.EdiStand.aktiv())
+          || (pfadStand && pfadStand[1]);
         let fmt = ((CFG.formatConfig || {}).unhKennung || "").split(":")[0];
         if (fmt === "UTILMD")
           fmt = /\/Gas\//.test((global.location || {}).pathname || "") ? "UTILMD_GAS" : "UTILMD_STROM";
-        const s = stand && alle[stand[1]];
+        const s = stand && alle[stand];
         if (s && s[fmt] && s[fmt].felder) MIG_CACHE = s[fmt].felder;
       }
     } catch (e) { /* ohne MIG-Daten keine Hinweise */ }

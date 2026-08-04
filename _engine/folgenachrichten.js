@@ -451,8 +451,9 @@
     el.style.display = "";
   }
 
-  // Formatstand aus dem Seitenpfad (202604 / 202610).
+  // Formatstand der Seite: Stand-Modul (Phase 3, ?stand=…), sonst Seitenpfad.
   function standAusPfad() {
+    if (global.EdiStand) return global.EdiStand.aktiv();
     const m = /\b(20\d{4})\b/.exec((global.location || {}).pathname || "");
     return m ? m[1] : null;
   }

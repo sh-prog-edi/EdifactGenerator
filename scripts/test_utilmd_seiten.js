@@ -7,8 +7,8 @@ const { chromium } = require('playwright');
 const ROOT = require('path').join(__dirname, '..');
 const SEITEN = [];
 for (const stand of ['202604', '202610']) {
-  SEITEN.push(`${stand}/Stammdaten/UTILMD/Strom/index.html`);
-  SEITEN.push(`${stand}/Stammdaten/UTILMD/Gas/index.html`);
+  SEITEN.push(`Stammdaten/UTILMD/Strom/index.html?stand=${stand}`);
+  SEITEN.push(`Stammdaten/UTILMD/Gas/index.html?stand=${stand}`);
 }
 
 (async () => {

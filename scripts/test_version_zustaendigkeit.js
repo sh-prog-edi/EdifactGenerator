@@ -16,7 +16,7 @@ const MASKEN = [
   { stand: '202610', sparte: 'Gas', unh: 'UTILMD:D:11A:UN:G1.2', pid: '44001' },
 ];
 
-const seiteVon = m => `${m.stand}/Stammdaten/UTILMD/${m.sparte}/index.html`;
+const seiteVon = m => `Stammdaten/UTILMD/${m.sparte}/index.html?stand=${m.stand}`;
 
 async function erzeuge(browser, m) {
   const p = await browser.newPage();
