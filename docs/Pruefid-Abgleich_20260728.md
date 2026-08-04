@@ -2386,3 +2386,28 @@ Prozess/Prüf-ID) oder ersatzweise ein Fremdvalidator als Gegenprobe.
 Zeilenumbrüche), Validierung (bekannter informativer Muss-Befund der 55001
 korrekt gemeldet), Erwartungsabgleich und Nicht-EDIFACT-Abweisung wie erwartet;
 ohne Referenzordner grüner Überspringen-Pfad. Volle Regression grün.
+
+## 44. Maske: Prüf-ID-Suchfeld und umschaltbare Sortierung der Auswahlliste (04.08.2026)
+
+**Auftrag.** Bedienkomfort der kuratierten UTILMD-Masken: die Liste „Anwendungsfall /
+Prüfidentifikator" wahlweise nach Prüf-IDs sortieren und ein Eingabe-/Suchfeld für
+die Prüf-ID der zu generierenden Nachricht.
+
+**Umsetzung** (zentral in `_engine/utilmd-maske.js` — wirkt auf Strom und Gas in
+beiden Formatständen, ohne Änderung der Seiten): Beim Start sammelt die Maske die
+(stand-gefilterte) Auswahlliste samt Kapitelgruppen ein und setzt darüber eine
+Werkzeugleiste. Das **Suchfeld** filtert live nach Prüf-ID-Anfang oder Stichwort
+(Bezeichnung/Kapitel); der erste Treffer wird sofort ausgewählt und gerendert —
+die exakte Prüf-ID eintippen genügt damit, um die Nachricht zu erzeugen. Ohne
+Treffer zeigt die Liste einen Hinweis, das Formular bleibt stehen. Der
+**Sortier-Umschalter** wechselt zwischen der Kapitel-Gruppierung des AHB und der
+flachen, numerisch aufsteigenden Prüf-ID-Liste (mit Kapitelnummer in Klammern);
+Auswahl und Filter bleiben beim Umschalten erhalten. Nebenbefund behoben: Die
+standabhängigen Kapitel-Labels der optgroups (`data-stand-…-label`, Phase 3)
+wurden auf den UTILMD-Seiten nie angewandt — die Maske ruft die Beschriftung
+jetzt beim Start auf (202604 zeigt wieder Kapitel 9.2.1 statt 9.2.2).
+
+**Nachweis.** Browsertest 202604/Strom: Umschalten 61 Kapitelgruppen ↔ 187 PIDs
+aufsteigend; Suche „55194" → 1 Treffer, sofort erzeugt (RFF+Z13:55194); Stichwort
+„kündigung" → 9 Treffer; kein Treffer → Hinweis, Formular unverändert; Filter
+leeren → vollständige Liste. Keine JS-Fehler; volle Regression grün (32 Läufe).

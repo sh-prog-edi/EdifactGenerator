@@ -832,6 +832,85 @@
         }
     }
 
+    // ---- Prüf-ID-Auswahl: Suchfeld und umschaltbare Sortierung --------------
+    // Die Auswahlliste ist nach AHB-Kapiteln gruppiert; auf Wunsch sortiert sie
+    // numerisch nach Prüf-ID. Das Suchfeld filtert live nach Prüf-ID-Anfang oder
+    // Stichwort (Bezeichnung/Kapitel) — der erste Treffer wird sofort gerendert.
+    let AUSWAHL = null;          // [{ pid, text, gruppe }] in Kapitel-Reihenfolge
+    let sortiertNachPid = false;
+
+    function baueAuswahlWerkzeuge() {
+        const sel = $('prufId');
+        if (!sel || typeof sel.querySelectorAll !== 'function' || !sel.parentNode
+            || typeof document.createElement !== 'function') return;   // Test-Harness ohne DOM-Baum
+        if ($('prufIdSuche')) return;                                  // bereits gebaut
+        AUSWAHL = [];
+        Array.from(sel.children).forEach(kind => {
+            if (kind.tagName === 'OPTGROUP') {
+                const gruppe = kind.getAttribute('label') || '';
+                kind.querySelectorAll('option').forEach(o => {
+                    if (o.value) AUSWAHL.push({ pid: o.value, text: o.textContent, gruppe });
+                });
+            } else if (kind.tagName === 'OPTION' && kind.value) {
+                AUSWAHL.push({ pid: kind.value, text: kind.textContent, gruppe: '' });
+            }
+        });
+        const leiste = document.createElement('div');
+        leiste.style.cssText = 'display:flex; gap:6px; margin-bottom:6px;';
+        leiste.innerHTML =
+            '<input type="text" id="prufIdSuche" placeholder="Prüf-ID oder Stichwort suchen …" '
+            + 'autocomplete="off" style="flex:1 1 auto;">'
+            + '<button type="button" id="prufIdSortierung" class="btn-secondary" '
+            + 'title="Sortierung der Liste umschalten" style="flex:0 0 auto; white-space:nowrap;">'
+            + 'Sortierung: Kapitel</button>';
+        sel.parentNode.insertBefore(leiste, sel);
+        $('prufIdSuche').addEventListener('input', aktualisiereAuswahlListe);
+        $('prufIdSortierung').addEventListener('click', () => {
+            sortiertNachPid = !sortiertNachPid;
+            $('prufIdSortierung').textContent = 'Sortierung: ' + (sortiertNachPid ? 'Prüf-ID' : 'Kapitel');
+            aktualisiereAuswahlListe();
+        });
+    }
+
+    function aktualisiereAuswahlListe() {
+        const sel = $('prufId');
+        if (!sel || !AUSWAHL) return;
+        const alt = sel.value;
+        const filter = (($('prufIdSuche') || {}).value || '').trim().toLowerCase();
+        const passt = e => !filter || e.pid.startsWith(filter)
+            || e.text.toLowerCase().indexOf(filter) >= 0
+            || e.gruppe.toLowerCase().indexOf(filter) >= 0;
+        const treffer = AUSWAHL.filter(passt);
+        let html = '';
+        if (!treffer.length) {
+            // Kein Treffer: Liste zeigt den Hinweis, das Formular bleibt unverändert.
+            sel.innerHTML = '<option value="" disabled>– kein Treffer –</option>';
+            return;
+        }
+        if (sortiertNachPid) {
+            treffer.slice().sort((a, b) => a.pid.localeCompare(b.pid, 'de', { numeric: true }))
+                .forEach(e => {
+                    // Kapitelnummer (erstes Wort der Gruppe) als kompakte Einordnung anhängen.
+                    const kapitel = (e.gruppe.split(' ')[0] || '').trim();
+                    html += `<option value="${esc(e.pid)}">${esc(e.text)}${kapitel ? '  [' + esc(kapitel) + ']' : ''}</option>`;
+                });
+        } else {
+            let offen = null;
+            treffer.forEach(e => {
+                if (e.gruppe !== offen) {
+                    if (offen !== null) html += '</optgroup>';
+                    if (e.gruppe) html += `<optgroup label="${esc(e.gruppe)}">`;
+                    offen = e.gruppe;
+                }
+                html += `<option value="${esc(e.pid)}">${esc(e.text)}</option>`;
+            });
+            if (offen) html += '</optgroup>';
+        }
+        sel.innerHTML = html;
+        sel.value = treffer.some(e => e.pid === alt) ? alt : treffer[0].pid;
+        if (sel.value !== alt) renderForm();
+    }
+
     // ---- Start -------------------------------------------------------------
     function startGenerator() {
         if (typeof formMeta === 'undefined' || typeof ahbRulesByPrufId === 'undefined') {
@@ -844,7 +923,12 @@
             }
             return;
         }
+        // Standabhängige Beschriftungen (z. B. Kapitelnummern der optgroups) vor dem
+        // Einsammeln der Auswahlliste anwenden (Phase 3, data-stand-…-label).
+        if (global.EdiStand && typeof global.EdiStand.beschrifte === 'function')
+            global.EdiStand.beschrifte({});
         filterePruefIdAuswahl();
+        baueAuswahlWerkzeuge();
         renderForm();
     }
 

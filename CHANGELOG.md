@@ -5,6 +5,14 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **04.08.2026** – **Maske: Prüf-ID-Suchfeld und umschaltbare Sortierung.** Die
+  kuratierten UTILMD-Masken erhalten über der Auswahlliste ein Suchfeld (Live-Filter
+  nach Prüf-ID-Anfang oder Stichwort; der erste Treffer wird sofort gerendert — die
+  exakte Prüf-ID eintippen genügt) und einen Umschalter zwischen Kapitel-Gruppierung
+  und flacher, numerisch sortierter Prüf-ID-Liste. Zentral im Profil-Modul
+  (`_engine/utilmd-maske.js`), wirkt auf Strom/Gas in beiden Formatständen. Nebenbei
+  behoben: die standabhängigen Kapitel-Labels der Auswahlgruppen (Phase 3) werden
+  jetzt tatsächlich angewandt. → Protokoll Abschnitt 44.
 - **04.08.2026** – **Phase 5, Punkt A vorbereitet: Referenz-Testsuite für echte
   Marktnachrichten.** Neue Suite `scripts/referenz_validierung.js` (`npm run referenz`):
   liest echte EDIFACT-Dateien aus dem lokalen Referenzordner (strikt außerhalb des
