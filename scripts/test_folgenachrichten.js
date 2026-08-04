@@ -8,7 +8,7 @@
 //   - Dokumentennummer und Erstellungsdatum sind NICHT übernommen.
 const { chromium } = require('playwright');
 
-const ROOT = '/mnt/user-data/working/edigen/EdifactGenerator';
+const ROOT = require('path').join(__dirname, '..');
 const MALO = '51238696781';
 
 (async () => {

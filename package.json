@@ -1,0 +1,15 @@
+{
+  "name": "edifact-generator",
+  "version": "0.9.0-beta",
+  "description": "Browserbasierter Generator und Validator für EDIFACT-Testnachrichten des deutschen Energiemarkts (BDEW-MaKo). Reines HTML/JS ohne Build – npm wird nur für die Regression gebraucht.",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "smoke": "node scripts/regression_alle.js --schnell",
+    "regression": "node scripts/regression_alle.js",
+    "golden:update": "node scripts/regression_alle.js --golden-update"
+  },
+  "devDependencies": {
+    "playwright": "1.56.1"
+  }
+}

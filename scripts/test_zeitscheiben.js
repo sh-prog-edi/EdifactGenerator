@@ -11,7 +11,7 @@
 // ist Teil der Prüfung.
 const { chromium } = require('playwright');
 
-const ROOT = '/mnt/user-data/working/edigen/EdifactGenerator';
+const ROOT = require('path').join(__dirname, '..');
 const MALO = '51238696781';
 
 const fuelle = () => {

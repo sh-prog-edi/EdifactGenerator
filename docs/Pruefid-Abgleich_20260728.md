@@ -1972,3 +1972,41 @@ korrekt belegte Kunden-/Beteiligten-NADs (Z65–Z70, Name in C080 mit
 eine sechste 3124-Wiederholung (max 5); dazu unverändert die Fälle aus Abschnitt
 32/33 (leere Erstwiederholung, C059-Lücke, Segmentzähler, Golden-55016 fehlerfrei).
 Gesamte Regression grün, Selbstvalidierung und Golden unverändert.
+
+## 35. Git-Fundament: Phase 0 der Neustrukturierung (04.08.2026)
+
+**Auftrag.** Umsetzung von Phase 0 des Neustrukturierungs-Plans
+(`NEUSTRUKTURIERUNG_PLAN_20260804.md`): Versionierung des Ist-Stands, Regressionstreiber,
+Portabilität — ausdrücklich ohne fachliche Änderungen an Engine oder Datenschicht.
+
+**Umsetzung.**
+
+1. **Git-Repository** im Projektstamm; Initial-Commit ist der unveränderte Stand
+   aus `EdiGen_20260803_7_1.zip`, getaggt als `v0.9.0-beta`. Damit ist jede weitere
+   Änderung als Diff nachvollziehbar; die ZIP-Übergabe zwischen Chats entfällt nach
+   dem Push zu GitHub.
+2. **`package.json` + `scripts/regression_alle.js`**: ein Aufruf fährt die vier
+   Golden-Ziele (domsim/golden/selfvalidate) und alle Testskripte; `--schnell` lässt
+   die Browser-Tests aus, `--golden-update` friert Snapshots gewollt neu ein.
+   Selbstvalidierung bleibt informativ (dokumentierte Befunde, offener Punkt D) und
+   bricht die Regression nicht. Playwright exakt auf 1.56.1 gepinnt (Chromium 1194).
+3. **Portabilität**: 11 Testskripte und 5 Python-Skripte trugen absolute
+   Container-Pfade (`/mnt/user-data/working/…`) aus einer früheren Sitzung — Ursache
+   dafür, dass die Browser-Regression in jeder neuen Umgebung zunächst rot war. Jetzt
+   überall `__dirname`-/`__file__`-relativ; der Arbeitsordner der Extraktionsskripte
+   (Geschwisterordner `regelwerk/`, `mirror/` …) ist per `EDIGEN_ARBEITSORDNER`
+   übersteuerbar (Standard: zwei Ebenen über dem Repo, wie in `werkzeuge/LIESMICH.md`).
+4. **Befund `test_antwortketten` (31/35)**: Vier Quellnachricht-Läufe (QUOTES 15001)
+   scheiterten am strikten Badge-Vergleich `=== 'fehlerfrei'`, obwohl der Validator
+   korrekt das Warn-Badge „fehlerfrei · 2 bedingte Muss offen" zeigt (CAV, Bedingung
+   [492] „MP-ID in NAD+MR aus Sparte Strom" — aus der Nachricht nicht maschinell
+   entscheidbar, darum bewusst Hinweis statt Fehler). Grün-Kriterium des Tests jetzt:
+   Badge beginnt mit `fehlerfrei`. Keine Änderung an der Prüflogik.
+5. **README aufgeteilt**: Änderungshistorie nach `CHANGELOG.md` (README 752 → ~300
+   Zeilen), Regressionsabschnitt auf die npm-Aufrufe umgestellt.
+
+**Nachweis.** Volle Regression grün: domsim/golden/selfvalidate über alle vier Ziele,
+`pruefe_pid_konsistenz` 0 Befunde in 32 Zielen, alle 19 Testskripte OK (darunter
+Antwortketten 35/35). Golden-Snapshots unverändert — der Nachweis, dass Phase 0
+keine fachliche Ausgabe verändert hat.
+

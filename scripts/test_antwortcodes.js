@@ -8,7 +8,7 @@
 const { chromium } = require('playwright');
 const fs = require('fs');
 
-const ROOT = '/mnt/user-data/working/edigen/EdifactGenerator';
+const ROOT = require('path').join(__dirname, '..');
 const ebdAlle = require(`${ROOT}/_engine/daten/ebd-antwortcodes.js`);
 
 (async () => {

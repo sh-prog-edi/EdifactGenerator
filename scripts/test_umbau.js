@@ -12,7 +12,7 @@
 //   - auch eine Nachricht mit fremdem Typ/unbekannter Prüf-ID wird umgebaut.
 const { chromium } = require('playwright');
 
-const ROOT = '/mnt/user-data/working/edigen/EdifactGenerator';
+const ROOT = require('path').join(__dirname, '..');
 
 // „Produktivnachricht": UTILMD 55016-artig mit zwei Vorgängen und Zeitscheiben,
 // ohne Test-Kennzeichen, mit produktiven Nummern und altem Datum.

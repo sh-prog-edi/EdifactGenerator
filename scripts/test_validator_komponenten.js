@@ -12,7 +12,7 @@
 //   4. Eine fehlerfrei erzeugte Nachricht (Golden 55016) bleibt fehlerfrei.
 const { chromium } = require('playwright');
 
-const ROOT = '/mnt/user-data/working/edigen/EdifactGenerator';
+const ROOT = require('path').join(__dirname, '..');
 
 const KAPUTT =
   "UNA:+.? 'UNB+UNOC:3+9900000000001:500+9900000000002:500+260803:0800+844156800099++++++1'" +

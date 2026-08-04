@@ -10,7 +10,7 @@
 // In der erzeugten Nachricht darf jeweils nur die zutreffende Lokation stehen.
 const { chromium } = require('playwright');
 
-const ROOT = '/mnt/user-data/working/edigen/EdifactGenerator';
+const ROOT = require('path').join(__dirname, '..');
 
 (async () => {
   const browser = await chromium.launch();

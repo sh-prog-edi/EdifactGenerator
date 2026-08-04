@@ -4,7 +4,7 @@
 // Segmente (AHB-Abhängigkeiten) korrekt geschaltet werden.
 const { chromium } = require('playwright');
 
-const ROOT = '/mnt/user-data/working/edigen/EdifactGenerator';
+const ROOT = require('path').join(__dirname, '..');
 const SEITEN = [];
 for (const stand of ['202604', '202610']) {
   SEITEN.push(`${stand}/Stammdaten/UTILMD/Strom/index.html`);

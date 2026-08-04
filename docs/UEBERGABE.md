@@ -1,4 +1,10 @@
-# Übergabe an einen Folgechat
+# Übergabe / Arbeitsstand
+
+> **Seit 04.08.2026 ist das Projekt ein Git-Repository** (Phase 0 der Neustrukturierung,
+> siehe `NEUSTRUKTURIERUNG_PLAN_20260804.md` und Protokoll Abschnitt 35). Quelle der
+> Wahrheit ist das Repo (GitHub); der Einstieg in eine neue Sitzung ist `git log`,
+> `CHANGELOG.md` und dieses Dokument — nicht mehr ein Übergabe-ZIP. Regression:
+> `npm install` einmalig, dann `npm run regression` (voll) bzw. `npm run smoke`.
 
 Stand: 03.08.2026 · Projekt: **EdifactGenerator** · Auftraggeber: Steffen Haense
 

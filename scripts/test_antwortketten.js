@@ -4,7 +4,7 @@
 const { chromium } = require('playwright');
 const path = require('path');
 
-const ROOT = '/mnt/user-data/working/edigen/EdifactGenerator';
+const ROOT = require('path').join(__dirname, '..');
 const ebdDaten = require(path.join(ROOT, '_engine/daten/ebd-antwortcodes.js'));
 function ebdCode(stand, e) {
   let x = ebdDaten[stand].ebds[e];
@@ -81,7 +81,12 @@ async function befuelle(page) {
       rot: Array.from(document.querySelectorAll('.seg.rot')).map(x => x.innerText.slice(0, 130)),
       global: document.getElementById('globalMeldungen').innerText,
     }));
-    if ((r.badge === 'fehlerfrei') === sollGruen) ok++;
+    // Grün = keine Fehler. Das Warn-Badge „fehlerfrei · N bedingte Muss offen"
+    // zählt als grün: bedingte Muss sind laut Validator ausdrücklich „bitte
+    // fachlich prüfen"-Hinweise (nicht maschinell entscheidbare Bedingungen,
+    // z. B. [492] „MP-ID aus Sparte Strom"), keine Fehler.
+    const gruen = r.badge.startsWith('fehlerfrei');
+    if (gruen === sollGruen) ok++;
     else {
       fehler.push(`${label}: ${sollGruen ? 'sollte grün' : 'sollte rot'} -> ${r.badge} | ${r.global.slice(0,150)}`);
       r.rot.slice(0, 6).forEach(x => fehler.push('   ROT ' + x.replace(/\n/g, ' § ')));

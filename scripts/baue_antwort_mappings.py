@@ -13,15 +13,18 @@
 #   ZG-T45 SG15 RFF+ACW <- UNH-Referenz + RFF+ADY <- BGM DE1004 (IFTSTA->IFTSTA)
 # Bereits kuratierte Paare (antwort-mappings.js) werden übersprungen.
 import json
+import os
 import re
 from collections import OrderedDict
 from pathlib import Path
 
 import openpyxl
 
-ROOT = Path(__file__).resolve().parent.parent if (Path(__file__).resolve().parent.name == "scripts") \
-    else Path("/mnt/user-data/working/edigen/EdifactGenerator")
-REGELWERK = Path("/mnt/user-data/working/regelwerk")
+ROOT = Path(__file__).resolve().parents[1]
+# Arbeitsordner: der Ordner oberhalb des Repositorys (siehe werkzeuge/LIESMICH.md),
+# überschreibbar per Umgebungsvariable EDIGEN_ARBEITSORDNER.
+ARBEITSORDNER = Path(os.environ.get("EDIGEN_ARBEITSORDNER", ROOT.parent.parent))
+REGELWERK = ARBEITSORDNER / "regelwerk"
 QUELLEN = [
     ("202604", REGELWERK / "Anwendungsuebersicht_3.3_LF_12258.xlsx",
      "Anwendungsübersicht der Prüfidentifikatoren 3.3 (Formatstand 202604)"),

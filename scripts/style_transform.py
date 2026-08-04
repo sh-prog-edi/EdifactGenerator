@@ -5,7 +5,7 @@
 import re
 from pathlib import Path
 
-ROOT = Path('/mnt/user-data/working/edigen/EdifactGenerator')
+ROOT = Path(__file__).resolve().parents[1]
 
 seiten = sorted(ROOT.glob('20*/*/*/index.html')) + sorted(ROOT.glob('20*/*/UTILMD/*/vollformular.html'))
 assert len(seiten) == 36, len(seiten)

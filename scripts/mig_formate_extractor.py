@@ -2,13 +2,17 @@
 das Feldformat (an..35, n..17, ...) sowie je Segment die maximale Wiederholung.
 Ergebnis: _engine/daten/mig-formate.js für den universellen Validator."""
 import json
+import os
 import re
 import sys
 from pathlib import Path
 
 import docx
 
-BASIS = Path("/mnt/user-data/working")
+REPO = Path(__file__).resolve().parents[1]
+# Arbeitsordner (Ordner oberhalb des Repositorys, siehe werkzeuge/LIESMICH.md),
+# überschreibbar per Umgebungsvariable EDIGEN_ARBEITSORDNER.
+BASIS = Path(os.environ.get("EDIGEN_ARBEITSORDNER", REPO.parent.parent))
 M604 = BASIS / "mirror/edi_energy_de/FV2604"
 M610 = BASIS / "fv2610-migs"
 

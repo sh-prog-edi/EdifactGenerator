@@ -5,7 +5,7 @@ import json
 import re
 from pathlib import Path
 
-PROJEKT = Path("/mnt/user-data/working/edigen/EdifactGenerator")
+PROJEKT = Path(__file__).resolve().parents[1]
 
 # (stand, format, sparte, seiten-dir, metaDatei, metaVar, migKey)
 SEITEN = []

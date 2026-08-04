@@ -1,12 +1,16 @@
 """Extrahiert die EDI@Energy-Codelisten (PDF) in maschinenlesbare JS-Codetabellen
 für den universellen Validator: _engine/daten/codelisten.js"""
 import json
+import os
 import re
 from pathlib import Path
 
-BASIS = Path("/mnt/user-data/working")
+REPO = Path(__file__).resolve().parents[1]
+# Arbeitsordner (Ordner oberhalb des Repositorys, siehe werkzeuge/LIESMICH.md),
+# überschreibbar per Umgebungsvariable EDIGEN_ARBEITSORDNER.
+BASIS = Path(os.environ.get("EDIGEN_ARBEITSORDNER", REPO.parent.parent))
 CL = BASIS / "regelwerk/codelisten"
-ZIEL = BASIS / "edigen/EdifactGenerator/_engine/daten"
+ZIEL = REPO / "_engine/daten"
 
 def text(name):
     return (CL / name).read_text(encoding="utf-8")

@@ -5,7 +5,7 @@
 // Geprüft werden je Seite mehrere Prüf-IDs (erste, mittlere, letzte).
 const { chromium } = require('playwright');
 
-const ROOT = '/mnt/user-data/working/edigen/EdifactGenerator';
+const ROOT = require('path').join(__dirname, '..');
 const SEITEN = [];
 for (const stand of ['202604', '202610']) {
   SEITEN.push(

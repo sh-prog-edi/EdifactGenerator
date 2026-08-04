@@ -8,7 +8,7 @@
 //   3. universeller Validator -> wählt den Formatstand anhand der UNH-Kennung.
 const { chromium } = require('playwright');
 
-const ROOT = '/mnt/user-data/working/edigen/EdifactGenerator';
+const ROOT = require('path').join(__dirname, '..');
 const MASKEN = [
   { stand: '202604', sparte: 'Strom', unh: 'UTILMD:D:11A:UN:S2.1', pid: '55001' },
   { stand: '202610', sparte: 'Strom', unh: 'UTILMD:D:11A:UN:S2.2', pid: '55001' },
