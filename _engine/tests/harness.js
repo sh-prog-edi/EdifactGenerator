@@ -133,7 +133,11 @@ function ladeGenerator(engineDir, dataDir, opts = {}){
     for (const f of dateien) combined += '\n' + fs.readFileSync(f,'utf8') + '\n';
     vm.runInContext(combined, sandbox, { filename:'combined.js' });
 
-    const pids = Object.keys(require(path.join(pd, '_regeln.js'))).sort();
+    // Prüf-IDs der kuratierten Maske (nur UTILMD-Ziele führen _regeln.js; für
+    // andere Ziele dient der Harness als reiner Validator-Lader, z. B. für die
+    // Referenz-Testsuite scripts/referenz_validierung.js).
+    const regelnDatei = path.join(pd, '_regeln.js');
+    const pids = fs.existsSync(regelnDatei) ? Object.keys(require(regelnDatei)).sort() : [];
 
     // Erzeugt die Testnachricht einer PID (mit Zeilenumbrüchen).
     // Die Maskenfunktionen (renderForm/generateEdifact) bindet das Profil-Modul

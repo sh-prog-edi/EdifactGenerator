@@ -5,6 +5,15 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **04.08.2026** – **Phase 5, Punkt A vorbereitet: Referenz-Testsuite für echte
+  Marktnachrichten.** Neue Suite `scripts/referenz_validierung.js` (`npm run referenz`):
+  liest echte EDIFACT-Dateien aus dem lokalen Referenzordner (strikt außerhalb des
+  Repos; `EDIGEN_REFERENZEN`), erkennt Nachrichtentyp/Formatstand über die
+  UNH-Kennung und die Prüf-ID über RFF+Z13, validiert mit dem zentralen Validator
+  und berichtet je Nachricht; optionale `erwartung.json` macht bewertete Nachrichten
+  zur dauerhaften Testsuite (`--streng` als lokales Gate). Ohne Referenzordner endet
+  die Suite grün — CI unabhängig. Beschaffungs-Checkliste (was der Auftraggeber
+  liefern muss): `docs/REFERENZNACHRICHTEN.md`. → Protokoll Abschnitt 43.
 - **04.08.2026** – **Phase 4: Datenpipeline und Quellen-Manifest.** Neuer Treiber
   `werkzeuge/pipeline.py` fährt den Extraktionslauf am Stück in erzwungener
   Reihenfolge (extrahiere_alle → baue_form_meta → Nachbearbeitungen →

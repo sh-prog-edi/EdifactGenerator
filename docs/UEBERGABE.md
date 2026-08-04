@@ -99,9 +99,10 @@ Punkt D) und bricht die Regression nicht.
 
 Fachlich: [`OFFENE_ASPEKTE.md`](OFFENE_ASPEKTE.md) (A–E; F ist mit dem Engine-Schritt
 geschlossen), als GitHub-Issues vorbereitet in [`ISSUES_VORLAGEN.md`](ISSUES_VORLAGEN.md)
-— der wirksamste nächste fachliche Schritt ist **A (externe Validierungs-Absicherung)**,
-dafür werden echte Beispielnachrichten oder ein Fremdvalidator gebraucht (Beschaffung:
-Auftraggeber). Strukturell: **Phasen 2–4 sind abgeschlossen** (Abschnitte 37–42:
+— der wirksamste nächste fachliche Schritt ist **A (externe Validierungs-Absicherung)**:
+Die Referenz-Testsuite dafür steht bereit (`npm run referenz`, Abschnitt 43); es fehlen
+die echten Beispielnachrichten oder ein Fremdvalidator (Beschaffung: Auftraggeber,
+Checkliste in [`REFERENZNACHRICHTEN.md`](REFERENZNACHRICHTEN.md)). Strukturell: **Phasen 2–4 sind abgeschlossen** (Abschnitte 37–42:
 Befunde behoben, Regel-Datenschicht, Engine-Schritt samt 55194-Neubelegung und
 Golden-Neubewertung, Formatstand als Parameter, Datenpipeline
 `werkzeuge/pipeline.py` samt Zeitscheiben-Schutz und Quellen-Manifest

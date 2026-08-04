@@ -24,3 +24,8 @@ Thumbs.db
 # Original-Dokumente des BDEW (nicht Teil des Repositorys)
 *.pdf
 *.docx
+
+# Echte Referenznachrichten von Marktpartnern (offener Punkt A): bleiben LOKAL —
+# Standard-Ablage <Arbeitsordner>/referenznachrichten/, nie ins Repository.
+referenznachrichten/
+referenz/

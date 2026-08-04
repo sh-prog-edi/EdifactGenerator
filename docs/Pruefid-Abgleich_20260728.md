@@ -2358,3 +2358,31 @@ grün (32 Läufe). Ein Extraktionslauf mit echten Dokumenten braucht weiterhin d
 Wissensdatenbank im Arbeitsordner — der nächste Formatstand-Wechsel ist damit:
 Dokumente einspielen, `pipeline.py`, Golden lesen/aktualisieren, Manifest
 nachführen.
+
+## 43. Phase 5, Punkt A vorbereitet: Referenz-Testsuite für echte Nachrichten (04.08.2026)
+
+**Auftrag.** Einstieg in Phase 5 (fachliche Punkte). Punkt A (externe
+Validierungs-Absicherung) ist der wirksamste Schritt, braucht aber Material vom
+Auftraggeber — vorbereitet ist jetzt alles, was ohne dieses Material geht.
+
+**Umsetzung.** Neue Referenz-Testsuite `scripts/referenz_validierung.js`
+(`npm run referenz`): liest echte EDIFACT-Dateien aus dem lokalen Referenzordner
+(`<Arbeitsordner>/referenznachrichten/`, übersteuerbar per `EDIGEN_REFERENZEN`),
+erkennt je Datei Nachrichtentyp/Formatstand über die UNH-Kennung
+(Validator-Registry) und die Prüf-ID über RFF+Z13, validiert mit dem zentralen
+Validator gegen die eigene Prüfgrundlage und berichtet je Nachricht samt
+Zusammenfassung. Optionale Erwartungsdateien (`<datei>.erwartung.json`:
+pruefi/fehlerfrei) machen bewertete Nachrichten zur dauerhaften Testsuite;
+`--streng` liefert Exit 1 für lokale Gates. Der Test-Harness dient dabei als
+reiner Validator-Lader für ALLE Nachrichtentypen (pids-Ermittlung verkraftet
+jetzt Ziele ohne `_regeln.js`). Vertraulichkeit: Nachrichten bleiben strikt
+lokal — `.gitignore` blockt `referenznachrichten/` und `referenz/`; fehlt der
+Ordner, endet die Suite grün (CI unabhängig). Beschaffungs-Checkliste und
+Arbeitsweise mit Befunden: `docs/REFERENZNACHRICHTEN.md` — gebraucht werden
+echte Marktnachrichten (bevorzugt UTILMD, Breite vor Tiefe, eine je
+Prozess/Prüf-ID) oder ersatzweise ein Fremdvalidator als Gegenprobe.
+
+**Nachweis.** Probelauf mit nachgestellten Nachrichten: Erkennung (auch ohne
+Zeilenumbrüche), Validierung (bekannter informativer Muss-Befund der 55001
+korrekt gemeldet), Erwartungsabgleich und Nicht-EDIFACT-Abweisung wie erwartet;
+ohne Referenzordner grüner Überspringen-Pfad. Volle Regression grün.
