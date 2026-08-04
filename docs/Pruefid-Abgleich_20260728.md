@@ -2010,3 +2010,36 @@ Portabilität — ausdrücklich ohne fachliche Änderungen an Engine oder Datens
 Antwortketten 35/35). Golden-Snapshots unverändert — der Nachweis, dass Phase 0
 keine fachliche Ausgabe verändert hat.
 
+## 36. CI und automatische Releases: Phase 1 der Neustrukturierung (04.08.2026)
+
+**Auftrag.** Umsetzung von Phase 1 des Umbauplans: Konventionen als ausführbare Checks,
+CI auf GitHub Actions, Releases aus Git-Tags, Übergabe verschlanken, offene Punkte als
+Issues vorbereiten. Keine fachlichen Änderungen an Engine oder Datenschicht.
+
+**Umsetzung.**
+
+1. **`scripts/pruefe_paket.js`** (auch `npm run paket`, Teil jeder Regression):
+   sechs Check-Gruppen — keine versionierten BDEW-Dokumente (*.pdf/*.docx/*.xlsx),
+   Bedingungs-Hilfe in jeder Seite, die `_bedingungen.js` lädt (Lehre aus dem
+   Patch-Verlust vom 28.07.), Golden-Snapshots aller vier Ziele vorhanden und gefüllt
+   (187/88/189/89 PIDs), keine absoluten Container-Pfade (Lehre aus Phase 0),
+   Kernartefakte vorhanden, Playwright exakt gepinnt.
+2. **`.github/workflows/ci.yml`**: Smoke-Regression (Node-Kern, < 1 Minute) bei jedem
+   Push und PR; volle Regression inkl. Chromium auf `main`, per workflow_dispatch und
+   wöchentlich montags. Node 22, `npx playwright install --with-deps chromium`.
+3. **`.github/workflows/release.yml`**: Ein Tag `vX.Y.Z` löst aus — Wächter
+   (Paket-Prüfung + Smoke), dann `git archive` mit Präfix `EdifactGenerator/` als
+   `EdiGen_JJJJMMTT.zip` (Datum = Commit-Datum des Tags) und `gh release create` mit
+   automatischen Notizen. Das ZIP enthält exakt die versionierten Dateien — BDEW-
+   Dokumente können konstruktionsbedingt nicht enthalten sein.
+4. **`docs/UEBERGABE.md`** von 243 auf ~120 Zeilen: Arbeitsstand-Dokument mit
+   Git-Konventionen; die ZIP-Konventionen (Namensschema, Zeitstempel, README-Pflicht)
+   sind als „erfüllt der Release-Workflow" dokumentiert. Die Detailhistorie der
+   letzten Sitzung steht unverändert in den Abschnitten 22–34 dieses Protokolls.
+5. **`docs/ISSUES_VORLAGEN.md`**: die offenen Punkte A–F plus Phase 2/3 als sieben
+   fertige Issue-Texte (Titel + Beschreibung + Label-Vorschlag) zum Einfügen auf GitHub.
+
+**Nachweis.** Volle Regression grün (32 Läufe inkl. Paket-Prüfung), Golden unverändert.
+Workflow-YAML syntaktisch validiert; der erste echte CI-Lauf erfolgt mit dem Push
+dieses Stands, das erste automatische Release mit dem nächsten Tag.
+

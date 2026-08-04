@@ -5,6 +5,20 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **04.08.2026** – **CI und automatische Releases (Phase 1 der Neustrukturierung).**
+  Die Auslieferungs-Konventionen sind jetzt Code statt Prosa: `scripts/pruefe_paket.js`
+  prüft maschinell, dass keine BDEW-Originaldokumente versioniert sind, jede Seite mit
+  `_bedingungen.js` auch die Bedingungs-Hilfe lädt, alle vier Golden-Snapshots vorhanden
+  sind, keine absoluten Container-Pfade zurückkehren und Playwright exakt gepinnt bleibt
+  (`npm run paket`; auch Teil der Regression). GitHub Actions: `ci.yml` fährt die
+  Smoke-Regression bei jedem Push/PR und die volle Browser-Suite auf `main`, per Hand
+  und wöchentlich; `release.yml` baut aus einem Git-Tag `vX.Y.Z` automatisch das
+  Auslieferungs-ZIP (`EdiGen_JJJJMMTT.zip` per `git archive`, nach Paket-Prüfung und
+  Smoke als Wächter) und hängt es an das GitHub-Release — die manuellen ZIP-Konventionen
+  entfallen. `docs/UEBERGABE.md` ist zum kompakten Arbeitsstand-Dokument umgebaut
+  (Git-Workflow statt ZIP-Staffellauf); die offenen Punkte A–F liegen als fertige
+  GitHub-Issue-Texte in `docs/ISSUES_VORLAGEN.md`. README mit CI-Badge.
+  → Protokoll Abschnitt 36.
 - **04.08.2026** – **Git-Fundament (Phase 0 der Neustrukturierung).** Das Projekt ist
   jetzt ein Git-Repository (Ausgangs-Tag `v0.9.0-beta` = unveränderter Stand 03.08.2026);
   GitHub wird die Quelle der Wahrheit, der ZIP-Staffellauf zwischen Chats endet. Neu:

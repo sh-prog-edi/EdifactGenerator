@@ -5,6 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "paket": "node scripts/pruefe_paket.js",
     "smoke": "node scripts/regression_alle.js --schnell",
     "regression": "node scripts/regression_alle.js",
     "golden:update": "node scripts/regression_alle.js --golden-update"

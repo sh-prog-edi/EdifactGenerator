@@ -26,6 +26,7 @@ const GOLDEN_ZIELE = [
 
 // Globale Node-Tests ohne Browser.
 const NODE_TESTS = [
+    'scripts/pruefe_paket.js',
     'scripts/pruefe_pid_konsistenz.js',
     'scripts/test_bedingung_hart.js',
     'scripts/test_muss_validierung.js',

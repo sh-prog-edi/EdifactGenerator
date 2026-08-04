@@ -1,0 +1,49 @@
+# Release: Ein Git-Tag vX.Y.Z erzeugt automatisch das Auslieferungs-ZIP.
+#
+# Ersetzt das manuelle Packen (EdiGen_JJJJMMTT.zip): `git archive` nimmt exakt die
+# versionierten Dateien (ohne .git, ohne node_modules — und dank .gitignore können
+# BDEW-Dokumente gar nicht erst enthalten sein). Vorher laufen Paket-Prüfung und
+# Smoke-Regression als Wächter; das ZIP hängt am GitHub-Release des Tags.
+#
+# Benutzung:  git tag -a v0.9.1 -m "…"  &&  git push origin v0.9.1
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write   # zum Anlegen des GitHub-Release
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Wächter — Paket-Prüfung und Smoke-Regression
+        run: |
+          node scripts/pruefe_paket.js
+          node scripts/regression_alle.js --schnell
+
+      - name: ZIP bauen (git archive, Namensschema EdiGen_JJJJMMTT.zip)
+        id: zip
+        run: |
+          DATUM=$(git log -1 --format=%cd --date=format:%Y%m%d "${GITHUB_REF_NAME}")
+          NAME="EdiGen_${DATUM}.zip"
+          git archive --format=zip --prefix=EdifactGenerator/ \
+            -o "${NAME}" "${GITHUB_REF_NAME}"
+          echo "name=${NAME}" >> "$GITHUB_OUTPUT"
+          unzip -l "${NAME}" | tail -2
+
+      - name: GitHub-Release anlegen und ZIP anhängen
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" \
+            "${{ steps.zip.outputs.name }}" \
+            --title "EdifactGenerator ${GITHUB_REF_NAME}" \
+            --generate-notes

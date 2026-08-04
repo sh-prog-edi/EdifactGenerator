@@ -1,0 +1,45 @@
+# CI: Regression bei jedem Push und Pull Request.
+#
+# Zwei Stufen:
+#   smoke      — Node-Kern ohne Browser (< 1 Minute): domsim/golden/selfvalidate über
+#                alle vier Golden-Ziele, Paket-Prüfung, PID-Konsistenz, VM-Tests.
+#   regression — volle Regression inkl. Playwright-Browser-Tests (~8 Minuten):
+#                auf main, per Hand (workflow_dispatch) und wöchentlich montags.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 5 * * 1'   # montags 05:00 UTC (06:00/07:00 deutscher Zeit)
+
+jobs:
+  smoke:
+    name: Smoke (Node-Kern)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Smoke-Regression
+        run: node scripts/regression_alle.js --schnell
+
+  regression:
+    name: Volle Regression (inkl. Browser)
+    # Volle Suite nur auf main, per Hand und im Wochenlauf — PRs fahren Smoke.
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Abhängigkeiten (Playwright, exakt gepinnt)
+        run: npm install --no-fund --no-audit
+      - name: Chromium installieren
+        run: npx playwright install --with-deps chromium
+      - name: Volle Regression
+        run: node scripts/regression_alle.js

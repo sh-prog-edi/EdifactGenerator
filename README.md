@@ -1,5 +1,7 @@
 # EdifactGenerator – Deutscher Energiemarkt (MaKo)
 
+[![CI](https://github.com/sh-prog-edi/EdifactGenerator/actions/workflows/ci.yml/badge.svg)](https://github.com/sh-prog-edi/EdifactGenerator/actions/workflows/ci.yml)
+
 Browserbasiertes Werkzeug zum **Erzeugen** und **Validieren** von EDIFACT-Test­nachrichten
 für die Marktkommunikation im deutschen Energiemarkt (BDEW-Anwendungshandbücher). Reines
 HTML/JS/CSS ohne Build-Tools und ohne Server – die Seiten laufen per lokalem Webserver oder
