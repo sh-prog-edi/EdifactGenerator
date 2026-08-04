@@ -23,9 +23,11 @@ Die Referenz-Testsuite dafür ist gebaut und wartet auf Material.
      die Golden-Nachrichten. Aus **Lieferantensicht** zählen beide Richtungen:
      Gesendetes (An-/Abmeldung, Kündigung, LF-Stammdatenänderungen) UND
      Empfangenes (Antworten des NB, MSCONS, Netznutzungs-INVOIC/REMADV,
-     APERAK/CONTRL). Die reine NB↔MSB-Kommunikation (Messstellenbetrieb,
-     GDA Kap. 9.5) bleibt damit ein dokumentierter blinder Fleck — Material
-     dazu ist willkommen, sobald verfügbar.
+     APERAK/CONTRL). Kommunikation ohne LF-Beteiligung bleibt damit ein
+     dokumentierter blinder Fleck: NB↔MSB (Messstellenbetrieb, GDA Kap. 9.5),
+     MSB↔MSB (z. B. Geräteübernahme/Bestellprozesse) und NB↔ÜNB
+     (Bilanzierung/Aggregation, MaBiS-Listen) — Material dazu ist willkommen,
+     sobald verfügbar.
    - Bevorzugt **UTILMD Strom/Gas** (Kerngeschäft des Werkzeugs), gern beide
      Formatstände; dazu jede andere verfügbare Art.
    - Auch fachlich „langweilige" Bestätigungen sind wertvoll — sie decken die
