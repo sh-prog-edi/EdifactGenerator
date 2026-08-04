@@ -65,9 +65,12 @@ Stillstand. Ihre Antwortcodes liegen vollständig vor (aus der letzten gelungene
 Auswertung, `ahbdaten/ebd_nachtrag.json`), die Prüfschritte nicht — dort greift der
 Codefilter nach Geschäftsvorfall nicht.
 
-### F. Kuratierte Masken und Engine
-Die vier UTILMD-Masken führen eigene Segmentlisten (`<PID>.js`), die übrigen
-Nachrichtentypen arbeiten allein mit der Formular-Meta. Beide Wege sind abgeglichen
-(`scripts/pruefe_pid_konsistenz.js`), aber es bleiben zwei Wege. Sie zusammenzuführen —
-die kuratierte Maske als Sicht auf die Engine — steht als Schritt 3 der
-Konsolidierung aus (siehe `Pruefid-Abgleich_20260728.md`, Abschnitt 15).
+### F. Kuratierte Masken und Engine — GESCHLOSSEN (04.08.2026)
+Aufgelöst mit dem Feldauswahl-Umbau (Protokoll Abschnitte 38–40): Die vier
+UTILMD-Masken sind eine Sicht auf die zentrale Engine (`_engine/utilmd-maske.js`
+auf Basis der Datenschicht `pruef-ids/_regeln.js` + Formular-Meta); erzeugt wird
+ausschließlich über `AhbFormEngine.generate`, `generator.js` ist entfernt.
+`scripts/pruefe_pid_konsistenz.js` prüft seither die Feldauswahl-Datenschicht
+gegen die Meta (Meta-Vollständigkeits-Check der Sicht). Fachliche Folgearbeit
+daraus: vollständige GDA-Testnachrichten (Kap. 9.5) über die inhaltliche
+`nutzdaten`-Neubelegung je Prüf-ID — exemplarisch mit 55194 umgesetzt.

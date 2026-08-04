@@ -5,7 +5,7 @@
 // bei mehreren Vorgängen je Nachricht zusätzlich "-<lfd. Nr.>".
 //
 // Geprüft wird dreifach:
-//   1. Quelltext: kuratierte Maske (_engine/generator.js) und Engine
+//   1. Quelltext: kuratierte Maske (_engine/utilmd-maske.js) und Engine
 //      (_engine/ahb-form-engine.js) führen dasselbe Präfix — sie definieren es je
 //      eigenständig, weil sie nie gemeinsam auf einer Seite geladen werden.
 //   2. Erzeugte Nachricht: über alle Generatorseiten beider Formatstände beginnt
@@ -50,7 +50,7 @@ function praefixAus(datei) {
   const m = /VORGANG_PRAEFIX\s*=\s*"([^"]*)"/.exec(t);
   return m ? m[1] : null;
 }
-for (const datei of ['_engine/generator.js', '_engine/ahb-form-engine.js']) {
+for (const datei of ['_engine/utilmd-maske.js', '_engine/ahb-form-engine.js']) {
   const p = praefixAus(datei);
   if (p === null) fehler.push(`${datei}: VORGANG_PRAEFIX nicht gefunden`);
   else if (p !== PRAEFIX) fehler.push(`${datei}: Präfix "${p}" statt "${PRAEFIX}"`);

@@ -65,17 +65,21 @@ function ladeGenerator(engineDir, dataDir, opts = {}){
         path.join(pd, '_bedingungen.js'),
         path.join(pd, '_produkte-55001.js'),
         path.join(pd, '_produktpaket.js'),
-        path.join(pd, '_regeln.js'),         // Regel-Datenschicht (ahbRulesByPrufId)
+        path.join(pd, '_regeln.js'),         // Feldauswahl-Datenschicht (ahbRulesByPrufId)
         path.join(pd, '_nutzdaten-katalog.js'),  // Objekt-Nutzdaten-Katalog (falls vorhanden)
         path.join(pd, '_form-meta.js'),      // AHB-Struktur je Prüf-ID (Prüfgrundlage)
-        path.join(engineDir, 'generator.js'),
-        // Prüflogik: dieselbe wie in Masken und universellem Validator
+        // Antwortcode-Auswahl VOR der Maske laden (die Maske baut die Auswahl beim Rendern)
         path.join(engineDir, 'daten', 'mig-formate.js'),
         path.join(engineDir, 'daten', 'sts-struktur.js'),
         path.join(engineDir, 'daten', 'codelisten.js'),
         path.join(engineDir, 'daten', 'ebd-antwortcodes.js'),
         path.join(engineDir, 'daten', 'ebd-pfade.js'),
         path.join(engineDir, 'antwortcode-auswahl.js'),
+        // Engine-Sicht der kuratierten Maske (Feldauswahl-Umbau, Phase 2):
+        // zentrale Engine + Profil-Modul statt des früheren generator.js.
+        path.join(engineDir, 'ahb-form-engine.js'),
+        path.join(engineDir, 'utilmd-maske.js'),
+        // Prüflogik: dieselbe wie in Masken und universellem Validator
         path.join(engineDir, 'daten', 'af-regeln.js'),
         path.join(engineDir, 'daten', 'ahb-ergaenzungen.js'),
         path.join(engineDir, 'daten', 'bedingung-eval.js'),
@@ -83,15 +87,42 @@ function ladeGenerator(engineDir, dataDir, opts = {}){
     ].filter(fs.existsSync);
 
     const store = {};
+    // Legt ein Element unabhängig vom gerenderten HTML an (Seiten-Grundgerüst,
+    // Testzugriffe). Bestehende Elemente werden wiederverwendet.
     const get = id => { if(!store[id]){ const e=new El(id); e.id=id; e._store=store; store[id]=e; } return store[id]; };
+    // getElementById der Sandbox: Ein Element existiert nur, wenn es angelegt wurde
+    // oder seine ID im gerenderten HTML vorkommt — die Engine verlässt sich darauf,
+    // dass nicht gerenderte Felder null liefern (Automatik-/Fallback-Werte).
+    // Beim ersten Zugriff werden value-Attribut bzw. Select-Vorauswahl übernommen.
+    const beiId = id => {
+        if (store[id]) return store[id];
+        let html = null;
+        for (const key of Object.keys(store)) {
+            const h = store[key] && store[key]._html;
+            if (h && h.indexOf(`id="${id}"`) >= 0) { html = h; break; }
+        }
+        if (html === null) return null;
+        const e = get(id);
+        const kennung = id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const m = new RegExp(`id="${kennung}"[^>]*\\bvalue="([^"]*)"`).exec(html);
+        if (m) e.value = m[1];
+        const s = new RegExp(`<select id="${kennung}"[^>]*>([\\s\\S]*?)</select>`).exec(html);
+        if (s) {
+            e.tagName = 'SELECT';
+            const gewaehlt = /<option value="([^"]*)"[^>]*\bselected\b/.exec(s[1]);
+            const erste = /<option value="([^"]*)"/.exec(s[1]);
+            e.value = gewaehlt ? gewaehlt[1] : (erste ? erste[1] : '');
+        }
+        return e;
+    };
     El.prototype._store = store;
 
     const sandbox = { console, store,
-        document: { getElementById: get, createElement: t => { const e=new El(t); e._store=store; return e; },
+        document: { getElementById: beiId, createElement: t => { const e=new El(t); e._store=store; return e; },
                     // Der Shim hält keine Elementbäume vor; die Sichtbarkeitssteuerung
                     // der bedingten Blöcke ist im Test ohne Belang, die Emission prüft
                     // die Bedingung ohnehin eigenständig über die Feldwerte.
-                    querySelectorAll: () => [],
+                    querySelectorAll: () => [], querySelector: () => null,
                     readyState:'complete', addEventListener:()=>{} },
         window:{}, Date, Math, String, Number, JSON, parseInt, parseFloat, isNaN, RegExp, Set, Array, Object };
     sandbox.global = sandbox;
@@ -105,6 +136,8 @@ function ladeGenerator(engineDir, dataDir, opts = {}){
     const pids = Object.keys(require(path.join(pd, '_regeln.js'))).sort();
 
     // Erzeugt die Testnachricht einer PID (mit Zeilenumbrüchen).
+    // Die Maskenfunktionen (renderForm/generateEdifact) bindet das Profil-Modul
+    // an das window-Objekt der Sandbox (wie alle Bibliotheken der Engine).
     function generiere(pid){
         // Feldzustand vollständig zurücksetzen (der Browser baut das Formular je PID-Auswahl
         // neu auf; ohne Reset würden Feldwerte einer vorherigen PID durchlecken, z. B.
@@ -113,9 +146,11 @@ function ladeGenerator(engineDir, dataDir, opts = {}){
         store['lineBreaks'] = new El('input'); store['lineBreaks'].checked = true;
         get('prufId').value = pid;
         store['dynamicForm'] = new El('div'); store['dynamicForm'].id='dynamicForm'; store['dynamicForm']._store=store;
-        sandbox.renderForm();
+        get('edifactOutput'); get('errorBox');   // Seiten-Grundgerüst (Ausgabe/Fehlerbox)
+        const w = sandbox.window || {};
+        (w.renderForm || sandbox.renderForm)();
         applyValues(get);
-        sandbox.generateEdifact();
+        (w.generateEdifact || sandbox.generateEdifact)();
         return get('edifactOutput').value;
     }
 

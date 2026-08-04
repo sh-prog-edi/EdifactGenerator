@@ -123,7 +123,7 @@ EdifactGenerator/
 │   ├── ahb-form-engine.js         Formular-Engine: Formular + EDIFACT-Nachricht aus Formular-Meta
 │   ├── ahb-validator.js           Parser + Validierung (AHB / MIG / EBD / Codelisten / AF)
 │   ├── import-pruefung.js         Gemeinsame Importprüfung für Masken und Validator
-│   ├── generator.js               Kuratierte UTILMD-Masken: Formularaufbau + Erzeugung
+│   ├── utilmd-maske.js            Kuratierte UTILMD-Masken: Feldauswahl-Sicht auf die Engine
 │   ├── antwortcode-auswahl.js     EBD-Antwortcodes: Cluster- und Prüfschritt-gerechte Auswahl
 │   ├── folgenachrichten.js        Folgeschritte des Geschäftsprozesses vorbefüllen
 │   ├── bedingung-hilfe.js         Fragezeichen-Symbol mit Klartext zu jeder AHB-Bedingung

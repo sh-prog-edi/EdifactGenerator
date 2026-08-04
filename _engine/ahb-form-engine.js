@@ -29,6 +29,33 @@
   let aktuellePruefi = null;
   let aktuelleRef = "";   // Nachrichtenreferenz (UNB/UNH/BGM/IDE/UNT/UNZ), je Formular neu
 
+  // ---- Kuratierte Sicht (Feldauswahl-Umbau, Phase 2) ----------------------
+  // Die kuratierten Masken rendern ihr Formular selbst (schlankes Profil-Modul,
+  // _engine/utilmd-maske.js) und melden der Engine nur die Zuordnung ihrer
+  // Feld-IDs auf die Instanzfelder der Formular-Meta. Die ERZEUGUNG läuft dann
+  // ausschließlich hier — ein Erzeugungsweg für Vollformular und Maske.
+  //   setzeSicht({
+  //     alias:        { "<pfad>_<k>": "<DOM-Feld-ID>", … },
+  //     posAktiv:     true,        // genau eine Position (SG4-Vorgang) emittieren
+  //     zeitraumWdh:  () => [...], // weitere Verwendungszeitraum-Wiederholungen ("2", …)
+  //     zusatzSegmente: (inst, pfad, ctx) => {…}, // z. B. Produktpaket nach einer Instanz
+  //   })
+  // setzeSicht(null) schaltet zurück auf das Vollformular-Verhalten.
+  let SICHT = null;
+  function setzeSicht(s) { SICHT = s || null; }
+  // DOM-ID eines Instanzfeldes: im Sicht-Modus die gemeldete Feld-ID, sonst f_<pfad>_<k>.
+  function feldId(pfad, k) {
+    if (SICHT && SICHT.alias) {
+      const a = SICHT.alias[`${pfad}_${k}`];
+      if (a !== undefined) return a;
+    }
+    return `f_${pfad}_${k}`;
+  }
+  // Konfigurierbare DOM-IDs: die Generatorseiten nutzen die Engine-Konvention
+  // (kopfFelder, ediOut, …), die kuratierten Masken ihre gewachsenen IDs
+  // (dynamicForm, edifactOutput, NAD_MS als globales Absenderfeld, …).
+  function EL(name) { return $(((CFG.ids || {})[name]) || name); }
+
   // Referenzvergabe wie im UTILMD-Generator: Millisekunden seit 01.01.2000 (UTC),
   // 12-stellig, passt in DE0020/DE0062 (an..14).
   function nachrichtRef() { return String(Date.now() - Date.UTC(2000, 0, 1)); }
@@ -47,6 +74,51 @@
     const d = new Date(); const p = n => String(n).padStart(2, "0");
     const datum = `${p(d.getDate())}.${p(d.getMonth() + 1)}.${d.getFullYear()}`;
     return /HH:MM/.test(ph || "") ? `${datum} ${p(d.getHours())}:${p(d.getMinutes())}` : datum;
+  }
+
+  // ---- MaKo-Terminumrechnung (deutsche Prozesszeit -> UTC) -----------------
+  // Prozessuale Termine der Marktkommunikation meinen den Tagesbeginn deutscher
+  // Zeit (Strom 00:00, Gas 06:00). EDIFACT führt sie in UTC (Format 303):
+  // „zum 01.09.2026" ist das Tagesende des 31.08. -> 202608312200+00 (MESZ).
+  // Gesetzliche MESZ-Tabelle laut BDEW-Vorgabe (identisch zur bisherigen Maske).
+  const MESZ_TABELLE = {
+    2000: ["2000-03-26", "2000-10-29"], 2001: ["2001-03-25", "2001-10-28"],
+    2002: ["2002-03-31", "2002-10-27"], 2003: ["2003-03-30", "2003-10-26"],
+    2004: ["2004-03-28", "2004-10-31"], 2005: ["2005-03-27", "2005-10-30"],
+    2006: ["2006-03-26", "2006-10-29"], 2007: ["2007-03-25", "2007-10-28"],
+    2008: ["2008-03-30", "2008-10-26"], 2009: ["2009-03-29", "2009-10-25"],
+    2010: ["2010-03-28", "2010-10-31"], 2011: ["2011-03-27", "2011-10-30"],
+    2012: ["2012-03-25", "2012-10-28"], 2013: ["2013-03-31", "2013-10-27"],
+    2014: ["2014-03-30", "2014-10-26"], 2015: ["2015-03-29", "2015-10-25"],
+    2016: ["2016-03-27", "2016-10-30"], 2017: ["2017-03-26", "2017-10-29"],
+    2018: ["2018-03-25", "2018-10-28"], 2019: ["2019-03-31", "2019-10-27"],
+    2020: ["2020-03-29", "2020-10-25"], 2021: ["2021-03-28", "2021-10-31"],
+    2022: ["2022-03-27", "2022-10-30"], 2023: ["2023-03-26", "2023-10-29"],
+    2024: ["2024-03-31", "2024-10-27"], 2025: ["2025-03-30", "2025-10-26"],
+    2026: ["2026-03-29", "2026-10-25"], 2027: ["2027-03-28", "2027-10-31"],
+    2028: ["2028-03-26", "2028-10-29"], 2029: ["2029-03-25", "2029-10-28"],
+    2030: ["2030-03-31", "2030-10-27"], 2031: ["2031-03-30", "2031-10-26"],
+    2032: ["2032-03-28", "2032-10-31"],
+  };
+  function istMESZ(jahr, monat, tag, stunde) {
+    const regel = MESZ_TABELLE[jahr];
+    if (!regel) return false;
+    const p = n => String(n).padStart(2, "0");
+    const t = new Date(`${jahr}-${p(monat)}-${p(tag)}T${p(stunde)}:00:00Z`);
+    return t >= new Date(regel[0] + "T01:00:00Z") && t < new Date(regel[1] + "T01:00:00Z");
+  }
+  // TT.MM.JJJJ (deutscher Prozess-Tagesbeginn) -> "CCYYMMDDHHMM+00".
+  function makoUtc(tag, monat, jahr, sparte) {
+    const zielStunde = (String(sparte).toUpperCase() === "GAS") ? 6 : 0;
+    const versatz = istMESZ(jahr, monat, tag, zielStunde) ? 2 : 1;
+    let h = zielStunde - versatz, d = tag, m = monat, j = jahr;
+    if (h < 0) {
+      h += 24;
+      const vortag = new Date(Date.UTC(jahr, monat - 1, tag - 1));
+      d = vortag.getUTCDate(); m = vortag.getUTCMonth() + 1; j = vortag.getUTCFullYear();
+    }
+    const p = n => String(n).padStart(2, "0");
+    return `${j}${p(m)}${p(d)}${p(h)}00+00`;
   }
 
   // ---- MIG-Feldformate (Länge/Zeichenart) für Feld-Hinweise ---------------
@@ -472,7 +544,7 @@
     return setzeFeldAn(pfad, inst, f, typeof k === "number" ? k : treffer[0]);
   }
   function setzeFeldAn(pfad, inst, f, k) {
-    const el = $(`f_${pfad}_${k}`);
+    const el = $(feldId(pfad, k));
     if (!el) return false;
     if (el.multiple) {
       let ok = false;
@@ -648,7 +720,7 @@
   let letzterKontext = "";
   function aktualisiereAntwortcodes(erzwingen) {
     const meta = aktuelleMeta;
-    if (!meta) return;
+    if (!meta || SICHT) return;   // kuratierte Sicht: das Profil-Modul führt die Auswahl nach
     const kontext = ebdKontext();
     const kennung = JSON.stringify(kontext);
     if (!erzwingen && kennung === letzterKontext) return;
@@ -678,7 +750,7 @@
   // Antwortcode genau eines davon — die EBD-Nummer wird deshalb nachgezogen.
   function synchronisiereEbd() {
     const meta = aktuelleMeta;
-    if (!meta) return;
+    if (!meta || SICHT) return;   // kuratierte Sicht: EBD-Nummer kommt aus deren Auswahlfeld
     alleInstanzPfade(meta).forEach(([inst, pfad]) => {
       if (inst.seg !== "STS") return;
       const k9013 = inst.des.findIndex(d => d.de === "9013" && !(d.codes || []).length);
@@ -705,6 +777,22 @@
     const teileWert = `${edi(wert303)}:${code}`;
     const m = String(roh).match(/^(\d{2})\.(\d{2})\.(\d{4})(?:\s+(\d{2}):(\d{2}))?$/);
     if (!m || !/^\d{12}\+00$/.test(wert303)) return `EDIFACT: ${teileWert}`;
+    // Reines Datum im MaKo-Modus: Der Termin meint den Tagesbeginn deutscher Zeit
+    // (Strom 00:00 / Gas 06:00) — Lesart und Zone folgen der MESZ-Tabelle, nicht
+    // der Zeitzone des Rechners.
+    if (CFG.makoDatum && !m[4]) {
+      const stunde = (String((CFG.formatConfig || {}).sparte).toUpperCase() === "GAS") ? 6 : 0;
+      const zoneM = istMESZ(Number(m[3]), Number(m[2]), Number(m[1]), stunde) ? "MESZ" : "MEZ";
+      const p = n => String(n).padStart(2, "0");
+      let lesartM = `${m[1]}.${m[2]}.${m[3]} ${p(stunde)}:00 ${zoneM}`;
+      if (stunde === 0) {
+        const vortag = new Date(Date.UTC(Number(m[3]), Number(m[2]) - 1, Number(m[1]) - 1));
+        lesartM += ` = Tagesende ${p(vortag.getUTCDate())}.${p(vortag.getUTCMonth() + 1)}.${vortag.getUTCFullYear()} 24:00`;
+      } else {
+        lesartM += " (Beginn des Gastages)";
+      }
+      return `EDIFACT: ${teileWert} · ${lesartM}`;
+    }
     const std = Number(m[4] || 0), min = Number(m[5] || 0);
     const d = new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]), std, min);
     const versatz = -d.getTimezoneOffset();
@@ -725,7 +813,7 @@
     alleInstanzPfade(meta).forEach(([inst, pfad]) => {
       inst.des.forEach((deE, k) => {
         if (deE.de !== "2380") return;
-        const ziel = $(`f_${pfad}_${k}_utc`);
+        const ziel = $(feldId(pfad, k) + "_utc");
         if (!ziel) return;
         const roh = wert(pfad, k);
         if (!roh || Array.isArray(roh)) { ziel.textContent = ""; return; }
@@ -737,7 +825,7 @@
 
   // ---- Erzeugung ---------------------------------------------------------
   function wert(pfad, k) {
-    const el = $(`f_${pfad}_${k}`);
+    const el = $(feldId(pfad, k));
     if (!el) return "";
     if (el.multiple) return Array.from(el.selectedOptions).map(o => o.value);
     return el.value.trim();
@@ -753,7 +841,7 @@
   function deWertIdx(inst, pfad, k) {
     const deE = inst.des[k];
     if (!deE) return "";
-    const el = $(`f_${pfad}_${k}`);
+    const el = $(feldId(pfad, k));
     if (el) return wert(pfad, k);
     if ((deE.codes || []).length === 1) return deE.codes[0][0];
     return "";
@@ -775,10 +863,15 @@
     kopf.forEach((inst, j) => paare.push([inst, `k_${j}`]));
     schluss.forEach((inst, j) => paare.push([inst, `s_${j}`]));
     if (pos.length) {
-      Array.from(($('posListe') || { children: [] }).children).forEach(div => {
-        const i = div.id.replace('pos', '');
-        pos.forEach((inst, j) => paare.push([inst, `p${i}_${j}`]));
-      });
+      if (SICHT && SICHT.posAktiv) {
+        // Kuratierte Sicht: genau eine Position (ein Vorgang), ohne posListe-DOM.
+        pos.forEach((inst, j) => paare.push([inst, `p1_${j}`]));
+      } else {
+        Array.from((EL('posListe') || { children: [] }).children).forEach(div => {
+          const i = div.id.replace('pos', '');
+          pos.forEach((inst, j) => paare.push([inst, `p${i}_${j}`]));
+        });
+      }
     }
     return paare;
   }
@@ -810,7 +903,7 @@
 
   function aktualisiereAbhaengigkeiten() {
     const meta = aktuelleMeta;
-    if (!meta) return;
+    if (!meta || SICHT) return;   // kuratierte Sicht: das Profil-Modul schaltet seine Blöcke selbst
     alleInstanzPfade(meta).forEach(([inst, pfad]) => {
       if (!inst.schalter || !inst.schalter.length) return;
       const block = document.querySelector(`[data-instanz="${pfad}"]`);
@@ -858,6 +951,26 @@
     m = roh.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
     if (m) {
       if (fmt.includes("102")) return [`${m[3]}${m[2]}${m[1]}`, "102"];
+      // Reines Datum als prozessualer Termin (kuratierte Masken, CFG.makoDatum):
+      // Tagesbeginn deutscher Zeit (Strom 00:00 / Gas 06:00) in UTC umgerechnet.
+      // Ausnahme DTM+137 (Nachrichtendatum): Datum + Uhrzeit der Erstellung.
+      if (CFG.makoDatum && (fmt.includes("303") || fmt.includes("304") || !fmt.length)) {
+        const ist137 = ((inst.des.find(x => x.de === "2005") || { codes: [] }).codes || [])
+          .some(c => c[0] === "137");
+        if (ist137) {
+          const jetzt = new Date(); const p = n => String(n).padStart(2, "0");
+          const tag = Number(m[1]), monat = Number(m[2]), jahr = Number(m[3]);
+          const versatz = istMESZ(jahr, monat, tag, jetzt.getHours()) ? 2 : 1;
+          let h = jetzt.getHours() - versatz, d = tag, mo = monat, j2 = jahr;
+          if (h < 0) {
+            h += 24;
+            const vortag = new Date(Date.UTC(jahr, monat - 1, tag - 1));
+            d = vortag.getUTCDate(); mo = vortag.getUTCMonth() + 1; j2 = vortag.getUTCFullYear();
+          }
+          return [`${j2}${p(mo)}${p(d)}${p(h)}${p(jetzt.getMinutes())}+00`, zeitCode];
+        }
+        return [makoUtc(Number(m[1]), Number(m[2]), Number(m[3]), (CFG.formatConfig || {}).sparte), zeitCode];
+      }
       if (fmt.includes("303") || fmt.includes("304") || !fmt.length)
         return [`${m[3]}${m[2]}${m[1]}0000+00`, zeitCode];
       if (fmt.includes("203")) return [`${m[3]}${m[2]}${m[1]}0000`, "203"];
@@ -890,7 +1003,13 @@
   function emittiere(inst, pfad, ctx) {
     const { seg } = inst;
     const g = de => deWert(inst, pfad, de);
-    const out = ctx.seg, errors = ctx.errors;
+    // Testmodus (kuratierte Masken): fehlende Eingaben verhindern die Testnachricht
+    // nicht — das betroffene Segment entfällt mit Hinweis (bisheriges Maskenverhalten;
+    // die Selbstvalidierung weist die fehlenden Muss-Segmente aus, offener Punkt D).
+    const out = ctx.seg;
+    const errors = CFG.testmodus
+      ? { push: m => ctx.warn.push(m + " — Segment fehlt in der Testnachricht.") }
+      : ctx.errors;
     // Eine an eine Bedingung geknüpfte Segmentgruppe wird nur erzeugt, wenn die
     // Bedingung erfüllt ist. Enthält sie trotzdem Eingaben, ist das ein Fehler:
     // die Kombination wäre nach AHB unzulässig.
@@ -969,6 +1088,8 @@
         const zeitraum = hat1156 ? g("1156") : "";
         if (hat1156) {
           if (!zeitraum && pflicht) {
+            // Testmodus: Muss-Referenz ohne Eingabe wie bisher als Platzhalter.
+            if (CFG.testmodus && hat1154) { out.push(`RFF+${q}:${ref ? edi(ref) : "REF-" + q}'`); return; }
             errors.push(`RFF+${q} (${inst.section || ""}): Zeitraum-ID (DE1156) angeben.`);
             return;
           }
@@ -978,6 +1099,9 @@
         }
         if (!ref) {
           if (!hat1154) { out.push(`RFF+${q}'`); return; }  // Qualifier-only-RFF laut AHB
+          // Testmodus: Muss-Referenzen erhalten wie bisher einen Platzhalter, damit
+          // die Testnachricht strukturell vollständig bleibt (REF-<Qualifier>).
+          if (pflicht && CFG.testmodus) { out.push(`RFF+${q}:REF-${q}'`); return; }
           if (pflicht) errors.push(`RFF+${q}: Referenz (DE1154) angeben.`);
           return;
         }
@@ -999,6 +1123,12 @@
         const name = g("3036"), strasse = g("3042"), ort = g("3164"), plz = g("3251"), land = g("3207"), zusatz = g("3124");
         if (!q) { if (pflicht) errors.push(`NAD (${inst.section || ""}): Qualifier wählen.`); return; }
         if (!id && !name && !pflicht) return;
+        if (!id && !name && CFG.testmodus) {
+          // Kuratierte Masken: Ohne MP-ID/Namen entstünde ein leeres Adresssegment
+          // (DE3039 bzw. C080 sind dort Muss) - Hinweis statt Skelett.
+          errors.push(`NAD+${q} (${inst.section || ""}): MP-ID bzw. Name angeben.`);
+          return;
+        }
         let s = `NAD+${q}`;
         if (id) s += `+${edi(id)}::${nad3055(codevergabe(id).nad)}`;
         else if (zusatz || name || strasse || ort || plz || land) s += "+";
@@ -1104,9 +1234,15 @@
         out.push(auspraegung ? `CCI+${q || ""}++${auspraegung}'` : `CCI+${q}'`); return;
       }
       case "CAV": {
-        const c = g("7111"), z = g("7110");
+        // C889: DE7111 (Code) : DE1131 : DE3055 : DE7110. Regelfall ist der Wert im
+        // DE7110 (CAV+ZH9:::<Wert>); die Zugeordnete-Marktpartner-CAV führen die
+        // MP-ID frei im DE1131 und die Art im DE7110 (CAV+Z91:<MP-ID>::Z39 —
+        // quellengeprüft am AHB S2.1, Entscheidungsliste Phase 2, Muster E4).
+        const c = g("7111"), id1131 = g("1131"), z = g("7110");
         if (!c) return;
-        out.push(`CAV+${c}${z ? ":::" + z : ""}'`); return;
+        const komp = [c, id1131 || "", "", z || ""].map(x => edi(String(x)));
+        while (komp.length && !komp[komp.length - 1]) komp.pop();
+        out.push(`CAV+${komp.join(":")}'`); return;
       }
       case "MOA": {
         const q = g("5025"), betrag = g("5004");
@@ -1261,8 +1397,8 @@
 
   function generate(pruefi, meta) {
     const errors = [], warn = [];
-    const abs = $('absender').value.trim(), emp = $('empfaenger').value.trim();
-    const mailEl = $('kontaktMail'), nameEl = $('kontaktName');
+    const abs = (EL('absender') || { value: "" }).value.trim(), emp = (EL('empfaenger') || { value: "" }).value.trim();
+    const mailEl = EL('kontaktMail'), nameEl = EL('kontaktName');
     const mail = mailEl ? mailEl.value.trim() : "";
     const kontaktName = nameEl ? nameEl.value.trim() : "";
     if (!abs || !emp) errors.push("MP-ID Absender und Empfänger sind Pflicht.");
@@ -1304,23 +1440,37 @@
     const posIdx = (meta.instanzen || []).findIndex(i => CFG.posSgRegex.test(i.sg || ""));
     const unsVorPositionen = unsIdx >= 0 && posIdx >= 0 && unsIdx < posIdx;
 
-    kopf.forEach((inst, j) => { if (inst.seg !== "UNB") emittiere(inst, `k_${j}`, ctx); });
+    const nachInstanz = (SICHT && typeof SICHT.zusatzSegmente === "function") ? SICHT.zusatzSegmente : null;
+    // Instanzen, die die Sicht selbst bedient oder bewusst nicht erzeugt
+    // (Objektgruppen ohne Datengrundlage), werden übersprungen.
+    const uebersprungen = pfad => SICHT && SICHT.unterdrueckt && SICHT.unterdrueckt.has(pfad);
+    kopf.forEach((inst, j) => {
+      if (inst.seg === "UNB") return;
+      if (!uebersprungen(`k_${j}`)) emittiere(inst, `k_${j}`, ctx);
+      if (nachInstanz) nachInstanz(inst, `k_${j}`, ctx);
+    });
     if (hatUNS && unsVorPositionen) ctx.seg.push("UNS+D'");
     if (pos.length) {
-      const bloecke = Array.from($('posListe').children);
+      // Kuratierte Sicht: genau eine Position (ein Vorgang), ohne posListe-DOM.
+      const bloecke = (SICHT && SICHT.posAktiv)
+        ? ["1"]
+        : Array.from((EL('posListe') || { children: [] }).children).map(div => div.id.replace('pos', ''));
       if (!bloecke.length) errors.push("Mindestens eine Position angeben.");
       const zg = zeitraumGruppe(pos);
-      bloecke.forEach(div => {
-        const i = div.id.replace('pos', '');
+      const wdhListe = i => (SICHT && SICHT.posAktiv)
+        ? ((typeof SICHT.zeitraumWdh === "function" ? SICHT.zeitraumWdh() : []) || [])
+        : zeitraumBloecke(i);
+      bloecke.forEach(i => {
         ctx.hat163 = ctx.hat164 = false;
         pos.forEach((inst, j) => {
-          emittiere(inst, `p${i}_${j}`, ctx);
+          if (!uebersprungen(`p${i}_${j}`)) emittiere(inst, `p${i}_${j}`, ctx);
           // Weitere Verwendungszeiträume unmittelbar nach dem ersten ausgeben —
           // die Zeiträume stehen im AHB als aufeinanderfolgende SG6-Wiederholungen.
           if (zg && j === zg.bis)
-            zeitraumBloecke(i).forEach(nr => {
+            wdhListe(i).forEach(nr => {
               for (let x = zg.von; x <= zg.bis; x++) emittiere(pos[x], `p${i}w${nr}_${x}`, ctx);
             });
+          if (nachInstanz) nachInstanz(inst, `p${i}_${j}`, ctx);
         });
         // Regel [11]: Messperiode nur mit Beginn UND Ende
         // nur wenn 163/164 als getrennte Fest-Code-Segmente vorliegen (MSCONS),
@@ -1341,12 +1491,16 @@
     if (hatUNS && !unsVorPositionen) ctx.seg.push("UNS+S'");
     schluss.forEach((inst, j) => emittiere(inst, `s_${j}`, ctx));
 
-    const errBox = $('errorBox');
+    const errBox = EL('errorBox');
     const meldungen = errors.concat(warn.map(w => "Hinweis: " + w));
-    errBox.style.display = meldungen.length ? 'block' : 'none';
-    errBox.innerHTML = meldungen.join('<br>');
+    if (errBox) {
+      errBox.style.display = meldungen.length ? 'block' : 'none';
+      errBox.innerHTML = meldungen.join('<br>');
+    }
+    const okBox = EL('okBox'), ediOut = EL('ediOut');
     if (errors.length) {
-      $('okBox').style.display = 'none'; $('ediOut').value = '';
+      if (okBox) okBox.style.display = 'none';
+      if (ediOut) ediOut.value = '';
       const fn = document.getElementById('folgeNachrichten'); if (fn) fn.style.display = 'none';
       return false;
     }
@@ -1354,11 +1508,11 @@
     const unhIndex = ctx.seg.findIndex(s => s.startsWith('UNH'));
     ctx.seg.push(`UNT+${ctx.seg.length - unhIndex + 1}+${dar}'`);
     ctx.seg.push(`UNZ+1+${dar}'`);
-    $('ediOut').value = ctx.seg.join("\n");
+    if (ediOut) ediOut.value = ctx.seg.join("\n");
     // Folgenachrichten des Geschäftsprozesses anbieten (vorbefüllt aus dieser Nachricht)
-    if (global.EdiFolgenachrichten)
-      global.EdiFolgenachrichten.zeigeAutomatisch(pruefi, $('ediOut').value, 'ediOut');
-    $('okBox').style.display = 'inline-block';
+    if (global.EdiFolgenachrichten && ediOut)
+      global.EdiFolgenachrichten.zeigeAutomatisch(pruefi, ediOut.value, ((CFG.ids || {}).ediOut) || 'ediOut');
+    if (okBox) okBox.style.display = 'inline-block';
     return true;
   }
 
@@ -1367,7 +1521,12 @@
       konfiguriere: c => { CFG = Object.assign(CFG, c); },
       renderFor, generate, addPos, removePos,
       addZeitraum, removeZeitraum,
-      edi, codevergabe
+      edi, codevergabe,
+      // Schnittstelle der kuratierten Sicht (Feldauswahl-Umbau, Phase 2):
+      setzeSicht, teile, ebdKontext, bevorzugteErgaenzung,
+      aktualisiereZeitanzeige, zeitraumGruppe,
+      neueReferenz: () => { aktuelleRef = nachrichtRef(); return aktuelleRef; },
+      setzeKontext: (pruefi, meta) => { aktuellePruefi = pruefi; aktuelleMeta = meta; },
     };
   }
 })(typeof window !== "undefined" ? window : this);

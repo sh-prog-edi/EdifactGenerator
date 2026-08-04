@@ -1,6 +1,6 @@
 # Arbeitsstand / Übergabe
 
-Stand: 04.08.2026 (nach Phase 2.2) · Projekt: **EdifactGenerator** · Auftraggeber: Steffen Haense
+Stand: 04.08.2026 (Phase 2 abgeschlossen) · Projekt: **EdifactGenerator** · Auftraggeber: Steffen Haense
 
 **Quelle der Wahrheit ist das Git-Repository**
 (<https://github.com/sh-prog-edi/EdifactGenerator>). Der Einstieg in eine neue Sitzung:
@@ -60,12 +60,13 @@ Extraktionsläufe erwarten die Skripte den Bestand im Arbeitsordner oberhalb des
 (übersteuerbar per `EDIGEN_ARBEITSORDNER`). Reproduktionsweg der FV2610-Quellen:
 Protokoll Abschnitt 7.
 
-**Zwei Wege zum Formular** (offener Punkt F, in Auflösung): Die vier kuratierten
-UTILMD-Masken beziehen ihre Regeln seit dem Feldauswahl-Umbau aus je EINER
-Datendatei `pruef-ids/_regeln.js` (die 553 Einzeldateien `<PID>.js` und die
-`_pid-registry.js` sind entfernt; Äquivalenz per unveränderter Golden bewiesen).
-Alle übrigen Seiten arbeiten allein mit `_form-meta.js`. Letzter Schritt der
-Zusammenführung: `generator.js` durch die Engine-Sicht ersetzen.
+**Ein Formularweg** (offener Punkt F, aufgelöst): Die vier kuratierten
+UTILMD-Masken sind seit dem Engine-Schritt eine **Sicht auf die zentrale Engine**
+(`_engine/utilmd-maske.js`): Die Feldauswahl (welche Felder, Reihenfolge,
+Beschriftung) kommt als Datenschicht aus `pruef-ids/_regeln.js`, die Prüfgrundlage
+aus `pruef-ids/_form-meta.js`; erzeugt wird ausschließlich über
+`AhbFormEngine.generate` — derselbe Weg wie in den Vollformularen. Den früheren
+eigenen Erzeugungsweg (`generator.js`) gibt es nicht mehr (Abschnitt 40).
 
 ## 4. Regression
 
@@ -94,17 +95,16 @@ Punkt D) und bricht die Regression nicht.
 
 ## 6. Offene Punkte
 
-Fachlich: [`OFFENE_ASPEKTE.md`](OFFENE_ASPEKTE.md) (A–F), als GitHub-Issues vorbereitet
-in [`ISSUES_VORLAGEN.md`](ISSUES_VORLAGEN.md) — der wirksamste nächste fachliche Schritt
-ist **A (externe Validierungs-Absicherung)**, dafür werden echte Beispielnachrichten
-oder ein Fremdvalidator gebraucht (Beschaffung: Auftraggeber). Strukturell: Phasen 2–5
-des [Umbauplans](NEUSTRUKTURIERUNG_PLAN_20260804.md). Phase 2 ist zur Hälfte
-umgesetzt: Die 224 fachlichen Befunde sind behoben (Kopplung der Maske an die Meta,
-Abschnitte 37/38); die Regeln sind als Datenschicht
-konsolidiert (`_regeln.js`, Abschnitt 39); es verbleibt der **Engine-Schritt**
-(`generator.js` durch die Engine-Sicht ersetzen, inkl. inhaltlicher Neubelegung
-der 55194-Objektdaten mit SEQ+ZF3/ZG0) und danach Phase 3 (Formatstand als
-Parameter).
+Fachlich: [`OFFENE_ASPEKTE.md`](OFFENE_ASPEKTE.md) (A–E; F ist mit dem Engine-Schritt
+geschlossen), als GitHub-Issues vorbereitet in [`ISSUES_VORLAGEN.md`](ISSUES_VORLAGEN.md)
+— der wirksamste nächste fachliche Schritt ist **A (externe Validierungs-Absicherung)**,
+dafür werden echte Beispielnachrichten oder ein Fremdvalidator gebraucht (Beschaffung:
+Auftraggeber). Strukturell: **Phase 2 ist abgeschlossen** (Abschnitte 37–40: Befunde
+behoben, Regel-Datenschicht, Engine-Schritt samt 55194-Neubelegung und
+Golden-Neubewertung); als Nächstes **Phase 3** des
+[Umbauplans](NEUSTRUKTURIERUNG_PLAN_20260804.md) (Formatstand als Parameter statt
+Ordnerkopie). Fachliche Folgearbeit aus Abschnitt 40: vollständige GDA-Testnachrichten
+(Kap. 9.5) über `nutzdaten`-Neubelegung je Prüf-ID — exemplarisch mit 55194 begonnen.
 
 ## 7. Fallstricke aus der bisherigen Arbeit
 

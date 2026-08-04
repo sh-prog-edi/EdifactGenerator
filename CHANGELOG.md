@@ -5,6 +5,26 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **04.08.2026** – **Phase 2 abgeschlossen (Engine-Schritt): ein Erzeugungsweg für alle
+  Masken.** `_engine/generator.js` (der eigene Erzeugungsweg der vier kuratierten
+  UTILMD-Masken, 1.037 Zeilen) ist entfernt. Die Masken sind jetzt eine **Sicht auf die
+  zentrale Engine**: Das neue Profil-Modul `_engine/utilmd-maske.js` rendert die
+  kuratierten Felder aus der Feldauswahl-Datenschicht (`pruef-ids/_regeln.js`), ordnet
+  jedes Feld einer Instanz der Formular-Meta zu und meldet die Zuordnung der Engine
+  (`AhbFormEngine.setzeSicht`); die Nachricht erzeugt ausschließlich
+  `_engine/ahb-form-engine.js` — derselbe Weg wie im Vollformular. Die Engine kennt
+  dafür einen Testmodus (fehlende Muss-Eingaben ⇒ Hinweis statt Abbruch, Muss-Referenzen
+  mit REF-Platzhalter), die MaKo-Terminumrechnung (Strom 00:00 / Gas 06:00 deutscher
+  Zeit, MESZ-Tabelle) und das vollständige CAV-C889 (DE1131). Die 55194-Objektdaten sind
+  inhaltlich neu belegt (SEQ+ZF3/ZG0 samt Merkmalen, als Daten in `_regeln.js`).
+  **Golden-Neubewertung als eigener Prüfblock:** je Ziel Diff je Prüf-ID erzeugt und den
+  Mustern zugeordnet (V1 neue AHB-geführte Muss-Segmente, V2 entfallene
+  Pauschal-Platzhalter bedingter Referenzen, V3 komponentenrichtige CAV/RFF/STS-Werte,
+  V4 einheitliche REF-\<Qualifier\>-Platzhalter, V5 55194-Neubelegung, V6
+  AHB-Segmentreihenfolge); Snapshots danach bewusst neu eingefroren
+  (375/553 Nachrichten zeichengleich, 26 nur umsortiert, 152 inhaltlich begründet
+  geändert). Informative Selbstvalidierungs-Befunde:
+  982 → 848. Volle Regression grün (32 Läufe). → Protokoll Abschnitt 40.
 - **04.08.2026** – **Phase 2 (Fortsetzung): Regel-Datenschicht statt 553 Einzeldateien.**
   Die handgepflegten `pruef-ids/<PID>.js` der vier kuratierten UTILMD-Masken (553
   Dateien) und die vier `_pid-registry.js` sind durch je EINE generierte Datendatei

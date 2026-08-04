@@ -2016,6 +2016,11 @@ const ahbRulesByPrufId = {
     ],
     "rule": "AHB: Muss"
    }
+  ],
+  "nutzdaten": [
+   {
+    "seq": "Z01"
+   }
   ]
  },
  "55018": {
@@ -5772,6 +5777,11 @@ const ahbRulesByPrufId = {
     "status": "Kann",
     "rule": "AHB: Kann"
    }
+  ],
+  "nutzdaten": [
+   {
+    "seq": "Z01"
+   }
   ]
  },
  "55110": {
@@ -7991,6 +8001,40 @@ const ahbRulesByPrufId = {
     "name": "SG6 RFF+Z19: Referenz auf die ID einer Messlokation",
     "status": "Muss",
     "rule": "AHB: Muss"
+   }
+  ],
+  "nutzdaten": [
+   {
+    "seq": "ZF3",
+    "merkmale": [
+     {
+      "cci": "ZB3",
+      "cav": [
+       {
+        "code": "Z91",
+        "wert": "9911000000456"
+       },
+       {
+        "code": "ZF0",
+        "wert": "9911000000456"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "seq": "ZG0",
+    "merkmale": [
+     {
+      "cci": "Z75",
+      "cav": [
+       {
+        "code": "Z30",
+        "wert": "EABC0123456789"
+       }
+      ]
+     }
+    ]
    }
   ]
  },

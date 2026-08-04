@@ -10,7 +10,7 @@
 //     [360] Es sind nur Antwortcodes aus dem Cluster Zustimmung erlaubt
 //
 // Diese Datei wird von der zentralen Formular-Engine (`ahb-form-engine.js`) und den
-// kuratierten UTILMD-Masken (`generator.js`) gemeinsam genutzt — die Codeauswahl ist
+// kuratierten UTILMD-Masken (`utilmd-maske.js`) gemeinsam genutzt — die Codeauswahl ist
 // damit an einer Stelle geregelt.
 (function (global) {
     "use strict";

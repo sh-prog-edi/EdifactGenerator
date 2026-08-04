@@ -2168,3 +2168,92 @@ Regression grün (32 Läufe).
 Maske rendert/erzeugt über `ahb-form-engine` auf Basis von `_regeln.js` + Meta),
 inkl. inhaltlicher Neubelegung der 55194-Objektdaten (SEQ+ZF3/ZG0); danach Phase 3.
 
+## 40. Phase 2 abgeschlossen: Engine-Schritt — generator.js durch die Engine-Sicht ersetzt (04.08.2026)
+
+**Auftrag.** Letzter Schritt des Feldauswahl-Umbaus (Abschnitt 39, „Verbleibt aus
+Phase 2"): Die vier kuratierten UTILMD-Masken erzeugen ihre Nachricht über die
+zentrale Engine; `_engine/generator.js` entfällt. Eingeschlossen: die inhaltliche
+Neubelegung der 55194-Objektdaten (SEQ+ZF3/ZG0).
+
+**Bauweise.** Die Maske ist jetzt eine **Sicht auf die Engine**:
+
+1. Neues Profil-Modul `_engine/utilmd-maske.js` (ersetzt generator.js in den vier
+   `index.html`): rendert die kuratierten Felder in der Reihenfolge und mit den
+   Beschriftungen der Feldauswahl-Datenschicht (`pruef-ids/_regeln.js`), ordnet
+   jedes Feld über sein ID-Muster einer Instanz der Formular-Meta zu
+   (`DTM_92` → DTM mit DE2005=92, `LOC_Z16` → LOC mit DE3227=Z16,
+   `STS_7_grund/STS_7/STS_7_befristet` → die C556-Wiederholungen des STS+7 usw.)
+   und meldet die Zuordnung der Engine (`AhbFormEngine.setzeSicht`: Alias-Tabelle
+   Instanzfeld → DOM-Feld). Werte ohne sichtbares Feld (Transaktionsgrund ohne
+   eigenes Auswahlfeld, Zeitraum-IDs [126], mehrcodige Qualifier, EBD-Nummer zur
+   Antwort, Nutzdaten-Objektwerte) liefert die Sicht als **stille Vorbelegungen**
+   (versteckte Felder mit Alias).
+2. Die **Erzeugung läuft ausschließlich über `AhbFormEngine.generate`** — Instanz
+   für Instanz aus der Meta, in AHB-Reihenfolge, mit denselben Emittern wie im
+   Vollformular. Ein Formularweg, ein Erzeugungsweg.
+3. Engine-Erweiterungen dafür: **Testmodus** (fehlende Muss-Eingaben ⇒ Hinweis
+   „Segment fehlt in der Testnachricht" statt Abbruch; Muss-Referenzen erhalten
+   wie bisher REF-\<Qualifier\>-Platzhalter), **MaKo-Terminumrechnung** (reines
+   Datum = Tagesbeginn deutscher Zeit, Strom 00:00 / Gas 06:00, MESZ-Tabelle aus
+   generator.js übernommen; DTM+137 = Datum + Uhrzeit der Erstellung),
+   **CAV-C889 vollständig** (DE1131, z. B. `CAV+Z91:<MP-ID>::Z39`, Muster E4),
+   konfigurierbare DOM-IDs, Unterdrückungsliste (Objektgruppen SG8–SG12 ohne
+   Datengrundlage entstehen wie bisher nicht) und ein Einspeisepunkt für den
+   Produktpaket-Block der 55001.
+4. Prozesskopplungen der alten Maske blieben erhalten, jetzt engine-gestützt:
+   Antwortcode-Auswahl je EBD samt Nachführung bei geändertem Geschäftsvorfall
+   (Code und EBD-Nummer als Paar im Optionswert — derselbe Code kann in mehreren
+   EBD vorkommen, Beispiel 55608 A01: E_0603, nicht E_0606), MP-ID-Vorbelegung
+   samt E6-GLN-Regel, harte Fachregeln (93/471, [348], Pflicht bei erfüllter
+   Bedingung), Zeitscheiben-Logik (2. Zeitraum nur bei bewusster Eingabe,
+   Qualität-Fallback Z49↔Z53).
+5. **55194 neu belegt** (als Daten in `_regeln.js`, beide Strom-Stände):
+   `nutzdaten` mit SEQ+ZF3 (Daten der Messlokation: RFF+Z19, CCI+ZB3,
+   CAV+Z91:\<MP-ID\>::Z39, CAV+ZF0:\<MP-ID\>) und SEQ+ZG0 (Smartmeter-Gateway:
+   CCI+Z75, CAV+Z30 Gerätenummer); dazu SEQ+Z01-Marker der 55017/55109 als
+   `nutzdaten`-Eintrag statt Code.
+6. Test-Harness: DOM-Schein gibt für nicht gerenderte Felder jetzt `null`
+   (Voraussetzung der Engine-Automatik) und übernimmt value/Select-Vorauswahl aus
+   dem gerenderten HTML.
+
+**Golden-Neubewertung** (eigener Prüfblock, Diff je Prüf-ID, alt gegen neu):
+375 der 553 Nachrichten zeichengleich, 26 nur in der Segmentreihenfolge geändert
+(jetzt AHB-Reihenfolge der Meta, z. B. 55223 mit den zwei SG4-Vorgängen IDE+Z01 /
+IDE+24 laut AHB). Die 152 inhaltlichen Änderungen wurden vollständig sechs
+Mustern zugeordnet:
+
+- **V1 — neue AHB-geführte Muss-Segmente**, die die alte Maske nicht kannte:
+  IDE+Z01 (Listen-/Clearing-Vorgänge), RFF+TN/Z50/Z51/Z20-Platzhalter, AGR+9,
+  IMD++Z36 (Gas), FTX+ABO (Gas-Kündigungsgrund), SEQ+Z22-Objektgruppen der
+  Konfigurationsanfragen (55071/55072). Informative Muss-Befunde der
+  Selbstvalidierung sinken dadurch von 982 auf 848.
+- **V2 — entfallene Pauschal-Platzhalter** für Referenzen, die der AHB nur
+  bedingt fordert („Muss [x]"/Soll, z. B. RFF+Z14/MG/Z18/Z37/Z38/AVE): ohne
+  auswertbare Bedingung und ohne Eingabe entsteht kein Segment mehr (vorher
+  pauschal REF-…; in den GDA-Antworten Kap. 9.5 standen diese SG8-Referenzen
+  zudem ohne ihre SEQ-Gruppe — strukturell nicht AHB-konform).
+- **V3 — komponentenrichtige Werte nach Meta**: CAV-Werte im DE1131, wo der AHB
+  sie führt (55688: `CAV+Z91:9911…` statt `CAV+Z91:::9911…`); RFF+Z49/STS+E01
+  ohne erfundene Zeitraum-ID, wo der AHB kein DE1156/DE9012 führt (55691/55692).
+- **V4 — einheitliche Platzhalter** REF-\<Qualifier\> (statt REF-VORGANG/REF+Zufall
+  in den Gas-Antworten ohne eigenes TN-Feld).
+- **V5 — 55194-Neubelegung** (siehe oben; die SG12-Messlokationsadresse NAD+Z64
+  bleibt bewusst außen vor — Adress-Beispieldaten wären reine Erfindung).
+- **V6 — AHB-Segmentreihenfolge** in allen geänderten Nachrichten.
+
+Snapshots danach bewusst neu eingefroren (`npm run golden:update`).
+
+**Nachweis.** Volle Regression grün (32 Läufe) einschließlich aller
+Playwright-Tests (Seiten, Folgenachrichten, Antwortketten, EBD-Abhängigkeiten,
+Zeitscheiben, Vorgangsnummer, Speichern); `pruefe_pid_konsistenz.js` prüft
+weiter die Feldauswahl-Datenschicht gegen die Meta (0 Befunde) — aus dem
+früheren Abgleich zweier Erzeugungswege ist der Meta-Vollständigkeits-Check der
+Sicht geworden.
+
+**Bekannte Grenze** (Folgearbeit, nicht Teil dieses Schritts): In den
+GDA-Antworten (Kap. 9.5, z. B. 55035/55095) führt der AHB einzelne
+SG8-RFF-Instanzen mit mehreren Qualifiern und viele Objektgruppen; die Sicht
+emittiert je Instanz genau ein Segment und lässt Objektgruppen ohne
+Datengrundlage weg. Der Weg zu vollständigen GDA-Testnachrichten ist die
+inhaltliche Neubelegung über `nutzdaten`-Daten je Prüf-ID — exemplarisch mit
+55194 begonnen.
