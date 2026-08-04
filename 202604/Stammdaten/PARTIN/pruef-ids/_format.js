@@ -1,0 +1,12 @@
+// _format.js - Format-Konfiguration PARTIN (Formatstand 202604), automatisch generiert.
+const formatConfig = {
+    format: "PARTIN",
+    unhKennung: "PARTIN:D:20B:UN:1.0f",
+    defaultAbsender: '9900000000001',
+    defaultEmpfanger: '9900000000002',
+    codevergabe: [
+        { prefix: '99', unb: '500', nad: '293', name: 'BDEW' },
+        { prefix: '4',  unb: '14',  nad: '9',   name: 'GS1' }
+    ]
+};
+if (typeof module !== 'undefined') module.exports = formatConfig;

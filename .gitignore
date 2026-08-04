@@ -1,0 +1,26 @@
+# Node (nur für die Regression: Playwright)
+node_modules/
+package-lock.json
+npm-debug.log*
+
+# Python (Extraktionswerkzeuge)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Betriebssystem / Editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Arbeitsstände und Zwischenergebnisse
+*.tmp
+/ausgabe/
+/tmp/
+
+# Original-Dokumente des BDEW (nicht Teil des Repositorys)
+*.pdf
+*.docx

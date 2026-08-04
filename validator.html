@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EDIFACT Nachrichten-Validator (universeller Import)</title>
+<link rel="stylesheet" href="_engine/edigen.css">
+<style>
+  /* Validator-spezifisch: korrekte Segmente dunkelgrün, fehlerhafte rot
+     (Basis-Palette kommt aus _engine/edigen.css; [data-theme]-Selektoren nötig,
+     damit die Overrides auch auf Body-Ebene greifen) */
+  :root, [data-theme="light"]{
+    --ok:#0e4d24; --ok-bg:#0e4d24; --ok-text:#e6f5ec;
+    --warn:#b3261e; --warn-bg:#8f1d16; --warn-text:#fdecea;
+  }
+  [data-theme="dark"]{
+    --ok:#1c8a4a; --ok-bg:#123d22; --ok-text:#d9f3e2;
+    --warn:#e57373; --warn-bg:#5c1512; --warn-text:#ffd9d6;
+  }
+  *{box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    margin:0;background:var(--bg);color:var(--text);line-height:1.5;}
+  .wrap{max-width:1160px;margin:0 auto;padding:24px 22px 60px;}
+  h1{font-size:22px;margin:2px 0 2px;color:var(--heading);}
+  .sub{color:var(--muted);font-size:13px;margin:0 0 18px;}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;
+    box-shadow:var(--shadow);padding:18px 20px;margin:0 0 18px;}
+  .panel h2{font-size:15px;margin:0 0 12px;color:var(--heading);}
+  .drop{border:2px dashed var(--accent);border-radius:12px;padding:26px 18px;text-align:center;
+    color:var(--muted);font-size:14px;cursor:pointer;transition:background .15s;}
+  .drop.aktiv{background:var(--accent-bg);color:var(--heading);}
+  textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;
+    background:var(--panel);color:var(--text);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+    font-size:13px;min-height:150px;}
+  .go{padding:10px 18px;border:none;border-radius:8px;background:var(--accent);color:#fff;
+    font-size:14px;font-weight:600;cursor:pointer;margin-top:10px;}
+  .go.secondary{background:var(--panel);color:var(--accent);border:1px solid var(--accent);}
+  .kv{display:grid;grid-template-columns:190px 1fr;gap:3px 14px;font-size:13.5px;}
+  .kv dt{color:var(--muted);} .kv dd{margin:0;}
+  .badge{display:inline-block;border-radius:8px;padding:2px 10px;font-size:12.5px;font-weight:600;}
+  .badge.ok{background:var(--ok-bg);color:var(--ok-text);}
+  .badge.rot{background:var(--warn-bg);color:var(--warn-text);}
+  .seg{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;
+    border-radius:8px;padding:7px 12px;margin:5px 0;white-space:pre-wrap;word-break:break-all;}
+  .seg.ok{background:var(--ok-bg);color:var(--ok-text);}
+  .seg.rot{background:var(--warn-bg);color:var(--warn-text);}
+  .seg .meld{display:block;font-family:inherit;font-size:12.5px;margin-top:4px;
+    padding-left:14px;font-weight:600;}
+  .seg .hin{display:block;font-size:12px;margin-top:2px;padding-left:14px;opacity:.85;font-weight:400;}
+  .seg .segnr{display:inline-block;min-width:30px;margin-right:10px;text-align:right;
+    opacity:.65;font-weight:400;user-select:none;}
+  .globalbox{border-radius:8px;padding:10px 12px;margin:8px 0;font-size:13px;}
+  .globalbox.rot{background:var(--warn-bg);color:var(--warn-text);}
+  .globalbox.info{background:var(--accent-bg);color:var(--heading);}
+  .badge.warn{background:#f0ad4e;color:#3a2a00;}
+  .globalbox.warn{background:#fbeecb;color:#6a5100;border:1px solid #f0ad4e;}
+  [data-theme="dark"] .globalbox.warn{background:#3a2f12;color:#f0d98a;border-color:#6b551f;}
+  .lade{color:var(--muted);font-size:13px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumbs"><a href="index.html">Startseite</a> / <strong>Nachrichten-Validator</strong></div>
+  <div class="top-bar">
+    <h1>EDIFACT Nachrichten-Validator</h1>
+    <div class="theme-toggle">
+      <button id="tL" onclick="setTheme('light')">Hell</button><button id="tD" onclick="setTheme('dark')">Dunkel</button>
+    </div>
+  </div>
+  <p class="sub">Universeller Import: Nachricht als TXT-Datei ablegen oder Inhalt einfügen.
+     Nachrichtentyp, Formatversion und Prüf-ID werden automatisch erkannt; geprüft wird gegen
+     AHB, MIG, EBD-Antwortcodes, EDI@Energy-Codelisten und die Allgemeinen Festlegungen.</p>
+
+  <div class="panel">
+    <h2>1. Nachricht importieren</h2>
+    <div class="drop" id="drop" onclick="document.getElementById('datei').click()">
+      Übertragungsdatei (TXT) hierher ziehen – oder klicken zum Auswählen
+      <input type="file" id="datei" accept=".txt,.edi,.edifact,text/plain" style="display:none">
+    </div>
+    <div style="margin:12px 0 4px;color:var(--muted);font-size:13px">… oder Nachrichteninhalt einfügen:</div>
+    <textarea id="eingabe" spellcheck="false" placeholder="UNA:+.? '&#10;UNB+UNOC:3+…"></textarea>
+    <button class="go" onclick="starte()">Validieren</button>
+    <button class="go secondary" onclick="leeren()">Leeren</button>
+    <button class="go secondary" onclick="EdiSpeichern.speichere('eingabe','speicherHinweis')">Als marktkonforme Datei (.txt) speichern</button>
+    <span class="okbox" id="speicherHinweis" style="display:none"></span>
+    <div class="hint">Der Dateiname folgt den Allgemeinen Festlegungen (Abschnitt 2.12): <code>Nachrichtentyp_Anwendungsreferenz_von_an_yyyymmdd_DAR.txt</code> — die Angaben stammen aus UNH und UNB der Nachricht.</div>
+  </div>
+
+  <div class="panel" id="panelErkennung" style="display:none">
+    <h2>2. Erkennung</h2>
+    <dl class="kv" id="erkennung"></dl>
+    <div id="utilmdHinweis"></div>
+  </div>
+
+  <div class="panel" id="panelErgebnis" style="display:none">
+    <h2>3. Ergebnis <span id="ampel"></span></h2>
+    <div id="globalMeldungen"></div>
+    <div id="segmentListe"></div>
+  </div>
+
+  <div class="panel" id="panelAntwort" style="display:none">
+    <h2>4. Antwort erzeugen</h2>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:8px">
+      Öffnet die Generator-Maske der Antwort-Prüf-ID im selben Formatstand mit allen aus der
+      importierten Nachricht ableitbaren Feldern vorbelegt (Referenzen, Beträge, Richtungstausch).
+      Fachliche Entscheidungen (Bestätigung/Abweisung, Antwortcodes, abweichende Beträge) treffen
+      Sie im Formular.</div>
+    <div id="antwortListe"></div>
+  </div>
+
+  <footer style="font-size:12px;color:var(--muted);border-top:1px solid var(--border);padding-top:12px;">
+    Prüfgrundlagen: AHB-Formular-Metas des Generators, BDEW-MIG-Feldformate, EBD 4.2/4.3,
+    EDI@Energy-Codelisten, Allgemeine Festlegungen 6.1c/6.1d (alles BDEW-MAKO, freie Fassungen).
+    Hinweis: Muss-Segmente optionaler Untergruppen werden nur innerhalb verwendeter Gruppen geprüft.
+  </footer>
+</div>
+
+<script src="_engine/theme.js"></script>
+<script src="_engine/daten/validator-registry.js"></script>
+<script src="_engine/daten/mig-formate.js"></script>
+<script src="_engine/daten/nad-aufbau.js"></script>
+<script src="_engine/daten/sts-struktur.js"></script>
+<script src="_engine/daten/codelisten.js"></script>
+<script src="_engine/daten/ebd-antwortcodes.js"></script>
+<script src="_engine/daten/ebd-pfade.js"></script>
+<script src="_engine/antwortcode-auswahl.js"></script>
+<script src="_engine/daten/af-regeln.js"></script>
+<script src="_engine/daten/antwort-mappings.js"></script>
+<script src="_engine/daten/antwort-mappings-generiert.js"></script>
+<script src="_engine/daten/ahb-ergaenzungen.js"></script>
+<script src="_engine/nachricht-speichern.js"></script>
+<script src="_engine/ahb-validator.js"></script>
+<script src="_engine/daten/bedingung-eval.js"></script>
+<script src="_engine/bedingung-hilfe.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+
+// Drag & Drop + Dateiauswahl
+const drop = $('drop');
+['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('aktiv'); }));
+['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('aktiv'); }));
+drop.addEventListener('drop', e => {
+  const f = e.dataTransfer.files && e.dataTransfer.files[0];
+  if (f) liesDatei(f);
+});
+$('datei').addEventListener('change', e => { if (e.target.files[0]) liesDatei(e.target.files[0]); });
+function liesDatei(f){
+  const r = new FileReader();
+  r.onload = () => { $('eingabe').value = String(r.result); starte(); };
+  r.readAsText(f, 'utf-8');
+}
+function leeren(){
+  $('eingabe').value = '';
+  $('panelErkennung').style.display = 'none';
+  $('panelErgebnis').style.display = 'none';
+}
+
+// Dynamisches Nachladen der Prüfgrundlage (Formular-Meta) je Registry-Eintrag
+const skriptCache = {};   // Pfad -> Promise
+const metaCache = {};     // Schlüssel -> Meta-Objekt(e)
+const bedCache = {};      // Pfad -> Bedingungen des Typs ({nn:{text,art,check}})
+// Bedingungsdatei des erkannten Typs laden (Momentaufnahme, da EdiBedingungen global akkumuliert)
+async function ladeBedingungen(seite){
+  const pfad = seite.replace(/[^/]*$/, 'pruef-ids/_bedingungen.js');
+  if (!(pfad in bedCache)){
+    const vorher = window.EdiBedingungen;
+    window.EdiBedingungen = {};
+    try { await ladeSkript(pfad); bedCache[pfad] = window.EdiBedingungen || {}; }
+    catch(e){ bedCache[pfad] = {}; }
+    window.EdiBedingungen = vorher || {};
+  }
+  return bedCache[pfad];
+}
+function ladeSkript(pfad){
+  if (!skriptCache[pfad]) skriptCache[pfad] = new Promise((res, rej) => {
+    const s = document.createElement('script');
+    s.src = pfad; s.onload = () => res(); s.onerror = () => rej(new Error('Skript nicht ladbar: ' + pfad));
+    document.body.appendChild(s);
+  });
+  return skriptCache[pfad];
+}
+async function ladeMeta(eintrag, pruefi){
+  const key = eintrag.metaPfad;
+  if (!metaCache[key]){
+    await ladeSkript(eintrag.metaPfad);
+    // Momentaufnahme sichern: nächste Ladung überschreibt die globale Variable
+    metaCache[key] = window[eintrag.metaVar];
+  }
+  return { alle: metaCache[key] };
+}
+
+async function starte(){
+  const text = $('eingabe').value;
+  if (!text.trim()) return;
+  const parsed = AhbValidator.parse(text);
+  const det = AhbValidator.erkenne(parsed, validatorRegistry);
+  const ek = $('erkennung');
+  $('panelErkennung').style.display = '';
+  $('utilmdHinweis').innerHTML = '';
+  if (det.fehler){
+    ek.innerHTML = `<dt>Problem</dt><dd>${det.fehler}</dd>` +
+      (det.typ ? `<dt>UNH-Typ</dt><dd>${det.typ} (Version ${det.version || '–'})</dd>` : '');
+    $('panelErgebnis').style.display = 'none';
+    return;
+  }
+  let e = det.eintrag;
+  // Mehrdeutigkeit: gleiche UNH-Kennung in beiden Formatständen, aber
+  // unterschiedliche AHBs (z.B. REQOTE 1.1/1.2 mit MIG 1.3c) -> beide Stände
+  // prüfen und den mit weniger Fehlern wählen (nach dem Laden der Metas).
+  const kandidatenGleich = det.alleTreffer.filter(t => t.unh === det.kennung &&
+    t.format === e.format && t.sparte === e.sparte);
+  const staende = [...new Set(det.alleTreffer.filter(t => t.unh === e.unh).map(t => t.stand))];
+  ek.innerHTML =
+    `<dt>Nachrichtentyp</dt><dd>${det.typ}${e.sparte ? ' ' + e.sparte : ''}</dd>` +
+    `<dt>UNH-Kennung</dt><dd>${det.kennung}</dd>` +
+    `<dt>Formatstand</dt><dd>${staende.join(' und ')} <span style="color:var(--muted)">(${e.unh})</span></dd>` +
+    `<dt>Prüf-ID</dt><dd>${det.pruefi || '– (Nachricht ohne RFF+Z13)'}</dd>`;
+
+  // Prüfgrundlage laden
+  let meta = null, variantenHinweis = '';
+  try {
+    if (det.pruefi && e.pruefis.includes(det.pruefi)){
+      const m = await ladeMeta(e, det.pruefi);
+      meta = m.einzel !== undefined ? m.einzel : (m.alle || {})[det.pruefi];
+      const b = meta && meta.beschreibung ? meta.beschreibung : '';
+      if (b) ek.innerHTML += `<dt>Anwendungsfall</dt><dd>${b}${meta.kommunikation ? ' · ' + meta.kommunikation : ''}</dd>`;
+    } else if (det.pruefi){
+      ek.innerHTML += `<dt>Achtung</dt><dd>Prüf-ID ${det.pruefi} ist im AHB ${e.format} ${e.stand} nicht enthalten.</dd>`;
+    }
+  } catch (ex){ ek.innerHTML += `<dt>Achtung</dt><dd>${ex.message}</dd>`; }
+
+  const migKey = e.format === 'UTILMD' ? (e.sparte === 'Gas' ? 'UTILMD_GAS' : 'UTILMD_STROM') : e.format;
+  // Bedingungen des Typs laden (für ahbicht-gestützte Muss-Auswertung + Hilfe-Popover)
+  let bedingungen = {};
+  try { bedingungen = await ladeBedingungen(e.seite); window.EdiBedingungen = bedingungen; } catch(ex){}
+  const ctx = {
+    meta, pruefi: det.pruefi, stand: e.stand, format: e.format, unhSoll: e.unh,
+    migFormat: (migFormate[e.stand] || {})[migKey] || { felder: {}, maxWdh: {} },
+    // Aufbau des STS-Segments (Wiederholungen der Gruppe C556) laut MIG
+    stsStruktur: ((typeof stsStruktur !== 'undefined' ? stsStruktur : {})[e.stand] || {})[migKey] || null,
+    // Qualifierabhängiger NAD-Aufbau laut MIG (benutzte Gruppen, Wiederholungen)
+    nadAufbau: ((typeof nadAufbau !== 'undefined' ? nadAufbau : {})[e.stand] || {})[migKey] || null,
+    ebd: (ebdAntwortcodes[e.stand] || {}).ebds || {},
+    codelisten: codelisten, afRegeln: afRegeln, gs1Pruefziffer: gs1Pruefziffer,
+    condTree: window.EdiCondTree || {}, bedingungen: bedingungen,
+    // Cluster der Antwortnachricht (Bestätigung/Ablehnung) für den EBD-Abgleich
+    cluster: (meta && meta.antwortcluster === 'ablehnung') ? 'Ablehnung'
+           : ((meta && meta.antwortcluster === 'zustimmung') ? 'Zustimmung' : ''),
+  };
+  let res;
+  if (det.pruefi && kandidatenGleich.length > 1){
+    // beide Stände prüfen, besseren wählen
+    let best = null;
+    for (const kand of kandidatenGleich){
+      if (!kand.pruefis.includes(det.pruefi)) continue;
+      let m2 = null;
+      try {
+        const g = await ladeMeta(kand, det.pruefi);
+        m2 = g.einzel !== undefined ? g.einzel : (g.alle || {})[det.pruefi];
+      } catch (ex){ continue; }
+      const migKey2 = kand.format === 'UTILMD' ? (kand.sparte === 'Gas' ? 'UTILMD_GAS' : 'UTILMD_STROM') : kand.format;
+      const ctx2 = Object.assign({}, ctx, { meta: m2, stand: kand.stand, unhSoll: kand.unh,
+        migFormat: (migFormate[kand.stand] || {})[migKey2] || { felder: {}, maxWdh: {} },
+        stsStruktur: ((typeof stsStruktur !== 'undefined' ? stsStruktur : {})[kand.stand] || {})[migKey2] || null,
+        nadAufbau: ((typeof nadAufbau !== 'undefined' ? nadAufbau : {})[kand.stand] || {})[migKey2] || null,
+        ebd: (ebdAntwortcodes[kand.stand] || {}).ebds || {} });
+      const r2 = AhbValidator.validiere(parsed, ctx2);
+      if (!best || r2.zusammenfassung.fehler < best.res.zusammenfassung.fehler)
+        best = { kand, res: r2, meta: m2 };
+    }
+    if (best){
+      res = best.res; e = best.kand; meta = best.meta;
+      if (kandidatenGleich.length > 1 && best.kand.stand)
+        ek.innerHTML += `<dt>Stand-Wahl</dt><dd>${best.kand.stand} (beste Übereinstimmung bei identischer UNH-Kennung)</dd>`;
+      if (meta && meta.beschreibung && !ek.innerHTML.includes('Anwendungsfall'))
+        ek.innerHTML += `<dt>Anwendungsfall</dt><dd>${meta.beschreibung}</dd>`;
+    } else {
+      res = AhbValidator.validiere(parsed, ctx);
+    }
+  } else if (!det.pruefi){
+    // APERAK/CONTRL: keine Prüf-ID - beste AHB-Variante wählen
+    try {
+      const m = await ladeMeta(e, null);
+      const best = AhbValidator.besteVariante(parsed, ctx, m.alle || {});
+      res = best.res; variantenHinweis = best.key;
+      ek.innerHTML += `<dt>AHB-Variante</dt><dd>${best.key.replace(/_/g, ' ')} (beste Übereinstimmung)</dd>`;
+    } catch (ex){ res = AhbValidator.validiere(parsed, ctx); }
+  } else {
+    res = AhbValidator.validiere(parsed, ctx);
+  }
+
+  if (det.typ === 'UTILMD'){
+    $('utilmdHinweis').innerHTML = `<div class="globalbox info">UTILMD: für die geführte Prozess-Validierung
+      (EBD-Antwortlogik, Produktpakete) steht zusätzlich die kuratierte Maske bereit:
+      <a href="${e.seite.replace('vollformular.html','index.html')}">${e.stand} UTILMD ${e.sparte}</a></div>`;
+  }
+
+  // Ergebnis rendern
+  $('panelErgebnis').style.display = '';
+  const fehler = res.zusammenfassung.fehler;
+  const bmAnz = res.bedingteMuss ? res.bedingteMuss.length : 0;
+  $('ampel').innerHTML = fehler
+    ? `<span class="badge rot">${fehler} Fehler</span>`
+    : (bmAnz
+        ? `<span class="badge warn">fehlerfrei · ${bmAnz} bedingte Muss offen</span>`
+        : `<span class="badge ok">fehlerfrei</span>`);
+  let g = '';
+  res.global.meldungen.forEach(m => { g += `<div class="globalbox rot">${m}</div>`; });
+  const exprSpan = s => `<span class="expr">${s.replace(/</g,'&lt;')}</span>`;
+  if (res.fehlendeMuss.length)
+    g += `<div class="globalbox rot">Fehlende Muss-Segmente laut AHB: ${res.fehlendeMuss.map(exprSpan).join('; ')}</div>`;
+  if (bmAnz)
+    g += `<div class="globalbox warn">Bedingte Muss-Segmente (nur unter Bedingung Pflicht – bitte fachlich prüfen): ${res.bedingteMuss.map(exprSpan).join('; ')}</div>`;
+  res.global.hinweise.forEach(m => { g += `<div class="globalbox info">${m}</div>`; });
+  $('globalMeldungen').innerHTML = g;
+  let html = '';
+  if (parsed.una) html += `<div class="seg ok"><span class="segnr"></span>${parsed.una.replace(/</g,'&lt;')}</div>`;
+  // Segmentzähler wie in der CONTRL-Fehlerreferenz (UCS DE0096): innerhalb jeder
+  // Nachricht ab UNH = 1 gezählt — so lässt sich die Segmentposition aus einer
+  // negativen CONTRL unmittelbar in der Liste wiederfinden. UNB/UNZ (Umschlag)
+  // zählen nicht mit und bleiben ohne Nummer.
+  let segNr = 0;
+  res.zeilen.forEach(z => {
+    const tag = (z.raw || '').slice(0, 3);
+    if (tag === 'UNH') segNr = 1; else if (segNr > 0) segNr += 1;
+    const nummer = (segNr > 0 && tag !== 'UNZ' && tag !== 'UNB') ? String(segNr) : '';
+    if (tag === 'UNT') segNr = 0;
+    const cls = z.status === 'fehler' ? 'rot' : 'ok';
+    let inner = `<span class="segnr">${nummer}</span>` + z.raw.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    z.meldungen.forEach(m => { inner += `<span class="meld">✗ ${m.replace(/</g,'&lt;')}</span>`; });
+    z.hinweise.forEach(m => { inner += `<span class="hin">ℹ ${m.replace(/</g,'&lt;')}</span>`; });
+    html += `<div class="seg ${cls}">${inner}</div>`;
+  });
+  $('segmentListe').innerHTML = html;
+  baueAntwortPanel(det, e, parsed, res);
+}
+
+// ---- Antwort erzeugen: vorbefüllte Generator-Maske öffnen -------------------
+function quellWert(parsed, q){
+  // Wert aus der Quellnachricht: {seg, qual?, de} über den Validator-Decoder
+  if (q.unh){
+    const unh = parsed.segmente.find(s => s.tag === 'UNH');
+    return unh ? (unh.elemente[0] || [''])[0] : '';
+  }
+  const dec = AhbValidator.DECODER[q.seg] || {};
+  const qualDe = AhbValidator.QUAL_DE[q.seg];
+  for (const s of parsed.segmente){
+    if (s.tag !== q.seg) continue;
+    if (q.qual && qualDe){
+      const pos = dec[qualDe];
+      const qv = pos ? ((s.elemente[pos[0]] || [])[pos[1]] || '').trim() : '';
+      if (qv !== q.qual) continue;
+    }
+    const pos = dec[q.de];
+    const v = pos ? ((s.elemente[pos[0]] || [])[pos[1]] || '').trim() : '';
+    if (v) return v;
+  }
+  return '';
+}
+function segWert(seg, de){
+  const pos = (AhbValidator.DECODER[seg.tag] || {})[de];
+  return pos ? ((seg.elemente[pos[0]] || [])[pos[1]] || '').trim() : '';
+}
+function konvertiere(wert, konv){
+  if (!wert) return wert;
+  if (konv === 'datum303'){
+    const m = /^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})\+00$/.exec(wert);
+    if (!m) return wert;
+    // UTC-Wert -> lokale Formulareingabe (die Engine rechnet beim Erzeugen zurück)
+    const d = new Date(Date.UTC(+m[1], +m[2]-1, +m[3], +m[4], +m[5]));
+    const p = n => String(n).padStart(2, '0');
+    return `${p(d.getDate())}.${p(d.getMonth()+1)}.${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;
+  }
+  return wert;
+}
+function felderAusMapping(parsed, defs){
+  const out = [];
+  for (const f of (defs || [])){
+    let wert = f.wertFest !== undefined ? f.wertFest
+      : konvertiere(quellWert(parsed, f.quelle), f.quelle && f.quelle.konv);
+    if (wert === '' || wert === undefined) continue;
+    out.push({ seg: f.seg, qualDe: f.qualDe, qual: f.qual, de: f.de,
+               bereich: f.bereich, alle: f.alle, wert: String(wert) });
+  }
+  return out;
+}
+function baueAntwortPanel(det, eintrag, parsed, res){
+  const panel = $('panelAntwort'), liste = $('antwortListe');
+  panel.style.display = 'none'; liste.innerHTML = '';
+  if (!det || det.fehler || !det.pruefi) return;
+  // Kuratierte + aus der Anwendungsübersicht generierte Zuordnungen zusammenführen
+  // (Dubletten je Ziel-Format/Prüf-ID: die kuratierte Fassung gewinnt).
+  const ziele = [];
+  const listen = [
+    (typeof antwortMappings !== 'undefined' ? antwortMappings : []),
+    (typeof antwortMappingsGeneriert !== 'undefined' ? antwortMappingsGeneriert : []),
+  ];
+  for (const l of listen)
+    for (const m of l)
+      if (m.quelleFormat === det.typ) ziele.push(...m.ziele);
+  const unb = parsed.segmente.find(s => s.tag === 'UNB');
+  const quellAbs = unb ? ((unb.elemente[1]||[])[0]||'').trim() : '';
+  const quellEmp = unb ? ((unb.elemente[2]||[])[0]||'').trim() : '';
+  let html = '';
+  const gesehen = new Set();
+  for (const ziel of ziele){
+    const zielPruefi = ziel.pruefiFest || (ziel.pruefiMap || {})[det.pruefi];
+    if (!zielPruefi) continue;
+    if (ziel.staende && !ziel.staende.includes(eintrag.stand)) continue;
+    const schluessel = ziel.zielFormat + '|' + zielPruefi;
+    if (gesehen.has(schluessel)) continue;
+    gesehen.add(schluessel);
+    const zielEintrag = validatorRegistry.find(r =>
+      r.format === ziel.zielFormat && r.stand === eintrag.stand && r.pruefis.includes(zielPruefi));
+    if (!zielEintrag) continue;
+    const payload = {
+      pruefi: zielPruefi,
+      absender: ziel.tauscheRichtung ? quellEmp : quellAbs,
+      empfaenger: ziel.tauscheRichtung ? quellAbs : quellEmp,
+      felder: felderAusMapping(parsed, ziel.felder),
+      positionen: [],
+    };
+    if (ziel.positionen){
+      if (ziel.positionen.einzeln){
+        payload.positionen.push(felderAusMapping(parsed, ziel.positionen.felder));
+      } else if (ziel.positionen.quelleSeg){
+        for (const s of parsed.segmente){
+          if (s.tag !== ziel.positionen.quelleSeg) continue;
+          const pf = [];
+          for (const f of ziel.positionen.felder){
+            const wert = f.wertFest !== undefined ? f.wertFest
+              : konvertiere(segWert(s, f.quelle.de), f.quelle.konv);
+            if (wert) pf.push({ seg: f.seg, qualDe: f.qualDe, qual: f.qual, de: f.de, wert: String(wert) });
+          }
+          if (pf.length) payload.positionen.push(pf);
+        }
+      }
+    }
+    const href = zielEintrag.seite + '#antwort=' + encodeURIComponent(JSON.stringify(payload));
+    html += `<div style="margin:8px 0"><a class="go" style="text-decoration:none;display:inline-block"
+      href="${href}" target="_blank">${ziel.label} → ${ziel.zielFormat} ${zielPruefi} (${zielEintrag.stand})</a>
+      ${ziel.hinweis ? `<span style="font-size:12.5px;color:var(--muted);margin-left:10px">${ziel.hinweis}</span>` : ''}</div>`;
+  }
+  // Generische Servicenachrichten-Antworten (für jede Nachricht möglich)
+  html += baueServiceAntworten(det, eintrag, parsed, res);
+  if (!html) return;
+  if (res.zusammenfassung.fehler)
+    html = `<div class="globalbox info">Die importierte Nachricht hat Prüfungsfehler – für eine
+      ablehnende Antwort die entsprechende Variante wählen.</div>` + html;
+  liste.innerHTML = html;
+  panel.style.display = '';
+}
+
+// CONTRL-Empfangsbestätigung/-Syntaxfehlermeldung und APERAK-Ablehnung sind laut
+// GPKE Teil 1 Kap. 4 auf JEDE EDIFACT-Übertragungsdatei möglich.
+function baueServiceAntworten(det, eintrag, parsed, res){
+  const stand = eintrag.stand;
+  const unb = parsed.segmente.find(s => s.tag === 'UNB');
+  const unh = parsed.segmente.find(s => s.tag === 'UNH');
+  if (!unb || !unh) return '';
+  const qAbs = ((unb.elemente[1]||[])[0]||'').trim();
+  const qEmp = ((unb.elemente[2]||[])[0]||'').trim();
+  const dar = ((unb.elemente[4]||[])[0]||'').trim();
+  const unhRef = ((unh.elemente[0]||[])[0]||'').trim();
+  const bgm = parsed.segmente.find(s => s.tag === 'BGM');
+  const doknr = bgm ? ((bgm.elemente[1]||[])[0]||'').trim() : '';
+  const dtm137 = quellWert(parsed, {seg:'DTM', qual:'137', de:'2380'});
+  const vorgang = quellWert(parsed, {seg:'IDE', de:'7402'});
+  const contrlSeite = validatorRegistry.find(r => r.format === 'CONTRL' && r.stand === stand);
+  const aperakSeite = validatorRegistry.find(r => r.format === 'APERAK' && r.stand === stand);
+  let html = `<div style="border-top:1px solid var(--border);margin-top:12px;padding-top:8px;
+    font-size:12.5px;color:var(--muted)">Servicenachrichten (auf jede Übertragungsdatei möglich):</div>`;
+  const link = (seite, payload, label) => `<div style="margin:8px 0"><a class="go secondary"
+    style="text-decoration:none;display:inline-block" target="_blank"
+    href="${seite}#antwort=${encodeURIComponent(JSON.stringify(payload))}">${label}</a></div>`;
+  if (contrlSeite){
+    const felder = { absender: qEmp, empfaenger: qAbs, refDar: dar, origAbs: qAbs, origEmp: qEmp };
+    html += link(contrlSeite.seite, { usecase: 'empfang', felder },
+      `CONTRL – Empfangsbestätigung (UCI 0083=7) erzeugen`);
+    html += link(contrlSeite.seite, { usecase: 'fehlerdatei', felder },
+      `CONTRL – Syntaxfehlermeldung (UCI 0083=4) erzeugen`);
+  }
+  if (aperakSeite){
+    const felder = { absender: qEmp, empfaenger: qAbs, docnum: 'AP' + (dar || unhRef || '1'),
+      refAce: unhRef, refAgo: doknr, refDatum: konvertiere(dtm137, 'datum303'),
+      // RFF+TN: Vorgangsnummer, bei vorgangslosen Nachrichten die UNH-Referenz
+      refTn: vorgang || unhRef, refTn5: vorgang || unhRef };
+    html += link(aperakSeite.seite, { usecase: 'fehler', felder },
+      `APERAK – Ablehnung/Verarbeitbarkeitsfehler erzeugen`);
+  }
+  return html;
+}
+
+// Übergabe aus einer Generator-Maske: Trägt eine Nachricht dort die Kennung eines
+// anderen Formatstands, verweist die Maske hierher (#pruefe=<Nachricht>). Die
+// Prüfgrundlage wählt dieser Validator anhand der UNH-Kennung selbst.
+(function uebernehmeNachricht(){
+  function ausFragment(){
+    var m = /[#&]pruefe=([^&]+)/.exec(location.hash || '');
+    if (!m) return;
+    try { $('eingabe').value = decodeURIComponent(m[1]); } catch (e) { return; }
+    starte();
+  }
+  window.addEventListener('hashchange', ausFragment);
+  ausFragment();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+// _bedingungen.js (INSRPT) - AHB-Bedingungen via kohlrahbi-Parser (an unser docx-Layout adaptiert).
+// parse_conditions_from_string (kohlrahbi/Hochfrequenz), Quelle AHB_INSRPT_1.1g_20230330_99991231_20251211_oxox_12008.docx.
+var insrptBedingungen = {
+  "1": { text: "Wenn Nachrichtenabsender vom Kunden informiert wurde.", art: "voraussetzung" },
+  "2": { text: "Wenn SG7 STS+Z06+Z10+ZC1 vorhanden.", art: "voraussetzung" },
+  "3": { text: "Wenn vorhanden.", art: "voraussetzung" },
+  "4": { text: "Wenn MP-ID in SG2 NAD+MR in der Rolle NB", art: "voraussetzung" },
+  "5": { text: "Wenn MP-ID in SG2 NAD+MR in der Rolle LF", art: "voraussetzung" },
+  "6": { text: "Wenn keine Störung festgestellt werden konnte.", art: "voraussetzung" },
+  "7": { text: "Wenn keine weitere SG7 mit demselben Meldepunkt und DTM+9 vorhanden", art: "voraussetzung" },
+  "8": { text: "Wenn in dieser SG7 STS+Z06+Z10 vorhanden", art: "voraussetzung" },
+  "9": { text: "Wenn eine Störung festgestellt wurde, die durch den MSB selbständig und unverschuldet nicht behoben werden konnte.", art: "voraussetzung" },
+  "10": { text: "Wenn in diesem STS DE4405 = Z09", art: "voraussetzung" },
+  "11": { text: "Wenn in diesem STS DE4405 = Z10", art: "voraussetzung" },
+  "12": { text: "Wenn eine Störung festgestellt wurde, die durch den MSB behoben wurde.", art: "voraussetzung" },
+  "13": { text: "Wenn DE2379 = 303", art: "voraussetzung" },
+  "14": { text: "Nur MP-ID aus Sparte Strom", art: "voraussetzung" },
+  "494": { text: "Das hier genannte Datum muss der Zeitpunkt sein, zu dem das Dokument erstellt wurde, oder ein Zeitpunkt, der davor liegt", art: "voraussetzung" },
+  "495": { text: "Der Zeitpunkt muss ≤ dem Wert im DE2380 des DTM+137 sein", art: "voraussetzung" },
+  "500": { text: "Hinweis: Vorgangsnummer (DOC DE1004) aus Prozessschritt 4b „Bestätigung der Störungsmeldung“ (Gas) bzw. Prozessschritt 2 „Antwort“ (Strom).", art: "hinweis" },
+  "506": { text: "Hinweis: Zu nutzen, wenn Behebung der Störung durch den MSB selbständig und unverschuldet nicht möglich ist.", art: "hinweis" },
+  "507": { text: "Hinweis: In SG7 FTX+AAO ist anzugeben, was die übergeordnete Ursache ist, aufgrund derer der MSB nicht in der Lage ist die Störung zu beheben.", art: "hinweis" },
+  "508": { text: "Hinweis: Vorgangsnummer aus DOC DE1004.", art: "hinweis" },
+  "509": { text: "Hinweis: Verwendung der ID der Messlokation", art: "hinweis" },
+  "510": { text: "Hinweis: Verwendung der ID der Marktlokation", art: "hinweis" },
+  "511": { text: "Hinweis: Die Nummerierung beginnt in jedem Dokument bei 1", art: "hinweis" },
+  "512": { text: "Hinweis: Wurde eine Störung festgestellt und durch den MSB behoben, ist die Segmentgruppe mit demselben Meldepunkt zweimal anzugeben", art: "hinweis" },
+  "513": { text: "Hinweis: Wurde keine Störung festgestellt, ist die Segmentgruppe genau einmal anzugeben", art: "hinweis" },
+  "514": { text: "Hinweis: Wurde eine Störung festgestellt, die nicht durch den MSB behoben werden konnte, ist die Segmentgruppe genau einmal anzugeben", art: "hinweis" },
+  "515": { text: "Hinweis: \"≤ dem Wert im DE2380 des DTM+137\" bedeutet, dass der dort genannte Tag ≥ dem in diesem DTM genannten Tag sein muss, wenn in DE2379 der Code 102 steht. zu entfernen.", art: "hinweis" },
+  "908": { text: "Format: Mögliche Werte: 1 bis n", art: "format" },
+  "931": { text: "Format: ZZZ = +00", art: "format" },
+  "950": { text: "Format: Marktlokations-ID", art: "format" },
+  "951": { text: "Format: Zählpunktbezeichnung", art: "format" },
+};
+if (typeof window!=='undefined') window.EdiBedingungen = Object.assign(window.EdiBedingungen||{}, insrptBedingungen);
+if (typeof module!=='undefined') module.exports = insrptBedingungen;

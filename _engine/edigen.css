@@ -1,0 +1,155 @@
+/* edigen.css - gemeinsames Design aller EdifactGenerator-Seiten.
+   Vorbild: UTILMD-Generator (Top-Bar, zweispaltiges Layout, Statusfarben,
+   dunkle EDIFACT-Konsole). Hell/Dunkel über [data-theme] (siehe theme.js). */
+
+:root, [data-theme="light"] {
+  --bg:#f4f6f9; --panel:#ffffff; --border:#ccd3db; --text:#2a3138; --muted:#5f6b78;
+  --heading:#004b6c; --accent:#004b6c; --accent-hover:#00334a; --accent-bg:#e3eef4;
+  --ok:#1a7f37; --ok-bg:#e6f5ea;
+  --warn:#a94442; --warn-bg:#f2dede; --warn-border:#ebccd1;
+  --muss:#d9534f; --bedingt:#f0ad4e; --kann:#5cb85c;
+  --console-bg:#1e1e1e; --console-text:#a9dc76; --console-border:#333;
+  --shadow:0 4px 6px rgba(0,0,0,.05);
+  /* Aliasnamen des UTILMD-Generators */
+  --panel-bg:var(--panel); --subtitle:var(--muted); --hint:var(--muted);
+  --btn-primary-bg:var(--accent); --btn-primary-hover:var(--accent-hover); --btn-primary-text:#ffffff;
+  --error-bg:var(--warn-bg); --error-text:var(--warn); --error-border:var(--warn-border);
+  --readonly-bg:#eceff2; --readonly-text:var(--muted); --ok-text:var(--ok);
+}
+[data-theme="dark"] {
+  --bg:#12181f; --panel:#1b232c; --border:#33414c; --text:#dfe6ea; --muted:#9aa7b0;
+  --heading:#5fb8dd; --accent:#2f6f8f; --accent-hover:#245576; --accent-bg:#16303d;
+  --ok:#4cc07e; --ok-bg:#12281c;
+  --warn:#f2b8b5; --warn-bg:#4a2323; --warn-border:#6b3230;
+  --muss:#e57373; --bedingt:#f0ad4e; --kann:#5cb85c;
+  --shadow:0 4px 6px rgba(0,0,0,.3);
+  --panel-bg:var(--panel); --subtitle:var(--muted); --hint:var(--muted);
+  --btn-primary-bg:var(--accent); --btn-primary-hover:var(--accent-hover); --btn-primary-text:#f5f9fb;
+  --error-bg:var(--warn-bg); --error-text:var(--warn); --error-border:var(--warn-border);
+  --readonly-bg:#232d37; --readonly-text:var(--muted); --ok-text:var(--ok);
+}
+
+*{box-sizing:border-box}
+body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;
+  margin:0;background:var(--bg);color:var(--text);line-height:1.5;
+  transition:background-color .15s ease,color .15s ease;}
+/* Seitenbreite: Platz für Formular, eine 112 Zeichen breite Ausgabespalte und
+   die schmale Folgenachrichten-Spalte. */
+.wrap{max-width:2000px;margin:0 auto;padding:20px 22px 60px;}
+
+/* Kopf: Breadcrumb, Top-Bar mit Titel + Theme-Umschalter, Untertitel */
+.crumbs,.breadcrumb{font-size:13px;color:var(--muted);margin:0 0 8px;}
+.crumbs a,.breadcrumb a{color:var(--heading);text-decoration:none;}
+.top-bar{display:flex;align-items:center;justify-content:space-between;gap:14px;
+  border-bottom:2px solid var(--heading);padding-bottom:10px;margin-bottom:6px;flex-wrap:wrap;}
+.top-bar h1{margin:0;}
+h1{font-size:24px;color:var(--heading);margin:2px 0;}
+.sub,.subtitle{color:var(--muted);font-size:13.5px;margin:6px 0 18px;}
+.theme-toggle{display:flex;border:1px solid var(--border);border-radius:4px;overflow:hidden;flex-shrink:0;}
+.theme-toggle button{background:transparent;color:var(--muted);border:none;
+  padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;}
+.theme-toggle button.active{background:var(--btn-primary-bg);color:var(--btn-primary-text);}
+
+/* Zweispaltiges Layout: Formular links, EDIFACT-Ausgabe rechts */
+/* Spaltenaufteilung: Die Ausgabespalte richtet sich nach der Nachricht — ein
+   EDIFACT-Segment soll ohne Umbruch in eine Zeile passen. Maßstab sind die längsten
+   regulären Segmente (UNB, Adress-NAD wie NAD+Z04): rund 112 Zeichen. Freitexte
+   (FTX) dürfen am Zeilenende umbrechen. Die Folgenachrichten-Spalte braucht nur
+   Platz für Prüf-ID und Kurzbeschreibung. */
+/* Beide Spalten scrollen in sich selbst und enden am unteren Fensterrand: `_engine/layout.js`
+   setzt ihre Höhe auf den tatsächlich sichtbaren Bereich (Fensterhöhe abzüglich Seitenkopf).
+   Der Wert hier ist nur der Ausgangswert, falls das Skript nicht geladen ist. So bleibt die
+   Bildlaufleiste der Eingabemaske vollständig sichtbar — auch auf einem 13-Zoll-Laptop. */
+.container{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;}
+.left-panel{flex:1 1 420px;min-width:360px;max-height:85vh;overflow-y:auto;overscroll-behavior:contain;}
+.right-panel{flex:0 1 auto;min-width:0;position:sticky;top:14px;display:flex;flex-direction:column;
+  max-height:85vh;overflow-y:auto;overscroll-behavior:contain;}
+.edi-fn-panel{flex:0 0 320px;max-width:320px;min-width:260px;}
+@media(max-width:1660px){.edi-fn-panel{flex:1 1 100%;max-width:none;}}
+/* Schmales Fenster: Die Spalten stehen untereinander, dann ist die Seite selbst der
+   Scrollbereich — eine Höhenbegrenzung würde hier zwei ineinander liegende Bildlaufleisten
+   erzeugen. `layout.js` erkennt diesen Fall an der Spaltenbreite und setzt die Höhe zurück. */
+@media(max-width:980px){.container{flex-direction:column;}
+  .left-panel,.right-panel{width:100%;position:static;flex:none;
+    max-height:none;overflow-y:visible;}}
+
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:8px;
+  box-shadow:var(--shadow);padding:18px 20px;margin:0 0 18px;}
+.panel h2{font-size:15px;margin:0 0 12px;color:var(--heading);}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+@media(max-width:760px){.grid2,.grid3{grid-template-columns:1fr;}}
+
+label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin:0 0 4px;
+  text-transform:uppercase;letter-spacing:.03em;}
+input,select,textarea{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:6px;
+  background:var(--panel);color:var(--text);font-size:14px;font-family:inherit;}
+select[multiple]{min-height:74px;}
+.field{margin-bottom:12px;}
+.fix{font-size:12.5px;color:var(--muted);padding:6px 0;}
+.fix code{color:var(--text);}
+.hintbox,.hint{font-size:13px;color:var(--muted);margin-top:8px;}
+.lade{color:var(--muted);font-size:13px;}
+.mighint{font-size:11.5px;color:var(--muted);margin-top:3px;font-style:italic;}
+
+/* Datumsfeld mit Kalender-Button (wie UTILMD-Generator); das native Datumsfeld
+   ist unsichtbar und dient nur als Träger des Kalender-Popups */
+.dtm-feld{display:flex;align-items:stretch;gap:6px;position:relative;}
+.dtm-feld input[type="text"],.dtm-feld input:not([type]){flex:1 1 auto;}
+.dtm-kalender-btn{flex:0 0 auto;width:40px;padding:0;cursor:pointer;
+  border:1px solid var(--border);border-radius:6px;background:var(--panel);
+  color:var(--text);font-size:1.05em;line-height:1;}
+.dtm-kalender-btn:hover{background:var(--accent-bg);}
+.dtm-kalender-input{position:absolute;right:0;bottom:0;width:1px;height:1px;
+  opacity:0;pointer-events:none;border:0;padding:0;margin:0;}
+
+/* EDIFACT-Ausgabe: dunkle Konsole wie im UTILMD-Generator (beide Themes) */
+textarea.edi{font-family:'Courier New',ui-monospace,SFMono-Regular,Consolas,monospace;
+  font-size:13px;line-height:1.5;min-height:62vh;resize:vertical;
+  /* 112 Zeichen: ein Segment je Zeile, nur Freitexte brechen um */
+  width:112ch;max-width:100%;box-sizing:border-box;white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  background:var(--console-bg);color:var(--console-text);
+  border:1px solid var(--console-border);border-radius:6px;}
+
+/* Buttons */
+.go{padding:11px 16px;border:none;border-radius:6px;background:var(--btn-primary-bg);
+  color:var(--btn-primary-text);font-size:14px;font-weight:700;cursor:pointer;transition:background .2s;}
+.go:hover{background:var(--btn-primary-hover);}
+.go.secondary{background:var(--panel);color:var(--heading);border:1px solid var(--border);font-weight:600;}
+.go.secondary:hover{background:var(--accent-bg);}
+.addrow{font-size:13px;color:var(--heading);cursor:pointer;background:none;border:none;padding:0;font-weight:600;}
+
+.errbox{display:none;background:var(--error-bg);color:var(--error-text);border:1px solid var(--error-border);
+  border-radius:6px;padding:10px 12px;margin:10px 0;font-size:13px;}
+.okbox{background:var(--ok-bg);color:var(--ok);border-radius:6px;padding:6px 10px;font-size:12px;display:inline-block;}
+
+/* Segmentblöcke mit AHB-Statusfarben (wie form-group im UTILMD-Generator) */
+.segblock{border:1px solid var(--border);border-left:5px solid var(--border);
+  border-radius:6px;padding:10px 14px;margin:10px 0;}
+.segblock h3{font-size:13px;margin:0 0 8px;color:var(--heading);}
+.segblock .expr{font-weight:400;color:var(--muted);font-size:12px;}
+.segblock.status-Muss{border-left-color:var(--muss);background:rgba(217,83,79,.07);}
+.segblock.status-Bedingt{border-left-color:var(--bedingt);background:rgba(240,173,78,.07);}
+.segblock.status-Kann{border-left-color:var(--kann);background:rgba(92,184,92,.07);}
+.status-Muss>label::after,.status-Muss>h3 .expr{color:var(--muss);}
+.status-Bedingt>h3 .expr{color:var(--bedingt);}
+.status-Kann>h3 .expr{color:var(--kann);}
+.posblock{border:1px solid var(--accent);border-radius:8px;padding:12px 14px;margin:14px 0;}
+.posblock>h3{font-size:14px;margin:0 0 6px;color:var(--heading);}
+
+/* AHB-Tabellen und Statuszellen (Servicenachrichten-Seiten) */
+table.ahb{width:100%;border-collapse:collapse;font-size:12.5px;}
+table.ahb th,table.ahb td{text-align:left;padding:5px 8px;border-bottom:1px solid var(--border);vertical-align:top;}
+table.ahb th{color:var(--muted);font-weight:600;text-transform:uppercase;font-size:11px;letter-spacing:.03em;}
+td.status-Muss,.ahb .status-Muss{color:var(--muss);font-weight:700;background:none;border:none;}
+td.status-Bedingt,td.status-Muss-bedingt{color:var(--bedingt);font-weight:600;background:none;border:none;}
+td.status-Kann{color:var(--kann);font-weight:600;background:none;border:none;}
+.msgblock{border:1px dashed var(--border);border-radius:8px;padding:10px 14px;margin:10px 0;}
+.msgblock h3{font-size:13px;margin:0 0 8px;color:var(--heading);}
+
+footer{font-size:12px;color:var(--muted);border-top:1px solid var(--border);padding-top:12px;margin-top:6px;}
+
+/* Marktpartner-Feld, dessen Rolle die Quellnachricht nicht führt (Folgenachrichten):
+   der Wert ist nicht ableitbar und vom Anwender zu ergänzen. */
+input.mp-offen{border-color:#b25c00;background:rgba(178,92,0,.07);}

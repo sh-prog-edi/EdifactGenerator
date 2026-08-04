@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APERAK EDIFACT Test-Generator (AHB 1.0)</title>
+<link rel="stylesheet" href="../../../_engine/edigen.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="crumbs"><a href="../../../index.html">Startseite</a> / 202604 / Servicenachrichten / <strong>APERAK (AHB 1.0)</strong></div>
+  <div class="top-bar">
+    <h1>APERAK EDIFACT Test-Generator</h1>
+    <div class="theme-toggle">
+      <button id="tL" onclick="setTheme('light')">Hell</button><button id="tD" onclick="setTheme('dark')">Dunkel</button>
+    </div>
+  </div>
+  <p class="sub">Anwendungsfehler- und Bestätigungs-Nachricht (APERAK:D:07B:UN:2.1i) &middot; APERAK AHB 1.0, konsolidierte Lesefassung Stand 30.09.2025 (gültig 01.10.2025-30.09.2026) &middot;
+     Datenbasis: BDEW-AHB, maschinell extrahiert (siehe pruef-ids/)</p>
+
+  <div class="container">
+  <div class="left-panel">
+  <div class="panel">
+    <h2>1. Meldungsart</h2>
+    <div class="field">
+      <label for="usecase">Anwendungsfall</label>
+      <select id="usecase" onchange="onUsecase()">
+        <option value="anerkennung">Anerkennungsmeldung (BGM 312)</option>
+        <option value="fehler">Anwendungsfehlermeldung (BGM 313)</option>
+      </select>
+    </div>
+    <div class="hintbox" id="usecaseHint"></div>
+  </div>
+
+  <div class="panel">
+    <h2>2. Beteiligte &amp; Referenzen auf die geprüfte Nachricht</h2>
+    <div class="grid3">
+      <div class="field"><label for="absender">MP-ID Absender</label><input id="absender" value="9900000000002"></div>
+      <div class="field"><label for="empfaenger">MP-ID Empfänger</label><input id="empfaenger" value="9900000000001"></div>
+      <div class="field"><label for="docnum">Dokumentennummer (BGM DE1004)</label><input id="docnum" value="APERAK-DOC-1"></div>
+    </div>
+    <div class="grid3">
+      <div class="field"><label for="refAce">Nachrichten-Referenznr. der geprüften Nachricht (SG2 RFF+ACE)</label>
+        <input id="refAce" placeholder="UNH DE0062 der Original-Nachricht"></div>
+      <div class="field"><label for="refDatum">Erstellungsdatum der geprüften Nachricht (SG2 DTM+171)</label>
+        <div class="dtm-feld"><input id="refDatum" placeholder="TT.MM.JJJJ HH:MM"><button type="button" class="dtm-kalender-btn" title="Kalender öffnen" onclick="EdiKalender('refDatum','datetime-local')">&#128197;</button><input type="datetime-local" class="dtm-kalender-input" id="refDatum_kal" tabindex="-1"></div></div>
+      <div class="field"><label for="refAgo">Dokumentennr. der referenzierten Nachricht (SG2 RFF+AGO)</label>
+        <input id="refAgo" placeholder="BGM DE1004 der Original-Nachricht"></div>
+    </div>
+    <div class="field"><label for="refTn">Vorgangsnummer des referenzierten Vorgangs (SG2 RFF+TN)</label>
+      <input id="refTn" placeholder="IDE DE7402 des Original-Vorgangs, sonst UNH-Referenz"></div>
+  </div>
+
+  <div class="panel" id="panelFehler" style="display:none">
+    <h2>3. Fehlerangaben (SG4/SG5)</h2>
+    <div class="grid2">
+      <div class="field"><label for="ercCode">Fehlercode (SG4 ERC DE9321)</label><select id="ercCode"></select></div>
+      <div class="field"><label for="ftxAbo">Information über Abweichung (SG4 FTX+ABO, Soll)</label>
+        <input id="ftxAbo" placeholder="Kurzbeschreibung der Abweichung"></div>
+    </div>
+    <div class="grid3">
+      <div class="field"><label for="refAcw">Referenznr. der Nachricht (SG5 RFF+ACW)</label>
+        <input id="refAcw" placeholder="i. d. R. wie RFF+ACE"></div>
+      <div class="field"><label for="ftxAao">Fehlerbeschreibung (SG5 FTX+AAO)</label>
+        <input id="ftxAao" placeholder="Freitext zur Fehlerbeschreibung"></div>
+      <div class="field"><label for="ftxZ02">Ortsangabe des AHB-Fehlers (SG5 FTX+Z02)</label>
+        <input id="ftxZ02" placeholder="z. B. SG4 STS+7 DE9013"></div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label for="refTn5">Vorgangsnummer des fehlerhaften Vorgangs (SG5 RFF+TN)</label>
+        <input id="refTn5" placeholder="leer = wie SG2 RFF+TN"></div>
+      <div class="field"><label for="refZ08">Netzbetreiber (SG5 RFF+Z08, MP-ID)</label>
+        <input id="refZ08" placeholder="MP-ID des Netzbetreibers"></div>
+    </div>
+  </div>
+
+  </div><!-- /left-panel -->
+
+  <div class="right-panel">
+
+  <div class="panel">
+    <h2>Nachricht erzeugen</h2>
+    <button class="go" onclick="generateAperak()">APERAK generieren</button>
+    <button class="go secondary" onclick="copyEdi()">In Zwischenablage kopieren</button>
+    <button class="go secondary" onclick="EdiSpeichern.speichere('ediOut','speicherHinweis')">Als marktkonforme Datei (.txt) speichern</button>
+    <div class="errbox" id="errorBox"></div>
+    <div class="field" style="margin-top:12px">
+      <label for="ediOut">EDIFACT-Ausgabe</label>
+      <textarea id="ediOut" class="edi" spellcheck="false"></textarea>
+    </div>
+    <span class="okbox" id="speicherHinweis" style="display:none"></span>
+    <span class="okbox" id="okBox" style="display:none">Nachricht erzeugt</span>
+  </div>
+
+  <div class="panel">
+    <h2>AHB-Segmentübersicht (aus dem Anwendungshandbuch extrahiert)</h2>
+    <div id="ahbTabelle"></div>
+  </div>
+
+  </div><!-- /right-panel -->
+
+  </div><!-- /container -->
+
+  <footer style="font-size:12px;color:var(--muted);border-top:1px solid var(--border);padding-top:12px;">
+    Datenquelle: APERAK AHB 1.0, konsolidierte Lesefassung Stand 30.09.2025 (gültig 01.10.2025-30.09.2026), BDEW-MAKO. Erzeugt Testnachrichten (UNB-Testkennzeichen&nbsp;1).
+  </footer>
+</div>
+
+<script src="../../../_engine/theme.js"></script>
+<script src="../../../_engine/kalender.js"></script>
+<script src="pruef-ids/_bedingungen.js"></script>
+<script src="../../../_engine/bedingung-hilfe.js"></script>
+    <script src="../../../_engine/daten/validator-registry.js"></script>
+    <script src="../../../_engine/daten/prozessketten.js"></script>
+    <script src="../../../_engine/folgenachrichten.js"></script>
+    <script src="../../../_engine/layout.js"></script>
+    <script src="../../../_engine/nachricht-speichern.js"></script>
+<script src="pruef-ids/_format.js"></script>
+<script src="pruef-ids/APERAK_Anerkennungsmeldung.js"></script>
+<script src="pruef-ids/APERAK_Fehlermeldung.js"></script>
+<script>
+// ------------------------------------------------------------------
+// APERAK-Generator (AHB 1.0). Zwei Meldungsarten gemäß AHB-Spalten
+// (siehe pruef-ids/APERAK_*.js, maschinell extrahiert):
+//   Anerkennungsmeldung   BGM 312 - Original verstanden und verarbeitbar
+//   Anwendungsfehlermeldung BGM 313 - SG4 ERC Fehlercode + SG5 Detailangaben
+// Aufbau: UNB / UNH / BGM / DTM+137 / SG2 RFF+ACE(+DTM+171)/AGO/TN /
+//         SG3 NAD+MS/MR [/ SG4 ERC/FTX+ABO / SG5 RFF+ACW/FTX+AAO/FTX+Z02/RFF+TN] / UNT / UNZ.
+// ------------------------------------------------------------------
+const $ = id => document.getElementById(id);
+// EDIFACT-Freistellung: ? + : ' werden mit ? escaped (UNA-Standardzeichen).
+function edi(s){ return String(s).replace(/\?/g,"??").replace(/\+/g,"?+").replace(/:/g,"?:").replace(/'/g,"?'"); }
+
+
+// SG4 ERC DE9321 - Fehlercodes aus dem AHB (maschinell extrahiert).
+const ERC_CODES = [["Z10", "ID unbekannt"], ["Z14", "Objekt im IT-System nicht gefunden"], ["Z15", "Objekt im IT-System nicht eindeutig"], ["Z16", "Objekt nicht mehr im Netzgebiet"], ["Z17", "Absender ist zum angegebenen Zeitintervall / Zeitpunkt dem Objekt nicht zugeordnet"], ["Z18", "Empfänger ist zum angegebenen Zeitintervall / Zeitpunkt dem Objekt nicht zugeordnet"], ["Z19", "Gerätenummer zum angegebenen Zeitintervall / Zeitpunkt an der Messlokation nicht bekannt"], ["Z20", "OBIS-Kennzahl zum angegebenen Zeitintervall / Zeitpunkt am Objekt nicht bekannt"], ["Z21", "Geschäftsvorfallinterne Referenzierung fehlerhaft"], ["Z24", "Zuordnungs-Tupel unbekannt"], ["Z25", "Absender ist zum angegebenen Zeitintervall / Zeitpunkt dem durch das Zuordnungs-Tupel identifizierten Objekt nicht zugeordnet"], ["Z26", "Empfänger ist zum angegebenen Zeitintervall / Zeitpunkt dem durch das Zuordnungs-Tupel identifizierten Objekt nicht zugeordnet"], ["Z27", "Vorkomma-Stellenzahl des Zählwertes ist zu lang"], ["Z29", "Erforderliche Angabe für diesen Anwendungsfall fehlt"], ["Z30", "Zeitreihe unvollständig"], ["Z31", "Geschäftsvorfall wird vom Empfänger zurückgewiesen"], ["Z33", "Referenziertes Geschäftsvorfall-Tupel nicht vorhanden"], ["Z34", "Zeitintervall negativ oder Null"], ["Z35", "Format nicht eingehalten"], ["Z37", "Geschäftsvorfall darf vom Sender nicht gesendet werden"], ["Z38", "Anzahl der übermittelten Codes überschreitet Paketdefinition"], ["Z39", "Code nicht aus erlaubtem Wertebereich"], ["Z40", "Segment- bzw. Segmentgruppenwiederholbarkeit überschritten"], ["Z41", "Zeitangabe unplausibel"], ["Z42", "Konfigurations-ID zum angegebenen Zeitintervall / Zeitpunkt nicht bekannt"], ["Z43", "Geschäftsvorfall für Objekt mit der Eigenschaft nicht erlaubt"], ["Z44", "Eigenschaft des Objekts weicht von der im Geschäftsvorfall codierten Eigenschaft ab"]];
+
+const USECASE_INFO = {
+  anerkennung: "Bestätigt, dass die referenzierte Nachricht verstanden wurde und verarbeitbar ist (BGM DE1001 = 312).",
+  fehler: "Meldet einen Anwendungsfehler der referenzierten Nachricht (BGM DE1001 = 313): Fehlercode in SG4 ERC, Details in SG5."
+};
+const USECASE_RULES = {
+  anerkennung: typeof ahbRulesAPERAK_Anerkennungsmeldung !== 'undefined' ? ahbRulesAPERAK_Anerkennungsmeldung : null,
+  fehler: typeof ahbRulesAPERAK_Fehlermeldung !== 'undefined' ? ahbRulesAPERAK_Fehlermeldung : null
+};
+
+function codevergabe(mpId){
+  for (const c of (formatConfig.codevergabe||[])) {
+    if (String(mpId).startsWith(c.prefix)) return c;
+  }
+  return { unb:"500", nad:"293", name:"BDEW" };
+}
+
+function onUsecase(){
+  const uc = $('usecase').value;
+  $('usecaseHint').textContent = USECASE_INFO[uc];
+  $('panelFehler').style.display = (uc==='fehler') ? '' : 'none';
+  renderAhb(uc);
+}
+function renderAhb(uc){
+  const rules = USECASE_RULES[uc];
+  const box = $('ahbTabelle');
+  if(!rules){ box.innerHTML = '<em>Keine AHB-Daten geladen.</em>'; return; }
+  let html = `<table class="ahb"><tr><th>Segment</th><th>Status</th><th>Regel</th></tr>`;
+  rules.segments.forEach(s=>{
+    html += `<tr><td>${s.name}</td><td class="status-${(s.status||'').replace(/[^A-Za-z-]/g,'')}">${s.status||''}</td><td class="expr">${s.rule||''}</td></tr>`;
+  });
+  box.innerHTML = html + '</table>';
+}
+
+// "TT.MM.JJJJ HH:MM" (deutsche Ortszeit, vereinfacht) -> EDIFACT 303 (UTC, +00).
+function zu303(s){
+  const m = String(s).trim().match(/^(\d{2})\.(\d{2})\.(\d{4})(?:\s+(\d{2}):(\d{2}))?$/);
+  if(!m) return null;
+  const [_, tt, mo, jjjj, hh, mi] = m;
+  const local = new Date(Number(jjjj), Number(mo)-1, Number(tt), Number(hh||"0"), Number(mi||"0"));
+  const pad = n => String(n).padStart(2,'0');
+  return `${local.getUTCFullYear()}${pad(local.getUTCMonth()+1)}${pad(local.getUTCDate())}${pad(local.getUTCHours())}${pad(local.getUTCMinutes())}+00`;
+}
+
+let darCounter = 1;
+function generateAperak(){
+  const uc = $('usecase').value;
+  const errors = [];
+  const abs = $('absender').value.trim(), emp = $('empfaenger').value.trim();
+  const doc = $('docnum').value.trim();
+  const refAce = $('refAce').value.trim(), refAgo = $('refAgo').value.trim(), refTn = $('refTn').value.trim();
+  const refDatum = $('refDatum').value.trim();
+  if(!abs || !emp) errors.push("MP-ID Absender und Empfänger sind Pflicht.");
+  if(!doc) errors.push("Dokumentennummer (BGM DE1004) ist Pflicht.");
+  if(!refAce) errors.push("Referenz auf die geprüfte Nachricht (SG2 RFF+ACE) ist Pflicht.");
+  if(!refAgo) errors.push("Dokumentennummer der referenzierten Nachricht (SG2 RFF+AGO) ist Pflicht.");
+  if(!refTn) errors.push("Vorgangsnummer (SG2 RFF+TN) ist Pflicht (AHB 2.1i); ohne Vorgang die UNH-Referenz angeben.");
+  let ref171 = null;
+  if(refDatum){
+    ref171 = zu303(refDatum);
+    if(!ref171) errors.push("Referenzdatum bitte als TT.MM.JJJJ HH:MM angeben.");
+  } else {
+    errors.push("Erstellungsdatum der geprüften Nachricht (SG2 DTM+171) ist Pflicht.");
+  }
+
+  const now = new Date();
+  const pad = n => String(n).padStart(2,'0');
+  const unbDate = `${String(now.getUTCFullYear()).slice(2)}${pad(now.getUTCMonth()+1)}${pad(now.getUTCDate())}`;
+  const unbTime = `${pad(now.getUTCHours())}${pad(now.getUTCMinutes())}`;
+  const dar = `APK${unbDate.slice(2)}${unbTime}${String(darCounter++).padStart(3,'0')}`; // DE0020 an..14
+  const nowUtc = `${now.getUTCFullYear()}${pad(now.getUTCMonth()+1)}${pad(now.getUTCDate())}${pad(now.getUTCHours())}${pad(now.getUTCMinutes())}+00`;
+
+  const absQ = codevergabe(abs), empQ = codevergabe(emp);
+  const seg = [];
+  seg.push("UNA:+.? '");
+  seg.push(`UNB+UNOC:3+${abs}:${absQ.unb}+${emp}:${empQ.unb}+${unbDate}:${unbTime}+${dar}++++++1'`);
+  seg.push(`UNH+1+${formatConfig.unhKennung}'`);
+  seg.push(`BGM+${uc==='anerkennung' ? '312' : '313'}+${edi(doc)}'`);
+  seg.push(`DTM+137:${nowUtc}:303'`);
+  // SG2: Referenzen auf die geprüfte Nachricht.
+  seg.push(`RFF+ACE:${edi(refAce)}'`);
+  if (ref171) seg.push(`DTM+171:${ref171}:303'`);
+  seg.push(`RFF+AGO:${edi(refAgo)}'`);
+  if (refTn) seg.push(`RFF+TN:${edi(refTn)}'`);
+  // SG3: Marktpartner.
+  seg.push(`NAD+MS+${abs}::${absQ.nad}'`, `NAD+MR+${emp}::${empQ.nad}'`);
+
+  if (uc === 'fehler') {
+    const erc = $('ercCode').value;
+    if(!erc) errors.push("Fehlercode (SG4 ERC) ist Pflicht.");
+    const abo = $('ftxAbo').value.trim();
+    const acw = $('refAcw').value.trim() || refAce;
+    const aao = $('ftxAao').value.trim();
+    const z02 = $('ftxZ02').value.trim();
+    const tn5 = $('refTn5').value.trim() || refTn;
+    const z08 = $('refZ08').value.trim();
+    if(!z08) errors.push("Netzbetreiber (SG5 RFF+Z08) ist Pflicht (AHB 2.1i).");
+    if (erc) seg.push(`ERC+${erc}'`);
+    if (abo) seg.push(`FTX+ABO+++${edi(abo)}'`);
+    // SG5: Zuordnung des Fehlers zur Nachricht bzw. zum Vorgang.
+    seg.push(`RFF+ACW:${edi(acw)}'`);
+    if (aao) seg.push(`FTX+AAO+++${edi(aao)}'`);
+    if (z02) seg.push(`FTX+Z02+++${edi(z02)}'`);
+    if (tn5) seg.push(`RFF+TN:${edi(tn5)}'`);
+    if (z08) seg.push(`RFF+Z08:${edi(z08)}'`);
+  }
+
+  const errBox = $('errorBox');
+  errBox.style.display = errors.length ? 'block' : 'none';
+  errBox.innerHTML = errors.join('<br>');
+  if (errors.length) { $('okBox').style.display='none'; return; }
+
+  const unhIndex = seg.findIndex(s=>s.startsWith('UNH'));
+  seg.push(`UNT+${seg.length - unhIndex + 1}+1'`);
+  seg.push(`UNZ+1+${dar}'`);
+  $('ediOut').value = seg.join("\n");
+  $('okBox').style.display='inline-block';
+}
+
+function copyEdi(){ const t=$('ediOut'); t.select(); document.execCommand('copy'); }
+
+(function fuelleErc(){
+  const sel = $('ercCode');
+  sel.innerHTML = '<option value="">– Fehlercode wählen –</option>';
+  ERC_CODES.forEach(([v,t])=>{
+    const o=document.createElement('option'); o.value=v; o.textContent=`${v} – ${t}`; sel.appendChild(o);
+  });
+})();
+onUsecase();
+</script>
+
+<script>
+// Vorbelegung über URL-Fragment (#antwort=<JSON>) - vom Nachrichten-Validator
+// geöffnete Antwortseiten (generische CONTRL-/APERAK-Antworten).
+(function(){
+  try {
+    const m = /[#&]antwort=([^&]+)/.exec(location.hash || "");
+    if (!m) return;
+    const v = JSON.parse(decodeURIComponent(m[1]));
+    if (v.usecase && document.getElementById('usecase')) {
+      document.getElementById('usecase').value = v.usecase;
+      if (typeof onUsecase === 'function') onUsecase();
+    }
+    for (const [id, wert] of Object.entries(v.felder || {})) {
+      const el = document.getElementById(id);
+      if (el) el.value = wert;
+    }
+  } catch (e) { /* Vorbelegung optional */ }
+})();
+</script>
+</body>
+</html>

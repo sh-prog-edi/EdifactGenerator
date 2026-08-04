@@ -1,0 +1,219 @@
+// _prozess-meta.js  (UTILMD Gas, GeLi Gas)
+// Gegen den AHB Gas (G1.1, Fehlerkorrektur 29.06.2026) verifizierte Metadaten je Prüf-ID
+// der GeLi-Gas-Kernprozesse. Steuert die datengetriebene EDIFACT-Erzeugung in generator.js
+// (zentrale Engine, formatConfig = GAS).
+//
+// Felder je PID (wie Strom):
+//   kapitel        AHB-Fundstelle (Anwendungsübersicht)
+//   rolle          Kommunikationsrichtung (informativ)
+//   bgm            BGM DE1001 (E01=Anmeldung, E02=Abmeldung, E35=Kündigung, E44=Informationsmeldung)
+//   art            "anfrage" | "bestaetigung" | "ablehnung" | "meldung"
+//   transaktionsgrund   STS+7 DE9013 (Transaktionsgrund, z. B. E01 Ein-/Auszug, E03 Wechsel, Z33, E06, Z26)
+//   ebd            EBD/Codeliste-Gas-Nr. für STS+E01 DE1131 (nur Antwortnachrichten) oder null
+//   antwortcluster "zustimmung" | "ablehnung" | null
+//   antwortcode    cluster-repräsentativer Beispiel-Antwortcode (STS+E01 DE9013)
+//
+// HINWEIS zu Antwortcodes: Die konkreten A-/Z-Codes stammen aus den Gas-EBD (Codelisten
+// G_00xx), die NICHT Teil der bereitgestellten MIG/AHB-PDFs sind. Die hier gesetzten Codes
+// sind cluster-korrekte, im AHB belegte Repräsentanten (Zustimmung/Ablehnung) - der reale
+// Code hängt vom Prüfergebnis ab. Struktur (BGM, Transaktionsgrund, EBD-Referenz, Antwort
+// ja/nein) ist gegen den AHB verifiziert.
+
+const prozessMeta = {
+    // --- 5.6 Anmeldung durch den LF (Codeliste Gas G_0011) ---
+    "44001": { kapitel: "5.6", rolle: "LF an NB", bgm: "E01", art: "anfrage",
+               transaktionsgrund: "E01", ebd: null, antwortcluster: null, antwortcode: null },
+    "44002": { kapitel: "5.6", rolle: "NB an LF", bgm: "E01", art: "bestaetigung",
+               transaktionsgrund: "E01", ebd: "G_0012", antwortcluster: "zustimmung", antwortcode: "E15" },
+    "44003": { kapitel: "5.6", rolle: "NB an LF", bgm: "E01", art: "ablehnung",
+               transaktionsgrund: "E01", ebd: "G_0011", antwortcluster: "ablehnung", antwortcode: "ZC5" },
+
+    // --- 5.5 Abmeldung durch den LF (Codeliste Gas G_0007) ---
+    "44004": { kapitel: "5.5", rolle: "LF an NB", bgm: "E02", art: "anfrage",
+               transaktionsgrund: "E01", ebd: null, antwortcluster: null, antwortcode: null },
+    "44005": { kapitel: "5.5", rolle: "NB an LF", bgm: "E02", art: "bestaetigung",
+               transaktionsgrund: "E01", ebd: "G_0008", antwortcluster: "zustimmung", antwortcode: "E15" },
+    "44006": { kapitel: "5.5", rolle: "NB an LF", bgm: "E02", art: "ablehnung",
+               transaktionsgrund: "E01", ebd: "G_0007", antwortcluster: "ablehnung", antwortcode: "E14" },
+
+    // --- 5.4 Abmeldung durch den NB an LF (Codeliste Gas G_0067) ---
+    "44007": { kapitel: "5.4", rolle: "NB an LF", bgm: "E02", art: "anfrage",
+               transaktionsgrund: "Z33", ebd: null, antwortcluster: null, antwortcode: null },
+    "44008": { kapitel: "5.4", rolle: "LF an NB", bgm: "E02", art: "bestaetigung",
+               transaktionsgrund: "Z33", ebd: "G_0067", antwortcluster: "zustimmung", antwortcode: "E15" },
+    "44009": { kapitel: "5.4", rolle: "LF an NB", bgm: "E02", art: "ablehnung",
+               transaktionsgrund: "Z33", ebd: "G_0068", antwortcluster: "ablehnung", antwortcode: "E14" },
+
+    // --- 5.7 Abmeldeanfrage (Codeliste Gas G_0009) ---
+    "44010": { kapitel: "5.7", rolle: "LF an NB", bgm: "E02", art: "anfrage",
+               transaktionsgrund: "E01", ebd: null, antwortcluster: null, antwortcode: null },
+    "44011": { kapitel: "5.7", rolle: "NB an LF", bgm: "E02", art: "bestaetigung",
+               transaktionsgrund: "E01", ebd: "G_0010", antwortcluster: "zustimmung", antwortcode: "E15" },
+    "44012": { kapitel: "5.7", rolle: "NB an LF", bgm: "E02", art: "ablehnung",
+               transaktionsgrund: "E01", ebd: "G_0009", antwortcluster: "ablehnung", antwortcode: "E17" },
+
+    // --- 5.9 Anmeldung zur Grund-/Ersatzversorgung von NB (Codeliste Gas G_0013) ---
+    "44013": { kapitel: "5.9", rolle: "NB an LF", bgm: "E01", art: "anfrage",
+               transaktionsgrund: "E06", ebd: null, antwortcluster: null, antwortcode: null },
+    "44014": { kapitel: "5.9", rolle: "LF an NB", bgm: "E01", art: "bestaetigung",
+               transaktionsgrund: "E06", ebd: "G_0013", antwortcluster: "zustimmung", antwortcode: "E15" },
+    "44015": { kapitel: "5.9", rolle: "LF an NB", bgm: "E01", art: "ablehnung",
+               transaktionsgrund: "E06", ebd: "G_0014", antwortcluster: "ablehnung", antwortcode: "E14" },
+
+    // --- 5.3 Kündigung zwischen Lieferanten (Codeliste Gas G_0006/G_0005) ---
+    "44016": { kapitel: "5.3", rolle: "LFN an LFA", bgm: "E35", art: "anfrage",
+               transaktionsgrund: "E03", ebd: null, antwortcluster: null, antwortcode: null },
+    "44017": { kapitel: "5.3", rolle: "LFA an LFN", bgm: "E35", art: "bestaetigung",
+               transaktionsgrund: "E03", ebd: "G_0006", antwortcluster: "zustimmung", antwortcode: "Z01" },
+    "44018": { kapitel: "5.3", rolle: "LFA an LFN", bgm: "E35", art: "ablehnung",
+               transaktionsgrund: "E03", ebd: "G_0005", antwortcluster: "ablehnung", antwortcode: "Z12" },
+
+    // --- 5.8 Informationsmeldung über bestehende Zuordnung (reine Meldungen, BGM E44) ---
+    // 44036 = Information über bestehende Zuordnung (Grund Z26); 44037/44038 = Beendigung/
+    // Aufhebung einer (zukünftigen) Zuordnung (Grund-Cluster ZG9/ZH1/ZH2, vgl. Bedingung [7]/[11]).
+    "44036": { kapitel: "5.8", rolle: "NB an LF", bgm: "E44", art: "meldung",
+               transaktionsgrund: "Z26", ebd: null, antwortcluster: null, antwortcode: null },
+    "44037": { kapitel: "5.8", rolle: "NB an LF", bgm: "E44", art: "meldung",
+               transaktionsgrund: "ZC8", ebd: null, antwortcluster: null, antwortcode: null },
+    "44038": { kapitel: "5.8", rolle: "NB an LF", bgm: "E44", art: "meldung",
+               transaktionsgrund: "ZH1", ebd: null, antwortcluster: null, antwortcode: null },
+
+    // === Gas-Restfälle: 5.1 Bestandslisten, 5.2 Stornierung, 5.10 Stammdatenänderung,
+    //     5.12 Stammdatenanfrage, 5.13/5.14 GDA, 6.1-6.4 MSB, 7.1/7.2 Änderungsmeldung ===
+    "44019": { kapitel: "5.1", rolle: "", bgm: "E03", art: "anfrage",
+               transaktionsgrund: "ZD0", ebd: null, antwortcluster: null, antwortcode: null },
+    "44020": { kapitel: "5.1", rolle: "", bgm: "E03", art: "anfrage",
+               transaktionsgrund: "ZD0", ebd: null, antwortcluster: null, antwortcode: null },
+    "44021": { kapitel: "5.1", rolle: "", bgm: "E03", art: "bestaetigung",
+               transaktionsgrund: "ZD0", ebd: "G_0002", antwortcluster: "zustimmung", antwortcode: "E15" },
+    "44022": { kapitel: "5.2", rolle: "", bgm: "E01", art: "anfrage",
+               transaktionsgrund: "E05", ebd: null, antwortcluster: null, antwortcode: null },
+    "44023": { kapitel: "5.2", rolle: "", bgm: "E01", art: "bestaetigung",
+               transaktionsgrund: "E05", ebd: "G_0004", antwortcluster: "zustimmung", antwortcode: "E15" },
+    "44024": { kapitel: "5.2", rolle: "", bgm: "E01", art: "ablehnung",
+               transaktionsgrund: "E05", ebd: "G_0003", antwortcluster: "ablehnung", antwortcode: "E14" },
+    "44035": { kapitel: "5.13", rolle: "", bgm: "Z14", art: "anfrage",
+               transaktionsgrund: "Z40", ebd: null, antwortcluster: null, antwortcode: null },
+    "44060": { kapitel: "5.14", rolle: "", bgm: "Z14", art: "anfrage",
+               transaktionsgrund: "Z40", ebd: null, antwortcluster: null, antwortcode: null },
+    "44039": { kapitel: "6.1", rolle: "", bgm: "E35", art: "anfrage",
+               transaktionsgrund: "E03", ebd: null, antwortcluster: null, antwortcode: null },
+    "44040": { kapitel: "6.1", rolle: "", bgm: "E35", art: "bestaetigung",
+               transaktionsgrund: "E03", ebd: "G_0052", antwortcluster: "zustimmung", antwortcode: "E15" },
+    "44041": { kapitel: "6.1", rolle: "", bgm: "E35", art: "ablehnung",
+               transaktionsgrund: "E03", ebd: "G_0051", antwortcluster: "ablehnung", antwortcode: "E11" },
+    "44042": { kapitel: "6.2", rolle: "", bgm: "E01", art: "anfrage",
+               transaktionsgrund: "E01", ebd: null, antwortcluster: null, antwortcode: null },
+    "44043": { kapitel: "6.2", rolle: "", bgm: "E01", art: "bestaetigung",
+               transaktionsgrund: "E01", ebd: "G_0054", antwortcluster: "zustimmung", antwortcode: "E15" },
+    "44044": { kapitel: "6.2", rolle: "", bgm: "E01", art: "ablehnung",
+               transaktionsgrund: "E01", ebd: "G_0053", antwortcluster: "ablehnung", antwortcode: "E11" },
+    "44168": { kapitel: "6.3", rolle: "", bgm: "E01", art: "anfrage",
+               transaktionsgrund: "E01", ebd: null, antwortcluster: null, antwortcode: null },
+    "44169": { kapitel: "6.3", rolle: "", bgm: "E01", art: "bestaetigung",
+               transaktionsgrund: "E01", ebd: "G_0070", antwortcluster: "zustimmung", antwortcode: "E15" },
+    "44170": { kapitel: "6.3", rolle: "", bgm: "E01", art: "ablehnung",
+               transaktionsgrund: "E01", ebd: "G_0071", antwortcluster: "ablehnung", antwortcode: "E17" },
+    "44051": { kapitel: "6.4", rolle: "", bgm: "E02", art: "anfrage",
+               transaktionsgrund: "E01", ebd: null, antwortcluster: null, antwortcode: null },
+    "44052": { kapitel: "6.4", rolle: "", bgm: "E02", art: "bestaetigung",
+               transaktionsgrund: "E01", ebd: "G_0058", antwortcluster: "zustimmung", antwortcode: "E15" },
+    "44053": { kapitel: "6.4", rolle: "", bgm: "E02", art: "ablehnung",
+               transaktionsgrund: "E01", ebd: "G_0057", antwortcluster: "ablehnung", antwortcode: "E17" },
+    "44101": { kapitel: "7.1", rolle: "", bgm: "Z22", art: "anfrage",
+               transaktionsgrund: "ZE5", ebd: null, antwortcluster: null, antwortcode: null },
+    "44102": { kapitel: "7.1", rolle: "", bgm: "Z22", art: "anfrage",
+               transaktionsgrund: "Z15", ebd: null, antwortcluster: null, antwortcode: null },
+    "44103": { kapitel: "7.2", rolle: "", bgm: "Z22", art: "anfrage",
+               transaktionsgrund: "ZE5", ebd: null, antwortcluster: null, antwortcode: null },
+    "44104": { kapitel: "7.2", rolle: "", bgm: "Z22", art: "anfrage",
+               transaktionsgrund: "Z15", ebd: null, antwortcluster: null, antwortcode: null },
+    "44105": { kapitel: "7.2", rolle: "", bgm: "Z22", art: "ablehnung",
+               transaktionsgrund: "Z15", ebd: null, antwortcluster: "ablehnung", antwortcode: "E13" },
+    "44109": { kapitel: "5.10", rolle: "", bgm: "E03", art: "anfrage",
+               transaktionsgrund: "ZE6", ebd: null, antwortcluster: null, antwortcode: null },
+    "44111": { kapitel: "5.10", rolle: "", bgm: "E03", art: "bestaetigung",
+               transaktionsgrund: "ZE6", ebd: "G_0023", antwortcluster: "zustimmung", antwortcode: "E15" },
+    "44112": { kapitel: "5.10", rolle: "", bgm: "E03", art: "anfrage",
+               transaktionsgrund: "ZE7", ebd: null, antwortcluster: null, antwortcode: null },
+    "44113": { kapitel: "5.10", rolle: "", bgm: "E03", art: "anfrage",
+               transaktionsgrund: "ZE7", ebd: null, antwortcluster: null, antwortcode: null },
+    "44115": { kapitel: "5.10", rolle: "", bgm: "E03", art: "bestaetigung",
+               transaktionsgrund: "ZE7", ebd: "G_0016", antwortcluster: "zustimmung", antwortcode: "E15" },
+    "44116": { kapitel: "5.10", rolle: "", bgm: "E03", art: "anfrage",
+               transaktionsgrund: "ZE8", ebd: null, antwortcluster: null, antwortcode: null },
+    "44117": { kapitel: "5.10", rolle: "", bgm: "E03", art: "anfrage",
+               transaktionsgrund: "ZE8", ebd: null, antwortcluster: null, antwortcode: null },
+    "44119": { kapitel: "5.10", rolle: "", bgm: "E03", art: "bestaetigung",
+               transaktionsgrund: "ZE8", ebd: "G_0026", antwortcluster: "zustimmung", antwortcode: "E15" },
+    "44120": { kapitel: "5.10", rolle: "", bgm: "E03", art: "anfrage",
+               transaktionsgrund: "ZE9", ebd: null, antwortcluster: null, antwortcode: null },
+    "44121": { kapitel: "5.10", rolle: "", bgm: "E03", art: "bestaetigung",
+               transaktionsgrund: "ZE9", ebd: "G_0025", antwortcluster: "zustimmung", antwortcode: "E15" },
+    "44123": { kapitel: "5.10", rolle: "", bgm: "E03", art: "anfrage",
+               transaktionsgrund: "ZF0", ebd: null, antwortcluster: null, antwortcode: null },
+    "44124": { kapitel: "5.10", rolle: "", bgm: "E03", art: "bestaetigung",
+               transaktionsgrund: "ZF0", ebd: "G_0019", antwortcluster: "zustimmung", antwortcode: "E15" },
+    "44159": { kapitel: "5.10", rolle: "", bgm: "E03", art: "anfrage",
+               transaktionsgrund: "ZG7", ebd: null, antwortcluster: null, antwortcode: null },
+    "44160": { kapitel: "5.10", rolle: "", bgm: "E03", art: "anfrage",
+               transaktionsgrund: "ZG7", ebd: null, antwortcluster: null, antwortcode: null },
+    "44161": { kapitel: "5.10", rolle: "", bgm: "E03", art: "bestaetigung",
+               transaktionsgrund: "ZG7", ebd: "G_0026", antwortcluster: "zustimmung", antwortcode: "E15" },
+    "44175": { kapitel: "5.10", rolle: "", bgm: "E03", art: "anfrage",
+               transaktionsgrund: "ZI9", ebd: null, antwortcluster: null, antwortcode: null },
+    "44176": { kapitel: "5.10", rolle: "", bgm: "E03", art: "bestaetigung",
+               transaktionsgrund: "ZI9", ebd: "G_0022", antwortcluster: "zustimmung", antwortcode: "E15" },
+    "44137": { kapitel: "5.12", rolle: "", bgm: "E03", art: "anfrage",
+               transaktionsgrund: "ZF3", ebd: null, antwortcluster: null, antwortcode: null },
+    "44138": { kapitel: "5.12", rolle: "", bgm: "E03", art: "bestaetigung",
+               transaktionsgrund: "ZF3", ebd: "G_0040", antwortcluster: "zustimmung", antwortcode: "ZG2" },
+    "44139": { kapitel: "5.12", rolle: "", bgm: "E03", art: "anfrage",
+               transaktionsgrund: "ZF4", ebd: null, antwortcluster: null, antwortcode: null },
+    "44140": { kapitel: "5.12", rolle: "", bgm: "E03", art: "anfrage",
+               transaktionsgrund: "ZF4", ebd: null, antwortcluster: null, antwortcode: null },
+    "44142": { kapitel: "5.12", rolle: "", bgm: "E03", art: "bestaetigung",
+               transaktionsgrund: "ZF4", ebd: "G_0031", antwortcluster: "zustimmung", antwortcode: "ZG2" },
+    "44143": { kapitel: "5.12", rolle: "", bgm: "E03", art: "anfrage",
+               transaktionsgrund: "ZF5", ebd: null, antwortcluster: null, antwortcode: null },
+    "44145": { kapitel: "5.12", rolle: "", bgm: "E03", art: "bestaetigung",
+               transaktionsgrund: "ZF5", ebd: "G_0047", antwortcluster: "zustimmung", antwortcode: "ZG2" },
+    "44146": { kapitel: "5.12", rolle: "", bgm: "E03", art: "ablehnung",
+               transaktionsgrund: "ZF5", ebd: "G_0048", antwortcluster: "ablehnung", antwortcode: "ZD3" },
+    "44147": { kapitel: "5.12", rolle: "", bgm: "E03", art: "anfrage",
+               transaktionsgrund: "ZF5", ebd: null, antwortcluster: null, antwortcode: null },
+    "44148": { kapitel: "5.12", rolle: "", bgm: "E03", art: "anfrage",
+               transaktionsgrund: "ZF5", ebd: null, antwortcluster: null, antwortcode: null },
+    "44149": { kapitel: "5.12", rolle: "", bgm: "E03", art: "bestaetigung",
+               transaktionsgrund: "ZF5", ebd: "G_0044", antwortcluster: "zustimmung", antwortcode: "ZG2" },
+    "44150": { kapitel: "5.12", rolle: "", bgm: "E03", art: "anfrage",
+               transaktionsgrund: "ZF6", ebd: null, antwortcluster: null, antwortcode: null },
+    "44151": { kapitel: "5.12", rolle: "", bgm: "E03", art: "bestaetigung",
+               transaktionsgrund: "ZF6", ebd: "G_0038", antwortcluster: "zustimmung", antwortcode: "ZG2" },
+    "44152": { kapitel: "5.12", rolle: "", bgm: "E03", art: "ablehnung",
+               transaktionsgrund: "ZF6", ebd: "G_0039", antwortcluster: "ablehnung", antwortcode: "ZG0" },
+    "44156": { kapitel: "5.12", rolle: "", bgm: "E03", art: "anfrage",
+               transaktionsgrund: "ZF8", ebd: null, antwortcluster: null, antwortcode: null },
+    "44157": { kapitel: "5.12", rolle: "", bgm: "E03", art: "bestaetigung",
+               transaktionsgrund: "ZF8", ebd: "G_0034", antwortcluster: "zustimmung", antwortcode: "ZG2" },
+    "44162": { kapitel: "5.12", rolle: "", bgm: "E03", art: "anfrage",
+               transaktionsgrund: "ZG8", ebd: null, antwortcluster: null, antwortcode: null },
+    "44163": { kapitel: "5.12", rolle: "", bgm: "E03", art: "bestaetigung",
+               transaktionsgrund: "ZG8", ebd: "G_0044", antwortcluster: "zustimmung", antwortcode: "ZG2" },
+    "44164": { kapitel: "5.12", rolle: "", bgm: "E03", art: "ablehnung",
+               transaktionsgrund: "ZG8", ebd: "G_0046", antwortcluster: "ablehnung", antwortcode: "ZD3" },
+    "44165": { kapitel: "5.12", rolle: "", bgm: "E03", art: "anfrage",
+               transaktionsgrund: "ZG8", ebd: null, antwortcluster: null, antwortcode: null },
+    "44166": { kapitel: "5.12", rolle: "", bgm: "E03", art: "anfrage",
+               transaktionsgrund: "ZG8", ebd: null, antwortcluster: null, antwortcode: null },
+    "44167": { kapitel: "5.12", rolle: "", bgm: "E03", art: "bestaetigung",
+               transaktionsgrund: "ZG8", ebd: "G_0043", antwortcluster: "zustimmung", antwortcode: "ZG2" },
+    "44180": { kapitel: "5.12", rolle: "", bgm: "E03", art: "anfrage",
+               transaktionsgrund: "ZJ1", ebd: null, antwortcluster: null, antwortcode: null },
+    "44181": { kapitel: "5.12", rolle: "", bgm: "E03", art: "bestaetigung",
+               transaktionsgrund: "ZJ1", ebd: "G_0035", antwortcluster: "zustimmung", antwortcode: "ZG2" },
+    "44182": { kapitel: "5.12", rolle: "", bgm: "E03", art: "ablehnung",
+               transaktionsgrund: "ZJ1", ebd: "G_0036", antwortcluster: "ablehnung", antwortcode: "ZJ5" }
+};
+
+if (typeof module !== 'undefined') module.exports = prozessMeta;

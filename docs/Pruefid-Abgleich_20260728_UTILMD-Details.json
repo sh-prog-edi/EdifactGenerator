@@ -1,0 +1,9162 @@
+[
+ {
+  "datei": "55001.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": [
+     "ZW4",
+     "ZAP"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z22"
+  ],
+  "abhaengig": [
+   "LOC_Z16",
+   "LOC_Z22"
+  ],
+  "ahbExpr": [
+   "DTM_93",
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55002.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": [
+     "ZW6",
+     "ZW7",
+     "ZAP"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z18",
+   "LOC_Z22",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z17",
+   "RFF_Z60",
+   "RFF_Z32",
+   "RFF_Z38",
+   "RFF_Z19"
+  ],
+  "abhaengig": [
+   "LOC_Z18",
+   "LOC_Z22"
+  ],
+  "ahbExpr": [
+   "DTM_92",
+   "DTM_93",
+   "STS_7",
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55003.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": [
+     "ZW4"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "DTM_Z07",
+   "DTM_Z08",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55004.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": [
+     "ZW3",
+     "ZW4",
+     "ZW5",
+     "ZAP"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z22"
+  ],
+  "abhaengig": [
+   "LOC_Z22",
+   "LOC_Z21"
+  ],
+  "ahbExpr": [
+   "DTM_92",
+   "DTM_93",
+   "STS_7",
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55005.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": "entfernt (AHB führt keine Ergänzung)"
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_92",
+   "DTM_93"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55006.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": "entfernt (AHB führt keine Ergänzung)"
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55007.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": [
+     "ZW3",
+     "ZW4",
+     "ZW5",
+     "ZAP"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "DTM_206",
+   "STS_7_grund",
+   "LOC_Z22"
+  ],
+  "abhaengig": [
+   "LOC_Z22",
+   "LOC_Z21"
+  ],
+  "ahbExpr": [
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55008.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": "entfernt (AHB führt keine Ergänzung)"
+   }
+  ],
+  "ergaenzt": [
+   "DTM_206",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55009.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": "entfernt (AHB führt keine Ergänzung)"
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55010.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": [
+     "ZW3",
+     "ZW4",
+     "ZW5",
+     "ZAP"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "DTM_154",
+   "STS_7_grund",
+   "LOC_Z22"
+  ],
+  "abhaengig": [
+   "LOC_Z22",
+   "LOC_Z21"
+  ],
+  "ahbExpr": [
+   "STS_7",
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55011.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": "entfernt (AHB führt keine Ergänzung)"
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55012.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": "entfernt (AHB führt keine Ergänzung)"
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55013.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": [
+     "ZW6",
+     "ZW7"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z18",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z17",
+   "RFF_Z32",
+   "RFF_Z38",
+   "RFF_Z19"
+  ],
+  "abhaengig": [
+   "LOC_Z17"
+  ],
+  "ahbExpr": [
+   "DTM_93",
+   "STS_7",
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55014.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": [
+     "ZW4"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_93",
+   "STS_7"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55015.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": [
+     "ZW4"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "STS_7"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55016.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": [
+     "ZW3",
+     "ZW4",
+     "ZW5"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ahbExpr": [
+   "DTM_93",
+   "DTM_471",
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55017.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": [
+     "ZW3",
+     "ZW4",
+     "ZW5"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_93",
+   "DTM_471"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55018.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": "entfernt (AHB führt keine Ergänzung)"
+   }
+  ],
+  "ergaenzt": [
+   "DTM_157",
+   "DTM_Z01",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_Z05",
+   "DTM_Z10"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55022.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55023.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55024.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55035.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "LOC_Z18",
+   "LOC_Z22",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z17",
+   "RFF_Z31",
+   "RFF_Z32",
+   "RFF_Z33",
+   "RFF_Z34",
+   "RFF_Z16",
+   "RFF_Z10",
+   "RFF_Z37",
+   "RFF_Z38",
+   "RFF_Z19",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK"
+  ],
+  "abhaengig": [
+   "LOC_Z22"
+  ],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55036.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "Z26"
+    ],
+    "nachher": "entfernt (AHB führt keine Ergänzung)"
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55037.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3"
+    ],
+    "nachher": [
+     "ZW3",
+     "ZW4"
+    ]
+   }
+  ],
+  "ergaenzt": [],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55038.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3"
+    ],
+    "nachher": [
+     "ZW3",
+     "ZW4"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "LOC_Z21"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_92",
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55039.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_93",
+   "DTM_471",
+   "STS_7_grund",
+   "LOC_Z16"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55040.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_93",
+   "DTM_471",
+   "STS_7_grund",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55041.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_157",
+   "DTM_Z01",
+   "DTM_Z10",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55042.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_76",
+   "STS_7_grund",
+   "LOC_Z16",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55043.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_76",
+   "STS_7_grund",
+   "LOC_Z18",
+   "LOC_Z16",
+   "LOC_Z22",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z21",
+   "RFF_Z50",
+   "DTM_752",
+   "RFF_Z31",
+   "RFF_Z32",
+   "RFF_Z33",
+   "RFF_Z34",
+   "RFF_Z16",
+   "RFF_Z18",
+   "RFF_Z20",
+   "RFF_Z37",
+   "RFF_Z38",
+   "RFF_Z19",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55044.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55051.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_93",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55052.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_93",
+   "STS_7",
+   "STS_7_grund",
+   "LOC_Z18",
+   "LOC_Z16",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z21"
+  ],
+  "abhaengig": [
+   "DTM_93"
+  ],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55053.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55060.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z18",
+   "LOC_Z22",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z21",
+   "LOC_Z17",
+   "RFF_Z31",
+   "RFF_Z32",
+   "RFF_Z33",
+   "RFF_Z34",
+   "RFF_Z16",
+   "RFF_Z18",
+   "RFF_Z20",
+   "RFF_Z37",
+   "RFF_Z38",
+   "RFF_Z19",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55062.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_158"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55063.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_159"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55064.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_158",
+   "DTM_159"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55065.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "RFF_AAV",
+   "LOC_Z15",
+   "RFF_AUU",
+   "DTM_158",
+   "DTM_159",
+   "LOC_Z16",
+   "LOC_Z21",
+   "RFF_Z18",
+   "RFF_Z20",
+   "RFF_Z12"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55066.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "LOC_Z15",
+   "RFF_AUU",
+   "DTM_158",
+   "DTM_159",
+   "LOC_Z16",
+   "LOC_Z21",
+   "RFF_Z18",
+   "RFF_Z20",
+   "RFF_Z12"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55067.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "RFF_AAV",
+   "LOC_Z15",
+   "RFF_AVE"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55069.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "RFF_AAV",
+   "LOC_Z15",
+   "RFF_AUU",
+   "RFF_AVE",
+   "DTM_163",
+   "DTM_164"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55070.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "RFF_AAV",
+   "LOC_Z15",
+   "RFF_AUU",
+   "RFF_AVE",
+   "DTM_163",
+   "DTM_164"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55074.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "RFF_AAV",
+   "DTM_157",
+   "LOC_Z21",
+   "LOC_Z17",
+   "RFF_Z18",
+   "RFF_Z20",
+   "RFF_Z19",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55075.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_157",
+   "STS_7_grund",
+   "LOC_Z21",
+   "LOC_Z17",
+   "RFF_Z18",
+   "RFF_Z20",
+   "RFF_Z19",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55076.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_157",
+   "STS_7_grund",
+   "LOC_Z21",
+   "LOC_Z17",
+   "RFF_Z18",
+   "RFF_Z20",
+   "RFF_Z19",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55077.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z21"
+  ],
+  "abhaengig": [
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55078.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z18",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z21",
+   "LOC_Z17",
+   "RFF_Z60",
+   "RFF_Z32",
+   "RFF_Z38",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55080.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_Z07",
+   "DTM_Z08",
+   "STS_7_grund",
+   "RFF_Z18"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55095.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z18",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z21",
+   "LOC_Z17",
+   "RFF_Z31",
+   "RFF_Z32",
+   "RFF_Z33",
+   "RFF_Z34",
+   "RFF_Z16",
+   "RFF_Z20",
+   "RFF_Z37",
+   "RFF_Z38",
+   "RFF_Z19",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55109.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z46",
+   "RFF_AVC"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55110.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z46"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55126.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55136.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z46"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55137.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z46",
+   "RFF_AVC"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55156.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55168.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_76",
+   "STS_7_grund",
+   "LOC_Z18",
+   "LOC_Z16",
+   "LOC_Z22",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z21",
+   "RFF_Z50",
+   "DTM_752",
+   "RFF_Z31",
+   "RFF_Z32",
+   "RFF_Z33",
+   "RFF_Z34",
+   "RFF_Z16",
+   "RFF_Z18",
+   "RFF_Z20",
+   "RFF_Z37",
+   "RFF_Z38",
+   "RFF_Z19",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55169.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_76",
+   "STS_7_grund",
+   "LOC_Z18",
+   "LOC_Z16",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z21",
+   "RFF_Z50",
+   "DTM_752",
+   "RFF_Z31",
+   "RFF_Z32",
+   "RFF_Z33",
+   "RFF_Z34",
+   "RFF_Z16",
+   "RFF_Z18",
+   "RFF_Z20",
+   "RFF_Z37",
+   "RFF_Z38",
+   "RFF_Z19",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55170.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55173.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z16",
+   "LOC_Z22",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z17",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z31",
+   "RFF_Z32",
+   "RFF_Z33",
+   "RFF_Z34",
+   "RFF_Z16"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55175.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z16",
+   "LOC_Z22",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z17",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z31",
+   "RFF_Z32",
+   "RFF_Z33",
+   "RFF_Z34",
+   "RFF_Z16"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55177.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z16",
+   "LOC_Z22",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z17",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z31",
+   "RFF_Z32",
+   "RFF_Z33",
+   "RFF_Z34",
+   "RFF_Z16"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55180.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z16",
+   "LOC_Z22",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z17",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z31",
+   "RFF_Z32",
+   "RFF_Z33",
+   "RFF_Z34",
+   "RFF_Z16"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55194.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55195.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "RFF_AAV",
+   "LOC_Z15",
+   "RFF_AUU",
+   "DTM_158",
+   "DTM_159",
+   "LOC_Z16",
+   "LOC_Z21",
+   "RFF_Z18",
+   "RFF_Z20",
+   "RFF_Z12"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55196.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "LOC_Z15",
+   "RFF_AUU",
+   "DTM_158",
+   "DTM_159",
+   "LOC_Z16",
+   "LOC_Z21",
+   "RFF_Z22",
+   "DTM_Z15",
+   "DTM_Z16",
+   "RFF_Z18",
+   "RFF_Z20",
+   "RFF_Z12"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55197.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_158"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55198.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_159"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55199.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_158"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55200.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_159"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55201.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "RFF_AAV",
+   "LOC_Z15",
+   "RFF_AUU",
+   "LOC_Z16",
+   "LOC_Z21",
+   "RFF_Z18",
+   "RFF_Z20"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55202.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "LOC_Z15",
+   "RFF_AUU",
+   "LOC_Z16",
+   "LOC_Z21",
+   "RFF_Z18",
+   "RFF_Z20"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55203.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_158"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55204.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_158"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55205.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_158"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55206.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_159"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55207.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_159"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55208.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_159"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55209.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_158"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55210.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_158"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55211.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_158"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55212.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_159"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55213.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_159"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55214.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_159"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55218.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "RFF_Z50",
+   "DTM_Z21",
+   "DTM_Z09",
+   "DTM_Z22"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55220.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z51",
+   "DTM_Z21",
+   "DTM_Z09",
+   "DTM_Z22"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55223.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "LOC_Z15",
+   "RFF_AUU",
+   "STS_7_grund",
+   "LOC_Z16",
+   "LOC_Z21",
+   "DTM_158",
+   "DTM_159",
+   "RFF_AVE"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55224.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "LOC_Z15",
+   "RFF_AUU",
+   "LOC_Z16",
+   "LOC_Z21",
+   "DTM_158",
+   "DTM_159"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55225.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55227.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55230.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55232.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55235.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "RFF_AVE"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55236.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_93"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55237.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_93"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55238.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_158",
+   "STS_7_grund",
+   "RFF_Z18"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55239.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_158",
+   "STS_7_grund",
+   "LOC_Z15",
+   "RFF_Z18"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55240.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_93",
+   "DTM_159",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55241.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_93",
+   "DTM_159",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55242.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_93",
+   "DTM_159",
+   "STS_7_grund",
+   "LOC_Z15"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55243.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_93",
+   "DTM_159",
+   "STS_7_grund",
+   "LOC_Z15"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55553.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z42",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z14",
+   "RFF_AGK"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55555.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z42",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z14",
+   "RFF_AGK"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55557.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55559.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55600.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z17"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_93",
+   "STS_7",
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55601.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z17"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "STS_7",
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55602.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4"
+    ],
+    "nachher": [
+     "ZW6",
+     "ZW7"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z18",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z17",
+   "RFF_Z60",
+   "RFF_Z32",
+   "RFF_Z38",
+   "RFF_Z19"
+  ],
+  "abhaengig": [
+   "LOC_Z17"
+  ],
+  "ahbExpr": [
+   "DTM_93",
+   "STS_7",
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55603.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z18",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z21",
+   "LOC_Z17",
+   "RFF_Z60",
+   "RFF_Z32",
+   "RFF_Z38",
+   "RFF_Z19"
+  ],
+  "abhaengig": [
+   "LOC_Z21"
+  ],
+  "ahbExpr": [
+   "STS_7",
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55604.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55605.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55607.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_93",
+   "STS_7_grund",
+   "LOC_Z18",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z17",
+   "RFF_Z32",
+   "RFF_Z38",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55608.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_93",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55609.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55611.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_93",
+   "STS_7_grund",
+   "LOC_Z17"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55613.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z49"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55614.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55615.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55616.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z10",
+   "RFF_Z46"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55617.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z38",
+   "RFF_Z32"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z20"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55618.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z19"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55619.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z21"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55620.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z05"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55621.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55622.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z10",
+   "RFF_Z46"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55623.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z38",
+   "RFF_Z32"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z20"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55624.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z19"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55625.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z21"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55626.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z05"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55627.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55628.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z46"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55629.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z38",
+   "RFF_Z32"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z20"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55630.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z19"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55632.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55633.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55634.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z46"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55635.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z38",
+   "RFF_Z32"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z20"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55636.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z19"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55638.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55639.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55640.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z50",
+   "DTM_752"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55641.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z19"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55642.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z21"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55643.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK",
+   "RFF_Z46"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55644.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55645.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z51",
+   "DTM_752"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55646.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z19"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55647.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z21"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55648.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK",
+   "RFF_Z46"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55649.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55650.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z50",
+   "DTM_752"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55651.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z19"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55652.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z21"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55653.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK",
+   "RFF_Z46"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55654.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55655.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z51",
+   "DTM_752"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55656.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z19"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55657.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z21"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55658.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK",
+   "RFF_Z46"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55659.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55660.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z50",
+   "DTM_752"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55661.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z19"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55662.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z21"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55663.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK",
+   "RFF_Z46"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55664.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55665.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z51",
+   "DTM_752"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55666.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z19"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55667.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z21"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55669.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK",
+   "RFF_Z46"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55670.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW3",
+     "ZW4",
+     "ZW5"
+    ],
+    "nachher": [
+     "ZW3",
+     "ZW4",
+     "ZW5",
+     "ZZB"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z21",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z20"
+  ],
+  "abhaengig": [
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ahbExpr": [
+   "STS_7",
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55671.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z21",
+   "RFF_Z48",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z20"
+  ],
+  "abhaengig": [
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55672.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "LOC_Z21",
+   "RFF_Z49"
+  ],
+  "abhaengig": [
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ahbExpr": [
+   "LOC_Z16",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55673.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "LOC_Z21",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55674.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "LOC_Z21",
+   "RFF_Z49"
+  ],
+  "abhaengig": [
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ahbExpr": [
+   "LOC_Z16",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55675.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "LOC_Z21",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55684.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55685.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55686.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z21"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55687.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z21"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55688.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55689.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55690.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z16",
+   "LOC_Z22",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z21",
+   "LOC_Z17",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z31",
+   "RFF_Z32",
+   "RFF_Z33",
+   "RFF_Z34",
+   "RFF_Z16",
+   "RFF_Z18",
+   "RFF_Z20",
+   "RFF_Z38",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55691.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55692.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "44001.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z18",
+   "DTM_Z20",
+   "RFF_AVC",
+   "RFF_Z01",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_93",
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44002.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_158",
+   "DTM_159",
+   "STS_7_grund",
+   "RFF_Z18",
+   "DTM_155",
+   "DTM_Z20",
+   "DTM_Z21",
+   "DTM_Z09",
+   "DTM_Z22",
+   "RFF_Z10",
+   "RFF_Z19",
+   "RFF_MG",
+   "RFF_AVC"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_93",
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44003.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_Z07",
+   "DTM_Z08",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44004.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_93",
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44005.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_159",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_93",
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44006.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44007.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_159",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44008.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_159",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44009.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44010.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44011.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44012.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44013.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_158",
+   "DTM_159",
+   "STS_7_grund",
+   "RFF_Z18",
+   "DTM_155",
+   "DTM_Z21",
+   "DTM_Z09",
+   "DTM_Z22",
+   "RFF_Z10",
+   "RFF_Z19",
+   "RFF_MG"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_93",
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44014.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_158",
+   "DTM_159",
+   "STS_7_grund",
+   "RFF_Z18",
+   "DTM_155",
+   "DTM_Z20",
+   "DTM_Z21",
+   "DTM_Z09",
+   "DTM_Z22",
+   "RFF_Z10",
+   "RFF_Z19",
+   "RFF_MG"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_93",
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44015.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44016.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z01"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_93",
+   "DTM_471",
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44017.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z01"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_93",
+   "DTM_471",
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44018.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_Z05",
+   "DTM_157",
+   "DTM_Z01",
+   "DTM_Z10",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44019.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_93",
+   "DTM_158",
+   "DTM_159"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44020.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_93",
+   "DTM_158",
+   "DTM_159",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44021.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_93",
+   "DTM_158",
+   "DTM_159",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44022.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "E05"
+    ],
+    "nachher": "entfernt (AHB führt keine Ergänzung)"
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44023.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "E05"
+    ],
+    "nachher": "entfernt (AHB führt keine Ergänzung)"
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44024.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "E05"
+    ],
+    "nachher": "entfernt (AHB führt keine Ergänzung)"
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44035.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_AAV",
+   "RFF_Z18",
+   "DTM_155",
+   "DTM_Z21",
+   "DTM_Z22",
+   "RFF_Z10",
+   "RFF_Z19",
+   "RFF_MG",
+   "RFF_AVC"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44036.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44037.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_159",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44038.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_159",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44039.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_93",
+   "DTM_471",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44040.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_93",
+   "DTM_471",
+   "STS_7_grund",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44041.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_157",
+   "DTM_Z01",
+   "DTM_Z10",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44042.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_76",
+   "STS_7_grund",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44043.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_76",
+   "STS_7_grund",
+   "RFF_Z19",
+   "DTM_752",
+   "RFF_MG"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44044.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44051.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_93",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44052.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_93",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44053.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44060.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_AAV",
+   "RFF_Z19",
+   "DTM_752",
+   "RFF_MG"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44101.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_93",
+   "DTM_157",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44102.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_93",
+   "DTM_157",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44103.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_93",
+   "DTM_157",
+   "DTM_158",
+   "DTM_159",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44104.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_93",
+   "DTM_157",
+   "DTM_158",
+   "DTM_159",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44105.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_157",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44109.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z18",
+   "DTM_Z20",
+   "RFF_AVC"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44111.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44112.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z18",
+   "DTM_155",
+   "DTM_Z21",
+   "DTM_Z09",
+   "DTM_Z22",
+   "RFF_Z10",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44113.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19",
+   "DTM_752"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44115.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44116.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19",
+   "RFF_MG"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44117.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19",
+   "RFF_MG"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44119.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44120.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44121.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44123.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44124.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44137.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z18",
+   "DTM_Z20",
+   "RFF_AVC"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44138.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z18",
+   "DTM_Z20",
+   "RFF_AVC"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44139.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z18",
+   "DTM_155",
+   "DTM_Z21",
+   "DTM_Z09",
+   "DTM_Z22",
+   "RFF_Z10",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44140.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19",
+   "DTM_752"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44142.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z18",
+   "DTM_155",
+   "DTM_Z21",
+   "DTM_Z09",
+   "DTM_Z22",
+   "RFF_Z19",
+   "DTM_752",
+   "RFF_Z10"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44143.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19",
+   "RFF_MG"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44145.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19",
+   "RFF_MG"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44146.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44147.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19",
+   "RFF_MG"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44148.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19",
+   "RFF_MG"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44149.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19",
+   "RFF_MG"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44150.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44151.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44152.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44156.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44157.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44159.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44160.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44161.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44162.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44163.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44164.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44165.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44166.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44167.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44168.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_76",
+   "STS_7_grund",
+   "RFF_Z19",
+   "DTM_752",
+   "RFF_MG"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44169.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_76",
+   "STS_7_grund",
+   "RFF_Z19",
+   "DTM_752",
+   "RFF_MG"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44170.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44175.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44176.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44180.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44181.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44182.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202604/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "55001.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": [
+     "ZW4",
+     "ZAP"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z22"
+  ],
+  "abhaengig": [
+   "LOC_Z16",
+   "LOC_Z22"
+  ],
+  "ahbExpr": [
+   "DTM_93",
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55002.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": [
+     "ZW6",
+     "ZW7",
+     "ZAP"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z18",
+   "LOC_Z22",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z17",
+   "RFF_Z60",
+   "RFF_Z32",
+   "RFF_Z38",
+   "RFF_Z19"
+  ],
+  "abhaengig": [
+   "LOC_Z18",
+   "LOC_Z22"
+  ],
+  "ahbExpr": [
+   "DTM_92",
+   "DTM_93",
+   "STS_7",
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55003.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": [
+     "ZW4"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "DTM_Z07",
+   "DTM_Z08",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55004.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": [
+     "ZW3",
+     "ZW4",
+     "ZW5",
+     "ZAP"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z22"
+  ],
+  "abhaengig": [
+   "LOC_Z22",
+   "LOC_Z21"
+  ],
+  "ahbExpr": [
+   "DTM_92",
+   "DTM_93",
+   "STS_7",
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55005.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": "entfernt (AHB führt keine Ergänzung)"
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_92",
+   "DTM_93"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55006.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": "entfernt (AHB führt keine Ergänzung)"
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55007.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": [
+     "ZW3",
+     "ZW4",
+     "ZW5",
+     "ZAP"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "DTM_206",
+   "STS_7_grund",
+   "LOC_Z22"
+  ],
+  "abhaengig": [
+   "LOC_Z22",
+   "LOC_Z21"
+  ],
+  "ahbExpr": [
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55008.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": "entfernt (AHB führt keine Ergänzung)"
+   }
+  ],
+  "ergaenzt": [
+   "DTM_206",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55009.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": "entfernt (AHB führt keine Ergänzung)"
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55010.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": [
+     "ZW3",
+     "ZW4",
+     "ZW5",
+     "ZAP"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "DTM_154",
+   "STS_7_grund",
+   "LOC_Z22"
+  ],
+  "abhaengig": [
+   "LOC_Z22",
+   "LOC_Z21"
+  ],
+  "ahbExpr": [
+   "STS_7",
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55011.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": "entfernt (AHB führt keine Ergänzung)"
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55012.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": "entfernt (AHB führt keine Ergänzung)"
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55013.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": [
+     "ZW6",
+     "ZW7"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z18",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z17",
+   "RFF_Z32",
+   "RFF_Z38",
+   "RFF_Z19"
+  ],
+  "abhaengig": [
+   "LOC_Z17"
+  ],
+  "ahbExpr": [
+   "DTM_93",
+   "STS_7",
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55014.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": [
+     "ZW4"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_93",
+   "STS_7"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55015.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": [
+     "ZW4"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "STS_7"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55016.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": [
+     "ZW3",
+     "ZW4",
+     "ZW5"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ahbExpr": [
+   "DTM_93",
+   "DTM_471",
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55017.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": [
+     "ZW3",
+     "ZW4",
+     "ZW5"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_93",
+   "DTM_471"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55018.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3",
+     "ZW5"
+    ],
+    "nachher": "entfernt (AHB führt keine Ergänzung)"
+   }
+  ],
+  "ergaenzt": [
+   "DTM_157",
+   "DTM_Z01",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_Z05",
+   "DTM_Z10"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55022.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55023.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55024.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55035.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "LOC_Z18",
+   "LOC_Z22",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z17",
+   "RFF_Z31",
+   "RFF_Z32",
+   "RFF_Z33",
+   "RFF_Z34",
+   "RFF_Z16",
+   "RFF_Z37",
+   "RFF_Z38",
+   "RFF_Z20",
+   "RFF_Z19",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK"
+  ],
+  "abhaengig": [
+   "LOC_Z22"
+  ],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55036.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "Z26"
+    ],
+    "nachher": "entfernt (AHB führt keine Ergänzung)"
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55037.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3"
+    ],
+    "nachher": [
+     "ZW3",
+     "ZW4"
+    ]
+   }
+  ],
+  "ergaenzt": [],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55038.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4",
+     "ZW3"
+    ],
+    "nachher": [
+     "ZW3",
+     "ZW4"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "LOC_Z21"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_92",
+   "STS_7",
+   "STS_7_grund",
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55039.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_93",
+   "DTM_471",
+   "STS_7_grund",
+   "LOC_Z16"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55040.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_93",
+   "DTM_471",
+   "STS_7_grund",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55041.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_157",
+   "DTM_Z01",
+   "DTM_Z10",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55042.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_76",
+   "STS_7_grund",
+   "LOC_Z16",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55043.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_76",
+   "STS_7_grund",
+   "LOC_Z18",
+   "LOC_Z16",
+   "LOC_Z22",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z21",
+   "RFF_Z50",
+   "DTM_752",
+   "RFF_Z31",
+   "RFF_Z32",
+   "RFF_Z33",
+   "RFF_Z34",
+   "RFF_Z16",
+   "RFF_Z18",
+   "RFF_Z20",
+   "RFF_Z37",
+   "RFF_Z38",
+   "RFF_Z19",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55044.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55051.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_93",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55052.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_93",
+   "STS_7",
+   "STS_7_grund",
+   "LOC_Z18",
+   "LOC_Z16",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z21"
+  ],
+  "abhaengig": [
+   "DTM_93"
+  ],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55053.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55060.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z18",
+   "LOC_Z22",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z21",
+   "LOC_Z17",
+   "RFF_Z31",
+   "RFF_Z32",
+   "RFF_Z33",
+   "RFF_Z34",
+   "RFF_Z16",
+   "RFF_Z18",
+   "RFF_Z20",
+   "RFF_Z37",
+   "RFF_Z38",
+   "RFF_Z19",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55062.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_158"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55063.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_159"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55064.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_158",
+   "DTM_159"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55065.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "RFF_AAV",
+   "LOC_Z15",
+   "RFF_AUU",
+   "DTM_158",
+   "DTM_159",
+   "LOC_Z16",
+   "LOC_Z21",
+   "RFF_Z18",
+   "RFF_Z20",
+   "RFF_Z12"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55066.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "LOC_Z15",
+   "RFF_AUU",
+   "DTM_158",
+   "DTM_159",
+   "LOC_Z16",
+   "LOC_Z21",
+   "RFF_Z18",
+   "RFF_Z20",
+   "RFF_Z12"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55067.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "RFF_AAV",
+   "LOC_Z15",
+   "RFF_AVE"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55069.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "RFF_AAV",
+   "LOC_Z15",
+   "RFF_AUU",
+   "RFF_AVE",
+   "DTM_163",
+   "DTM_164"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55070.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "RFF_AAV",
+   "LOC_Z15",
+   "RFF_AUU",
+   "RFF_AVE",
+   "DTM_163",
+   "DTM_164"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55074.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "RFF_AAV",
+   "DTM_157",
+   "LOC_Z21",
+   "LOC_Z17",
+   "RFF_Z18",
+   "RFF_Z20",
+   "RFF_Z19",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55075.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_157",
+   "STS_7_grund",
+   "LOC_Z21",
+   "LOC_Z17",
+   "RFF_Z18",
+   "RFF_Z20",
+   "RFF_Z19",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55076.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_157",
+   "STS_7_grund",
+   "LOC_Z21",
+   "LOC_Z17",
+   "RFF_Z18",
+   "RFF_Z20",
+   "RFF_Z19",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55077.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z21"
+  ],
+  "abhaengig": [
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55078.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z18",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z21",
+   "LOC_Z17",
+   "RFF_Z60",
+   "RFF_Z32",
+   "RFF_Z38",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55080.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_Z07",
+   "DTM_Z08",
+   "STS_7_grund",
+   "RFF_Z18"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55095.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z18",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z21",
+   "LOC_Z17",
+   "RFF_Z31",
+   "RFF_Z32",
+   "RFF_Z33",
+   "RFF_Z34",
+   "RFF_Z16",
+   "RFF_Z20",
+   "RFF_Z37",
+   "RFF_Z38",
+   "RFF_Z19",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55109.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z46",
+   "RFF_AVC"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55110.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z46"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55126.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55136.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z46"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55137.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z46",
+   "RFF_AVC"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55156.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55168.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_76",
+   "STS_7_grund",
+   "LOC_Z18",
+   "LOC_Z16",
+   "LOC_Z22",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z21",
+   "RFF_Z50",
+   "DTM_752",
+   "RFF_Z31",
+   "RFF_Z32",
+   "RFF_Z33",
+   "RFF_Z34",
+   "RFF_Z16",
+   "RFF_Z18",
+   "RFF_Z20",
+   "RFF_Z37",
+   "RFF_Z38",
+   "RFF_Z19",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55169.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_76",
+   "STS_7_grund",
+   "LOC_Z18",
+   "LOC_Z16",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z21",
+   "RFF_Z50",
+   "DTM_752",
+   "RFF_Z31",
+   "RFF_Z32",
+   "RFF_Z33",
+   "RFF_Z34",
+   "RFF_Z16",
+   "RFF_Z18",
+   "RFF_Z20",
+   "RFF_Z37",
+   "RFF_Z38",
+   "RFF_Z19",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55170.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55173.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z16",
+   "LOC_Z22",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z17",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z31",
+   "RFF_Z32",
+   "RFF_Z33",
+   "RFF_Z34",
+   "RFF_Z16"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55175.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z16",
+   "LOC_Z22",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z17",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z31",
+   "RFF_Z32",
+   "RFF_Z33",
+   "RFF_Z34",
+   "RFF_Z16"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55177.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z16",
+   "LOC_Z22",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z17",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z31",
+   "RFF_Z32",
+   "RFF_Z33",
+   "RFF_Z34",
+   "RFF_Z16"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55180.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z16",
+   "LOC_Z22",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z17",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z31",
+   "RFF_Z32",
+   "RFF_Z33",
+   "RFF_Z34",
+   "RFF_Z16"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55194.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55195.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "RFF_AAV",
+   "LOC_Z15",
+   "RFF_AUU",
+   "DTM_158",
+   "DTM_159",
+   "LOC_Z16",
+   "LOC_Z21",
+   "RFF_Z18",
+   "RFF_Z20",
+   "RFF_Z12"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55196.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "LOC_Z15",
+   "RFF_AUU",
+   "DTM_158",
+   "DTM_159",
+   "LOC_Z16",
+   "LOC_Z21",
+   "RFF_Z22",
+   "DTM_Z15",
+   "DTM_Z16",
+   "RFF_Z18",
+   "RFF_Z20",
+   "RFF_Z12"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55197.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_158"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55198.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_159"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55199.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_158"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55200.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_159"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55201.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "RFF_AAV",
+   "LOC_Z15",
+   "RFF_AUU",
+   "LOC_Z16",
+   "LOC_Z21",
+   "RFF_Z18",
+   "RFF_Z20"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55202.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "LOC_Z15",
+   "RFF_AUU",
+   "LOC_Z16",
+   "LOC_Z21",
+   "RFF_Z18",
+   "RFF_Z20"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55203.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_158"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55204.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_158"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55205.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_158"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55206.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_159"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55207.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_159"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55208.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_159"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55209.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_158"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55210.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_158"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55211.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_158"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55212.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_159"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55213.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_159"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55214.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_159"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55218.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "RFF_Z50",
+   "DTM_Z21",
+   "DTM_Z09",
+   "DTM_Z22"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55220.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z51",
+   "DTM_Z21",
+   "DTM_Z09",
+   "DTM_Z22"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55223.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "LOC_Z15",
+   "RFF_AUU",
+   "STS_7_grund",
+   "LOC_Z16",
+   "LOC_Z21",
+   "DTM_158",
+   "DTM_159",
+   "RFF_AVE"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55224.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "LOC_Z15",
+   "RFF_AUU",
+   "LOC_Z16",
+   "LOC_Z21",
+   "DTM_158",
+   "DTM_159"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55225.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55227.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55230.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55232.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55235.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "RFF_AVE"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55236.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_93"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55237.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_93"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z15"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55238.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_158",
+   "STS_7_grund",
+   "RFF_Z18"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55239.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_158",
+   "STS_7_grund",
+   "LOC_Z15",
+   "RFF_Z18"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55240.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_93",
+   "DTM_159",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55241.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_93",
+   "DTM_159",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55242.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_93",
+   "DTM_159",
+   "STS_7_grund",
+   "LOC_Z15"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55243.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_93",
+   "DTM_159",
+   "STS_7_grund",
+   "LOC_Z15"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55553.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z42",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z14",
+   "RFF_AGK"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55555.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z42",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z14",
+   "RFF_AGK"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55557.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55559.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55600.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z17"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_93",
+   "STS_7",
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55601.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z17"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "STS_7",
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55602.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW4"
+    ],
+    "nachher": [
+     "ZW6",
+     "ZW7"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z18",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z17",
+   "RFF_Z60",
+   "RFF_Z32",
+   "RFF_Z38",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_93",
+   "STS_7",
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55603.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z18",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z21",
+   "LOC_Z17",
+   "RFF_Z60",
+   "RFF_Z32",
+   "RFF_Z38",
+   "RFF_Z19"
+  ],
+  "abhaengig": [
+   "LOC_Z21"
+  ],
+  "ahbExpr": [
+   "STS_7",
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55604.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55605.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55607.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_93",
+   "STS_7_grund",
+   "LOC_Z18",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z17",
+   "RFF_Z32",
+   "RFF_Z38",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55608.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_93",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55609.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55611.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_93",
+   "STS_7_grund",
+   "LOC_Z17"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55613.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z49"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55614.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55615.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55616.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z46"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55617.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z38",
+   "RFF_Z32",
+   "RFF_Z20"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z20"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55618.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z19"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55619.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z21"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55620.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z05"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55621.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55622.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z46"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55623.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z38",
+   "RFF_Z32",
+   "RFF_Z20"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z20"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55624.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z19"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55625.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z21"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55626.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z05"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55627.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55628.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z46"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55629.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z38",
+   "RFF_Z32",
+   "RFF_Z20"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z20"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55630.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z19"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55632.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55633.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55634.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z46"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55635.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z38",
+   "RFF_Z32",
+   "RFF_Z20"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z20"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55636.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z19"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55638.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55639.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55640.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z50",
+   "DTM_752"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55641.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z19"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55642.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z21"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55643.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK",
+   "RFF_Z46"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55644.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55645.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z51",
+   "DTM_752"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55646.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z19"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55647.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z21"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55648.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK",
+   "RFF_Z46"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55649.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55650.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z50",
+   "DTM_752"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55651.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z19"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55652.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z21"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55653.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK",
+   "RFF_Z46"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55654.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55655.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z51",
+   "DTM_752"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55656.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z19"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55657.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z21"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55658.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK",
+   "RFF_Z46"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55659.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55660.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z50",
+   "DTM_752"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55661.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z19"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55662.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z21"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55663.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK",
+   "RFF_Z46"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55664.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55665.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z51",
+   "DTM_752"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55666.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z19"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55667.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z21"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55669.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z14",
+   "RFF_MG",
+   "RFF_AGK",
+   "RFF_Z46"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z17"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55670.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "ZW3",
+     "ZW4",
+     "ZW5"
+    ],
+    "nachher": [
+     "ZW3",
+     "ZW4",
+     "ZW5",
+     "ZZB"
+    ]
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z21",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z20"
+  ],
+  "abhaengig": [
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ahbExpr": [
+   "STS_7",
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55671.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z21",
+   "RFF_Z48",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z20"
+  ],
+  "abhaengig": [
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55672.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "LOC_Z21",
+   "RFF_Z49"
+  ],
+  "abhaengig": [
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ahbExpr": [
+   "LOC_Z16",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55673.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "LOC_Z21",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55674.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "LOC_Z21",
+   "RFF_Z49"
+  ],
+  "abhaengig": [
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ahbExpr": [
+   "LOC_Z16",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55675.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7",
+   "STS_7_grund",
+   "LOC_Z21",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [
+   "LOC_Z16",
+   "LOC_Z21"
+  ],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55684.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55685.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55686.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z21"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55687.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z21"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55688.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55689.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55690.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "LOC_Z16",
+   "LOC_Z22",
+   "LOC_Z20",
+   "LOC_Z19",
+   "LOC_Z21",
+   "LOC_Z17",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26",
+   "RFF_Z31",
+   "RFF_Z32",
+   "RFF_Z33",
+   "RFF_Z34",
+   "RFF_Z16",
+   "RFF_Z18",
+   "RFF_Z20",
+   "RFF_Z38",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z18"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55691.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55692.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z16"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55693.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z49",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z20"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "55694.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z47",
+   "DTM_Z25",
+   "DTM_Z26"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_Z20"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Strom"
+ },
+ {
+  "datei": "44001.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z18",
+   "DTM_Z20",
+   "RFF_AVC",
+   "RFF_Z01",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_93",
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44002.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_158",
+   "DTM_159",
+   "STS_7_grund",
+   "RFF_Z18",
+   "DTM_Z20",
+   "DTM_Z21",
+   "DTM_Z09",
+   "DTM_Z22",
+   "RFF_Z10",
+   "RFF_Z19",
+   "RFF_MG",
+   "RFF_AVC"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_93",
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44003.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_Z07",
+   "DTM_Z08",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44004.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_93",
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44005.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_159",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_93",
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44006.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44007.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_159",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44008.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_159",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44009.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44010.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44011.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44012.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44013.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_158",
+   "DTM_159",
+   "STS_7_grund",
+   "RFF_Z18",
+   "DTM_Z21",
+   "DTM_Z09",
+   "DTM_Z22",
+   "RFF_Z10",
+   "RFF_Z19",
+   "RFF_MG"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_93",
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44014.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_158",
+   "DTM_159",
+   "STS_7_grund",
+   "RFF_Z18",
+   "DTM_Z20",
+   "DTM_Z21",
+   "DTM_Z09",
+   "DTM_Z22",
+   "RFF_Z10",
+   "RFF_Z19",
+   "RFF_MG"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_93",
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44015.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44016.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z01"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_93",
+   "DTM_471",
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44017.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_Z01"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "DTM_93",
+   "DTM_471",
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44018.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_Z05",
+   "DTM_157",
+   "DTM_Z01",
+   "DTM_Z10",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44019.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_93",
+   "DTM_158",
+   "DTM_159"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44020.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_93",
+   "DTM_158",
+   "DTM_159",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44021.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_93",
+   "DTM_158",
+   "DTM_159",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44022.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "E05"
+    ],
+    "nachher": "entfernt (AHB führt keine Ergänzung)"
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44023.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "E05"
+    ],
+    "nachher": "entfernt (AHB führt keine Ergänzung)"
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44024.js",
+  "optionen_korrigiert": [
+   {
+    "id": "STS_7",
+    "vorher": [
+     "E05"
+    ],
+    "nachher": "entfernt (AHB führt keine Ergänzung)"
+   }
+  ],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44035.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_AAV",
+   "RFF_Z18",
+   "DTM_Z21",
+   "DTM_Z22",
+   "RFF_Z10",
+   "RFF_Z19",
+   "RFF_MG",
+   "RFF_AVC"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44036.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44037.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_159",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44038.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_159",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44039.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_93",
+   "DTM_471",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44040.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_93",
+   "DTM_471",
+   "STS_7_grund",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44041.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_157",
+   "DTM_Z01",
+   "DTM_Z10",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44042.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_76",
+   "STS_7_grund",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44043.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_76",
+   "STS_7_grund",
+   "RFF_Z19",
+   "DTM_752",
+   "RFF_MG"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44044.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44051.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_93",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44052.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_93",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44053.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44060.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund",
+   "RFF_AAV",
+   "RFF_Z19",
+   "DTM_752",
+   "RFF_MG"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44101.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_93",
+   "DTM_157",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44102.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_93",
+   "DTM_157",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44103.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_93",
+   "DTM_157",
+   "DTM_158",
+   "DTM_159",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44104.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_93",
+   "DTM_157",
+   "DTM_158",
+   "DTM_159",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44105.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_157",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44109.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z18",
+   "DTM_Z20",
+   "RFF_AVC"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44111.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44112.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z18",
+   "DTM_Z21",
+   "DTM_Z09",
+   "DTM_Z22",
+   "RFF_Z10",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44113.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19",
+   "DTM_752"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44115.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44116.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19",
+   "RFF_MG"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44117.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19",
+   "RFF_MG"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44119.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44120.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44121.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44123.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44124.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44137.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z18",
+   "DTM_Z20",
+   "RFF_AVC"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44138.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z18",
+   "DTM_Z20",
+   "RFF_AVC"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44139.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z18",
+   "DTM_Z21",
+   "DTM_Z09",
+   "DTM_Z22",
+   "RFF_Z10",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44140.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19",
+   "DTM_752"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44142.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z18",
+   "DTM_Z21",
+   "DTM_Z09",
+   "DTM_Z22",
+   "RFF_Z19",
+   "DTM_752",
+   "RFF_Z10"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44143.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19",
+   "RFF_MG"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44145.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19",
+   "RFF_MG"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44146.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44147.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19",
+   "RFF_MG"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44148.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19",
+   "RFF_MG"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44149.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19",
+   "RFF_MG"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44150.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44151.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44152.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44156.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44157.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44159.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44160.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44161.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44162.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44163.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44164.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44165.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44166.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44167.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund",
+   "RFF_Z19"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44168.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_76",
+   "STS_7_grund",
+   "RFF_Z19",
+   "DTM_752",
+   "RFF_MG"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44169.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_76",
+   "STS_7_grund",
+   "RFF_Z19",
+   "DTM_752",
+   "RFF_MG"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44170.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44175.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44176.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44180.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44181.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_92",
+   "DTM_157",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44182.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ },
+ {
+  "datei": "44183.js",
+  "optionen_korrigiert": [],
+  "ergaenzt": [
+   "DTM_93",
+   "STS_7_grund"
+  ],
+  "abhaengig": [],
+  "ahbExpr": [
+   "LOC_172"
+  ],
+  "ordner": "202610/Stammdaten/UTILMD/Gas"
+ }
+]

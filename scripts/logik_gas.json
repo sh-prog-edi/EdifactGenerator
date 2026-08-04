@@ -1,0 +1,166 @@
+{
+  "7": {
+    "wennStsGrund": {
+      "codes": [
+        "ZG9",
+        "ZH1",
+        "ZH2"
+      ],
+      "vorhanden": true
+    }
+  },
+  "9": {
+    "wennStsGrund": {
+      "codes": [
+        "ZE4"
+      ],
+      "vorhanden": false
+    }
+  },
+  "11": {
+    "wennStsGrund": {
+      "codes": [
+        "ZG9",
+        "ZH1",
+        "ZH2"
+      ],
+      "vorhanden": false
+    }
+  },
+  "13": {
+    "wennStsStatus": {
+      "codes": [
+        "Z01"
+      ],
+      "vorhanden": false
+    }
+  },
+  "15": {
+    "wennStsStatus": {
+      "codes": [
+        "Z34"
+      ],
+      "vorhanden": true
+    }
+  },
+  "16": {
+    "wennStsStatus": {
+      "codes": [
+        "Z12"
+      ],
+      "vorhanden": true
+    }
+  },
+  "36": {
+    "wennStsStatus": {
+      "codes": [
+        "ZC5"
+      ],
+      "vorhanden": true
+    }
+  },
+  "48": {
+    "wennStsStatus": {
+      "codes": [
+        "E14"
+      ],
+      "vorhanden": true
+    }
+  },
+  "78": {
+    "wennStsGrund": {
+      "codes": [
+        "E02"
+      ],
+      "vorhanden": false
+    }
+  },
+  "84": {
+    "wennStsStatus": {
+      "codes": [
+        "Z35"
+      ],
+      "vorhanden": true
+    }
+  },
+  "138": {
+    "gegensegment": "LOC+172"
+  },
+  "202": {
+    "wennStsStatus": {
+      "codes": [
+        "ZG2"
+      ],
+      "vorhanden": true
+    }
+  },
+  "203": {
+    "wennStsGrund": {
+      "codes": [
+        "E06",
+        "Z39",
+        "ZC6",
+        "ZC7",
+        "ZT6",
+        "ZT7",
+        "Z02",
+        "ZZD"
+      ],
+      "vorhanden": true
+    }
+  },
+  "361": {
+    "wennStsStatus": {
+      "codes": [
+        "A03",
+        "A04"
+      ],
+      "vorhanden": false
+    }
+  },
+  "362": {
+    "wennStsStatus": {
+      "codes": [
+        "A03",
+        "A17"
+      ],
+      "vorhanden": false
+    }
+  },
+  "367": {
+    "wennStsStatus": {
+      "codes": [
+        "A04"
+      ],
+      "vorhanden": true
+    }
+  },
+  "2061": {
+    "kardinalitaet": "genau1",
+    "bezug": "SG4 IDE"
+  },
+  "2119": {
+    "kardinalitaet": "genau1",
+    "bezug": "SEQ+Z13"
+  },
+  "2284": {
+    "kardinalitaet": "genau1",
+    "bezug": "LOC+172"
+  },
+  "2286": {
+    "kardinalitaet": "min1",
+    "bezug": "SEQ+Z18"
+  },
+  "2287": {
+    "kardinalitaet": "min1",
+    "bezug": "SEQ+Z03"
+  },
+  "2335": {
+    "kardinalitaet": "genau1",
+    "bezug": "SEQ+Z02"
+  },
+  "2353": {
+    "kardinalitaet": "min1",
+    "bezug": "SEQ+Z09"
+  }
+}

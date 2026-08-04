@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EdifactGenerator – Deutscher Energiemarkt</title>
+<link rel="stylesheet" href="_engine/edigen.css">
+<style>
+  :root{ --plan:#9aa3b0; --plan-bg:#f0f2f5; }
+  [data-theme="dark"]{ --plan:#5c6675; --plan-bg:#1a222d; }
+  *{box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    margin:0;background:var(--bg);color:var(--text);line-height:1.5;}
+  .wrap{max-width:1060px;margin:0 auto;padding:28px 22px 60px;}
+  .top-bar{border-bottom:2px solid var(--heading);padding-bottom:10px;}
+  h1{font-size:24px;margin:0;color:var(--heading);}
+  .sub{color:var(--muted);font-size:14px;margin:6px 0 0;}
+  .theme-toggle button{border:1px solid var(--border);background:var(--panel);color:var(--text);
+    padding:5px 12px;cursor:pointer;font-size:13px;}
+  .theme-toggle button:first-child{border-radius:6px 0 0 6px;}
+  .theme-toggle button:last-child{border-radius:0 6px 6px 0;border-left:none;}
+  .theme-toggle button.active{background:var(--accent-bg);color:var(--heading);font-weight:600;}
+  .selector{background:var(--panel);border:1px solid var(--border);border-radius:12px;
+    box-shadow:var(--shadow);padding:20px 22px;margin:22px 0 26px;}
+  .selector h2{font-size:15px;margin:0 0 14px;color:var(--heading);}
+  .row{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:14px;align-items:end;}
+  @media(max-width:760px){.row{grid-template-columns:1fr;}}
+  label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin:0 0 5px;
+    text-transform:uppercase;letter-spacing:.03em;}
+  select{width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:8px;
+    background:var(--panel);color:var(--text);font-size:14px;}
+  select:disabled{opacity:.5;cursor:not-allowed;}
+  .go{padding:10px 18px;border:none;border-radius:8px;background:var(--accent);color:#fff;
+    font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;}
+  .go:disabled{background:var(--plan);cursor:not-allowed;}
+  .hint{font-size:13px;color:var(--muted);margin:12px 0 0;min-height:18px;}
+  .hint.ok{color:var(--ok);}
+  h2.grid-title{font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;
+    margin:26px 0 12px;}
+  .themes{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px 16px;
+    box-shadow:var(--shadow);}
+  .card h3{font-size:14px;margin:0 0 8px;color:var(--heading);}
+  .card ul{list-style:none;margin:0;padding:0;}
+  .card li{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:3px 0;
+    font-size:13px;border-top:1px solid var(--border);}
+  .card li:first-child{border-top:none;}
+  .msg{color:var(--text);}
+  .badge{font-size:11px;padding:2px 8px;border-radius:20px;white-space:nowrap;}
+  .badge.ok{background:var(--ok-bg);color:var(--ok);}
+  .badge.plan{background:var(--plan-bg);color:var(--plan);}
+  .card li a{color:inherit;text-decoration:none;}
+  .card li a:hover .msg{text-decoration:underline;color:var(--accent);}
+  footer{margin-top:34px;font-size:12px;color:var(--muted);border-top:1px solid var(--border);padding-top:14px;}
+</style>
+</head>
+<body data-theme="light">
+<div class="wrap">
+  <div class="top-bar">
+    <div>
+      <h1>EdifactGenerator</h1>
+      <p class="sub">EDIFACT-Testnachrichten &amp; Validierung für den deutschen Energiemarkt · Marktkommunikation (MaKo)</p>
+    </div>
+    <div class="theme-toggle">
+      <button id="tL" class="active" onclick="setTheme('light')">Hell</button>
+      <button id="tD" onclick="setTheme('dark')">Dunkel</button>
+    </div>
+  </div>
+
+  <div class="selector" style="border-left:4px solid #0e4d24">
+    <h2 style="margin-bottom:6px">Nachricht importieren &amp; validieren</h2>
+    <p style="margin:0;font-size:13.5px;color:var(--muted)">
+      Universeller Import (Drag&nbsp;&amp;&nbsp;Drop oder Copy&nbsp;&amp;&nbsp;Paste) mit automatischer
+      Erkennung von Nachrichtentyp, Formatversion und Prüf-ID; Prüfung gegen AHB, MIG,
+      EBD-Antwortcodes, EDI@Energy-Codelisten und Allgemeine Festlegungen.
+      &nbsp;<a href="validator.html"><strong>→ Validator öffnen</strong></a></p>
+  </div>
+
+  <div class="selector" style="border-left:4px solid #b25c00">
+    <h2 style="margin-bottom:6px">Produktivnachricht zu Testnachricht umbauen</h2>
+    <p style="margin:0;font-size:13.5px;color:var(--muted)">
+      Vorhandene Nachricht importieren (Drag&nbsp;&amp;&nbsp;Drop oder Copy&nbsp;&amp;&nbsp;Paste),
+      Segmente bearbeiten und per Klick zur Testnachricht umbauen: Test-Kennzeichen, aktueller
+      Erstellungszeitpunkt, neue Referenzen und Vorgangsnummer, erste Zeitscheibe ab Tagesende —
+      anschließend als marktkonforme Datei speichern.
+      &nbsp;<a href="umbau.html"><strong>→ Umbau öffnen</strong></a></p>
+  </div>
+
+  <div class="selector">
+    <h2>Generator auswählen</h2>
+    <div class="row">
+      <div>
+        <label for="selVersion">Formatversion</label>
+        <select id="selVersion" onchange="onVersion()"></select>
+      </div>
+      <div>
+        <label for="selThema">Thema</label>
+        <select id="selThema" onchange="onThema()"></select>
+      </div>
+      <div>
+        <label for="selNachricht">Nachrichtentyp</label>
+        <select id="selNachricht" onchange="onNachricht()" disabled></select>
+      </div>
+      <div>
+        <label for="selVariante">Sparte / Ausprägung</label>
+        <select id="selVariante" onchange="onVariante()" disabled></select>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px;margin-top:16px;">
+      <button class="go" id="goBtn" disabled onclick="oeffnen()">Generator öffnen →</button>
+      <span class="hint" id="hint">Thema und Nachrichtentyp wählen.</span>
+    </div>
+  </div>
+
+  <h2 class="grid-title">Übersicht der Themen (Verfügbarkeit)</h2>
+  <div class="themes" id="grid"></div>
+
+  <footer>
+    Ordnerstruktur angelehnt an das BDEW-Marktkommunikations-Portal. Formatstände (JJJJMM) folgen den
+    regulatorischen Anpassungen zum 01.04. und 01.10. jedes Jahres. Zentrale Engine unter
+    <code>_engine/</code>, formatspezifische Daten je Version/Nachrichtentyp/Sparte.
+  </footer>
+</div>
+
+<script src="_engine/theme.js"></script>
+<script>
+// ------------------------------------------------------------------
+// Manifest: verfügbare Kombinationen (Thema -> Nachrichtentyp -> Varianten).
+// "href" gesetzt = verfügbar; sonst geplant (Platzhalter-Ordner vorhanden).
+// Beim Ausbau weiterer Nachrichtentypen/Versionen nur hier ergänzen.
+// ------------------------------------------------------------------
+const MANIFEST = {
+  "202604": {
+    label: "202604 (Stand 01.04.2026)",
+    themen: {
+      "API-Webdienste": {},
+      "Berichte": { IFTSTA: {
+          varianten: [
+            { label: "IFTSTA (AHB 2.0h)",
+              href: "202604/Berichte/IFTSTA/index.html" }
+          ]
+        }, INSRPT: {
+          varianten: [
+            { label: "INSRPT (AHB 1.1g)",
+              href: "202604/Berichte/INSRPT/index.html" }
+          ]
+        } },
+      "Bestellvorgang": { ORDCHG: {
+          varianten: [
+            { label: "ORDCHG (AHB 1.0a)",
+              href: "202604/Bestellvorgang/ORDCHG/index.html" }
+          ]
+        },
+        ORDERS: {
+          varianten: [
+            { label: "ORDERS (AHB 1.1a)",
+              href: "202604/Bestellvorgang/ORDERS/index.html" }
+          ]
+        },
+        ORDRSP: {
+          varianten: [
+            { label: "ORDRSP (AHB 1.1a)",
+              href: "202604/Bestellvorgang/ORDRSP/index.html" }
+          ]
+        }, QUOTES: {
+          varianten: [
+            { label: "QUOTES (AHB 1.1)",
+              href: "202604/Bestellvorgang/QUOTES/index.html" }
+          ]
+        }, REQOTE: {
+          varianten: [
+            { label: "REQOTE (AHB 1.1)",
+              href: "202604/Bestellvorgang/REQOTE/index.html" }
+          ]
+        } },
+      "Bewegungsdaten": {
+        MSCONS: {
+          varianten: [
+            { label: "MSCONS (AHB 3.1g)",
+              href: "202604/Bewegungsdaten/MSCONS/index.html" }
+          ]
+        }
+      },
+      "Codelisten": {},
+      "Formatübergreifende Dokumente": {},
+      "Rechnungsstellung": { COMDIS: {
+          varianten: [
+            { label: "COMDIS (AHB 1.0h)",
+              href: "202604/Rechnungsstellung/COMDIS/index.html" }
+          ]
+        }, INVOIC: {
+          varianten: [
+            { label: "INVOIC (AHB 1.0a)",
+              href: "202604/Rechnungsstellung/INVOIC/index.html" }
+          ]
+        }, PRICAT: {
+          varianten: [
+            { label: "PRICAT (AHB 2.0f)",
+              href: "202604/Rechnungsstellung/PRICAT/index.html" }
+          ]
+        }, REMADV: {
+          varianten: [
+            { label: "REMADV (AHB 1.0a)",
+              href: "202604/Rechnungsstellung/REMADV/index.html" }
+          ]
+        } },
+      "Redispatch": {},
+      "Servicenachrichten": {
+        APERAK: {
+          varianten: [
+            { label: "APERAK (AHB 1.0)",
+              href: "202604/Servicenachrichten/APERAK/index.html" }
+          ]
+        },
+        CONTRL: {
+          varianten: [
+            { label: "CONTRL (AHB 1.0)", 
+              href: "202604/Servicenachrichten/CONTRL/index.html" }
+          ]
+        }
+      },
+      "Stammdaten": {
+        PARTIN: {
+          varianten: [
+            { label: "PARTIN (AHB 1.0f)",
+              href: "202604/Stammdaten/PARTIN/index.html" }
+          ]
+        },
+        UTILMD: {
+          varianten: [
+            { label: "Strom (AHB S2.1)", sparte: "Strom",
+              href: "202604/Stammdaten/UTILMD/Strom/index.html" },
+            { label: "Gas (AHB G1.1)", sparte: "Gas",
+              href: "202604/Stammdaten/UTILMD/Gas/index.html" }
+          ]
+        },
+        UTILTS: {
+          varianten: [
+            { label: "UTILTS (AHB 1.0)",
+              href: "202604/Stammdaten/UTILTS/index.html" }
+          ]
+        }
+      },
+      "Regelungen zum Übertragungsweg": {}
+    }
+  },
+  "202610": {
+    label: "202610 (Stand 01.10.2026)",
+    themen: {
+      "API-Webdienste": {},
+      "Berichte": { IFTSTA: {
+          varianten: [
+            { label: "IFTSTA (AHB 2.1)",
+              href: "202610/Berichte/IFTSTA/index.html" }
+          ]
+        }, INSRPT: {
+          varianten: [
+            { label: "INSRPT (AHB 1.1g)",
+              href: "202610/Berichte/INSRPT/index.html" }
+          ]
+        } },
+      "Bestellvorgang": { ORDCHG: {
+          varianten: [
+            { label: "ORDCHG (AHB 1.1)",
+              href: "202610/Bestellvorgang/ORDCHG/index.html" }
+          ]
+        },
+        ORDERS: {
+          varianten: [
+            { label: "ORDERS (AHB 1.1b)",
+              href: "202610/Bestellvorgang/ORDERS/index.html" }
+          ]
+        },
+        ORDRSP: {
+          varianten: [
+            { label: "ORDRSP (AHB 1.1b)",
+              href: "202610/Bestellvorgang/ORDRSP/index.html" }
+          ]
+        }, QUOTES: {
+          varianten: [
+            { label: "QUOTES (AHB 1.1a)",
+              href: "202610/Bestellvorgang/QUOTES/index.html" }
+          ]
+        }, REQOTE: {
+          varianten: [
+            { label: "REQOTE (AHB 1.2)",
+              href: "202610/Bestellvorgang/REQOTE/index.html" }
+          ]
+        } },
+      "Bewegungsdaten": {
+        MSCONS: {
+          varianten: [
+            { label: "MSCONS (AHB 3.2)",
+              href: "202610/Bewegungsdaten/MSCONS/index.html" }
+          ]
+        }
+      },
+      "Codelisten": {},
+      "Formatübergreifende Dokumente": {},
+      "Rechnungsstellung": { COMDIS: {
+          varianten: [
+            { label: "COMDIS (AHB 1.0h)",
+              href: "202610/Rechnungsstellung/COMDIS/index.html" }
+          ]
+        }, INVOIC: {
+          varianten: [
+            { label: "INVOIC (AHB 1.0b)",
+              href: "202610/Rechnungsstellung/INVOIC/index.html" }
+          ]
+        }, PRICAT: {
+          varianten: [
+            { label: "PRICAT (AHB 2.1)",
+              href: "202610/Rechnungsstellung/PRICAT/index.html" }
+          ]
+        }, REMADV: {
+          varianten: [
+            { label: "REMADV (AHB 1.0a)",
+              href: "202610/Rechnungsstellung/REMADV/index.html" }
+          ]
+        } },
+      "Redispatch": {},
+      "Servicenachrichten": {
+        APERAK: {
+          varianten: [
+            { label: "APERAK (AHB 1.1)",
+              href: "202610/Servicenachrichten/APERAK/index.html" }
+          ]
+        },
+        CONTRL: {
+          varianten: [
+            { label: "CONTRL (AHB 1.0)", 
+              href: "202610/Servicenachrichten/CONTRL/index.html" }
+          ]
+        }
+      },
+      "Stammdaten": {
+        PARTIN: {
+          varianten: [
+            { label: "PARTIN (AHB 1.1)",
+              href: "202610/Stammdaten/PARTIN/index.html" }
+          ]
+        },
+        UTILMD: {
+          varianten: [
+            { label: "Strom (AHB S2.2)", sparte: "Strom",
+              href: "202610/Stammdaten/UTILMD/Strom/index.html" },
+            { label: "Gas (AHB G1.2)", sparte: "Gas",
+              href: "202610/Stammdaten/UTILMD/Gas/index.html" }
+          ]
+        },
+        UTILTS: {
+          varianten: [
+            { label: "UTILTS (AHB 1.1)",
+              href: "202610/Stammdaten/UTILTS/index.html" }
+          ]
+        }
+      },
+      "Regelungen zum Übertragungsweg": {}
+    }
+  }
+};
+
+const $ = id => document.getElementById(id);
+
+
+// Variantenliste eines Nachrichtentyps normalisieren.
+function variantenVon(msgObj){
+  if (msgObj && Array.isArray(msgObj.varianten)) return msgObj.varianten;
+  return []; // keine ausgearbeitete Variante -> geplant
+}
+function istVerfuegbar(msgObj){
+  return variantenVon(msgObj).some(v => v.href);
+}
+
+function initVersion(){
+  const sv = $('selVersion');
+  sv.innerHTML = '';
+  Object.keys(MANIFEST).forEach(v=>{
+    const o=document.createElement('option'); o.value=v; o.textContent=MANIFEST[v].label; sv.appendChild(o);
+  });
+  onVersion();
+}
+function onVersion(){
+  const v=$('selVersion').value, th=$('selThema');
+  th.innerHTML='<option value="">– Thema wählen –</option>';
+  // Nur Themen anbieten, die Nachrichtentypen führen. Die übrigen Einträge des
+  // BDEW-Verzeichnisses (Codelisten, API-Webdienste, Formatübergreifende Dokumente,
+  // Redispatch, Regelungen zum Übertragungsweg) sind beschreibende Dokumentationen
+  // ohne EDIFACT-Nachricht — im Generator gibt es dazu nichts auszuwählen.
+  themenMitNachrichten(v).forEach(t=>{
+    const o=document.createElement('option'); o.value=t; o.textContent=t; th.appendChild(o);
+  });
+  resetNachricht(); resetVariante(); renderGrid();
+  hinweis('Thema und Nachrichtentyp wählen.');
+}
+function onThema(){
+  const v=$('selVersion').value, t=$('selThema').value, mn=$('selNachricht');
+  resetVariante();
+  if(!t){ resetNachricht(); return; }
+  const msgs=MANIFEST[v].themen[t];
+  const keys=Object.keys(msgs);
+  mn.innerHTML='<option value="">– Nachrichtentyp –</option>';
+  if(keys.length===0){
+    mn.disabled=true; hinweis('BDEW-Verzeichniskategorie für beschreibende Dokumentationen – enthält keine EDIFACT-Nachrichtentypen.'); return;
+  }
+  keys.forEach(k=>{
+    const o=document.createElement('option'); o.value=k;
+    o.textContent=k + (istVerfuegbar(msgs[k])?'':'  (geplant)');
+    mn.appendChild(o);
+  });
+  mn.disabled=false; hinweis('Nachrichtentyp wählen.');
+}
+function onNachricht(){
+  const v=$('selVersion').value, t=$('selThema').value, k=$('selNachricht').value, mv=$('selVariante');
+  resetGo();
+  if(!k){ resetVariante(); return; }
+  const varr=variantenVon(MANIFEST[v].themen[t][k]);
+  mv.innerHTML='';
+  if(varr.length===0){
+    mv.disabled=true; mv.innerHTML='<option>– keine Variante –</option>';
+    hinweis(k+' ist noch nicht ausgearbeitet (Platzhalter-Ordner vorhanden).'); return;
+  }
+  varr.forEach((va,i)=>{
+    const o=document.createElement('option'); o.value=i;
+    o.textContent=va.label + (va.href?'':'  (geplant)'); mv.appendChild(o);
+  });
+  mv.disabled=false; onVariante();
+}
+function onVariante(){
+  const v=$('selVersion').value, t=$('selThema').value, k=$('selNachricht').value;
+  const i=$('selVariante').value;
+  const va=variantenVon(MANIFEST[v].themen[t][k])[i];
+  if(va && va.href){
+    $('goBtn').disabled=false; $('goBtn').dataset.href=va.href;
+    hinweis('Bereit: '+$('selVersion').value+' · '+t+' · '+k+' · '+va.label, true);
+  } else {
+    resetGo(); hinweis('Diese Variante ist noch geplant.');
+  }
+}
+function oeffnen(){ const h=$('goBtn').dataset.href; if(h) window.location.href=h; }
+
+function resetNachricht(){ const mn=$('selNachricht'); mn.innerHTML='<option>–</option>'; mn.disabled=true; }
+function resetVariante(){ const mv=$('selVariante'); mv.innerHTML='<option>–</option>'; mv.disabled=true; resetGo(); }
+function resetGo(){ $('goBtn').disabled=true; $('goBtn').dataset.href=''; }
+function hinweis(msg, ok){ const h=$('hint'); h.textContent=msg; h.classList.toggle('ok', !!ok); }
+
+// Themen eines Formatstands, die tatsächlich Nachrichtentypen führen.
+function themenMitNachrichten(v){
+  const themen=MANIFEST[v].themen;
+  return Object.keys(themen).filter(t=>Object.keys(themen[t]).length>0);
+}
+
+function renderGrid(){
+  const v=$('selVersion').value, g=$('grid'); g.innerHTML='';
+  const themen=MANIFEST[v].themen;
+  themenMitNachrichten(v).forEach(t=>{
+    const card=document.createElement('div'); card.className='card';
+    const h=document.createElement('h3'); h.textContent=t; card.appendChild(h);
+    const ul=document.createElement('ul');
+    const msgs=themen[t]; const keys=Object.keys(msgs);
+    // Themen ohne Nachrichtentypen sind BDEW-Verzeichniskategorien für (vornehmlich
+    // beschreibende) Dokumentationen - sie erhalten keine Karte im Generator-Grid.
+    if(keys.length===0){
+      return;
+    } else {
+      keys.forEach(k=>{
+        const li=document.createElement('li');
+        const verf=istVerfuegbar(msgs[k]);
+        const href=verf ? variantenVon(msgs[k]).find(x=>x.href).href : null;
+        const name = href ? `<a href="${href}"><span class="msg">${k}</span></a>` : `<span class="msg">${k}</span>`;
+        li.innerHTML = name + (verf
+          ? '<span class="badge ok">verfügbar</span>'
+          : '<span class="badge plan">geplant</span>');
+        ul.appendChild(li);
+      });
+    }
+    card.appendChild(ul); g.appendChild(card);
+  });
+}
+
+initVersion();
+</script>
+</body>
+</html>

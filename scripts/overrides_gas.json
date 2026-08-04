@@ -1,0 +1,6 @@
+{
+  "15": "Wenn SG4 STS+E01++Z34 (Status der Antwort: Ablehnung Mehrfachkündigung) vorhanden",
+  "77": "Wenn SG8 SEQ+Z03 (Zähleinrichtungsdaten) CAV+Z30 (Identifikation/Nummer des Gerätes) nicht vorhanden",
+  "505": "Hinweis: Übergangsversorgung gibt es nur bei Marktlokationen, die unter § 38a EnWG fallen. Grundlage ist eine bilaterale Vereinbarung",
+  "527": "Hinweis: Es ist die ID der Marktlokation und alle Identifikatoren der Messlokationen anzugeben"
+}

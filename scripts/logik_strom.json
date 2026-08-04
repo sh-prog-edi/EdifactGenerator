@@ -1,0 +1,75 @@
+{
+  "348": {
+    "gegensegment": {
+      "tag": "LOC",
+      "qual": "Z21"
+    }
+  },
+  "349": {
+    "gegensegment": {
+      "tag": "LOC",
+      "qual": "Z17"
+    }
+  },
+  "479": {
+    "wennStsErgaenzung": "ZW3"
+  },
+  "480": {
+    "wennStsErgaenzung": "ZW4"
+  },
+  "481": {
+    "wennStsErgaenzung": "ZW5"
+  },
+  "2061": {
+    "maxProVorgang": 1
+  },
+  "96": {
+    "wennStsErgaenzung": "ZAP"
+  },
+  "192": {
+    "wennStsErgaenzung": "ZW4"
+  },
+  "279": {
+    "wennStsErgaenzung": "ZW4"
+  },
+  "476": {
+    "wennStsErgaenzung": "ZW0"
+  },
+  "477": {
+    "wennStsErgaenzung": "ZW1"
+  },
+  "478": {
+    "wennStsErgaenzung": "ZW2"
+  },
+  "483": {
+    "wennStsErgaenzung": "ZW7"
+  },
+  "484": {
+    "wennStsErgaenzung": "ZW8"
+  },
+  "487": {
+    "wennStsErgaenzung": "ZX1"
+  },
+  "572": {
+    "wennStsErgaenzung": "ZW4"
+  },
+  "2001": {
+    "wennStsErgaenzung": "ZW5"
+  },
+  "301": {
+    "wennBgm": {
+      "codes": [
+        "E03"
+      ],
+      "vorhanden": true
+    }
+  },
+  "315": {
+    "wennBgm": {
+      "codes": [
+        "Z88"
+      ],
+      "vorhanden": true
+    }
+  }
+}

@@ -1,0 +1,64 @@
+[
+ {
+  "ordner": "202604/Stammdaten/UTILMD/Gas/pruef-ids",
+  "bruecke": true,
+  "ergaenzt": []
+ },
+ {
+  "ordner": "202604/Stammdaten/UTILMD/Strom/pruef-ids",
+  "bruecke": true,
+  "ergaenzt": []
+ },
+ {
+  "ordner": "202610/Stammdaten/UTILMD/Gas/pruef-ids",
+  "bruecke": true,
+  "ergaenzt": []
+ },
+ {
+  "ordner": "202610/Stammdaten/UTILMD/Strom/pruef-ids",
+  "bruecke": true,
+  "ergaenzt": [
+   "432"
+  ],
+  "ohne_text": [
+   "10P1..1",
+   "11P1..1",
+   "12P1..1",
+   "13P1..1",
+   "14P0..1",
+   "15P1..1",
+   "16P0..1",
+   "17P0..1",
+   "18P0..1",
+   "19P0..1",
+   "19P1..1",
+   "1P0..1",
+   "1P0..4",
+   "1P0..5",
+   "1P1..1",
+   "20P0..1",
+   "20P1..1",
+   "21P0..1",
+   "21P1..1",
+   "22P0..1",
+   "22P1..1",
+   "23P0..1",
+   "23P1..1",
+   "24P0..1",
+   "24P1..1",
+   "25P1..1",
+   "26P0..1",
+   "26P1..1",
+   "27P1..1",
+   "2P0..1",
+   "38P1..1",
+   "3P0..1",
+   "4P0..1",
+   "5P0..1",
+   "6P0..1",
+   "7P1..1",
+   "9P0..1",
+   "UB1"
+  ]
+ }
+]

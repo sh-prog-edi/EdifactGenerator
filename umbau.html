@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Testnachricht aus Produktivnachricht (Umbau)</title>
+<link rel="stylesheet" href="_engine/edigen.css">
+<style>
+  *{box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    margin:0;background:var(--bg);color:var(--text);line-height:1.5;}
+  .wrap{max-width:1240px;margin:0 auto;padding:24px 22px 60px;}
+  h1{font-size:22px;margin:2px 0 2px;color:var(--heading);}
+  .sub{color:var(--muted);font-size:13px;margin:0 0 18px;}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;
+    box-shadow:var(--shadow);padding:18px 20px;margin:0 0 18px;}
+  .panel h2{font-size:15px;margin:0 0 12px;color:var(--heading);}
+  .drop{border:2px dashed var(--accent);border-radius:12px;padding:26px 18px;text-align:center;
+    color:var(--muted);font-size:14px;cursor:pointer;transition:background .15s;}
+  .drop.aktiv{background:var(--accent-bg);color:var(--heading);}
+  textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;
+    background:var(--panel);color:var(--text);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+    font-size:13px;min-height:130px;}
+  .go{padding:10px 18px;border:none;border-radius:8px;background:var(--accent);color:#fff;
+    font-size:14px;font-weight:600;cursor:pointer;margin-top:10px;}
+  .go.secondary{background:var(--panel);color:var(--accent);border:1px solid var(--accent);}
+  .go[disabled]{opacity:.45;cursor:not-allowed;}
+  .kv{display:grid;grid-template-columns:190px 1fr;gap:3px 14px;font-size:13.5px;}
+  .kv dt{color:var(--muted);} .kv dd{margin:0;}
+  .hinweisbox{border-radius:8px;padding:10px 12px;margin:10px 0 0;font-size:13px;
+    background:var(--accent-bg);color:var(--heading);}
+  /* Segment-Editor */
+  .segzeile{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center;padding:5px 8px;
+    border-bottom:1px solid var(--border);}
+  .segzeile:nth-child(odd){background:color-mix(in srgb, var(--panel) 92%, var(--accent) 8%);}
+  .segtag{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-weight:700;
+    font-size:13px;color:var(--heading);min-width:52px;}
+  .segzeile input{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;
+    padding:3px 6px;border:1px solid var(--border);border-radius:6px;background:var(--panel);
+    color:var(--text);width:110px;}
+  .segzeile input.breit{width:230px;}
+  .segzeile input.ersetzt{border-color:var(--accent);background:var(--accent-bg);}
+  /* Vorgangs-Zeilen (SG4 IDE) und Prüf-ID-Feld (RFF+Z13) gelb hervorheben —
+     eine Nachricht kann mehrere Vorgänge zu unterschiedlichen Prüf-IDs tragen. */
+  :root, [data-theme="light"]{ --mark-bg:#fff3b0; --mark-text:#4a3a00; --mark-rand:#d9b500; }
+  [data-theme="dark"]{ --mark-bg:#4a3f12; --mark-text:#f5e6a5; --mark-rand:#a8891a; }
+  .segzeile.vorgang{background:var(--mark-bg);border-left:4px solid var(--mark-rand);}
+  .segzeile.vorgang .segtag{color:var(--mark-text);}
+  .segzeile input.pruefid{background:var(--mark-bg);color:var(--mark-text);
+    border-color:var(--mark-rand);font-weight:700;}
+  .vorgangswahl{margin-left:auto;font-size:12.5px;color:var(--mark-text);
+    display:flex;align-items:center;gap:4px;white-space:nowrap;}
+  .wahlkopf{font-size:13px;margin:8px 0 2px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;}
+  /* Haken-Schalter in derselben gelben Markierungsfarbe wie die Vorgangszeilen */
+  .go.mark{background:var(--mark-bg);color:var(--mark-text);border:1px solid var(--mark-rand);}
+  .go.mark:hover{filter:brightness(0.96);}
+  .ausgabewahl{font-size:12.5px;color:var(--muted);margin:0 0 6px;}
+  .trenn{color:var(--muted);font-size:12px;}
+  .legende{font-size:12px;color:var(--muted);margin:8px 0 0;}
+  .legende .muster{display:inline-block;width:14px;height:14px;vertical-align:-2px;
+    border:1px solid var(--accent);background:var(--accent-bg);border-radius:4px;}
+  .okbox{display:inline-block;border-radius:8px;padding:4px 10px;font-size:12.5px;
+    background:var(--accent-bg);color:var(--heading);margin-left:8px;}
+  .hint{font-size:12px;color:var(--muted);margin-top:8px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumbs"><a href="index.html">Startseite</a> / <strong>Testnachricht aus Produktivnachricht</strong></div>
+  <div class="top-bar">
+    <h1>Testnachricht aus Produktivnachricht</h1>
+    <div class="theme-toggle">
+      <button id="tL" onclick="setTheme('light')">Hell</button><button id="tD" onclick="setTheme('dark')">Dunkel</button>
+    </div>
+  </div>
+  <p class="sub">Vorhandene (produktive) EDIFACT-Nachricht importieren, ihre Segmente bearbeiten und mit
+     einem Klick zur Testnachricht umbauen: Test-Kennzeichen (UNB DE0035), aktueller Erstellungszeitpunkt
+     (UNB S004, DTM+137), neue Datenaustausch-, Nachrichten-, Dokumenten- und Vorgangsnummer wie beim
+     Erstellen einer Testnachricht, erste Zeitscheibe der Verwendungszeiträume ab dem Ende des aktuellen
+     Tagesdatums. Alle Werte bleiben editierbar.</p>
+
+  <div class="panel">
+    <h2>1. Nachricht importieren</h2>
+    <div class="drop" id="drop" onclick="document.getElementById('datei').click()">
+      Übertragungsdatei (TXT) hierher ziehen – oder klicken zum Auswählen
+      <input type="file" id="datei" accept=".txt,.edi,.edifact,text/plain" style="display:none">
+    </div>
+    <div style="margin:12px 0 4px;color:var(--muted);font-size:13px">… oder Nachrichteninhalt einfügen:</div>
+    <textarea id="eingabe" spellcheck="false" placeholder="UNA:+.? '&#10;UNB+UNOC:3+…"></textarea>
+    <button class="go" onclick="einlesen()">Nachricht einlesen</button>
+    <button class="go secondary" onclick="leeren()">Leeren</button>
+  </div>
+
+  <div class="panel" id="panelErkennung" style="display:none">
+    <h2>2. Erkennung</h2>
+    <dl class="kv" id="erkennung"></dl>
+  </div>
+
+  <div class="panel" id="panelSegmente" style="display:none">
+    <h2>3. Segmente bearbeiten</h2>
+    <div class="hint">Aufgeführt sind genau die Segmente der importierten Nachricht — zunächst ohne
+      Vorbelegung. „Umbau zu Testnachricht“ überträgt die Werte der Nachricht in die Felder und
+      ersetzt dabei die Kennzeichen und Nummern der Testnachricht. Zeilen mit Vorgangs-Segment
+      (SG4 IDE) sind gelb hinterlegt, ebenso das Prüf-ID-Feld (RFF+Z13) des Vorgangs. Bei
+      mehreren Vorgängen trägt jede Vorgangszeile einen vorbelegten Haken — abgehakte Vorgänge
+      wandern in die Testnachricht, abgewählte nicht; jede Wahl lässt sich jederzeit umkehren.</div>
+    <div class="wahlkopf">
+      <button class="go" id="btnUmbau" style="margin:0" onclick="umbauen()">Umbau zu Testnachricht</button>
+      <span id="vorgangsWahl" style="display:none">
+        <span style="display:inline-flex;flex-wrap:wrap;gap:6px 10px;align-items:center">
+          <strong>angehakte Vorgänge:</strong>
+          <button type="button" class="go mark" style="margin:0;padding:3px 10px;font-size:12.5px"
+                  onclick="alleVorgaenge(true)">alle Haken setzen</button>
+          <button type="button" class="go mark" style="margin:0;padding:3px 10px;font-size:12.5px"
+                  onclick="alleVorgaenge(false)">alle Haken entfernen</button>
+        </span>
+      </span>
+      <span class="legende" style="margin:0"><span class="muster"></span> beim Umbau ersetztes Feld
+        (Titel des Feldes nennt den Grund) — auch diese Werte bleiben editierbar.</span>
+    </div>
+    <div id="segmentEditor" style="margin-top:10px"></div>
+    <span class="okbox" id="umbauHinweis" style="display:none"></span>
+    <div id="umbauBericht"></div>
+  </div>
+
+  <div class="panel" id="panelAusgabe" style="display:none">
+    <h2>4. Testnachricht</h2>
+    <div class="ausgabewahl" id="ausgabeUmfang"></div>
+    <textarea id="umbauOut" spellcheck="false" readonly style="min-height:180px"></textarea>
+    <button class="go" onclick="EdiSpeichern.speichere('umbauOut','speicherHinweis')">Als marktkonforme Datei (.txt) speichern</button>
+    <span class="okbox" id="speicherHinweis" style="display:none"></span>
+    <div class="hint">Der Dateiname folgt den Allgemeinen Festlegungen (Abschnitt 2.12):
+      <code>Nachrichtentyp_Anwendungsreferenz_von_an_yyyymmdd_DAR.txt</code>; die Datei wird
+      ohne Zeilenumbrüche und in ISO 8859-1 (Zeichensatz UNOC) geschrieben.</div>
+  </div>
+
+  <footer style="font-size:12px;color:var(--muted);border-top:1px solid var(--border);padding-top:12px;">
+    Der Umbau arbeitet generisch auf der Segmentstruktur: auch Nachrichten mit unbekannter Prüf-ID
+    oder fremdem Nachrichtentyp werden umgebaut (Vorgangsnummer und Zeitscheiben nur, wo vorhanden).
+    Feld-Titel nennen Datenelement und BDEW-Feldformat, soweit aus MIG/AHB bekannt.
+  </footer>
+</div>
+
+<script src="_engine/theme.js"></script>
+<script src="_engine/daten/validator-registry.js"></script>
+<script src="_engine/daten/mig-formate.js"></script>
+<script src="_engine/nachricht-speichern.js"></script>
+<script src="_engine/ahb-validator.js"></script>
+<script src="_engine/umbau.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+
+// ---- Import (Drag & Drop, Dateiauswahl, Einfügen) — wie im Validator ------
+const drop = $('drop');
+['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('aktiv'); }));
+['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('aktiv'); }));
+drop.addEventListener('drop', e => {
+  const f = e.dataTransfer.files && e.dataTransfer.files[0];
+  if (f) liesDatei(f);
+});
+$('datei').addEventListener('change', e => { if (e.target.files[0]) liesDatei(e.target.files[0]); });
+function liesDatei(f){
+  const r = new FileReader();
+  r.onload = () => { $('eingabe').value = String(r.result); einlesen(); };
+  r.readAsText(f, 'utf-8');
+}
+function leeren(){
+  $('eingabe').value = '';
+  segmente = null;
+  vorgangsListe = [];
+  ['panelErkennung','panelSegmente','panelAusgabe','vorgangsWahl'].forEach(id => $(id).style.display = 'none');
+}
+
+// ---- Zustand ---------------------------------------------------------------
+let segmente = null;      // zerlegte Nachricht (Werte entschärft)
+let umgebaut = false;
+let vorgangsListe = [];   // SG4-Vorgänge (IDE+24) mit Segmentbereich und Prüf-ID
+
+// DECODER des Validators invertieren: je Segmenttag Position -> Datenelement-Nummer.
+const DE_NAME = (() => {
+  const karte = {};
+  const dec = (window.AhbValidator || {}).DECODER || {};
+  Object.keys(dec).forEach(tag => {
+    karte[tag] = {};
+    Object.keys(dec[tag]).forEach(de => {
+      const p = dec[tag][de];
+      const k = p[0] + ':' + (p[1] || 0);
+      if (!(k in karte[tag])) karte[tag][k] = de;
+    });
+  });
+  return karte;
+})();
+
+// BDEW-Feldformat je "SEG DENR" aus mig-formate.js — über alle Typen des Formatstands
+// gesammelt, da die Umbau-Seite typunabhängig arbeitet (erster Treffer gewinnt).
+const MIG_FMT = (() => {
+  const karte = {};
+  const alle = window.migFormate || {};
+  Object.keys(alle).forEach(stand => Object.keys(alle[stand]).forEach(typ => {
+    const felder = (alle[stand][typ] || {}).felder || {};
+    Object.keys(felder).forEach(k => { if (!(k in karte)) karte[k] = felder[k].fmt; });
+  }));
+  return karte;
+})();
+
+function feldTitel(tag, elIdx, kompIdx){
+  const de = (DE_NAME[tag] || {})[elIdx + ':' + kompIdx];
+  if (!de) return `${tag}, Element ${elIdx + 1}${kompIdx ? '.' + (kompIdx + 1) : ''}`;
+  const fmt = MIG_FMT[`${tag} ${de}`];
+  return `${tag} DE${de}${fmt ? ' — Format ' + fmt : ''}`;
+}
+
+// ---- Einlesen: Segmente auflisten, Felder OHNE Vorbelegung ----------------
+function einlesen(){
+  const text = $('eingabe').value;
+  if (!text.trim()) return;
+  segmente = EdiUmbau.zerlege(text);
+  umgebaut = false;
+  if (!segmente.length){
+    segmente = null;
+    $('panelErkennung').style.display = '';
+    $('erkennung').innerHTML = '<dt>Problem</dt><dd>Keine EDIFACT-Segmente erkennbar.</dd>';
+    $('panelSegmente').style.display = 'none';
+    $('panelAusgabe').style.display = 'none';
+    return;
+  }
+  zeigeErkennung(text);
+  zeigeEditor();
+  $('umbauHinweis').style.display = 'none';
+  $('umbauBericht').innerHTML = '';
+  $('panelAusgabe').style.display = 'none';
+}
+
+function zeigeErkennung(text){
+  const ek = $('erkennung');
+  $('panelErkennung').style.display = '';
+  let zeilen = '';
+  try {
+    const parsed = AhbValidator.parse(text);
+    const det = AhbValidator.erkenne(parsed, window.validatorRegistry || []);
+    const unh = segmente.find(s => s.tag === 'UNH');
+    const typ = det.typ || (unh ? (unh.elemente[1] || [])[0] : '') || 'unbekannt';
+    zeilen += `<dt>Nachrichtentyp</dt><dd>${typ}${det.version ? ' (Version ' + det.version + ')' : ''}</dd>`;
+    if (det.eintrag && !det.fehler){
+      zeilen += `<dt>Formatstand</dt><dd>${det.eintrag.stand}</dd>`;
+      zeilen += `<dt>Prüf-ID</dt><dd>${det.pruefi || '– (keine RFF+Z13)'}</dd>`;
+    } else {
+      zeilen += `<dt>Zuordnung</dt><dd>nicht erkannt — der Umbau arbeitet generisch weiter` +
+        (det.fehler ? ` <span style="color:var(--muted)">(${det.fehler})</span>` : '') + `</dd>`;
+    }
+  } catch (e) {
+    zeilen += `<dt>Zuordnung</dt><dd>nicht erkannt — der Umbau arbeitet generisch weiter</dd>`;
+  }
+  const unbs = segmente.filter(s => s.tag === 'UNB').length;
+  const unhs = segmente.filter(s => s.tag === 'UNH').length;
+  zeilen += `<dt>Umfang</dt><dd>${segmente.length} Segmente, ${unhs || '0'} Nachricht(en)` +
+            (unbs ? '' : ' — ohne UNB-Rahmen') + `</dd>`;
+  ek.innerHTML = zeilen;
+}
+
+function zeigeEditor(){
+  const wurzel = $('segmentEditor');
+  wurzel.innerHTML = '';
+  vorgangsListe = EdiUmbau.vorgaenge(segmente);
+  gewaehlt = 'alle';
+  const vorgangAnSegment = {};   // Segmentindex des IDE -> Vorgangsindex
+  vorgangsListe.forEach((v, n) => { vorgangAnSegment[v.von] = n; });
+  const mehrereNachrichten = segmente.filter(s => s.tag === 'UNH').length > 1;
+
+  segmente.forEach((seg, i) => {
+    const zeile = document.createElement('div');
+    zeile.className = 'segzeile';
+    const q = (seg.elemente[0] || [])[0] || '';
+    const istVorgang = seg.tag === 'IDE' && q === '24';
+    if (istVorgang) zeile.className = 'segzeile vorgang';
+    const tag = document.createElement('span');
+    tag.className = 'segtag'; tag.textContent = seg.tag;
+    zeile.appendChild(tag);
+    seg.elemente.forEach((el, e) => {
+      if (e) zeile.appendChild(Object.assign(document.createElement('span'), { className: 'trenn', textContent: '+' }));
+      el.forEach((wert, k) => {
+        if (k) zeile.appendChild(Object.assign(document.createElement('span'), { className: 'trenn', textContent: ':' }));
+        const inp = document.createElement('input');
+        inp.id = `f_${i}_${e}_${k}`;
+        inp.title = feldTitel(seg.tag, e, k);
+        inp.placeholder = ((DE_NAME[seg.tag] || {})[e + ':' + k] ? 'DE' + DE_NAME[seg.tag][e + ':' + k] : '');
+        if (String(wert).length > 18) inp.className = 'breit';
+        // Prüf-ID des Vorgangs (RFF+Z13, DE1154) gelb hervorheben
+        if (seg.tag === 'RFF' && q === 'Z13' && e === 0 && k === 1){
+          inp.classList.add('pruefid');
+          inp.title = 'RFF DE1154 — Prüfidentifikator des Vorgangs';
+        }
+        inp.addEventListener('input', felderInDieAusgabe);
+        zeile.appendChild(inp);
+      });
+    });
+    // Auswahl je Vorgang: vorbelegte Checkbox — ab- und wieder anwählbar, damit
+    // auch bei drei und mehr Vorgängen ein versehentlicher Klick rückgängig bleibt.
+    // Ohne Haken wandert der Vorgang nicht in die Testnachricht.
+    if (istVorgang && vorgangsListe.length > 1){
+      const n = vorgangAnSegment[i];
+      const v = vorgangsListe[n];
+      const wahl = document.createElement('label');
+      wahl.className = 'vorgangswahl';
+      const kasten = document.createElement('input');
+      kasten.type = 'checkbox'; kasten.name = 'vorgangswahl'; kasten.value = String(n);
+      kasten.checked = true;
+      kasten.addEventListener('change', felderInDieAusgabe);
+      wahl.appendChild(kasten);
+      wahl.appendChild(document.createTextNode(
+        ` Vorgang verwenden${mehrereNachrichten ? ` (Nachricht ${v.nachricht + 1})` : ''}` +
+        (v.pruefi ? ` — Prüf-ID ${v.pruefi}` : '')));
+      zeile.appendChild(wahl);
+    }
+    wurzel.appendChild(zeile);
+  });
+  $('vorgangsWahl').style.display = vorgangsListe.length > 1 ? '' : 'none';
+  $('panelSegmente').style.display = '';
+}
+
+function gewaehlteVorgaenge(){
+  const haken = Array.from(document.querySelectorAll('input[name="vorgangswahl"]'));
+  if (!haken.length) return vorgangsListe;   // keine Auswahl angeboten -> alle
+  return haken.filter(k => k.checked).map(k => vorgangsListe[Number(k.value)]);
+}
+
+function alleVorgaenge(an){
+  document.querySelectorAll('input[name="vorgangswahl"]').forEach(k => { k.checked = an; });
+  felderInDieAusgabe();
+}
+
+// ---- Umbau: Werte übertragen und Testnachricht-Kennzeichen setzen ---------
+function umbauen(){
+  if (!segmente) return;
+  const bericht = EdiUmbau.baueUm(segmente);
+  const ersetzt = {};
+  bericht.forEach(b => { ersetzt[`f_${b.seg}_${b.el}_${b.komp}`] = b; });
+  segmente.forEach((seg, i) => {
+    seg.elemente.forEach((el, e) => {
+      el.forEach((wert, k) => {
+        const inp = $(`f_${i}_${e}_${k}`);
+        if (!inp) return;
+        inp.value = wert;
+        const b = ersetzt[inp.id];
+        if (b){
+          inp.classList.add('ersetzt');
+          inp.title = feldTitel(seg.tag, e, k) + ' — beim Umbau ersetzt: ' + b.grund;
+          if (String(wert).length > 18) inp.className = 'breit ersetzt';
+        }
+      });
+    });
+  });
+  umgebaut = true;
+  $('umbauHinweis').textContent = `${bericht.length} Felder ersetzt — alle Werte bleiben editierbar.`;
+  $('umbauHinweis').style.display = 'inline-block';
+  $('umbauBericht').innerHTML = '<div class="hinweisbox">' +
+    bericht.map(b => `<strong>${b.feld}</strong> → <code>${b.wert.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</code> (${b.grund})`).join('<br>') +
+    '</div>';
+  felderInDieAusgabe();
+}
+
+// ---- Ausgabe aus den Feldern erzeugen (live bei jeder Änderung) -----------
+function felderInDieAusgabe(){
+  if (!segmente || !umgebaut) return;
+  segmente.forEach((seg, i) => {
+    seg.elemente.forEach((el, e) => {
+      el.forEach((wert, k) => {
+        const inp = $(`f_${i}_${e}_${k}`);
+        if (inp) el[k] = inp.value;
+      });
+    });
+  });
+  let ausgabe = segmente;
+  let umfang = vorgangsListe.length > 1
+    ? `Ausgabe: alle ${vorgangsListe.length} Vorgänge.` : '';
+  const gewaehlt = gewaehlteVorgaenge();
+  if (vorgangsListe.length > 1 && !gewaehlt.length){
+    $('ausgabeUmfang').textContent = 'Kein Vorgang angehakt — mindestens einen Haken setzen, sonst gibt es nichts zu erzeugen.';
+    $('umbauOut').value = '';
+    $('panelAusgabe').style.display = '';
+    return;
+  }
+  if (vorgangsListe.length > 1 && gewaehlt.length < vorgangsListe.length){
+    ausgabe = EdiUmbau.filterVorgaenge(segmente, gewaehlt);
+    const nummern = gewaehlt.map(v =>
+      `${v.nr}${segmente.filter(s => s.tag === 'UNH').length > 1 ? ` (Nachricht ${v.nachricht + 1})` : ''}${v.pruefi ? ` [${v.pruefi}]` : ''}`);
+    umfang = `Ausgabe: ${gewaehlt.length} von ${vorgangsListe.length} Vorgängen — ${nummern.join(', ')} — ` +
+      `Segmentzähler (UNT) und Nachrichtenzähler (UNZ) sind an den verkürzten Umfang angepasst.`;
+  }
+  $('ausgabeUmfang').textContent = umfang;
+  $('umbauOut').value = EdiUmbau.serialisiere(ausgabe);
+  $('panelAusgabe').style.display = '';
+}
+</script>
+</body>
+</html>

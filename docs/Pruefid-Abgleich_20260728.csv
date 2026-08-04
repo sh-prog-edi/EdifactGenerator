@@ -1,0 +1,1242 @@
+﻿Formatstand;Nachrichtentyp;PruefID;Bezeichnung;Segmentinstanzen;Datenelemente;Codewerte;bedingte Segmente;AHB-Zeilen;Quelldatei;Tabellenlayout
+202604;Berichte/IFTSTA;21000;Statusmeldung;15;42;39;0;78;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21001;Statusmeldung;15;42;35;0;74;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21002;Abweisung;14;38;37;0;73;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21003;Status- meldung;15;42;57;0;96;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21004;Status- meldung;15;41;57;0;96;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21005;Status- meldung;15;42;45;0;84;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21007;Statusmeldung;14;37;36;0;71;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21009;Status- meldung;11;28;27;0;55;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21010;Status- meldung;12;31;29;0;59;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21011;Status- meldung;13;34;31;0;64;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21012;Status- meldung;14;35;31;0;65;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21013;Status- meldung;11;29;28;0;56;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21015;Informationsmeldung;13;34;30;0;63;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21018;Statusmeldung;13;34;33;0;66;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21024;Status-;12;31;27;0;57;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21025;Status- meldung;13;33;31;1;65;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21026;Status- meldung;12;31;27;0;57;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21027;Status- meldung;13;33;31;1;65;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21028;Informationsmeldung;12;33;28;0;59;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21029;Vorabinfor- mation;21;49;39;0;85;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21030;iMS- Ersteinbau- zust.;14;37;30;0;65;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21031;Bestandss. / Eigenausbau iMS;13;34;28;0;61;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21032;Antwort auf das Angebot;12;32;28;0;59;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21033;Ablehnung der Anfrage;15;38;35;1;73;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21035;Rückmeld. a. Liefers.;16;43;48;0;87;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21036;Gerätestatus;12;31;27;0;57;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21037;Ansicht NB;34;74;64;0;145;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21038;Ansicht BTR;27;62;54;0;119;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21039;Auftragsstatus (Sperren);19;48;48;0;95;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21040;Info Entsperrauftrag;12;31;29;0;59;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21042;Bestellung (WiM);12;31;27;0;57;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21043;Bestellungsantwort / - mitteilung;14;36;37;0;73;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21044;Bestellungsbeendigung;12;31;27;0;58;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21045;EnFG Informationen;19;47;46;0;128;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/IFTSTA;21047;Bearbeitungs- standsmeldung;13;33;51;1;85;AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx;tabs
+202604;Berichte/INSRPT;23001;Störungs-meldung;19;44;45;0;92;AHB_INSRPT_1.1g_20230330_99991231_20251211_oxox_12008.docx;nested
+202604;Berichte/INSRPT;23003;Ablehnung;13;32;28;0;61;AHB_INSRPT_1.1g_20230330_99991231_20251211_oxox_12008.docx;nested
+202604;Berichte/INSRPT;23004;Bestäti-gung;16;39;33;0;71;AHB_INSRPT_1.1g_20230330_99991231_20251211_oxox_12008.docx;nested
+202604;Berichte/INSRPT;23005;Informations-meldung;14;35;30;0;64;AHB_INSRPT_1.1g_20230330_99991231_20251211_oxox_12008.docx;nested
+202604;Berichte/INSRPT;23008;Ergebnis-bericht;16;41;41;1;80;AHB_INSRPT_1.1g_20230330_99991231_20251211_oxox_12008.docx;nested
+202604;Berichte/INSRPT;23009;Informations-meldung;16;41;40;1;79;AHB_INSRPT_1.1g_20230330_99991231_20251211_oxox_12008.docx;nested
+202604;Berichte/INSRPT;23011;Informations-meldung;15;37;29;0;65;AHB_INSRPT_1.1g_20230330_99991231_20251211_oxox_12008.docx;nested
+202604;Berichte/INSRPT;23012;Informations-meldung;17;43;40;1;81;AHB_INSRPT_1.1g_20230330_99991231_20251211_oxox_12008.docx;nested
+202604;Bestellvorgang/ORDCHG;39000;Stornierung Sperr-/Entsperr- auftrag;10;27;28;0;54;AHB_ORDCHG_1.0a_20250606_20260930_20250606_ooox_11100.docx;tabs
+202604;Bestellvorgang/ORDCHG;39001;Weiterleitung der Stornierung;11;29;29;0;58;AHB_ORDCHG_1.0a_20250606_20260930_20250606_ooox_11100.docx;tabs
+202604;Bestellvorgang/ORDCHG;39002;Stornierung der Bestellung;10;27;25;0;51;AHB_ORDCHG_1.0a_20250606_20260930_20250606_ooox_11100.docx;tabs
+202604;Bestellvorgang/ORDERS;17001;"Bestellung
+Geräteübernahmeangebot";13;32;29;0;63;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17002;Weiterverpflichtung;13;32;30;0;62;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17003;"Beauftragung
+Änderung Technik";17;40;37;0;78;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17004;"Anforderung
+von Werten";15;33;34;0;68;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17005;"Bestellung
+Rechnungsabwicklung
+MSB über LF";14;33;29;0;62;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17006;"Beendigung
+Rechnungsabwicklung
+MSB über LF";15;33;31;0;65;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17007;Bestellung von Werten;12;30;28;0;57;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17008;Abbestellung von Werten;12;30;27;0;56;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17009;"Anzeige
+Gerätewechsel-
+absicht";16;35;39;0;77;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17011;"Bestellung Angebot
+Änderung Technik";28;67;55;0;125;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17101;"Anfrage
+Stammdaten
+Marktlokation (Gas)";17;43;32;0;80;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17102;"Anfrage
+von Werten";15;35;36;0;71;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17103;"Anforderung
+Brennwert /
+Zustandszahl";15;35;30;0;65;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17104;"Anfrage vom
+MSB Gas";12;33;26;0;60;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17110;Anforderung Allokationsliste;11;28;27;0;53;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17113;Reklamation von Werten;20;47;43;0;90;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17114;"Anforderung
+bilanzierte Menge";14;34;29;0;63;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17115;Sperrauftrag;16;42;33;0;76;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17116;"Anfrage
+Sperrung";15;39;31;0;72;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17117;"Entsperr-
+auftrag";15;37;31;0;71;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17118;"Bestellung einer
+Konfigurations-
+änderung";20;46;43;0;88;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17120;"Bestellung Änderung
+Prognosegrundlage";15;33;30;0;65;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17121;"Bestellung
+Änderung";44;81;84;0;174;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17122;"Reklamation
+einer Definition";16;38;35;0;78;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17123;"Bestellung Änderung
+Zählzeitdefinition";16;38;35;0;73;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17126;"Anfrage
+Stammdaten
+Messlokation (Gas)";16;41;32;0;77;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17128;"Reklamation
+einer Konfiguration";33;78;64;0;148;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17129;"Bestellung Beendigung
+einer Konfiguration";12;31;27;0;58;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17130;"Bestellung
+einer Konfiguration";31;75;55;0;135;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17131;"Bestellung Angebot
+einer Konfiguration";10;26;24;0;50;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17132;Anfrage Stammdaten (Strom);11;27;25;0;52;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17133;"Bestellung Änderung
+Abrechnungsdaten";19;46;36;0;81;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17134;"Einrichtung Konfiguration
+Zuordnung LF von NB";47;93;94;0;199;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17135;"Einrichtung Konfiguration
+Zuordnung LF von MSB";24;57;50;0;112;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17201;"Anforder.
+normierter
+Profile und
+Profil-
+scharen";12;27;29;0;58;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17202;"Anforder.
+Liefer-
+anten-
+clearing-
+liste";15;36;32;0;69;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17203;"Anforder.
+Bilanz-
+kreiszu-
+ordnungs-
+liste";15;36;33;0;69;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17204;"Anforder.
+Clearing-
+liste
+BAS";14;33;28;0;63;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17205;"Anforder.
+Clearing-
+liste
+DZR";14;33;28;0;63;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17206;"Anforderung
+Bilanzie-
+rungsgebiets
+clearingliste";15;36;32;0;69;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17207;"Ab-/Bestellung
+BK-SZR auf Aggre-
+gationsebene RZ";13;31;28;0;60;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17208;"Anforderung
+Clearingliste
+ÜNB-DZR";14;33;28;0;63;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17209;"Anforderung
+Ausfallarbeit";15;36;30;0;67;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17210;"Anforderung
+Lieferanten-
+ausfallarbeits-
+clearingliste";15;36;32;0;69;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17211;"Reklamation
+Profile bzw. Profilscharen";11;29;26;0;54;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDERS;17301;"Anforderung
+von Stammdaten
+bzw. Messwerten";14;32;31;0;62;AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx;nested
+202604;Bestellvorgang/ORDRSP;19001;"Bestätigung
+Bestellung";12;31;30;0;61;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19002;"Ablehnung
+Bestellung";12;31;30;0;61;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19003;"Bestätigung
+Weiterverpflichtung";12;31;30;0;61;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19004;"Ablehnung
+Weiterverpflichtung";12;31;30;0;61;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19005;"Bestätigung Auftrag
+Änderung Technik";12;31;35;0;66;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19006;"Ablehnung Auftrag
+Änderung Technik";16;41;41;0;81;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19007;"Ablehnung
+Anforderung Werte";12;29;31;0;61;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19009;"Bestätigung
+Beendigung
+Rechnungsab-
+wicklung MSB";13;32;29;0;61;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19010;"Ablehnung
+Beendigung
+Rechnungsab-
+wicklung MSB";13;32;29;0;61;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19011;"Bestäti-gung
+der Ab-/Bestellung
+von Werten";15;34;31;0;69;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19012;"Ablehnung
+der Ab-/Bestellung
+von Werten";12;29;29;0;59;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19013;"Bestäti-gung
+der Stornier-ung
+einer Bestellung";11;28;25;0;54;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19014;"Ablehnung
+der Stornier-ung
+einer Bestellung";11;28;25;0;54;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19015;"Bestätigung
+Geräte-
+wechsel-
+absicht";12;35;32;0;68;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19016;"Ablehnung
+Geräte-
+wechsel-
+absicht";12;31;34;0;66;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19101;"Ablehnung der
+Anfrage Stammdaten";11;28;30;0;59;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19102;"Ablehnung der
+Anfrage Werte";12;29;34;0;64;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19103;"Ablehnung der Anfrage
+Brennwert / Zustandszahl";12;29;26;0;56;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19104;"Ablehnung
+der Anfrage
+vom MSB Gas";11;28;25;0;54;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19110;"Ablehnung der
+Anforderung
+Allokationsliste";12;29;26;0;56;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19114;Ablehnung Reklamation;12;29;34;0;64;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19115;"Ablehnung
+der Anforderung
+bilanzierte Menge";11;28;25;0;54;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19116;"Bestätigung
+Sperr-/Entsperr-
+auftrag";16;38;37;0;77;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19117;"Ablehnung
+Sperr-/Entsperr-
+auftrag";12;30;32;0;63;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19118;"Bestätigung
+Anfrage Sperrung";11;28;28;0;57;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19119;"Ablehnung
+Anfrage Sperrung";12;30;29;0;60;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19120;"Mitteilung zur
+Änderung";12;30;26;0;57;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19121;"Mitteilung zur Änderung
+Prognosegrundlage";12;30;26;0;57;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19123;"Ablehnung Reklamation
+einer Definition";14;34;35;0;72;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19124;"Mitteilung zur
+Änderung
+Zählzeitdefinition";12;30;27;0;58;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19127;"Mitteilung zur
+Konfigurations-
+änderung";12;30;27;0;58;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19128;"Bestätigung
+Stornierung
+Sperr-/Entsperr-
+auftrag";11;28;29;0;58;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19129;"Ablehnung
+Stornierung
+Sperr-/Entsperr-
+auftrag";11;28;29;0;58;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19130;"Bearbeitungsstand
+Reklamation Konfiguration";13;33;30;0;63;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19131;"Mitteilung zur
+Beendigung Konfiguration";12;30;28;0;59;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19132;"Mitteilung zur
+Bestellung
+Konfiguration";12;30;29;0;60;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19133;"Bearbeitungsstand
+Bestellung Änderung
+Abrechnungsdaten";12;30;26;0;57;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19204;"Ablehnung
+Ab-/Bestellung
+Aggrega-
+tionsebene";11;28;26;0;55;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19301;"Abl. der
+Anforderung";13;30;30;0;61;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/ORDRSP;19302;"Best. der
+Anforderung
+zum Beenden
+des Abos zur
+Stammdaten
+bz";13;30;29;0;60;AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx;nested
+202604;Bestellvorgang/QUOTES;15001;Angebot Geräteübernahme;44;84;129;0;221;AHB_QUOTES_1.1_20251001_20260930_20251001_ooox_11613.docx;tabs
+202604;Bestellvorgang/QUOTES;15002;Angebot Abrechnung Messstellenbetrieb MSB;20;51;43;0;93;AHB_QUOTES_1.1_20251001_20260930_20251001_ooox_11613.docx;tabs
+202604;Bestellvorgang/QUOTES;15003;Angebot zur Anfrage von Werten;26;72;64;0;128;AHB_QUOTES_1.1_20251001_20260930_20251001_ooox_11613.docx;tabs
+202604;Bestellvorgang/QUOTES;15004;Angebot einer Konfiguration;32;79;59;0;138;AHB_QUOTES_1.1_20251001_20260930_20251001_ooox_11613.docx;tabs
+202604;Bestellvorgang/QUOTES;15005;Angebot Änderung Technik;33;88;61;0;140;AHB_QUOTES_1.1_20251001_20260930_20251001_ooox_11613.docx;tabs
+202604;Bestellvorgang/REQOTE;35001;Anfrage Geräteübernahmeangebot;13;31;29;0;61;AHB_REQOTE_1.1_20251001_20260930_20251001_ooox_11622.docx;tabs
+202604;Bestellvorgang/REQOTE;35002;Anfrage Rechnungsabwicklung MSB über LF;14;34;29;0;63;AHB_REQOTE_1.1_20251001_20260930_20251001_ooox_11622.docx;tabs
+202604;Bestellvorgang/REQOTE;35003;Anfrage von Werten;21;51;38;0;91;AHB_REQOTE_1.1_20251001_20260930_20251001_ooox_11622.docx;tabs
+202604;Bestellvorgang/REQOTE;35004;Anfrage einer Konfiguration;34;80;60;0;147;AHB_REQOTE_1.1_20251001_20260930_20251001_ooox_11622.docx;tabs
+202604;Bestellvorgang/REQOTE;35005;Anfrage Angebot Änderung Technik;25;60;46;0;108;AHB_REQOTE_1.1_20251001_20260930_20251001_ooox_11622.docx;tabs
+202604;Bewegungsdaten/MSCONS;13002;Zählerstand (Gas);27;65;115;0;191;AHB_MSCONS_3.1g_20260401_20260930_20260401_ooox_11931.docx;nested
+202604;Bewegungsdaten/MSCONS;13003;Summen-zeitreihe;18;46;42;0;102;AHB_MSCONS_3.1g_20260401_20260930_20260401_ooox_11931.docx;nested
+202604;Bewegungsdaten/MSCONS;13005;EEG-Überführungs-ZR;21;54;41;0;110;AHB_MSCONS_3.1g_20260401_20260930_20260401_ooox_11931.docx;nested
+202604;Bewegungsdaten/MSCONS;13006;Messwert Storno;12;30;35;0;84;AHB_MSCONS_3.1g_20260401_20260930_20260401_ooox_11931.docx;nested
+202604;Bewegungsdaten/MSCONS;13007;Gasbeschaffenheit;23;57;101;0;167;AHB_MSCONS_3.1g_20260401_20260930_20260401_ooox_11931.docx;nested
+202604;Bewegungsdaten/MSCONS;13008;"Lastgang
+(Gas)";24;58;113;0;181;AHB_MSCONS_3.1g_20260401_20260930_20260401_ooox_11931.docx;nested
+202604;Bewegungsdaten/MSCONS;13009;Energiemenge (Gas);23;55;111;0;177;AHB_MSCONS_3.1g_20260401_20260930_20260401_ooox_11931.docx;nested
+202604;Bewegungsdaten/MSCONS;13010;normiertes Profil;17;43;35;0;93;AHB_MSCONS_3.1g_20260401_20260930_20260401_ooox_11931.docx;nested
+202604;Bewegungsdaten/MSCONS;13011;Profilschar;16;40;34;0;90;AHB_MSCONS_3.1g_20260401_20260930_20260401_ooox_11931.docx;nested
+202604;Bewegungsdaten/MSCONS;13012;TEP vergh. Werte Referenz-messung;17;43;35;0;93;AHB_MSCONS_3.1g_20260401_20260930_20260401_ooox_11931.docx;nested
+202604;Bewegungsdaten/MSCONS;13013;marktlokations- scharfe Allokationsliste Gas (MMMA);18;48;38;0;101;AHB_MSCONS_3.1g_20260401_20260930_20260401_ooox_11931.docx;nested
+202604;Bewegungsdaten/MSCONS;13014;marktlokations- scharfe bilanzierte Menge Strom / Gas (MMMA);17;42;36;0;97;AHB_MSCONS_3.1g_20260401_20260930_20260401_ooox_11931.docx;nested
+202604;Bewegungsdaten/MSCONS;13015;Arbeit Leistungs-max. Kalenderjahr vor Lieferbeginn;19;47;42;0;104;AHB_MSCONS_3.1g_20260401_20260930_20260401_ooox_11931.docx;nested
+202604;Bewegungsdaten/MSCONS;13016;Energie-menge u. Leistungs-max. (Strom);22;53;98;0;163;AHB_MSCONS_3.1g_20260401_20260930_20260401_ooox_11931.docx;nested
+202604;Bewegungsdaten/MSCONS;13017;Zählerstand (Strom);24;57;97;0;168;AHB_MSCONS_3.1g_20260401_20260930_20260401_ooox_11931.docx;nested
+202604;Bewegungsdaten/MSCONS;13018;Lastgang Messlokation, Netzkoppel-punkt, Netzlokation;23;56;96;0;163;AHB_MSCONS_3.1g_20260401_20260930_20260401_ooox_11931.docx;nested
+202604;Bewegungsdaten/MSCONS;13019;Energie-menge (Strom);23;54;101;0;168;AHB_MSCONS_3.1g_20260401_20260930_20260401_ooox_11931.docx;nested
+202604;Bewegungsdaten/MSCONS;13020;Ausfallarbeits-überführungszeitreihe;20;53;43;0;107;AHB_MSCONS_3.1g_20260401_20260930_20260401_ooox_11931.docx;nested
+202604;Bewegungsdaten/MSCONS;13021;Übermittlung von meteorologischen Daten;19;50;41;0;103;AHB_MSCONS_3.1g_20260401_20260930_20260401_ooox_11931.docx;nested
+202604;Bewegungsdaten/MSCONS;13022;Redispatch 2.0 Einzelzeitreihe Ausfallarbeit;20;52;42;0;107;AHB_MSCONS_3.1g_20260401_20260930_20260401_ooox_11931.docx;nested
+202604;Bewegungsdaten/MSCONS;13023;Redispatch 2.0 Ausfallarbeits-summenzeitreihe;18;47;38;0;98;AHB_MSCONS_3.1g_20260401_20260930_20260401_ooox_11931.docx;nested
+202604;Bewegungsdaten/MSCONS;13025;Lastgang Marktlokation, Tranche;23;56;96;0;163;AHB_MSCONS_3.1g_20260401_20260930_20260401_ooox_11931.docx;nested
+202604;Bewegungsdaten/MSCONS;13026;EEG-Überführungs-ZR aufgrund Ausfallarbeit;21;55;42;0;111;AHB_MSCONS_3.1g_20260401_20260930_20260401_ooox_11931.docx;nested
+202604;Bewegungsdaten/MSCONS;13027;Werte nach Typ 2;18;45;38;0;99;AHB_MSCONS_3.1g_20260401_20260930_20260401_ooox_11931.docx;nested
+202604;Bewegungsdaten/MSCONS;13028;Grundlage POG-Ermittlung;16;40;33;0;89;AHB_MSCONS_3.1g_20260401_20260930_20260401_ooox_11931.docx;nested
+202604;Rechnungsstellung/COMDIS;29001;Ablehnung REMADV;14;37;48;0;84;AHB_COMDIS_1.0h_20260401_99991231_20260401_ooox_11922.docx;tabs
+202604;Rechnungsstellung/COMDIS;29002;Ablehnung IFTSTA;11;29;26;0;54;AHB_COMDIS_1.0h_20260401_99991231_20260401_ooox_11922.docx;tabs
+202604;Rechnungsstellung/INVOIC;31001;Abschlags-;33;100;74;0;170;AHB_INVOIC_1.0a_20260401_20260930_20260401_ooox_11928.docx;tabs
+202604;Rechnungsstellung/INVOIC;31002;NN- rechnung;52;142;128;0;274;AHB_INVOIC_1.0a_20260401_20260930_20260401_ooox_11928.docx;tabs
+202604;Rechnungsstellung/INVOIC;31003;WiM- Rechnung;37;112;86;0;191;AHB_INVOIC_1.0a_20260401_20260930_20260401_ooox_11928.docx;tabs
+202604;Rechnungsstellung/INVOIC;31004;Stornorechnung;36;104;92;0;192;AHB_INVOIC_1.0a_20260401_20260930_20260401_ooox_11928.docx;tabs
+202604;Rechnungsstellung/INVOIC;31005;MMM-;37;111;83;0;187;AHB_INVOIC_1.0a_20260401_20260930_20260401_ooox_11928.docx;tabs
+202604;Rechnungsstellung/INVOIC;31006;MMM- Rechnung;36;109;82;0;184;AHB_INVOIC_1.0a_20260401_20260930_20260401_ooox_11928.docx;tabs
+202604;Rechnungsstellung/INVOIC;31007;Aggreg. selbst ausgest.;33;96;73;0;165;AHB_INVOIC_1.0a_20260401_20260930_20260401_ooox_11928.docx;tabs
+202604;Rechnungsstellung/INVOIC;31008;Aggreg. MMM- Rechnung Rechnung;33;96;73;0;165;AHB_INVOIC_1.0a_20260401_20260930_20260401_ooox_11928.docx;tabs
+202604;Rechnungsstellung/INVOIC;31009;MSB- Rechnung;36;109;84;0;187;AHB_INVOIC_1.0a_20260401_20260930_20260401_ooox_11928.docx;tabs
+202604;Rechnungsstellung/INVOIC;31010;Kapazitätsrechnung;34;96;70;0;162;AHB_INVOIC_1.0a_20260401_20260930_20260401_ooox_11928.docx;tabs
+202604;Rechnungsstellung/INVOIC;31011;Rechnung Sonstige Leistung;38;113;86;0;193;AHB_INVOIC_1.0a_20260401_20260930_20260401_ooox_11928.docx;tabs
+202604;Rechnungsstellung/PRICAT;27001;Übermittlung der Ausgleichs-energiepreise;15;41;34;0;74;AHB_PRICAT_2.0f_20251211_20260930_20251211_xoxx_12016.docx;nested
+202604;Rechnungsstellung/PRICAT;27002;Preisblätter MSB-Leistungen;17;50;66;0;113;AHB_PRICAT_2.0f_20251211_20260930_20251211_xoxx_12016.docx;nested
+202604;Rechnungsstellung/PRICAT;27003;Preisblätter NB-Leistungen;19;50;43;0;96;AHB_PRICAT_2.0f_20251211_20260930_20251211_xoxx_12016.docx;nested
+202604;Rechnungsstellung/REMADV;33001;Bestätigung;15;38;37;0;72;AHB_REMADV_1.0a_20260401_99991231_20260401_ooox_11951.docx;tabs
+202604;Rechnungsstellung/REMADV;33002;Abweisung;18;44;66;0;108;AHB_REMADV_1.0a_20260401_99991231_20260401_ooox_11951.docx;tabs
+202604;Rechnungsstellung/REMADV;33003;Strom Abweisung Kopf und Summe;21;50;56;0;105;AHB_REMADV_1.0a_20260401_99991231_20260401_ooox_11951.docx;tabs
+202604;Rechnungsstellung/REMADV;33004;Strom Abweisung Position;20;48;58;0;105;AHB_REMADV_1.0a_20260401_99991231_20260401_ooox_11951.docx;tabs
+202604;Stammdaten/PARTIN;37000;Kommunikationsdaten des LF Strom;55;180;115;0;309;AHB_PARTIN_1.0f_20260401_20260930_20260401_ooox_11943.docx;nested
+202604;Stammdaten/PARTIN;37001;Kommunikationsdaten des NB Strom;53;177;110;0;300;AHB_PARTIN_1.0f_20260401_20260930_20260401_ooox_11943.docx;nested
+202604;Stammdaten/PARTIN;37002;Kommunikationsdaten des MSB Strom;44;144;92;0;246;AHB_PARTIN_1.0f_20260401_20260930_20260401_ooox_11943.docx;nested
+202604;Stammdaten/PARTIN;37003;Kommunikationsdaten des BKV Strom;29;89;62;0;156;AHB_PARTIN_1.0f_20260401_20260930_20260401_ooox_11943.docx;nested
+202604;Stammdaten/PARTIN;37004;Kommunikationsdaten des BIKO Strom;26;78;56;0;138;AHB_PARTIN_1.0f_20260401_20260930_20260401_ooox_11943.docx;nested
+202604;Stammdaten/PARTIN;37005;Kommunikationsdaten des ÜNB Strom;41;133;86;0;228;AHB_PARTIN_1.0f_20260401_20260930_20260401_ooox_11943.docx;nested
+202604;Stammdaten/PARTIN;37006;Kommunikationsdaten des ESA Strom;32;100;68;0;174;AHB_PARTIN_1.0f_20260401_20260930_20260401_ooox_11943.docx;nested
+202604;Stammdaten/PARTIN;37008;Kommunikationsdaten des LF Gas;50;166;104;0;282;AHB_PARTIN_1.0f_20260401_20260930_20260401_ooox_11943.docx;nested
+202604;Stammdaten/PARTIN;37009;Kommunikationsdaten des NB Gas;50;166;104;0;282;AHB_PARTIN_1.0f_20260401_20260930_20260401_ooox_11943.docx;nested
+202604;Stammdaten/PARTIN;37010;Kommunikationsdaten des MSB Gas;47;155;97;0;263;AHB_PARTIN_1.0f_20260401_20260930_20260401_ooox_11943.docx;nested
+202604;Stammdaten/PARTIN;37011;Kommunikationsdaten des MGV Gas;38;122;80;0;210;AHB_PARTIN_1.0f_20260401_20260930_20260401_ooox_11943.docx;nested
+202604;Stammdaten/PARTIN;37012;Spartenüb. Kommunikationsdaten des NB Gas;26;78;56;0;138;AHB_PARTIN_1.0f_20260401_20260930_20260401_ooox_11943.docx;nested
+202604;Stammdaten/PARTIN;37013;Spartenüb. Kommunikationsdaten des MSB Gas;26;78;56;0;138;AHB_PARTIN_1.0f_20260401_20260930_20260401_ooox_11943.docx;nested
+202604;Stammdaten/PARTIN;37014;Spartenüb. Kommunikationsdaten des MSB Strom;26;78;56;0;138;AHB_PARTIN_1.0f_20260401_20260930_20260401_ooox_11943.docx;nested
+202604;Stammdaten/UTILMD/Gas;44001;Anmeldung NN;47;111;102;0;218;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44002;Bestätigung Anmeldung;100;203;213;0;435;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44003;Ablehnung Anmeldung;19;50;45;0;91;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44004;Abmeldung NN;15;39;40;0;76;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44005;Bestätigung Abmeldung;16;43;42;0;82;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44006;Ablehnung Abmeldung;14;36;37;0;73;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44007;Abmeldung NN vom NB;14;37;31;0;66;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44008;Bestätigung Abmeldung vom NB;15;40;33;0;71;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44009;Ablehnung Abmeldung vom NB;14;36;30;0;66;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44010;Abmelde- anfrage des NB;14;38;36;0;73;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44011;Bestätigung Abmelde- anfrage;14;37;33;0;69;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44012;Ablehnung Abmelde- anfrage;13;34;31;0;65;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44013;Anmeldung EOG;101;219;227;0;466;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44014;Bestätigung EOG Anmeldung;99;201;217;0;437;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44015;Ablehnung EOG Anmeldung;15;38;41;0;78;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44016;Kündigung beim alten Lieferanten;21;54;42;0;97;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44017;Bestätigung Kündigung;20;55;41;0;96;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44018;Ablehnung Kündigung;18;48;40;0;84;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44019;Bestands- liste zugeordnete Marktlokati onenen;31;81;71;0;152;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44020;Änderungs- meldung zur Bestands- liste;34;85;75;0;160;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44021;Antwort auf Änderungs- meldung zur Bestands- liste;33;82;72;0;155;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44022;Anfrage nach Stornierung;12;31;29;0;60;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44023;Bestätigung Anfrage Stornierung;12;32;30;0;61;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44024;Ablehnung Anfrage Stornierung;13;34;31;0;64;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44035;Antwort auf die Geschäftsdatenanfrage;88;162;185;0;373;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44036;Information smeldung über existierende Zuordnung;13;34;30;0;65;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44037;Information smeldung zur Beendigung der Zuordnung;13;35;30;0;63;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44038;Information smeldung zur Aufhebung einer zuk. Zuordnung;14;38;35;0;71;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44039;Kündigung MSB;18;48;38;0;87;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44040;Bestätigung Kündigung MSB;21;55;42;0;98;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44041;Ablehnung Kündigung MSB;16;43;37;0;77;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44042;Anmeldung MSB;21;63;47;0;111;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44043;Bestätigung Anmeldung MSB;70;141;150;0;305;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44044;Ablehnung Anmeldung MSB;13;34;31;0;65;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44051;Ende MSB;13;35;35;0;68;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44052;Bestätigung Ende MSB;15;40;38;0;76;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44053;Ablehnung Ende MSB;13;34;34;0;68;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44060;Antwort auf die Geschäftsdatenanfrage;63;114;131;0;262;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44101;Stammdaten zur Messlokation;15;44;37;0;77;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44102;Aktualisierte Stammdaten zur Messlokation;15;41;37;0;75;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44103;Stammdaten zur Markt- lokation;27;71;65;0;132;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44104;Aktualisierte Stammdaten zur Markt- lokation;27;68;65;0;130;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44105;Ablehnung auf Stammdaten zur Markt- lokation;14;37;34;0;70;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44109;Nicht bila.rel. Änderung vom LF;20;54;43;0;97;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44111;Antwort auf Änderung vom LF;13;34;29;0;63;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44112;Nicht bila. rel. Änderung vom NB;48;118;101;0;224;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44113;Nicht bila. rel. Änderung vom NB;26;75;57;0;133;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44115;Antwort auf Änderung vom NB;13;34;30;0;64;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44116;Änderung vom MSB mit Abhängig keiten;51;90;114;0;215;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44117;Änderung vom MSB mit Abhängig keiten;46;82;104;0;199;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44119;Antwort auf Änderung vom MSB;13;34;30;0;64;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44120;Bila.rel. Änderung vom LF;15;38;32;0;70;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44121;Antwort auf Änderung vom LF;13;34;29;0;63;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44123;Bila.rel. Änderung vom NB mit Abhängigkeiten;22;54;51;0;106;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44124;Antwort auf Änderung vom NB;13;34;29;0;63;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44137;Nicht bila.rel. Anfrage an LF;20;54;43;0;97;AHB_UTILMD_G1.1_20260401_20260301_20251211_oxox_12018.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44138;Antwort auf Anfrage;22;59;46;0;105;AHB_UTILMD_G1.1_20260401_20260301_20251211_oxox_12018.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44139;Nicht bila. rel. Anfrage an NB;49;119;102;0;226;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44140;Nicht bila. rel. Anfrage an NB;26;75;56;0;131;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44142;Antwort auf Anfrage;53;129;110;0;245;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44143;Anfrage an MSB mit Abhängig- keiten;46;82;104;0;199;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44145;Antwort auf Anfrage;48;87;107;0;207;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44146;Ablehnung der Anfrage;13;34;29;0;63;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44147;Anfrage an MSB mit Abhängig- keiten;46;82;104;0;199;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44148;Anfrage an MSB mit Abhängig- keiten;51;90;114;0;215;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44149;Antwort auf Anfrage;53;95;117;0;224;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44150;Bila.rel. Anfrage an LF;15;38;32;0;70;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44151;Antwort auf Anfrage;17;43;35;0;78;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44152;Ablehnung der Anfrage;13;34;29;0;63;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44156;Bila.rel. Anfrage an NB mit Abhängigkeiten;22;54;51;0;106;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44157;Antwort auf Anfrage;24;59;54;0;115;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44159;Änderung vom MSB ohne Abhängigkei ten;18;60;41;0;100;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44160;Änderung vom MSB ohne Abhängigkei ten;15;44;34;0;76;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44161;Antwort auf Änderung;13;34;30;0;64;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44162;Anfrage an MSB ohne Abhängigkeite n;15;44;34;0;76;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44163;Antwort auf Anfrage;17;49;37;0;84;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44164;Ablehnung Anfrage;13;34;29;0;63;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44165;Nicht bila.rel. Anfrage an MSB ohne Abhängigkeite n;15;44;34;0;76;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44166;Nicht bila.rel. Anfrage an MSB ohne Abhängigkeite n;18;60;41;0;100;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44167;Antwort auf Anfrage;20;65;44;0;108;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44168;Verpflicht- ungsanfrage / Aufforderun g;71;148;155;0;318;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44169;Bestätigung Verpflicht- ungsanfrage;71;143;151;0;309;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44170;Ablehnung Verpflicht- ungsanfrage;13;34;31;0;65;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44175;Änderung der Marktlokations- struktur;13;35;30;0;63;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44176;Antwort auf Änderung der Marktlokations- struktur;15;40;33;0;71;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44180;Anfrage der Markt- lokations- struktur;13;35;30;0;63;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44181;Antwort auf Anfrage der Markt- lokations- struktur;15;40;33;0;71;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Gas;44182;Ablehnung der Anfrage der Markt- lokations- struktur;13;34;29;0;63;AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx;tabs
+202604;Stammdaten/UTILMD/Strom;55001;Anmeldung verb. MaLo;29;68;72;3;146;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55002;Bestätigung Anmeldung verb. MaLo;37;80;75;3;165;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55003;Ablehnung Anmeldung verb. MaLo;17;46;41;0;83;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55004;Abmeldung;15;39;44;2;83;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55005;Bestätigung Abmeldung;14;38;40;0;75;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55006;Ablehnung Abmeldung;13;34;37;0;70;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55007;Abmeldung / Beendig-ung der Zuordnung;16;41;40;2;82;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55008;Bestätigung Abmeldung;14;38;34;0;69;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55009;Ablehnung Abmeldung;13;34;31;0;64;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55010;Anfrage zur Beendigung der Zuordnung;17;45;43;4;88;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55011;Bestätigung Beendigung der Zuordnung;13;35;31;0;64;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55012;Ablehnung Beendigung der Zuordnung;12;32;29;0;60;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55013;Anmeldung / Zuordnung EOG;49;126;120;3;257;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55014;Bestätigung EOG Anmeldung;30;71;86;0;159;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55015;Ablehnung EOG Anmeldung;13;34;41;0;74;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55016;Kündigung;15;39;35;2;73;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55017;Bestätigung Kündigung;16;42;38;1;78;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55018;Ablehnung Kündigung;17;46;39;0;80;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55022;Anfrage nach Stornierung;12;31;29;0;60;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55023;Bestätigung Anfrage Stornierung;12;32;30;0;61;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55024;Ablehnung Anfrage Stornierung;13;34;31;0;64;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55035;Antwort auf GDA verb. MaLo;129;236;254;1;531;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55036;Existierende Zuordnung;14;36;31;0;69;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55037;Beendigung der Zuordnung;13;34;33;0;67;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55038;Aufhebung einer zuk. Zuordnung;14;37;37;0;74;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55039;Kündigung MSB;19;50;39;0;91;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55040;Bestätigung Kündigung MSB;23;59;44;0;104;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55041;Ablehnung Kündigung MSB;16;43;37;0;77;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55042;Anmeldung MSB;22;65;49;0;116;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55043;Bestätigung Anmeldung MSB;231;414;428;0;909;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55044;Ablehnung Anmeldung MSB;13;34;32;0;66;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55051;Ende MSB;13;35;35;0;68;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55052;Bestätigung Ende MSB;20;50;45;1;98;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55053;Ablehnung Ende MSB;13;34;34;0;68;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55060;Antwort auf GDA;154;279;287;0;608;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55062;Aktivierung von ZP;27;53;64;0;125;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55063;Deaktivier-ung von ZP;11;30;26;0;56;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55064;Antwort;14;38;42;0;79;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55065;Lieferanten-clearingliste;47;100;77;0;192;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55066;Korrekturliste zur Lieferanten-clearingliste;50;108;88;0;210;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55067;Bilanzkreiszuordnungsliste;25;57;47;0;111;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55069;Clearingliste DZR;27;62;50;0;116;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55070;Clearingliste BAS;40;89;72;0;168;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55071;Aktivierung der Zuordnungs-ermächtigung;16;39;33;0;75;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55072;Deaktivierung der Zuordnungs-ermächtigung;16;39;33;0;75;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55073;Übermittlung der Profildefinitionen;40;81;115;0;212;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55074;Stammdaten auf eine ORDERS;69;132;115;0;269;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55075;Stammdaten aufgrund einer Änderung;71;137;122;0;279;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55076;Antwort auf Stammdaten-änderung;73;142;125;0;287;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55077;Anmeldung erz. MaLo;24;57;52;2;111;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55078;Bestätigung Anmeldung erz. MaLo;39;83;78;0;171;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55080;Ablehnung Anmeldung erz. MaLo;18;49;44;0;89;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55095;Antwort auf GDA erz. MaLo;116;213;215;0;465;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55109;Änderung Daten der MaLo;25;65;63;6;129;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55110;Änderung Daten der MaLo;18;51;41;2;91;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55126;Abr.-Daten BK-Abr. verb. Malo;36;77;67;0;156;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55136;Rückmeldung/Anfrage Daten der MaLo;20;57;48;0;104;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55137;Rückmeldung/Anfrage Daten der MaLo;27;71;73;6;145;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55156;Rückmeldung/Anfrage Abr.-Daten BK-Abr. verb. MaLo;38;83;76;0;171;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55168;Verpflicht-ungsanfrage / Aufforderung;234;425;434;0;927;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55169;Bestätigung Verpflicht-ungsanfrage;231;414;427;0;908;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55170;Ablehnung Verpflicht-ungsanfrage;13;34;31;0;65;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55173;Änderung der Lokationsbündelstruktur;26;69;49;0;124;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55175;Änderung der Lokationsbündelstruktur;26;69;49;0;124;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55177;Rückmeldung/Anfrage Lokationsbündelstruktur;28;75;57;0;138;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55180;Rückmeldung/Anfrage Lokationsbündelstruktur;28;75;57;0;138;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55194;Antwort auf GDA (Strom an Gas);21;50;41;0;95;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55195;Bilanzierungs-gebiets-clearing-liste;51;107;78;0;199;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55196;Antwort auf Bilanzierungs-gebiets-clearing-liste;78;159;118;0;299;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55197;Aktivierung ZP tägliche AAÜZ;19;44;35;0;84;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55198;Deaktivierung tägliche AAÜZ;11;30;26;0;56;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55199;Aktivierung ZP LF-AASZR;19;44;35;0;84;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55200;Deaktivierung ZP LF-AASZR;11;30;26;0;56;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55201;LF-AACL;27;60;44;0;114;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55202;Korrekturliste LF-AACL;30;68;51;0;128;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55203;Aktivierung ZP monatliche AAÜZ;20;46;36;0;88;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55204;Antwort auf Aktivierung ZP;13;35;29;0;64;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55205;Weiterleitung Aktivierung ZP;20;46;36;0;88;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55206;Deaktivierung ZP monatliche AAÜZ;11;30;26;0;56;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55207;Antwort auf Deaktivierung ZP;13;35;29;0;64;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55208;Weiterleitung Deaktivierung ZP;11;30;26;0;56;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55209;Aktivierung ZP monatliche AAÜZ;20;46;36;0;88;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55210;Antwort auf Aktivierung ZP;13;35;29;0;64;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55211;Weiterleitung Aktivierung ZP;20;46;36;0;88;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55212;Deaktivierung ZP monatliche AAÜZ;11;30;26;0;56;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55213;Antwort auf Deaktivierung ZP;13;35;29;0;64;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55214;Weiterleitung Deaktivierung ZP;11;30;26;0;56;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55218;Abr.-Daten NNA;36;86;73;0;160;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55220;Rückmeldung/Anfrage Abr.-Daten NNA;38;92;83;0;176;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55223;DZÜ Liste;58;128;95;0;234;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55224;Antwort auf DZÜ Liste;33;77;59;0;143;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55225;Änderung Blindabr.-Daten der NeLo;18;46;43;0;87;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55227;Rückmeldung/Anfrage Blindabr.-Daten der NeLo;20;52;50;0;100;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55230;Änderung Blindabr.-Daten der NeLo;16;41;36;0;77;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55232;Rückmeldung/Anfrage Blindabr.-Daten der NeLo;18;47;43;0;90;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55235;Zuordnung ZP der NGZ zur NZR;19;43;38;0;84;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55236;Beendigung Zuordnung ZP der NGZ zur NZR;11;30;26;0;56;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55237;Antwort;15;40;33;0;72;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55238;Anmeldung in Modell 2;17;42;34;0;76;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55239;Antwort auf Anmeldung;24;57;47;0;104;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55240;Beendigung der Zuordnung zur MaLo;14;37;32;0;67;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55241;Antwort auf Beendigung;16;42;35;0;75;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55242;Abmeldung aus dem Modell 2;15;39;32;0;70;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55243;Antwort auf Abmeldung;17;44;35;0;78;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55553;Daten auf individuelle Bestellung;42;89;68;0;169;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55555;Rückmeldung/Anfrage Daten der individuellen Bestellung;44;95;79;0;186;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55557;Änderung MSB-Abr.-Daten der MaLo;18;48;41;0;88;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55559;Rückmeldung/Anfrage MSB-Abr.-Daten der MaLo;20;54;48;0;101;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55600;Anmeldung neue verb. MaLo;33;80;65;0;153;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55601;Anmeldung neue erz. MaLo;33;83;64;0;154;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55602;Bestätigung Anmeldung neue verb. MaLo;36;78;74;2;159;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55603;Bestätigung Anmeldung neue erz. MaLo;39;83;77;2;170;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55604;Ablehnung Anmeldung neue verb. MaLo;15;39;34;0;73;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55605;Ablehnung Anmeldung neue erz. MaLo;15;39;34;0;73;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55607;(Ankündigung) Zuordnung des LF zur erz. MaLo/ Tranche;41;85;90;0;186;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55608;Bestätigung Zuordnung des LF zur erz.  MaLo/ Tranche;23;56;55;0;111;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55609;Ablehnung Zuordnung des LF zur erz. MaLo/ Tranche;13;34;36;0;69;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55611;Beendigung der Zuordnung;14;37;32;0;68;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55613;Abr.-Daten BK-Abr. verb. MaLo;31;64;59;0;131;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55614;Rückmeldung/Anfrage Abr.-Daten BK-Abr. verb. MaLo;33;70;65;0;143;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55615;Änderung Daten der NeLo;17;43;38;0;81;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55616;Änderung Daten der MaLo;47;110;113;10;229;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55617;Änderung Daten der TR;31;63;77;0;142;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55618;Änderung Daten der SR;17;43;38;0;81;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55619;Änderung Daten der Tranche;17;41;36;0;78;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55620;Änderung Daten der MeLo;19;47;42;0;89;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55621;Rückmeldung/Anfrage Daten zur NeLo;19;49;45;0;94;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55622;Rückmeldung/Anfrage Daten der MaLo;49;116;127;11;249;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55623;Rückmeldung/Anfrage Daten der TR;33;69;84;0;155;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55624;Rückmeldung/Anfrage Daten der SR;19;49;45;0;94;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55625;Rückmeldung/Anfrage Daten der Tranche;19;47;43;0;91;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55626;Rückmeldung/Anfrage Daten der MeLo;21;53;49;0;102;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55627;Änderung Daten der NeLo;17;43;38;0;81;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55628;Änderung Daten der MaLo;47;108;103;5;223;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55629;Änderung Daten der TR;29;61;71;0;134;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55630;Änderung Daten der SR;17;43;38;0;81;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55632;Änderung Daten der MeLo;19;47;45;0;92;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55633;Rückmeldung/Anfrage Daten zur NeLo;19;49;45;0;94;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55634;Rückmeldung/Anfrage Daten der MaLo;49;114;117;5;243;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55635;Rückmeldung/Anfrage Daten der TR;31;67;78;0;147;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55636;Rückmeldung/Anfrage Daten der SR;19;49;45;0;94;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55638;Rückmeldung/Anfrage Daten der MeLo;21;53;52;0;105;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55639;Änderung Daten der NeLo;27;61;51;0;116;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55640;Änderung Daten der MaLo;29;65;61;0;131;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55641;Änderung Daten der SR;23;53;46;0;102;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55642;Änderung Daten der Tranche;18;44;38;0;82;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55643;Änderung Daten der MeLo;71;148;133;0;301;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55644;Rückmeldung/Anfrage Daten der NeLo;29;67;60;0;131;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55645;Rückmeldung/Anfrage Daten der MaLo;31;71;70;0;146;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55646;Rückmeldung/Anfrage Daten der SR;25;59;54;0;116;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55647;Rückmeldung/Anfrage Daten der Tranche;20;50;45;0;95;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55648;Rückmeldung/Anfrage Daten der MeLo;73;154;151;0;325;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55649;Änderung Daten der NeLo;27;61;52;0;117;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55650;Änderung Daten der MaLo;29;65;61;0;131;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55651;Änderung Daten der SR;23;53;46;0;102;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55652;Änderung Daten der Tranche;18;44;38;0;82;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55653;Änderung Daten der MeLo;46;97;93;0;202;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55654;Rückmeldung/Anfrage Daten der NeLo;29;67;61;0;132;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55655;Rückmeldung/Anfrage Daten der MaLo;31;71;70;0;146;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55656;Rückmeldung/Anfrage Daten der SR;25;59;54;0;116;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55657;Rückmeldung/Anfrage Daten der Tranche;20;50;45;0;95;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55658;Rückmeldung/Anfrage Daten der MeLo;48;103;105;0;220;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55659;Änderung Daten der NeLo;29;63;55;0;123;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55660;Änderung Daten der MaLo;33;69;71;0;147;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55661;Änderung Daten der SR;23;53;47;0;103;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55662;Änderung Daten der Tranche;22;48;44;0;94;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55663;Änderung Daten der MeLo;71;148;133;0;301;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55664;Rückmeldung/Anfrage Daten der NeLo;31;69;64;0;138;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55665;Rückmeldung/Anfrage Daten der MaLo;35;75;80;0;162;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55666;Rückmeldung/Anfrage Daten der SR;25;59;55;0;117;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55667;Rückmeldung/Anfrage Daten der Tranche;24;54;51;0;107;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55669;Rückmeldung/Anfrage Daten der MeLo;73;154;151;0;325;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55670;Stammdaten BK-Treue;28;62;51;4;121;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55671;Rückmeldung auf Stammdaten BK-Treue;30;68;52;4;128;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55672;Abr.-Daten BK-Abr. erz. Malo;42;87;73;6;178;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55673;Rückmeldung/Anfrage Abr.-Daten BK-Abr. erz. Malo;44;93;84;6;195;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55674;Abr.-Daten BK-Abr. erz. Malo;31;64;59;6;133;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55675;Rückmeldung/Anfrage Abr.-Daten BK-Abr. erz. Malo;33;70;65;6;145;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55684;Änderung Daten der MaLo;18;44;38;0;82;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55685;Rückmeldung/Anfrage Daten der MaLo;20;50;45;0;95;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55686;Änderung Daten der Tranche;18;44;38;0;82;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55687;Rückmeldung/Anfrage Daten der Tranche;20;50;45;0;95;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55688;Änderung Daten der MaLo;17;42;35;0;78;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55689;Rückmeldung/Anfrage Daten der MaLo;19;48;42;0;91;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55690;Lokationsbündelstruktur und DB;51;119;90;0;223;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55691;Änderung Paket-ID der Malo;16;39;35;0;76;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILMD/Strom;55692;Rückmeldung/Anfrage Paket-ID der Malo;18;44;44;0;90;AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx;nested
+202604;Stammdaten/UTILTS;25001;Berechnungsformel;31;64;58;0;127;AHB_UTILTS_1.0_20260327_20260930_20260327_xoxx_12127.docx;nested
+202604;Stammdaten/UTILTS;25004;Übermittlung Übersicht Zählzeitdefinitionen;24;55;57;0;110;AHB_UTILTS_1.0_20260327_20260930_20260327_xoxx_12127.docx;nested
+202604;Stammdaten/UTILTS;25005;Übermittlung einer ausgerollten Zählzeitdefinition;17;44;36;0;78;AHB_UTILTS_1.0_20260327_20260930_20260327_xoxx_12127.docx;nested
+202604;Stammdaten/UTILTS;25006;Übermittlung Übersicht Schaltzeitdefinitionen;17;42;39;0;79;AHB_UTILTS_1.0_20260327_20260930_20260327_xoxx_12127.docx;nested
+202604;Stammdaten/UTILTS;25007;Übermittlung Übersicht Leistungskurvendefinitionen;17;42;39;0;79;AHB_UTILTS_1.0_20260327_20260930_20260327_xoxx_12127.docx;nested
+202604;Stammdaten/UTILTS;25008;Übermittlung einer ausgerollten Schaltzeitdefinition;17;44;38;0;80;AHB_UTILTS_1.0_20260327_20260930_20260327_xoxx_12127.docx;nested
+202604;Stammdaten/UTILTS;25009;Übermittlung einer ausgerollten Leistungskurvendefinition;17;45;37;0;80;AHB_UTILTS_1.0_20260327_20260930_20260327_xoxx_12127.docx;nested
+202604;Stammdaten/UTILTS;25010;Antwort auf Berechnungsformel;12;34;27;0;61;AHB_UTILTS_1.0_20260327_20260930_20260327_xoxx_12127.docx;nested
+202610;Berichte/IFTSTA;21000;Statusmeldung;13;38;33;0;67;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21001;Statusmeldung;13;38;29;0;63;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21002;Abweisung;12;34;31;0;62;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21003;Status-meldung;13;38;51;0;85;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21004;Status-meldung;13;37;51;0;85;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21005;Status-meldung;13;38;39;0;73;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21007;Statusmeldung;12;32;28;0;58;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21009;Status-meldung;9;24;21;0;44;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21010;Status-meldung;10;27;23;0;48;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21011;Status-meldung;11;30;25;0;53;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21012;Status-meldung;12;31;25;0;54;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21013;Status-meldung;9;25;22;0;45;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21018;Statusmeldung;11;30;24;0;52;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21025;Status-meldung;11;29;25;1;54;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21027;Status-meldung;11;29;25;1;54;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21028;Informationsmeldung;10;29;22;0;48;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21029;Vorabinfor-mation;18;45;33;0;73;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21030;iMS-Ersteinbau-zust.;12;33;24;0;54;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21031;Bestandss. / Eigenausbau iMS;11;30;22;0;50;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21032;Antwort auf das Angebot;10;28;22;0;48;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21033;Ablehnung der Anfrage;13;34;29;1;62;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21035;Rückmeld. a. Liefers.;14;39;42;1;76;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21036;Gerätestatus;10;27;23;0;48;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21037;Ansicht NB;32;70;58;0;134;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21038;Ansicht BTR;25;58;48;0;108;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21039;Auftragsstatus (Sperren);17;44;42;0;84;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21040;Info Entsperrauftrag;10;27;23;0;48;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21042;Bestellung (WiM);10;27;21;0;46;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21043;Bestellungsantwort / -mitteilung;12;32;31;0;62;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21044;Bestellungsbeendigung;10;27;21;0;46;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21045;EnFG Informationen;17;43;40;0;117;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/IFTSTA;21047;Bearbeitungs-standsmeldung;11;29;45;1;74;AHB_IFTSTA_2.1_20261001_99991231_20261001_ooox_12162.docx;nested
+202610;Berichte/INSRPT;23001;Störungs-meldung;19;44;45;0;92;AHB_INSRPT_1.1g_20230330_99991231_20251211_oxox_12008.docx;nested
+202610;Berichte/INSRPT;23003;Ablehnung;13;32;28;0;61;AHB_INSRPT_1.1g_20230330_99991231_20251211_oxox_12008.docx;nested
+202610;Berichte/INSRPT;23004;Bestäti-gung;16;39;33;0;71;AHB_INSRPT_1.1g_20230330_99991231_20251211_oxox_12008.docx;nested
+202610;Berichte/INSRPT;23005;Informations-meldung;14;35;30;0;64;AHB_INSRPT_1.1g_20230330_99991231_20251211_oxox_12008.docx;nested
+202610;Berichte/INSRPT;23008;Ergebnis-bericht;16;41;41;1;80;AHB_INSRPT_1.1g_20230330_99991231_20251211_oxox_12008.docx;nested
+202610;Berichte/INSRPT;23009;Informations-meldung;16;41;40;1;79;AHB_INSRPT_1.1g_20230330_99991231_20251211_oxox_12008.docx;nested
+202610;Berichte/INSRPT;23011;Informations-meldung;15;37;29;0;65;AHB_INSRPT_1.1g_20230330_99991231_20251211_oxox_12008.docx;nested
+202610;Berichte/INSRPT;23012;Informations-meldung;17;43;40;1;81;AHB_INSRPT_1.1g_20230330_99991231_20251211_oxox_12008.docx;nested
+202610;Bestellvorgang/ORDCHG;39000;"Stornierung
+Sperr-/Entsperr-
+auftrag";8;23;22;0;43;AHB_ORDCHG_1.1_20261001_99991231_20261001_ooox_12179.docx;nested
+202610;Bestellvorgang/ORDCHG;39001;Weiterleitung der Stornierung;9;25;23;0;47;AHB_ORDCHG_1.1_20261001_99991231_20261001_ooox_12179.docx;nested
+202610;Bestellvorgang/ORDCHG;39002;"Stornierung
+der Bestellung";8;23;19;0;40;AHB_ORDCHG_1.1_20261001_99991231_20261001_ooox_12179.docx;nested
+202610;Bestellvorgang/ORDERS;17001;"Bestellung
+Geräteübernahmeangebot";17;40;33;0;79;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17002;Weiterverpflichtung;11;28;24;0;51;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17004;"Anforderung
+von Werten";13;29;28;0;57;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17005;"Bestellung
+Rechnungsabwicklung
+MSB über LF";12;29;23;0;51;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17006;"Beendigung
+Rechnungsabwicklung
+MSB über LF";13;29;25;0;54;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17007;Bestellung von Werten;10;26;22;0;46;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17008;Abbestellung von Werten;10;26;21;0;45;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17009;"Anzeige
+Gerätewechsel-
+absicht";14;31;33;0;66;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17011;"Bestellung Angebot
+Änderung Technik";25;60;47;0;110;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17101;"Anfrage
+Stammdaten
+Marktlokation (Gas)";15;39;26;0;69;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17102;"Anfrage
+von Werten";13;31;30;0;60;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17103;"Anforderung
+Brennwert /
+Zustandszahl";13;31;24;0;54;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17104;"Anfrage vom
+MSB Gas";12;33;26;0;60;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17110;Anforderung Allokationsliste;9;24;21;0;42;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17113;Reklamation von Werten;20;47;41;0;88;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17115;Sperrauftrag;16;42;33;0;76;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17116;"Anfrage
+Sperrung";15;39;31;0;72;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17117;"Entsperr-
+auftrag";15;37;31;0;71;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17118;"Bestellung einer
+Konfigurations-
+änderung";18;42;37;0;77;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17120;"Bestellung Änderung
+Prognosegrundlage";13;29;24;0;54;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17121;"Bestellung
+Änderung";26;64;52;0;126;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17122;"Reklamation
+einer Definition";14;34;29;0;67;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17123;"Bestellung Änderung
+Zählzeitdefinition";14;34;29;0;62;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17126;"Anfrage
+Stammdaten
+Messlokation (Gas)";14;37;26;0;66;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17128;"Reklamation
+einer Konfiguration";31;74;58;0;137;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17129;"Bestellung Beendigung
+einer Konfiguration";10;27;21;0;47;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17130;"Bestellung
+einer Konfiguration";29;71;49;0;124;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17131;"Bestellung Angebot
+einer Konfiguration";8;22;18;0;39;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17132;Anfrage Stammdaten (Strom);9;23;19;0;41;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17133;"Bestellung Änderung
+Abrechnungsdaten";17;42;30;0;70;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17134;"Einrichtung Konfiguration
+Zuordnung LF von NB";33;79;66;0;158;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17135;"Einrichtung Konfiguration
+Zuordnung LF von MSB";22;53;44;0;101;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17201;"Anforder.
+normierter
+Profile und
+Profil-
+scharen";10;23;23;0;47;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17202;"Anforder.
+Liefer-
+anten-
+clearing-
+liste";13;32;26;0;58;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17203;"Anforder.
+Bilanz-
+kreiszu-
+ordnungs-
+liste";13;32;27;0;58;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17204;"Anforder.
+Clearing-
+liste
+BAS";12;29;22;0;52;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17205;"Anforder.
+Clearing-
+liste
+DZR";12;29;22;0;52;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17206;"Anforderung
+Bilanzie-
+rungsgebiets
+clearingliste";13;32;26;0;58;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17207;"Ab-/Bestellung
+BK-SZR auf Aggre-
+gationsebene RZ";11;27;22;0;49;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17208;"Anforderung
+Clearingliste
+ÜNB-DZR";12;29;22;0;52;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17209;"Anforderung
+Ausfallarbeit";13;32;24;0;56;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17210;"Anforderung
+Lieferanten-
+ausfallarbeits-
+clearingliste";13;32;26;0;58;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17211;"Reklamation
+Profile bzw. Profilscharen";9;25;20;0;43;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDERS;17301;"Anforderung
+von Stammdaten
+bzw. Messwerten";12;28;25;0;51;AHB_ORDERS_1.1b_20261001_99991231_20261001_ooox_12184.docx;nested
+202610;Bestellvorgang/ORDRSP;19001;"Bestätigung
+Bestellung";16;38;33;0;76;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19002;"Ablehnung
+Bestellung";12;31;30;0;61;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19003;"Bestätigung
+Weiterverpflichtung";10;27;24;0;50;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19004;"Ablehnung
+Weiterverpflichtung";10;27;24;0;50;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19005;"Bestätigung Auftrag
+Änderung Technik";12;31;31;0;62;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19006;"Ablehnung Auftrag
+Änderung Technik";16;41;37;0;77;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19007;"Ablehnung
+Anforderung Werte";10;25;25;0;50;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19009;"Bestätigung
+Beendigung
+Rechnungsab-
+wicklung MSB";11;28;23;0;50;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19010;"Ablehnung
+Beendigung
+Rechnungsab-
+wicklung MSB";11;28;23;0;50;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19011;"Bestäti-gung
+der Ab-/Bestellung
+von Werten";13;30;25;0;58;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19012;"Ablehnung
+der Ab-/Bestellung
+von Werten";10;25;23;0;48;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19013;"Bestäti-gung
+der Stornier-ung
+einer Bestellung";9;24;19;0;43;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19014;"Ablehnung
+der Stornier-ung
+einer Bestellung";9;24;19;0;43;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19015;"Bestätigung
+Geräte-
+wechsel-
+absicht";10;31;26;0;57;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19016;"Ablehnung
+Geräte-
+wechsel-
+absicht";10;27;28;0;55;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19101;"Ablehnung der
+Anfrage Stammdaten";9;24;24;0;48;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19102;"Ablehnung der
+Anfrage Werte";10;25;27;0;52;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19103;"Ablehnung der Anfrage
+Brennwert / Zustandszahl";10;25;20;0;45;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19104;"Ablehnung
+der Anfrage
+vom MSB Gas";11;28;25;0;54;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19110;"Ablehnung der
+Anforderung
+Allokationsliste";10;25;20;0;45;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19114;Ablehnung Reklamation;12;29;31;0;61;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19116;"Bestätigung
+Sperr-/Entsperr-
+auftrag";14;34;31;0;66;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19117;"Ablehnung
+Sperr-/Entsperr-
+auftrag";10;26;26;0;52;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19118;"Bestätigung
+Anfrage Sperrung";9;24;22;0;46;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19119;"Ablehnung
+Anfrage Sperrung";10;26;23;0;49;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19120;"Mitteilung zur
+Änderung";10;26;20;0;46;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19121;"Mitteilung zur Änderung
+Prognosegrundlage";10;26;20;0;46;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19123;"Ablehnung Reklamation
+einer Definition";12;30;29;0;61;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19124;"Mitteilung zur
+Änderung
+Zählzeitdefinition";10;26;21;0;47;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19127;"Mitteilung zur
+Konfigurations-
+änderung";10;26;21;0;47;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19128;"Bestätigung
+Stornierung
+Sperr-/Entsperr-
+auftrag";9;24;23;0;47;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19129;"Ablehnung
+Stornierung
+Sperr-/Entsperr-
+auftrag";9;24;23;0;47;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19130;"Bearbeitungsstand
+Reklamation Konfiguration";11;29;24;0;52;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19131;"Mitteilung zur
+Beendigung Konfiguration";10;26;22;0;48;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19132;"Mitteilung zur
+Bestellung
+Konfiguration";10;26;23;0;49;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19133;"Bearbeitungsstand
+Bestellung Änderung
+Abrechnungsdaten";10;26;20;0;46;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19204;"Ablehnung
+Ab-/Bestellung
+Aggrega-
+tionsebene";9;24;20;0;44;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19301;"Abl. der
+Anforderung";13;30;30;0;61;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/ORDRSP;19302;"Best. der
+Anforderung
+zum Beenden
+des Abos zur
+Stammdaten
+bz";13;30;29;0;60;AHB_ORDRSP_1.1b_20261001_99991231_20261001_ooox_12191.docx;nested
+202610;Bestellvorgang/QUOTES;15001;"Angebot
+Geräteübernahme";50;96;135;0;239;AHB_QUOTES_1.1a_20261001_99991231_20261001_ooox_12208.docx;nested
+202610;Bestellvorgang/QUOTES;15002;"Angebot Abrechnung
+Messstellenbetrieb MSB";20;51;43;0;93;AHB_QUOTES_1.1a_20261001_99991231_20261001_ooox_12208.docx;nested
+202610;Bestellvorgang/QUOTES;15003;Angebot zur Anfrage von Werten;26;72;64;0;128;AHB_QUOTES_1.1a_20261001_99991231_20261001_ooox_12208.docx;nested
+202610;Bestellvorgang/QUOTES;15004;Angebot einer Konfiguration;32;79;59;0;138;AHB_QUOTES_1.1a_20261001_99991231_20261001_ooox_12208.docx;nested
+202610;Bestellvorgang/QUOTES;15005;Angebot Änderung Technik;31;84;55;0;129;AHB_QUOTES_1.1a_20261001_99991231_20261001_ooox_12208.docx;nested
+202610;Bestellvorgang/REQOTE;35001;"Anfrage
+Geräteübernahmeangebot";13;31;29;0;61;AHB_REQOTE_1.2_20261001_99991231_20261001_ooox_12214.docx;nested
+202610;Bestellvorgang/REQOTE;35002;Anfrage Rechnungsabwicklung MSB über LF;14;34;29;0;63;AHB_REQOTE_1.2_20261001_99991231_20261001_ooox_12214.docx;nested
+202610;Bestellvorgang/REQOTE;35003;Anfrage von Werten;21;51;38;0;91;AHB_REQOTE_1.2_20261001_99991231_20261001_ooox_12214.docx;nested
+202610;Bestellvorgang/REQOTE;35004;Anfrage einer Konfiguration;34;80;60;0;147;AHB_REQOTE_1.2_20261001_99991231_20261001_ooox_12214.docx;nested
+202610;Bestellvorgang/REQOTE;35005;Anfrage Angebot Änderung Technik;23;56;40;0;97;AHB_REQOTE_1.2_20261001_99991231_20261001_ooox_12214.docx;nested
+202610;Bewegungsdaten/MSCONS;13002;Zählerstand (Gas);25;61;109;0;181;AHB_MSCONS_3.2_20261001_99991231_20261001_ooox_12173.docx;nested
+202610;Bewegungsdaten/MSCONS;13003;Summen-zeitreihe;16;42;36;0;92;AHB_MSCONS_3.2_20261001_99991231_20261001_ooox_12173.docx;nested
+202610;Bewegungsdaten/MSCONS;13005;EEG-Überführungs-ZR;19;50;35;0;100;AHB_MSCONS_3.2_20261001_99991231_20261001_ooox_12173.docx;nested
+202610;Bewegungsdaten/MSCONS;13006;Messwert Storno;10;26;29;0;74;AHB_MSCONS_3.2_20261001_99991231_20261001_ooox_12173.docx;nested
+202610;Bewegungsdaten/MSCONS;13007;Gasbeschaffenheit;21;53;95;0;157;AHB_MSCONS_3.2_20261001_99991231_20261001_ooox_12173.docx;nested
+202610;Bewegungsdaten/MSCONS;13008;"Lastgang
+(Gas)";22;54;107;0;171;AHB_MSCONS_3.2_20261001_99991231_20261001_ooox_12173.docx;nested
+202610;Bewegungsdaten/MSCONS;13009;Energiemenge (Gas);21;51;105;0;167;AHB_MSCONS_3.2_20261001_99991231_20261001_ooox_12173.docx;nested
+202610;Bewegungsdaten/MSCONS;13010;normiertes Profil;15;39;29;0;83;AHB_MSCONS_3.2_20261001_99991231_20261001_ooox_12173.docx;nested
+202610;Bewegungsdaten/MSCONS;13011;Profilschar;14;36;28;0;80;AHB_MSCONS_3.2_20261001_99991231_20261001_ooox_12173.docx;nested
+202610;Bewegungsdaten/MSCONS;13012;TEP vergh. Werte Referenz-messung;15;39;29;0;83;AHB_MSCONS_3.2_20261001_99991231_20261001_ooox_12173.docx;nested
+202610;Bewegungsdaten/MSCONS;13013;marktlokations- scharfe Allokationsliste Gas (MMMA);16;44;32;0;91;AHB_MSCONS_3.2_20261001_99991231_20261001_ooox_12173.docx;nested
+202610;Bewegungsdaten/MSCONS;13014;marktlokations- scharfe bilanzierte Menge Strom / Gas (MMMA);14;36;29;0;83;AHB_MSCONS_3.2_20261001_99991231_20261001_ooox_12173.docx;nested
+202610;Bewegungsdaten/MSCONS;13015;Arbeit Leistungs-max. Kalenderjahr vor Lieferbeginn;17;43;36;0;94;AHB_MSCONS_3.2_20261001_99991231_20261001_ooox_12173.docx;nested
+202610;Bewegungsdaten/MSCONS;13016;Energie-menge u. Leistungs-max. (Strom);20;49;92;0;153;AHB_MSCONS_3.2_20261001_99991231_20261001_ooox_12173.docx;nested
+202610;Bewegungsdaten/MSCONS;13017;Zählerstand (Strom);22;53;91;0;158;AHB_MSCONS_3.2_20261001_99991231_20261001_ooox_12173.docx;nested
+202610;Bewegungsdaten/MSCONS;13018;Lastgang Messlokation, Netzkoppel-punkt, Netzlokation;21;52;90;0;153;AHB_MSCONS_3.2_20261001_99991231_20261001_ooox_12173.docx;nested
+202610;Bewegungsdaten/MSCONS;13019;Energie-menge (Strom);21;50;95;0;158;AHB_MSCONS_3.2_20261001_99991231_20261001_ooox_12173.docx;nested
+202610;Bewegungsdaten/MSCONS;13020;Ausfallarbeits-überführungszeitreihe;18;49;37;0;97;AHB_MSCONS_3.2_20261001_99991231_20261001_ooox_12173.docx;nested
+202610;Bewegungsdaten/MSCONS;13021;Übermittlung von meteorologischen Daten;17;46;35;0;93;AHB_MSCONS_3.2_20261001_99991231_20261001_ooox_12173.docx;nested
+202610;Bewegungsdaten/MSCONS;13022;Redispatch 2.0 Einzelzeitreihe Ausfallarbeit;18;48;36;0;97;AHB_MSCONS_3.2_20261001_99991231_20261001_ooox_12173.docx;nested
+202610;Bewegungsdaten/MSCONS;13023;Redispatch 2.0 Ausfallarbeits-summenzeitreihe;16;43;32;0;88;AHB_MSCONS_3.2_20261001_99991231_20261001_ooox_12173.docx;nested
+202610;Bewegungsdaten/MSCONS;13025;Lastgang Marktlokation, Tranche;21;52;90;0;153;AHB_MSCONS_3.2_20261001_99991231_20261001_ooox_12173.docx;nested
+202610;Bewegungsdaten/MSCONS;13026;EEG-Überführungs-ZR aufgrund Ausfallarbeit;19;51;36;0;101;AHB_MSCONS_3.2_20261001_99991231_20261001_ooox_12173.docx;nested
+202610;Bewegungsdaten/MSCONS;13027;Werte nach Typ 2;16;41;32;0;89;AHB_MSCONS_3.2_20261001_99991231_20261001_ooox_12173.docx;nested
+202610;Bewegungsdaten/MSCONS;13028;Grundlage POG-Ermittlung;14;36;27;0;79;AHB_MSCONS_3.2_20261001_99991231_20261001_ooox_12173.docx;nested
+202610;Rechnungsstellung/COMDIS;29001;Ablehnung REMADV;14;37;48;0;84;AHB_COMDIS_1.0h_20260401_99991231_20260401_ooox_11922.docx;tabs
+202610;Rechnungsstellung/COMDIS;29002;Ablehnung IFTSTA;11;29;26;0;54;AHB_COMDIS_1.0h_20260401_99991231_20260401_ooox_11922.docx;tabs
+202610;Rechnungsstellung/INVOIC;31001;Abschlags-rechnung;33;100;74;0;169;AHB_INVOIC_1.0b_20261001_99991231_20261001_ooox_12168.docx;nested
+202610;Rechnungsstellung/INVOIC;31002;NN-Rechnung;52;142;128;0;271;AHB_INVOIC_1.0b_20261001_99991231_20261001_ooox_12168.docx;nested
+202610;Rechnungsstellung/INVOIC;31003;WiM-Rechnung;37;112;86;0;190;AHB_INVOIC_1.0b_20261001_99991231_20261001_ooox_12168.docx;nested
+202610;Rechnungsstellung/INVOIC;31004;Stornorechnung;36;104;92;0;192;AHB_INVOIC_1.0b_20261001_99991231_20261001_ooox_12168.docx;nested
+202610;Rechnungsstellung/INVOIC;31005;MMM-Rechnung;37;111;82;0;186;AHB_INVOIC_1.0b_20261001_99991231_20261001_ooox_12168.docx;nested
+202610;Rechnungsstellung/INVOIC;31006;MMM-selbst ausgest. Rechnung;36;109;81;0;183;AHB_INVOIC_1.0b_20261001_99991231_20261001_ooox_12168.docx;nested
+202610;Rechnungsstellung/INVOIC;31007;Aggreg. MMM-Rechnung;33;96;72;0;164;AHB_INVOIC_1.0b_20261001_99991231_20261001_ooox_12168.docx;nested
+202610;Rechnungsstellung/INVOIC;31008;Aggreg. MMM-selbst ausgest. Rechnung;33;96;72;0;164;AHB_INVOIC_1.0b_20261001_99991231_20261001_ooox_12168.docx;nested
+202610;Rechnungsstellung/INVOIC;31009;MSB-Rechnung;36;109;84;0;186;AHB_INVOIC_1.0b_20261001_99991231_20261001_ooox_12168.docx;nested
+202610;Rechnungsstellung/INVOIC;31010;Kapazitätsrechnung;34;96;69;0;162;AHB_INVOIC_1.0b_20261001_99991231_20261001_ooox_12168.docx;nested
+202610;Rechnungsstellung/INVOIC;31011;Rechnung Sonstige Leistung;38;113;85;0;192;AHB_INVOIC_1.0b_20261001_99991231_20261001_ooox_12168.docx;nested
+202610;Rechnungsstellung/PRICAT;27001;Übermittlung der Ausgleichs-energiepreise;13;37;28;0;63;AHB_PRICAT_2.1_20261001_99991231_20261001_ooox_12202.docx;nested
+202610;Rechnungsstellung/PRICAT;27002;Preisblätter MSB-Leistungen;15;46;60;0;102;AHB_PRICAT_2.1_20261001_99991231_20261001_ooox_12202.docx;nested
+202610;Rechnungsstellung/PRICAT;27003;Preisblätter NB-Leistungen;17;46;37;0;85;AHB_PRICAT_2.1_20261001_99991231_20261001_ooox_12202.docx;nested
+202610;Rechnungsstellung/REMADV;33001;Bestätigung;15;38;37;0;72;AHB_REMADV_1.0a_20260401_99991231_20260401_ooox_11951.docx;tabs
+202610;Rechnungsstellung/REMADV;33002;Abweisung;18;44;66;0;108;AHB_REMADV_1.0a_20260401_99991231_20260401_ooox_11951.docx;tabs
+202610;Rechnungsstellung/REMADV;33003;Strom Abweisung Kopf und Summe;21;50;56;0;105;AHB_REMADV_1.0a_20260401_99991231_20260401_ooox_11951.docx;tabs
+202610;Rechnungsstellung/REMADV;33004;Strom Abweisung Position;20;48;58;0;105;AHB_REMADV_1.0a_20260401_99991231_20260401_ooox_11951.docx;tabs
+202610;Stammdaten/PARTIN;37000;Kommunikationsdaten des LF Strom;53;176;109;0;299;AHB_PARTIN_1.1_20261001_99991231_20261001_ooox_12196.docx;nested
+202610;Stammdaten/PARTIN;37001;Kommunikationsdaten des NB Strom;51;173;104;0;290;AHB_PARTIN_1.1_20261001_99991231_20261001_ooox_12196.docx;nested
+202610;Stammdaten/PARTIN;37002;Kommunikationsdaten des MSB Strom;42;140;86;0;236;AHB_PARTIN_1.1_20261001_99991231_20261001_ooox_12196.docx;nested
+202610;Stammdaten/PARTIN;37003;Kommunikationsdaten des BKV Strom;27;85;56;0;146;AHB_PARTIN_1.1_20261001_99991231_20261001_ooox_12196.docx;nested
+202610;Stammdaten/PARTIN;37004;Kommunikationsdaten des BIKO Strom;24;74;50;0;128;AHB_PARTIN_1.1_20261001_99991231_20261001_ooox_12196.docx;nested
+202610;Stammdaten/PARTIN;37005;Kommunikationsdaten des ÜNB Strom;39;129;80;0;218;AHB_PARTIN_1.1_20261001_99991231_20261001_ooox_12196.docx;nested
+202610;Stammdaten/PARTIN;37006;Kommunikationsdaten des ESA Strom;30;96;62;0;164;AHB_PARTIN_1.1_20261001_99991231_20261001_ooox_12196.docx;nested
+202610;Stammdaten/PARTIN;37008;Kommunikationsdaten des LF Gas;48;162;98;0;272;AHB_PARTIN_1.1_20261001_99991231_20261001_ooox_12196.docx;nested
+202610;Stammdaten/PARTIN;37009;Kommunikationsdaten des NB Gas;48;162;98;0;272;AHB_PARTIN_1.1_20261001_99991231_20261001_ooox_12196.docx;nested
+202610;Stammdaten/PARTIN;37010;Kommunikationsdaten des MSB Gas;45;151;92;0;254;AHB_PARTIN_1.1_20261001_99991231_20261001_ooox_12196.docx;nested
+202610;Stammdaten/PARTIN;37011;Kommunikationsdaten des MGV Gas;36;118;74;0;200;AHB_PARTIN_1.1_20261001_99991231_20261001_ooox_12196.docx;nested
+202610;Stammdaten/PARTIN;37012;Spartenüb. Kommunikationsdaten des NB Gas;24;74;50;0;128;AHB_PARTIN_1.1_20261001_99991231_20261001_ooox_12196.docx;nested
+202610;Stammdaten/PARTIN;37013;Spartenüb. Kommunikationsdaten des MSB Gas;24;74;50;0;128;AHB_PARTIN_1.1_20261001_99991231_20261001_ooox_12196.docx;nested
+202610;Stammdaten/PARTIN;37014;Spartenüb. Kommunikationsdaten des MSB Strom;24;74;50;0;128;AHB_PARTIN_1.1_20261001_99991231_20261001_ooox_12196.docx;nested
+202610;Stammdaten/UTILMD/Gas;44001;Anmeldung NN;45;107;96;0;207;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44002;Bestätigung Anmeldung;97;196;205;0;420;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44003;Ablehnung Anmeldung;17;46;39;0;80;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44004;Abmeldung NN;13;35;35;0;66;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44005;Bestätigung Abmeldung;14;39;37;0;72;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44006;Ablehnung Abmeldung;12;32;32;0;63;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44007;Abmeldung NN vom NB;12;33;25;0;55;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44008;Bestätigung Abmeldung vom NB;13;36;27;0;60;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44009;Ablehnung Abmeldung vom NB;12;32;24;0;55;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44010;Abmelde-anfrage des NB;12;34;30;0;62;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44011;Bestätigung Abmelde-anfrage;12;33;27;0;58;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44012;Ablehnung Abmelde-anfrage;11;30;25;0;54;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44013;Anmeldung EOG;98;212;220;0;452;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44014;Bestätigung EOG Anmeldung;96;194;210;0;423;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44015;Ablehnung EOG Anmeldung;13;34;36;0;68;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44016;Kündigung beim alten Lieferanten;19;50;36;0;85;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44017;Bestätigung Kündigung;18;51;35;0;85;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44018;Ablehnung Kündigung;16;44;34;0;73;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44019;Bestands-liste zugeordnete Marktlokationenen;29;77;65;0;141;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44020;Änderungs-meldung zur Bestands-liste;32;81;69;0;149;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44021;Antwort auf Änderungs-meldung zur Bestands-liste;31;78;66;0;144;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44022;Anfrage nach Stornierung;10;27;23;0;49;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44023;Bestätigung Anfrage Stornierung;10;28;24;0;50;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44024;Ablehnung Anfrage Stornierung;11;30;25;0;53;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44035;Antwort auf die Geschäftsdatenanfrage;85;155;177;0;358;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44036;Informationsmeldung über existierende Zuordnung;11;30;24;0;54;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44037;Informationsmeldung zur Beendigung der Zuordnung;11;31;24;0;52;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44038;Informationsmeldung zur Aufhebung einer zuk. Zuordnung;12;34;29;0;60;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44039;Kündigung MSB;16;44;32;0;76;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44040;Bestätigung Kündigung MSB;19;51;36;0;87;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44041;Ablehnung Kündigung MSB;14;39;31;0;66;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44042;Anmeldung MSB;19;59;41;0;100;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44043;Bestätigung Anmeldung MSB;68;137;144;0;294;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44044;Ablehnung Anmeldung MSB;11;30;25;0;54;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44051;Ende MSB;11;31;29;0;57;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44052;Bestätigung Ende MSB;13;36;32;0;65;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44053;Ablehnung Ende MSB;11;30;28;0;57;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44060;Antwort auf die Geschäftsdatenanfrage;61;110;125;0;251;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44101;Stammdaten zur Messlokation;13;40;31;0;66;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44102;Aktualisierte Stammdaten zur Messlokation;13;37;31;0;64;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44103;Stammdaten zur Markt-lokation;25;67;59;0;121;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44104;Aktualisierte Stammdaten zur Markt-lokation;25;64;59;0;119;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44105;Ablehnung auf Stammdaten zur Markt-lokation;12;33;28;0;59;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44109;Nicht bila.rel. Änderung vom LF;18;50;37;0;86;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44111;Antwort auf Änderung vom LF;11;30;23;0;52;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44112;Nicht bila.rel. Änderung vom NB;45;111;93;0;208;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44113;Nicht bila.rel. Änderung vom NB;24;71;51;0;121;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44115;Antwort auf Änderung vom NB;11;30;24;0;53;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44116;Änderung vom MSB mit Abhängig keiten;49;86;108;0;204;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44117;Änderung vom MSB mit Abhängig keiten;44;78;98;0;188;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44119;Antwort auf Änderung vom MSB;11;30;24;0;53;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44120;Bila.rel. Änderung vom LF;13;34;26;0;59;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44121;Antwort auf Änderung vom LF;11;30;23;0;52;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44123;Bila.rel. Änderung vom NB mit Abhängigkeiten;20;50;45;0;95;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44124;Antwort auf Änderung vom NB;11;30;23;0;52;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44137;Nicht bila.rel. Anfrage an LF;18;50;37;0;86;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44138;Antwort auf Anfrage;20;55;40;0;94;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44139;Nicht bila.rel. Anfrage an NB;46;112;94;0;211;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44140;Nicht bila.rel. Anfrage an NB;24;71;50;0;120;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44142;Antwort auf Anfrage;50;122;102;0;229;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44143;Anfrage an MSB mit Abhängig-keiten;44;78;98;0;188;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44145;Antwort auf Anfrage;46;83;101;0;196;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44146;Ablehnung der Anfrage;11;30;23;0;52;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44147;Anfrage an MSB mit Abhängig-keiten;44;78;98;0;188;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44148;Anfrage an MSB mit Abhängig-keiten;49;86;108;0;204;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44149;Antwort auf Anfrage;51;91;111;0;212;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44150;Bila.rel. Anfrage an LF;13;34;26;0;59;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44151;Antwort auf Anfrage;15;39;29;0;67;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44152;Ablehnung der Anfrage;11;30;23;0;52;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44156;Bila.rel. Anfrage an NB mit Abhängigkeiten;20;50;45;0;95;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44157;Antwort auf Anfrage;22;55;48;0;103;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44159;Änderung vom MSB ohne Abhängigkeiten;16;56;35;0;89;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44160;Änderung vom MSB ohne Abhängigkeiten;13;40;28;0;65;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44161;Antwort auf Änderung;11;30;24;0;53;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44162;Anfrage an MSB ohne Abhängigkeiten;13;40;28;0;65;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44163;Antwort auf Anfrage;15;45;31;0;73;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44164;Ablehnung Anfrage;11;30;23;0;52;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44165;Nicht bila.rel. Anfrage an MSB ohne Abhängigkeiten;13;40;28;0;65;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44166;Nicht bila.rel. Anfrage an MSB ohne Abhängigkeiten;16;56;35;0;89;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44167;Antwort auf Anfrage;18;61;38;0;97;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44168;Verpflicht-ungsanfrage / Aufforderung;69;144;149;0;307;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44169;Bestätigung Verpflicht-ungsanfrage;69;139;145;0;298;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44170;Ablehnung Verpflicht-ungsanfrage;11;30;25;0;54;AHB_UTILMD_G1.2_20261001_99991231_20260629_xoxx_12264.docx;nested
+202610;Stammdaten/UTILMD/Gas;44175;Änderung der Marktlokations-struktur;11;31;24;0;52;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44176;Antwort auf Änderung der Marktlokations-struktur;13;36;27;0;60;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44180;Anfrage der Markt-lokations-struktur;11;31;24;0;52;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44181;Antwort auf Anfrage der Markt-lokations-struktur;13;36;27;0;60;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44182;Ablehnung der Anfrage der Markt-lokations-struktur;11;30;23;0;52;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Gas;44183;Ende MSB von NB;10;28;22;0;48;AHB_UTILMD_G1.2_20261001_99991231_20261001_ooox_12219.docx;nested
+202610;Stammdaten/UTILMD/Strom;55001;Anmeldung verb. MaLo;29;67;69;3;143;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55002;Bestätigun g Anmeldung verb. MaLo;35;76;69;3;154;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55003;Ablehnung Anmeldung verb. MaLo;17;47;38;0;80;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55004;Abmeldung;13;35;38;2;72;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55005;Bestätigun g Abmeldung;12;34;34;0;64;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55006;Ablehnung Abmeldung;11;30;31;0;59;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55007;Abmeldung / Beendig- ung der Zuordnung;14;37;34;2;71;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55008;Bestätigun g Abmeldung;12;34;28;0;58;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55009;Ablehnung Abmeldung;11;30;25;0;53;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55010;Anfrage zur Beendigun g der Zuordnung;15;41;37;4;77;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55011;Bestätigun g Beendigun g der Zuordnung;11;31;25;0;53;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55012;Ablehnung Beendigun g der Zuordnung;10;28;23;0;49;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55013;Anmeldung / Zuordnung EOG;53;130;124;3;267;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55014;Bestätigun g EOG Anmeldung;30;70;83;0;155;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55015;Ablehnung EOG Anmeldung;11;30;35;0;63;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55016;Kündigung;13;35;29;2;62;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55017;Bestätigun g Kündigung;14;38;32;1;67;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55018;Ablehnung Kündigung;15;42;33;0;69;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55022;Anfrage nach Stornierung;10;27;23;0;49;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55023;Bestätigun g Anfrage Stornierung;10;28;24;0;50;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55024;Ablehnung Anfrage Stornierung;11;30;25;0;53;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55035;Antwort;118;221;226;1;490;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55036;Existieren;12;32;25;0;58;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55037;Beendigu de Zuordnun g;11;30;27;0;56;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55038;Aufhebun ng der Zuordnun g;12;33;31;0;63;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55039;Kündigung MSB;17;46;33;0;80;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55040;Bestätigun g Kündigung MSB;21;55;38;0;93;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55041;Ablehnung Kündigung MSB;14;39;31;0;66;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55042;Anmeldung MSB;22;64;46;0;112;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55043;Bestätigun g Anmeldung MSB;215;394;400;0;863;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55044;Ablehnung Anmeldung MSB;11;30;26;0;55;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55051;Ende MSB;11;31;29;0;57;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55052;Bestätigun g Ende MSB;18;46;39;1;87;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55053;Ablehnung Ende MSB;11;30;28;0;57;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55060;Antwort auf GDA;150;273;281;0;602;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55062;Aktivierung von ZP;25;49;58;0;114;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55063;Deaktivier- ung von ZP;9;26;20;0;45;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55064;Antwort;12;34;36;0;69;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55065;Lieferanten- clearingliste;45;96;71;0;181;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55066;Korrekturliste zur Lieferanten- clearingliste;48;104;82;0;199;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55067;Bilanzkreiszuordnungsl iste;23;53;41;0;100;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55069;Clearingliste DZR;25;58;44;0;105;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55070;Clearingliste BAS;38;85;66;0;157;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55071;Aktivierung der Zuordnungs- ermächtigung;14;35;27;0;64;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55072;Deaktivierung der Zuordnungs- ermächtigung;14;35;27;0;64;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55073;Übermittlung der Profildefinitionen;38;77;109;0;201;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55074;Stammdate n auf eine ORDERS;67;128;110;0;259;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55075;Stammdate n aufgrund einer Änderung;69;133;117;0;269;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55076;Antwort auf Stammdate n-änderung;71;138;120;0;277;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55077;Anmeldung erz. MaLo;22;53;46;2;100;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55078;Bestätigun g Anmeldung erz. MaLo;38;79;73;0;163;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55080;Ablehnung Anmeldung erz. MaLo;19;50;41;0;87;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55095;Antwort auf GDA verb.;113;209;210;0;463;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55109;Änderung;25;64;60;5;125;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55110;Änderung ung/ Anfrage;18;50;38;2;87;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55126;Abr.- ung/ Anfrage Abr.- Daten;34;73;61;0;145;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55136;Rückmeld Daten der MaLo Daten der MaLo;20;56;45;0;100;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55137;Rückmeld Daten der MaLo;27;70;70;5;141;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55156;Rückmeld Daten BK-Abr. verb. Malo BK-Abr. verb. MaLo;36;79;70;0;161;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55168;Verpflicht- ungsanfrag e / Aufforderu ng;221;408;409;0;886;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55169;Bestätigun g Verpflicht- ungsanfrag e;216;394;399;0;860;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55170;Ablehnung Verpflicht- ungsanfrag e;11;30;25;0;54;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55173;Änderung der Lokation sbündels truktur;24;65;43;0;114;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55175;Änderung der Lokation sbündels truktur;24;65;43;0;114;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55177;Rückmel dung/ Anfrage Lokation sbündels truktur;27;71;51;0;129;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55180;Rückmel dung/ Anfrage Lokation sbündels truktur;27;71;51;0;129;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55194;Antwort auf GDA erz. MaLo MaLo;19;46;35;0;84;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55195;Bilanzierungs- gebiets- clearing-liste;49;103;72;0;188;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55196;Antwort auf Bilanzierungs- gebiets- clearing-liste;76;155;112;0;288;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55197;Aktivierung ZP tägliche AAÜZ;17;40;29;0;73;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55198;Deaktivierung tägliche AAÜZ;9;26;20;0;45;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55199;Aktivierung ZP LF-AASZR;17;40;29;0;73;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55200;Deaktivierung ZP LF-AASZR;9;26;20;0;45;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55201;LF-AACL;25;56;38;0;103;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55202;Korrekturliste LF-AACL;28;64;45;0;117;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55203;Aktivierung ZP monatliche AAÜZ;18;42;30;0;77;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55204;Antwort auf Aktivierung ZP;11;31;23;0;53;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55205;Weiterleitu ng Aktivierung ZP;18;42;30;0;77;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55206;Deaktivieru ng ZP monatliche AAÜZ;9;26;20;0;45;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55207;Antwort auf Deaktivieru ng ZP;11;31;23;0;53;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55208;Weiterleitu ng Deaktivieru ng ZP;9;26;20;0;45;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55209;Aktivierung ZP monatliche AAÜZ;18;42;30;0;77;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55210;Antwort auf Aktivierung ZP;11;31;23;0;53;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55211;Weiterleitu ng Aktivierung ZP;18;42;30;0;77;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55212;Deaktivieru ng ZP monatliche AAÜZ;9;26;20;0;45;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55213;Antwort auf Deaktivieru ng ZP;11;31;23;0;53;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55214;Weiterleitu ng Deaktivieru ng ZP;9;26;20;0;45;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55218;Abr.-Daten NNA;34;82;67;0;149;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55220;Rückmeldung/ Anfrage Abr.- Daten NNA;36;88;77;0;166;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55223;DZÜ Liste;56;124;89;0;223;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55224;Antwort auf DZÜ Liste;31;73;53;0;132;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55225;Änderung Blindabr.- Daten der NeLo;16;42;37;0;76;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55227;Rückmeldung/ Anfrage Blindabr.- Daten der NeLo;18;48;44;0;89;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55230;Änderung Blindabr.- Daten der NeLo;14;37;30;0;67;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55232;Rückmeldung/ Anfrage Blindabr.- Daten der NeLo;16;43;37;0;80;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55235;Zuordnung ZP der NGZ zur NZR;17;39;32;0;73;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55236;Beendigun g Zuordnung ZP der NGZ zur NZR;9;26;20;0;45;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55237;Antwort;13;36;27;0;61;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55238;Anmeldung in Modell 2;15;38;28;0;65;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55239;Antwort auf Anmeldung;22;54;42;0;99;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55240;Beendigung der Zuordnung zur MaLo;12;33;26;0;56;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55241;Antwort auf Beendigung;14;38;29;0;64;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55242;Abmeldung aus dem Modell 2;13;35;26;0;59;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55243;Antwort auf Abmeldung;15;40;29;0;67;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55553;Daten auf individuelle Bestellung;40;85;62;0;159;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55555;Rückmeldung/ Anfrage Daten der individuellen Bestellung;42;91;73;0;175;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55557;Änderung MSB-Abr.- Daten der MaLo;16;44;35;0;77;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55559;Rückmeldung/ Anfrage MSB- Abr.-Daten der MaLo;18;50;42;0;90;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55600;Anmeldung neue verb. MaLo;33;79;62;0;149;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55601;Anmeldung neue erz. MaLo;33;82;61;0;150;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55602;Bestätigun g Anmeldung neue verb. MaLo;34;74;68;1;148;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55603;Bestätigun g Anmeldung neue erz. MaLo;37;79;72;2;160;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55604;Ablehnung Anmeldung neue verb. MaLo;15;40;31;0;70;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55605;Ablehnung Anmeldung neue erz. MaLo;15;40;31;0;70;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55607;(Ankündigu ng) Zuordnung des LF zur erz. MaLo/ Tranche;39;81;85;0;176;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55608;Bestätigun g Zuordnung des LF zur erz. MaLo/ Tranche;21;52;49;0;100;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55609;Ablehnung Zuordnung des LF zur erz. MaLo/ Tranche;11;30;30;0;58;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55611;Beendigu g einer zuk. Zuordnun;12;33;26;0;57;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55613;Abr.-;29;60;53;0;120;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55614;Rückmeld Daten BK-Abr. verb. MaLo;31;66;59;0;133;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55615;Änderung;15;39;32;0;70;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55616;Änderung;45;106;97;10;209;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55617;Änderung;30;61;72;0;135;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55618;Änderung;15;39;32;0;70;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55619;Änderung Daten der Tranche;15;37;30;0;67;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55620;Änderung;17;43;36;0;78;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55621;Rückmeld Daten der NeLo;17;45;39;0;83;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55622;Rückmeld Daten der MaLo;48;112;111;10;230;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55623;Rückmeld Daten der TR;32;67;79;0;147;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55624;Rückmeld Daten der SR;17;45;39;0;83;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55625;Rückmeldung/ Anfrage Daten der Tranche;17;43;37;0;80;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55626;Rückmeld Daten der MeLo;19;49;43;0;91;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55627;Änderung ung/ Anfrage;15;39;32;0;70;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55628;Änderung ung/ Anfrage;47;107;100;5;219;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55629;Änderung ung/ Anfrage;27;57;63;0;122;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55630;Änderung ung/ Anfrage;15;39;32;0;70;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55632;Änderung ung/ Anfrage;17;43;39;0;81;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55633;Rückmeld Daten der NeLo Daten zur NeLo;17;45;39;0;83;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55634;Rückmeld Daten der MaLo Daten der MaLo;50;113;114;5;240;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55635;Rückmeld Daten der TR Daten der TR;29;63;70;0;134;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55636;Rückmeld Daten der SR Daten der SR;17;45;39;0;83;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55638;Rückmeld Daten der MeLo Daten der MeLo;19;49;46;0;94;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55639;Änderung Daten der NeLo;24;58;46;0;108;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55640;Änderung Daten der MaLo;21;50;43;0;99;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55641;Änderung Daten der SR;22;51;42;0;95;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55642;Änderung Daten der Tranche;14;39;30;0;71;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55643;Änderung Daten der MeLo;70;145;127;0;293;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55644;Rückmeldun g/Anfrage Daten der NeLo;26;64;55;0;123;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55645;Rückmeldun g/Anfrage Daten der MaLo;23;56;51;0;113;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55646;Rückmeldun g/Anfrage Daten der SR;24;57;50;0;109;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55647;Rückmeldun g/Anfrage Daten der Tranche;16;45;37;0;84;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55648;Rückmeldun g/Anfrage Daten der MeLo;72;151;145;0;316;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55649;Änderung Daten der NeLo;24;58;46;0;108;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55650;Änderung Daten der MaLo;21;50;43;0;99;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55651;Änderung Daten der SR;22;51;42;0;95;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55652;Änderung Daten der Tranche;14;39;30;0;71;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55653;Änderung Daten der MeLo;43;91;84;0;187;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55654;Rückmeldun g/Anfrage Daten der NeLo;26;64;55;0;123;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55655;Rückmeldun g/Anfrage Daten der MaLo;23;56;51;0;113;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55656;Rückmeldun g/Anfrage Daten der SR;24;57;50;0;109;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55657;Rückmeldun g/Anfrage Daten der Tranche;16;45;37;0;84;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55658;Rückmeldun g/Anfrage Daten der MeLo;45;97;96;0;204;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55659;Änderung Daten der NeLo;24;58;47;0;109;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55660;Änderung Daten der MaLo;21;50;43;0;99;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55661;Änderung Daten der SR;22;51;43;0;96;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55662;Änderung Daten der Tranche;14;39;30;0;71;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55663;Änderung Daten der MeLo;70;145;127;0;293;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55664;Rückmeldun g/Anfrage Daten der NeLo;26;64;56;0;124;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55665;Rückmeldun g/Anfrage Daten der MaLo;23;56;51;0;113;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55666;Rückmeldun g/Anfrage Daten der SR;24;57;51;0;110;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55667;Rückmeldun g/Anfrage Daten der Tranche;16;45;37;0;84;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55669;Rückmeldun g/Anfrage Daten der MeLo;72;151;145;0;316;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55670;Stammdaten BK-Treue;26;58;45;4;110;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55671;Rückmeldung auf Stammdaten BK-Treue;28;64;46;4;117;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55672;Abr.- ung/ Anfrage Abr.-;41;83;67;5;168;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55673;Rückmeld Daten BK-Abr. erz. Malo Daten BK-Abr. erz. Malo;43;89;78;5;185;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55674;Abr.-;30;60;53;4;123;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55675;Rückmeld Daten BK-Abr. erz. Malo;32;66;59;4;135;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55684;Änderung;14;39;30;0;72;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55685;Rückmeld Daten der MaLo;16;45;37;0;85;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55686;Änderung ung/ Anfrage;14;39;30;0;72;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55687;Rückmeld Daten der Tranche Daten der MaLo;16;45;37;0;85;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55688;Änderung Daten der MaLo;15;38;29;0;67;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55689;Rückmeldung/ Anfrage Daten der MaLo;17;44;36;0;80;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55690;Lokation sbündels truktur und DB;49;115;84;0;215;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55691;Änderung Paket-ID der Malo;14;35;29;0;65;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55692;Rückmeldung/ Anfrage Paket-ID der Malo;16;40;38;0;79;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55693;Änderung Daten der TR;15;38;30;0;68;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILMD/Strom;55694;Rückmeldung/ Anfrage Daten der TR;17;44;37;0;81;AHB_UTILMD_S2.2_20261001_99991231_20261001_ooox_12220.docx;tabs
+202610;Stammdaten/UTILTS;25001;Berechnungsformel;31;64;58;0;127;AHB_UTILTS_1.1_20261001_99991231_20261001_ooox_12231.docx;nested
+202610;Stammdaten/UTILTS;25004;Übermittlung Übersicht Zählzeitdefinitionen;22;51;51;0;99;AHB_UTILTS_1.1_20261001_99991231_20261001_ooox_12231.docx;nested
+202610;Stammdaten/UTILTS;25005;Übermittlung einer ausgerollten Zählzeitdefinition;15;40;30;0;67;AHB_UTILTS_1.1_20261001_99991231_20261001_ooox_12231.docx;nested
+202610;Stammdaten/UTILTS;25006;Übermittlung Übersicht Schaltzeitdefinitionen;15;38;33;0;68;AHB_UTILTS_1.1_20261001_99991231_20261001_ooox_12231.docx;nested
+202610;Stammdaten/UTILTS;25007;Übermittlung Übersicht Leistungskurvendefinitionen;15;38;33;0;68;AHB_UTILTS_1.1_20261001_99991231_20261001_ooox_12231.docx;nested
+202610;Stammdaten/UTILTS;25008;Übermittlung einer ausgerollten Schaltzeitdefinition;15;40;32;0;69;AHB_UTILTS_1.1_20261001_99991231_20261001_ooox_12231.docx;nested
+202610;Stammdaten/UTILTS;25009;Übermittlung einer ausgerollten Leistungskurvendefinition;15;41;31;0;69;AHB_UTILTS_1.1_20261001_99991231_20261001_ooox_12231.docx;nested
+202610;Stammdaten/UTILTS;25010;Antwort auf Berechnungsformel;12;34;27;0;61;AHB_UTILTS_1.1_20261001_99991231_20261001_ooox_12231.docx;nested
