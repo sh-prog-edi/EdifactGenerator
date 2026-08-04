@@ -33,24 +33,40 @@ Aufruf also z. B. `python3 edigen/EdifactGenerator/werkzeuge/extrahiere_alle.py`
 bzw. — wie in der Chronik notiert — `python3 werkzeuge/…` aus einem Ordner, in dem
 `werkzeuge/` verlinkt ist.
 
-## Reihenfolge
+## Reihenfolge — als Pipeline (Umbauplan Phase 4)
+
+Der komplette Extraktionslauf fährt über **`werkzeuge/pipeline.py`** am Stück und in
+erzwungener Reihenfolge; dahinter läuft der Registry-Neubau und die Regression:
+
+```bash
+python3 werkzeuge/pipeline.py                    # kompletter Lauf + Smoke
+python3 werkzeuge/pipeline.py --volle-regression # … mit voller Regression
+python3 werkzeuge/pipeline.py --ab ergaenze_zeitscheiben   # Teil-Lauf ab Schritt
+python3 werkzeuge/pipeline.py --nur-pruefen      # nur Zeitscheiben-Bestand + Smoke
+```
+
+Die Einzelschritte in Pipeline-Reihenfolge (weiterhin auch einzeln lauffähig):
 
 ```bash
 python3 werkzeuge/extrahiere_alle.py            # AHB beider Formatstände -> ahbdaten/
 python3 werkzeuge/baue_form_meta.py             # _form-meta.js je Generator-Ordner   (!)
 python3 werkzeuge/teile_sts_positionen.py       # STS-Datenelemente auf ihre Position
 python3 werkzeuge/saeubere_beschreibungen.py    # Bezeichnungen aus der Anwendungsübersicht
-python3 werkzeuge/ergaenze_zeitscheiben.py      # Verwendungszeiträume in UTILMD-Regeldateien
+python3 werkzeuge/aktualisiere_utilmd_regeln.py # Feldauswahl (_regeln.js) gegen AHB
+python3 werkzeuge/ergaenze_zeitscheiben.py      # Verwendungszeiträume in _regeln.js
 python3 werkzeuge/repariere_bedingungen.py      # idempotent
 python3 werkzeuge/ergaenze_bedingungstexte.py
 python3 werkzeuge/korrigiere_prozess_meta.py    # Prozess-Meta gegen AHB und EBD
 python3 werkzeuge/baue_prozessketten.py         # Folgenachrichten
+python3 scripts/baue_validator_registry.py      # Registry folgt der neuen Meta
 ```
 
 > **(!) `baue_form_meta.py` überschreibt alle 36 `_form-meta.js`.** Es hat einmal die
 > Zeitscheiben-Ergänzungen in 31 Prüf-IDs gelöscht. Strukturelle Nachbesserungen deshalb
 > immer als eigenes Nachbearbeitungsskript fahren (Vorbild: `teile_sts_positionen.py`),
-> nie in den Generator einbauen. Nach jedem Lauf die Regression fahren.
+> nie in den Generator einbauen. Die Pipeline sichert das zusätzlich ab: Sie hält vor
+> dem Lauf fest, welche Prüf-IDs Zeitscheiben-Felder führen, und bricht ab, wenn die
+> Menge danach geschrumpft ist. Nach jedem Lauf die Regression fahren.
 
 ## Entscheidungsbaum-Diagramme (EBD)
 
@@ -128,13 +144,22 @@ node scripts/test_utilmd_seiten.js
 node scripts/test_engine_pages.js
 ```
 
-## Hinweis nach dem Feldauswahl-Umbau (04.08.2026)
+## Feldauswahl-Datenschicht (seit 04.08.2026)
 
 Die kuratierten Regel-Einzeldateien `pruef-ids/<PID>.js` und die `_pid-registry.js`
 existieren nicht mehr — die Regeln liegen je Ziel in `pruef-ids/_regeln.js`
-(Datendatei, `ahbRulesByPrufId`). Nachbearbeitungsskripte, die bisher die
-Einzeldateien beschrieben (`aktualisiere_utilmd_regeln.py`, `ergaenze_zeitscheiben.py`,
-`ergaenze_bedingungstexte.py`, `teile_sts_positionen.py`, `saeubere_beschreibungen.py`),
-müssen vor dem nächsten Extraktionslauf auf die Datendatei umgestellt werden —
-eingeplant für die Pipeline-Formalisierung (Umbauplan Phase 4).
+(Datendatei, `ahbRulesByPrufId`). Die Nachbearbeitungsskripte
+(`aktualisiere_utilmd_regeln.py`, `ergaenze_zeitscheiben.py`,
+`ergaenze_bedingungstexte.py`) sind auf die Datendatei umgestellt; gelesen und
+geschrieben wird über **`werkzeuge/regeln_io.py`** — es serialisiert über Node im
+Format des Migrators (`scripts/baue_pid_regeln.js`), damit kein Format-Rauschen
+in die Git-Historie gerät (Selbsttest: `python3 werkzeuge/regeln_io.py <Repo>`).
+
+## Quellen-Manifest
+
+Welche BDEW-Dokumente der Datenbasis zugrunde liegen (Name, Version, Gültigkeit,
+BDEW-MAKO-fileId, Ablage in der Wissensdatenbank), steht maschinenlesbar in
+**`docs/QUELLEN_MANIFEST.json`** — samt Zuordnung Formatstand+Nachrichtentyp →
+AHB-Version/UNH-Kennung/Datenordner. Grundlage für den nächsten
+Formatstand-Wechsel; bei neuen Dokumentfassungen mitpflegen.
 

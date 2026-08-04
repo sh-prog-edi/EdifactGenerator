@@ -27,6 +27,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import regeln_io
+
 GENERATOR = Path("edigen/EdifactGenerator")
 ORDNER = [
     ("202604", "202604/Stammdaten/UTILMD/Strom"),
@@ -60,15 +62,8 @@ def lade_formmeta(ordner: Path) -> dict:
     return json.loads(treffer.group(1))
 
 
-def lade_regeln(datei: Path) -> dict | None:
-    """Liest ein ahbRules-Objekt über node aus (die Dateien sind JavaScript)."""
-    ergebnis = subprocess.run(
-        ["node", "-e", f"const m=require({json.dumps(str(datei.resolve()))}); process.stdout.write(JSON.stringify(m));"],
-        capture_output=True, text=True,
-    )
-    if ergebnis.returncode != 0 or not ergebnis.stdout.strip():
-        return None
-    return json.loads(ergebnis.stdout)
+# Die Regeln je Ziel liegen seit dem Feldauswahl-Umbau (Phase 2) als EINE
+# Datendatei pruef-ids/_regeln.js — gelesen/geschrieben über regeln_io.
 
 
 def code_von(inst: dict, de: str) -> str | None:
@@ -173,54 +168,6 @@ def soll_segmente(instanzen: list[dict], vorgabe_grund: str | None = None) -> di
     return soll
 
 
-def js_wert(wert) -> str:
-    return json.dumps(wert, ensure_ascii=False)
-
-
-def formatiere(regeln: dict, pruefi: str) -> str:
-    zeilen = ["const ahbRules%s = {" % pruefi]
-    zeilen.append(f"    pruefidentifikator: {js_wert(regeln['pruefidentifikator'])},")
-    zeilen.append(f"    bezeichnung: {js_wert(regeln.get('bezeichnung', ''))},")
-    zeilen.append("    segments: [")
-    for i, seg in enumerate(regeln["segments"]):
-        teile = [f"id: {js_wert(seg['id'])}", f"name: {js_wert(seg.get('name', ''))}",
-                 f"status: {js_wert(seg.get('status', 'Kann'))}"]
-        if seg.get("isSelect"):
-            teile.append("isSelect: true")
-            optionen = ", ".join(
-                "{ v: %s, t: %s }" % (js_wert(o["v"]), js_wert(o["t"])) for o in seg.get("options", [])
-            )
-            teile.append(f"options: [{optionen}]")
-        if seg.get("ahbExpr"):
-            teile.append(f"ahbExpr: {js_wert(seg['ahbExpr'])}")
-        if seg.get("bedingungen"):
-            teile.append(f"bedingungen: {js_wert(seg['bedingungen'])}")
-        if seg.get("abhaengig"):
-            teile.append(f"abhaengig: {js_wert(seg['abhaengig'])}")
-        if seg.get("rule"):
-            teile.append(f"rule: {js_wert(seg['rule'])}")
-        for schluessel, wert in seg.items():
-            if schluessel in ("id", "name", "status", "isSelect", "options", "bedingungen", "abhaengig", "rule", "ahbExpr"):
-                continue
-            teile.append(f"{schluessel}: {js_wert(wert)}")
-        komma = "," if i < len(regeln["segments"]) - 1 else ""
-        zeilen.append("        { " + ", ".join(teile) + " }" + komma)
-    zeilen.append("    ],")
-    # Weitere Angaben des Regelobjekts unverändert übernehmen (z. B. `nutzdaten`,
-    # der kuratierte SG8/SG10-Block einzelner Prüf-IDs). Ohne diese Übernahme gingen
-    # sie beim Neuschreiben der Datei verloren.
-    weitere = [k for k in regeln if k not in ("pruefidentifikator", "bezeichnung", "segments")]
-    for i, schluessel in enumerate(weitere):
-        komma = "," if i < len(weitere) - 1 else ""
-        zeilen.append(f"    {schluessel}: {js_wert(regeln[schluessel])}{komma}")
-    if not weitere:
-        zeilen[-1] = "    ]"
-    zeilen.append("};")
-    zeilen.append("")
-    zeilen.append(f"if (typeof module !== 'undefined') module.exports = ahbRules{pruefi};")
-    return "\n".join(zeilen) + "\n"
-
-
 def status_aus_ausdruck(ausdruck: str) -> str:
     ausdruck = (ausdruck or "").strip()
     if ausdruck == "Muss":
@@ -234,9 +181,8 @@ def status_aus_ausdruck(ausdruck: str) -> str:
     return "Bedingt"
 
 
-def bearbeite(datei: Path, soll: dict[str, dict], instanzen: list | None = None) -> dict:
-    bericht = {"datei": datei.name, "optionen_korrigiert": [], "ergaenzt": [], "abhaengig": []}
-    regeln = lade_regeln(datei)
+def bearbeite(pruefi: str, regeln: dict, soll: dict[str, dict], instanzen: list | None = None) -> dict:
+    bericht = {"pruefi": pruefi, "optionen_korrigiert": [], "ergaenzt": [], "abhaengig": []}
     if not regeln or "segments" not in regeln:
         bericht["fehler"] = "Regelobjekt nicht lesbar"
         return bericht
@@ -369,44 +315,42 @@ def bearbeite(datei: Path, soll: dict[str, dict], instanzen: list | None = None)
             ohne[0]["abhaengig"] = gegen
             bericht["abhaengig"].append(ohne[0]["id"] + " (abgeleitet)")
 
-    if not (bericht["optionen_korrigiert"] or bericht["ergaenzt"] or bericht["abhaengig"]
-            or bericht.get("ahbExpr")):
-        return bericht
-
-    text = datei.read_text(encoding="utf-8")
-    kopf = text.split("const ahbRules")[0]
-    pruefi = regeln["pruefidentifikator"]
-    datei.write_text(kopf + formatiere(regeln, pruefi), encoding="utf-8")
+    bericht["geaendert"] = bool(bericht["optionen_korrigiert"] or bericht["ergaenzt"]
+                                or bericht["abhaengig"] or bericht.get("ahbExpr"))
     return bericht
 
 
 if __name__ == "__main__":
-    gesamt = {"dateien": 0, "optionen": 0, "ergaenzt": 0, "abhaengig": 0, "fehler": []}
+    gesamt = {"pruefis": 0, "optionen": 0, "ergaenzt": 0, "abhaengig": 0, "fehler": []}
     protokoll = []
     for _, rel in ORDNER:
         ordner = GENERATOR / rel
         meta = lade_formmeta(ordner)
         prozess = lade_prozessmeta(ordner)
-        for datei in sorted((ordner / "pruef-ids").glob("*.js")):
-            if not re.fullmatch(r"\d+", datei.stem):
-                continue
-            eintrag = meta.get(datei.stem)
+        pfad = ordner / "pruef-ids" / "_regeln.js"
+        kopf, regeln_alle = regeln_io.lade(pfad)
+        geaendert = False
+        for pruefi in sorted(regeln_alle):
+            eintrag = meta.get(pruefi)
             if not eintrag:
                 continue
-            vorgabe = (prozess.get(datei.stem) or {}).get("transaktionsgrund")
-            bericht = bearbeite(datei, soll_segmente(eintrag["instanzen"], vorgabe), eintrag["instanzen"])
+            vorgabe = (prozess.get(pruefi) or {}).get("transaktionsgrund")
+            bericht = bearbeite(pruefi, regeln_alle[pruefi],
+                                soll_segmente(eintrag["instanzen"], vorgabe), eintrag["instanzen"])
             bericht["ordner"] = rel
             if bericht.get("fehler"):
-                gesamt["fehler"].append(f"{rel}/{datei.name}: {bericht['fehler']}")
+                gesamt["fehler"].append(f"{rel}/{pruefi}: {bericht['fehler']}")
                 continue
-            if (bericht["optionen_korrigiert"] or bericht["ergaenzt"] or bericht["abhaengig"]
-                    or bericht.get("ahbExpr")):
-                gesamt["dateien"] += 1
+            if bericht.pop("geaendert", False):
+                geaendert = True
+                gesamt["pruefis"] += 1
                 gesamt["ahbExpr"] = gesamt.get("ahbExpr", 0) + len(bericht.get("ahbExpr", []))
                 gesamt["optionen"] += len(bericht["optionen_korrigiert"])
                 gesamt["ergaenzt"] += len(bericht["ergaenzt"])
                 gesamt["abhaengig"] += len(bericht["abhaengig"])
                 protokoll.append(bericht)
+        if geaendert:
+            regeln_io.schreibe(pfad, kopf, regeln_alle)
     Path("protokoll_utilmd.json").write_text(json.dumps(protokoll, ensure_ascii=False, indent=1), encoding="utf-8")
     print(json.dumps({k: v for k, v in gesamt.items() if k != "fehler"}, ensure_ascii=False))
     for f in gesamt["fehler"][:10]:

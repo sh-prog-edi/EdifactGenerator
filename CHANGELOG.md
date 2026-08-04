@@ -5,6 +5,21 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **04.08.2026** – **Phase 4: Datenpipeline und Quellen-Manifest.** Neuer Treiber
+  `werkzeuge/pipeline.py` fährt den Extraktionslauf am Stück in erzwungener
+  Reihenfolge (extrahiere_alle → baue_form_meta → Nachbearbeitungen →
+  baue_prozessketten → Registry → Regression) — mit **Zeitscheiben-Schutz**: Vor dem
+  Lauf wird je UTILMD-Ziel festgehalten, welche Prüf-IDs Verwendungszeitraum-Felder
+  führen; schrumpft die Menge, bricht die Pipeline ab (die bekannte
+  baue_form_meta-Falle ist damit maschinell abgesichert). Die Nachbearbeitungsskripte
+  `aktualisiere_utilmd_regeln.py`, `ergaenze_zeitscheiben.py` und
+  `ergaenze_bedingungstexte.py` sind auf die Feldauswahl-Datenschicht
+  (`pruef-ids/_regeln.js`) umgestellt — Lese-/Schreibzugriff über das neue
+  `werkzeuge/regeln_io.py` (Node-Serialisierung im Migrator-Format, Roundtrip
+  byte-identisch). Neu: `docs/QUELLEN_MANIFEST.json` — 86 BDEW-Dokumente der
+  Wissensdatenbank (Name, Version, Gültigkeit, MAKO-fileId, Ablage) plus Zuordnung
+  je Formatstand+Nachrichtentyp (AHB-Version, UNH-Kennung, Datenordner). Volle
+  Regression grün (32 Läufe). → Protokoll Abschnitt 42.
 - **04.08.2026** – **Phase 3: Formatstand als Parameter — ein Seitenbaum statt zwei
   Kopien.** Je Nachrichtentyp gibt es nur noch EINE Generatorseite
   (`<Thema>/<Typ>[/Sparte]/index.html`, 43 → 23 HTML); der Formatstand kommt als

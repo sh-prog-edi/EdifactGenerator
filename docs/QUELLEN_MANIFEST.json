@@ -1,0 +1,1198 @@
+{
+ "titel": "Quellen-Manifest der BDEW-Dokumente des EdifactGenerators",
+ "stand": "2026-08-04",
+ "erhoben": "Wissensdatenbank in Google Drive (Bestand 02.08.2026, 177 Dateien, Ordner mirror/edi_energy_de/, fv2610-migs/, regelwerk/) sowie Formatkonfiguration und Seiten dieses Repositorys",
+ "hinweis": "Die Dokumente selbst liegen NICHT im Repository (.gitignore, Lizenzlage BDEW), sondern in der Wissensdatenbank. Die makoFileId ist die Download-ID der BDEW-MAKO-Plattform (/api/downloadFile/<id>). Die AHB-Fassungen des Formatstands 202610 wurden direkt von der Plattform gelesen (Reproduktionsweg: docs/Pruefid-Abgleich_20260728.md, Abschnitt 7) und liegen nicht im Spiegel; ihre Versionen stehen in der Zuordnung.",
+ "dokumente": [
+  {
+   "datei": "AHB_APERAK_1.0_20251001_20260930_20251001_ooox_11567.docx",
+   "art": "AHB",
+   "typ": "APERAK",
+   "version": "1.0",
+   "gueltigVon": "2025-10-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2025-10-01",
+   "makoFileId": 11567,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_APERAK_1.0_20251001_20260930_20250930_xoxx_11886.docx",
+   "art": "AHB",
+   "typ": "APERAK",
+   "version": "1.0",
+   "gueltigVon": "2025-10-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2025-09-30",
+   "makoFileId": 11886,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_COMDIS_1.0h_20260401_99991231_20260401_ooox_11922.docx",
+   "art": "AHB",
+   "typ": "COMDIS",
+   "version": "1.0h",
+   "gueltigVon": "2026-04-01",
+   "gueltigBis": null,
+   "standdatum": "2026-04-01",
+   "makoFileId": 11922,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_CONTRL_1.0_20251001_99991231_20251001_ooox_11580.docx",
+   "art": "AHB",
+   "typ": "CONTRL",
+   "version": "1.0",
+   "gueltigVon": "2025-10-01",
+   "gueltigBis": null,
+   "standdatum": "2025-10-01",
+   "makoFileId": 11580,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_CONTRL_1.0_20251001_99991231_20251211_oxox_12004.docx",
+   "art": "AHB",
+   "typ": "CONTRL",
+   "version": "1.0",
+   "gueltigVon": "2025-10-01",
+   "gueltigBis": null,
+   "standdatum": "2025-12-11",
+   "makoFileId": 12004,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_IFTSTA_2.0h_20251001_20260930_20251001_ooox_11632.docx",
+   "art": "AHB",
+   "typ": "IFTSTA",
+   "version": "2.0h",
+   "gueltigVon": "2025-10-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2025-10-01",
+   "makoFileId": 11632,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_IFTSTA_2.0h_20251001_20260930_20250623_xoxx_11744.docx",
+   "art": "AHB",
+   "typ": "IFTSTA",
+   "version": "2.0h",
+   "gueltigVon": "2025-10-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2025-06-23",
+   "makoFileId": 11744,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_INSRPT_1.1g_20230330_99991231_20251211_oxox_12008.docx",
+   "art": "AHB",
+   "typ": "INSRPT",
+   "version": "1.1g",
+   "gueltigVon": "2023-03-30",
+   "gueltigBis": null,
+   "standdatum": "2025-12-11",
+   "makoFileId": 12008,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_INVOIC_1.0a_20260401_20260930_20260401_ooox_11928.docx",
+   "art": "AHB",
+   "typ": "INVOIC",
+   "version": "1.0a",
+   "gueltigVon": "2026-04-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2026-04-01",
+   "makoFileId": 11928,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_MSCONS_3.1g_20260401_20260930_20260401_ooox_11931.docx",
+   "art": "AHB",
+   "typ": "MSCONS",
+   "version": "3.1g",
+   "gueltigVon": "2026-04-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2026-04-01",
+   "makoFileId": 11931,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_MSCONS_3.1g_20260401_20260930_20260302_xoxx_12098.docx",
+   "art": "AHB",
+   "typ": "MSCONS",
+   "version": "3.1g",
+   "gueltigVon": "2026-04-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2026-03-02",
+   "makoFileId": 12098,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_ORDCHG_1.0a_20250606_20260930_20250606_ooox_11100.docx",
+   "art": "AHB",
+   "typ": "ORDCHG",
+   "version": "1.0a",
+   "gueltigVon": "2025-06-06",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2025-06-06",
+   "makoFileId": 11100,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_ORDERS_1.1a_20260401_20260930_20260401_ooox_11934.docx",
+   "art": "AHB",
+   "typ": "ORDERS",
+   "version": "1.1a",
+   "gueltigVon": "2026-04-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2026-04-01",
+   "makoFileId": 11934,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_ORDRSP_1.1a_20260401_20260930_20260401_ooox_11937.docx",
+   "art": "AHB",
+   "typ": "ORDRSP",
+   "version": "1.1a",
+   "gueltigVon": "2026-04-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2026-04-01",
+   "makoFileId": 11937,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_ORDRSP_1.1a_20260401_20260930_20260327_xoxx_12119.docx",
+   "art": "AHB",
+   "typ": "ORDRSP",
+   "version": "1.1a",
+   "gueltigVon": "2026-04-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2026-03-27",
+   "makoFileId": 12119,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_PARTIN_1.0f_20260401_20260930_20260401_ooox_11943.docx",
+   "art": "AHB",
+   "typ": "PARTIN",
+   "version": "1.0f",
+   "gueltigVon": "2026-04-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2026-04-01",
+   "makoFileId": 11943,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_PARTIN_1.0f_20260401_20260930_20260302_xoxx_12101.docx",
+   "art": "AHB",
+   "typ": "PARTIN",
+   "version": "1.0f",
+   "gueltigVon": "2026-04-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2026-03-02",
+   "makoFileId": 12101,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_PRICAT_2.0f_20251001_20260930_20251001_ooox_11608.docx",
+   "art": "AHB",
+   "typ": "PRICAT",
+   "version": "2.0f",
+   "gueltigVon": "2025-10-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2025-10-01",
+   "makoFileId": 11608,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_PRICAT_2.0f_20251211_20260930_20251211_xoxx_12016.docx",
+   "art": "AHB",
+   "typ": "PRICAT",
+   "version": "2.0f",
+   "gueltigVon": "2025-12-11",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2025-12-11",
+   "makoFileId": 12016,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_QUOTES_1.1_20251001_20260930_20251001_ooox_11613.docx",
+   "art": "AHB",
+   "typ": "QUOTES",
+   "version": "1.1",
+   "gueltigVon": "2025-10-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2025-10-01",
+   "makoFileId": 11613,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_REMADV_1.0a_20260401_99991231_20260401_ooox_11951.docx",
+   "art": "AHB",
+   "typ": "REMADV",
+   "version": "1.0a",
+   "gueltigVon": "2026-04-01",
+   "gueltigBis": null,
+   "standdatum": "2026-04-01",
+   "makoFileId": 11951,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_REQOTE_1.1_20251001_20260930_20251001_ooox_11622.docx",
+   "art": "AHB",
+   "typ": "REQOTE",
+   "version": "1.1",
+   "gueltigVon": "2025-10-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2025-10-01",
+   "makoFileId": 11622,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_UTILMD_G1.1_20260401_20260930_20260401_ooox_11956.docx",
+   "art": "AHB",
+   "typ": "UTILMD Gas",
+   "version": "G1.1",
+   "gueltigVon": "2026-04-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2026-04-01",
+   "makoFileId": 11956,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_UTILMD_G1.1_20260401_20260930_20260327_xoxx_12123.docx",
+   "art": "AHB",
+   "typ": "UTILMD Gas",
+   "version": "G1.1",
+   "gueltigVon": "2026-04-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2026-03-27",
+   "makoFileId": 12123,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_UTILMD_S2.1_20250606_20260930_20250606_ooox_10554.docx",
+   "art": "AHB",
+   "typ": "UTILMD Strom",
+   "version": "S2.1",
+   "gueltigVon": "2025-06-06",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2025-06-06",
+   "makoFileId": 10554,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_UTILMD_S2.1_20260629_20260930_20260629_xoxx_12271.docx",
+   "art": "AHB",
+   "typ": "UTILMD Strom",
+   "version": "S2.1",
+   "gueltigVon": "2026-06-29",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2026-06-29",
+   "makoFileId": 12271,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_UTILTS_1.0_20250606_20260930_20250606_ooox_11112.docx",
+   "art": "AHB",
+   "typ": "UTILTS",
+   "version": "1.0",
+   "gueltigVon": "2025-06-06",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2025-06-06",
+   "makoFileId": 11112,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "AHB_UTILTS_1.0_20260327_20260930_20260327_xoxx_12127.docx",
+   "art": "AHB",
+   "typ": "UTILTS",
+   "version": "1.0",
+   "gueltigVon": "2026-03-27",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2026-03-27",
+   "makoFileId": 12127,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "MIG_APERAK_2.1i_20250606_20260930_20250606_ooox_8671.docx",
+   "art": "MIG",
+   "typ": "APERAK",
+   "version": "2.1i",
+   "gueltigVon": "2025-06-06",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2025-06-06",
+   "makoFileId": 8671,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "MIG_COMDIS_1.0g_20260401_99991231_20260401_ooox_11925.docx",
+   "art": "MIG",
+   "typ": "COMDIS",
+   "version": "1.0g",
+   "gueltigVon": "2026-04-01",
+   "gueltigBis": null,
+   "standdatum": "2026-04-01",
+   "makoFileId": 11925,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "MIG_CONTRL_2.0b_20221001_99991231_20251211_oxox_12006.docx",
+   "art": "MIG",
+   "typ": "CONTRL",
+   "version": "2.0b",
+   "gueltigVon": "2022-10-01",
+   "gueltigBis": null,
+   "standdatum": "2025-12-11",
+   "makoFileId": 12006,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "MIG_IFTSTA_2.0g_20251001_20260930_20251001_ooox_11585.docx",
+   "art": "MIG",
+   "typ": "IFTSTA",
+   "version": "2.0g",
+   "gueltigVon": "2025-10-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2025-10-01",
+   "makoFileId": 11585,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "MIG_INSRPT_1.1a_20230330_99991231_20240726_oxox_9355.docx",
+   "art": "MIG",
+   "typ": "INSRPT",
+   "version": "1.1a",
+   "gueltigVon": "2023-03-30",
+   "gueltigBis": null,
+   "standdatum": "2024-07-26",
+   "makoFileId": 9355,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "MIG_INVOIC_2.8e_20251001_99991231_20251001_ooox_11591.docx",
+   "art": "MIG",
+   "typ": "INVOIC",
+   "version": "2.8e",
+   "gueltigVon": "2025-10-01",
+   "gueltigBis": null,
+   "standdatum": "2025-10-01",
+   "makoFileId": 11591,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "MIG_MSCONS_2.4c_20240403_20260930_20240403_ooox_9648.docx",
+   "art": "MIG",
+   "typ": "MSCONS",
+   "version": "2.4c",
+   "gueltigVon": "2024-04-03",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2024-04-03",
+   "makoFileId": 9648,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "MIG_MSCONS_2.4c_20240403_20260930_20240726_oxox_9650.docx",
+   "art": "MIG",
+   "typ": "MSCONS",
+   "version": "2.4c",
+   "gueltigVon": "2024-04-03",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2024-07-26",
+   "makoFileId": 9650,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "MIG_ORDCHG_1.1_20231001_20260930_20231001_ooox_9699.docx",
+   "art": "MIG",
+   "typ": "ORDCHG",
+   "version": "1.1",
+   "gueltigVon": "2023-10-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2023-10-01",
+   "makoFileId": 9699,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "MIG_ORDCHG_1.1_20231001_20260930_20240726_oxox_9701.docx",
+   "art": "MIG",
+   "typ": "ORDCHG",
+   "version": "1.1",
+   "gueltigVon": "2023-10-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2024-07-26",
+   "makoFileId": 9701,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "MIG_ORDERS_1.4b_20251001_20260930_20251001_ooox_11597.docx",
+   "art": "MIG",
+   "typ": "ORDERS",
+   "version": "1.4b",
+   "gueltigVon": "2025-10-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2025-10-01",
+   "makoFileId": 11597,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "MIG_ORDRSP_1.4b_20260401_20260930_20260401_ooox_11940.docx",
+   "art": "MIG",
+   "typ": "ORDRSP",
+   "version": "1.4b",
+   "gueltigVon": "2026-04-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2026-04-01",
+   "makoFileId": 11940,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "MIG_PARTIN_1.0f_20260401_20260930_20260401_ooox_11946.docx",
+   "art": "MIG",
+   "typ": "PARTIN",
+   "version": "1.0f",
+   "gueltigVon": "2026-04-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2026-04-01",
+   "makoFileId": 11946,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "MIG_PRICAT_2.0e_20251001_20260930_20251001_ooox_11610.docx",
+   "art": "MIG",
+   "typ": "PRICAT",
+   "version": "2.0e",
+   "gueltigVon": "2025-10-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2025-10-01",
+   "makoFileId": 11610,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "MIG_PRICAT_2.0e_20251001_20260930_20250930_xoxx_11898.docx",
+   "art": "MIG",
+   "typ": "PRICAT",
+   "version": "2.0e",
+   "gueltigVon": "2025-10-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2025-09-30",
+   "makoFileId": 11898,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "MIG_QUOTES_1.3b_20251001_20260930_20251001_ooox_11665.docx",
+   "art": "MIG",
+   "typ": "QUOTES",
+   "version": "1.3b",
+   "gueltigVon": "2025-10-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2025-10-01",
+   "makoFileId": 11665,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "MIG_QUOTES_1.3b_20260130_20260930_20260130_xoxx_12049.docx",
+   "art": "MIG",
+   "typ": "QUOTES",
+   "version": "1.3b",
+   "gueltigVon": "2026-01-30",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2026-01-30",
+   "makoFileId": 12049,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "MIG_REMADV_2.9e_20260401_99991231_20260401_ooox_11954.docx",
+   "art": "MIG",
+   "typ": "REMADV",
+   "version": "2.9e",
+   "gueltigVon": "2026-04-01",
+   "gueltigBis": null,
+   "standdatum": "2026-04-01",
+   "makoFileId": 11954,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "MIG_REQOTE_1.3c_20251001_99991231_20251001_ooox_11625.docx",
+   "art": "MIG",
+   "typ": "REQOTE",
+   "version": "1.3c",
+   "gueltigVon": "2025-10-01",
+   "gueltigBis": null,
+   "standdatum": "2025-10-01",
+   "makoFileId": 11625,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "MIG_UTILMD_G1.1_20260401_20260930_20260401_ooox_11961.docx",
+   "art": "MIG",
+   "typ": "UTILMD Gas",
+   "version": "G1.1",
+   "gueltigVon": "2026-04-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2026-04-01",
+   "makoFileId": 11961,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "MIG_UTILMD_G1.1_20260401_20260930_20251211_oxox_12022.docx",
+   "art": "MIG",
+   "typ": "UTILMD Gas",
+   "version": "G1.1",
+   "gueltigVon": "2026-04-01",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2025-12-11",
+   "makoFileId": 12022,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "MIG_UTILMD_S2.1_20250606_20260930_20250606_ooox_10660.docx",
+   "art": "MIG",
+   "typ": "UTILMD Strom",
+   "version": "S2.1",
+   "gueltigVon": "2025-06-06",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2025-06-06",
+   "makoFileId": 10660,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "MIG_UTILMD_S2.1_20260302_20260930_20260302_xoxx_12112.docx",
+   "art": "MIG",
+   "typ": "UTILMD Strom",
+   "version": "S2.1",
+   "gueltigVon": "2026-03-02",
+   "gueltigBis": "2026-09-30",
+   "standdatum": "2026-03-02",
+   "makoFileId": 12112,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "MIG_UTILTS_1.1e_20250606_99991231_20250606_ooox_10707.docx",
+   "art": "MIG",
+   "typ": "UTILTS",
+   "version": "1.1e",
+   "gueltigVon": "2025-06-06",
+   "gueltigBis": null,
+   "standdatum": "2025-06-06",
+   "makoFileId": 10707,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "MIG_UTILTS_1.1e_20250606_99991231_20241213_xoxx_11171.docx",
+   "art": "MIG",
+   "typ": "UTILTS",
+   "version": "1.1e",
+   "gueltigVon": "2025-06-06",
+   "gueltigBis": null,
+   "standdatum": "2024-12-13",
+   "makoFileId": 11171,
+   "ablage": "mirror/edi_energy_de/FV2604"
+  },
+  {
+   "datei": "MIG_APERAK_12152.docx",
+   "art": "MIG",
+   "typ": "APERAK",
+   "version": null,
+   "gueltigVon": "2026-10-01",
+   "gueltigBis": null,
+   "standdatum": null,
+   "makoFileId": 12152,
+   "ablage": "fv2610-migs"
+  },
+  {
+   "datei": "MIG_IFTSTA_12167.docx",
+   "art": "MIG",
+   "typ": "IFTSTA",
+   "version": null,
+   "gueltigVon": "2026-10-01",
+   "gueltigBis": null,
+   "standdatum": null,
+   "makoFileId": 12167,
+   "ablage": "fv2610-migs"
+  },
+  {
+   "datei": "MIG_MSCONS_12174.docx",
+   "art": "MIG",
+   "typ": "MSCONS",
+   "version": null,
+   "gueltigVon": "2026-10-01",
+   "gueltigBis": null,
+   "standdatum": null,
+   "makoFileId": 12174,
+   "ablage": "fv2610-migs"
+  },
+  {
+   "datei": "MIG_ORDCHG_12183.docx",
+   "art": "MIG",
+   "typ": "ORDCHG",
+   "version": null,
+   "gueltigVon": "2026-10-01",
+   "gueltigBis": null,
+   "standdatum": null,
+   "makoFileId": 12183,
+   "ablage": "fv2610-migs"
+  },
+  {
+   "datei": "MIG_ORDERS_12188.docx",
+   "art": "MIG",
+   "typ": "ORDERS",
+   "version": null,
+   "gueltigVon": "2026-10-01",
+   "gueltigBis": null,
+   "standdatum": null,
+   "makoFileId": 12188,
+   "ablage": "fv2610-migs"
+  },
+  {
+   "datei": "MIG_ORDRSP_12195.docx",
+   "art": "MIG",
+   "typ": "ORDRSP",
+   "version": null,
+   "gueltigVon": "2026-10-01",
+   "gueltigBis": null,
+   "standdatum": null,
+   "makoFileId": 12195,
+   "ablage": "fv2610-migs"
+  },
+  {
+   "datei": "MIG_PARTIN_12201.docx",
+   "art": "MIG",
+   "typ": "PARTIN",
+   "version": null,
+   "gueltigVon": "2026-10-01",
+   "gueltigBis": null,
+   "standdatum": null,
+   "makoFileId": 12201,
+   "ablage": "fv2610-migs"
+  },
+  {
+   "datei": "MIG_PRICAT_12207.docx",
+   "art": "MIG",
+   "typ": "PRICAT",
+   "version": null,
+   "gueltigVon": "2026-10-01",
+   "gueltigBis": null,
+   "standdatum": null,
+   "makoFileId": 12207,
+   "ablage": "fv2610-migs"
+  },
+  {
+   "datei": "MIG_QUOTES_12213.docx",
+   "art": "MIG",
+   "typ": "QUOTES",
+   "version": null,
+   "gueltigVon": "2026-10-01",
+   "gueltigBis": null,
+   "standdatum": null,
+   "makoFileId": 12213,
+   "ablage": "fv2610-migs"
+  },
+  {
+   "datei": "MIG_UTILMDG_12277.docx",
+   "art": "MIG",
+   "typ": "UTILMD Gas",
+   "version": null,
+   "gueltigVon": "2026-10-01",
+   "gueltigBis": null,
+   "standdatum": null,
+   "makoFileId": 12277,
+   "ablage": "fv2610-migs"
+  },
+  {
+   "datei": "MIG_UTILMDS_12270.docx",
+   "art": "MIG",
+   "typ": "UTILMD Strom",
+   "version": null,
+   "gueltigVon": "2026-10-01",
+   "gueltigBis": null,
+   "standdatum": null,
+   "makoFileId": 12270,
+   "ablage": "fv2610-migs"
+  },
+  {
+   "datei": "AllgFestlegungen_6.1c_11916.pdf",
+   "art": "Allgemeine Festlegungen",
+   "typ": "alle",
+   "version": "6.1c",
+   "gueltigVon": null,
+   "gueltigBis": null,
+   "standdatum": null,
+   "formatstand": "202604",
+   "makoFileId": 11916,
+   "ablage": "regelwerk"
+  },
+  {
+   "datei": "AllgFestlegungen_6.1d_12145.pdf",
+   "art": "Allgemeine Festlegungen",
+   "typ": "alle",
+   "version": "6.1d",
+   "gueltigVon": null,
+   "gueltigBis": null,
+   "standdatum": null,
+   "formatstand": "202610",
+   "makoFileId": 12145,
+   "ablage": "regelwerk"
+  },
+  {
+   "datei": "EBD_4.2_kons_12240.pdf",
+   "art": "EBD",
+   "typ": "Entscheidungsbaeume",
+   "version": "4.2",
+   "gueltigVon": null,
+   "gueltigBis": null,
+   "standdatum": null,
+   "formatstand": "202604",
+   "makoFileId": 12240,
+   "ablage": "regelwerk"
+  },
+  {
+   "datei": "EBD_4.3_kons_12242.pdf",
+   "art": "EBD",
+   "typ": "Entscheidungsbaeume",
+   "version": "4.3",
+   "gueltigVon": null,
+   "gueltigBis": null,
+   "standdatum": null,
+   "formatstand": "202610",
+   "makoFileId": 12242,
+   "ablage": "regelwerk"
+  },
+  {
+   "datei": "EBD_4.2_20260401_20260930_20260623_xoxx_12239.docx",
+   "art": "EBD",
+   "typ": "Entscheidungsbaeume",
+   "version": "4.2",
+   "gueltigVon": null,
+   "gueltigBis": null,
+   "standdatum": null,
+   "formatstand": "202604",
+   "makoFileId": 12239,
+   "ablage": "regelwerk"
+  },
+  {
+   "datei": "EBD_4.3_20261001_99991231_20261001_ooox_12141.docx",
+   "art": "EBD",
+   "typ": "Entscheidungsbaeume",
+   "version": "4.3",
+   "gueltigVon": null,
+   "gueltigBis": null,
+   "standdatum": null,
+   "formatstand": "202610",
+   "makoFileId": 12141,
+   "ablage": "regelwerk"
+  },
+  {
+   "datei": "Anwendungsuebersicht_3.3_kons_12257.pdf",
+   "art": "Anwendungsuebersicht",
+   "typ": "alle",
+   "version": "3.3",
+   "gueltigVon": null,
+   "gueltigBis": null,
+   "standdatum": null,
+   "formatstand": "202604",
+   "makoFileId": 12257,
+   "ablage": "regelwerk"
+  },
+  {
+   "datei": "Anwendungsuebersicht_3.3_LF_12258.xlsx",
+   "art": "Anwendungsuebersicht",
+   "typ": "alle",
+   "version": "3.3",
+   "gueltigVon": null,
+   "gueltigBis": null,
+   "standdatum": null,
+   "formatstand": "202604",
+   "makoFileId": 12258,
+   "ablage": "regelwerk"
+  },
+  {
+   "datei": "Anwendungsuebersicht_4.0_kons_12259.pdf",
+   "art": "Anwendungsuebersicht",
+   "typ": "alle",
+   "version": "4.0",
+   "gueltigVon": null,
+   "gueltigBis": null,
+   "standdatum": null,
+   "formatstand": "202610",
+   "makoFileId": 12259,
+   "ablage": "regelwerk"
+  },
+  {
+   "datei": "Anwendungsuebersicht_4.0_LF_12260.xlsx",
+   "art": "Anwendungsuebersicht",
+   "typ": "alle",
+   "version": "4.0",
+   "gueltigVon": null,
+   "gueltigBis": null,
+   "standdatum": null,
+   "formatstand": "202610",
+   "makoFileId": 12260,
+   "ablage": "regelwerk"
+  },
+  {
+   "datei": "CL_Artikelnummern_5.6_11908",
+   "art": "Codeliste",
+   "typ": "Artikelnummern",
+   "version": "5.6",
+   "gueltigVon": null,
+   "gueltigBis": null,
+   "standdatum": null,
+   "formatstand": null,
+   "makoFileId": 11908,
+   "ablage": "regelwerk"
+  },
+  {
+   "datei": "CL_Konfigurationen_1.3c_12001",
+   "art": "Codeliste",
+   "typ": "Konfigurationen",
+   "version": "1.3c",
+   "gueltigVon": null,
+   "gueltigBis": null,
+   "standdatum": null,
+   "formatstand": "202604",
+   "makoFileId": 12001,
+   "ablage": "regelwerk"
+  },
+  {
+   "datei": "CL_Konfigurationen_1.4_12158",
+   "art": "Codeliste",
+   "typ": "Konfigurationen",
+   "version": "1.4",
+   "gueltigVon": null,
+   "gueltigBis": null,
+   "standdatum": null,
+   "formatstand": "202610",
+   "makoFileId": 12158,
+   "ablage": "regelwerk"
+  },
+  {
+   "datei": "CL_OBIS_2.5c_11918",
+   "art": "Codeliste",
+   "typ": "OBIS-Kennzahlen",
+   "version": "2.5c",
+   "gueltigVon": null,
+   "gueltigBis": null,
+   "standdatum": null,
+   "formatstand": null,
+   "makoFileId": 11918,
+   "ablage": "regelwerk"
+  },
+  {
+   "datei": "CL_Lokationsbuendel_1.0_11418",
+   "art": "Codeliste",
+   "typ": "Lokationsbuendelstrukturen",
+   "version": "1.0",
+   "gueltigVon": null,
+   "gueltigBis": null,
+   "standdatum": null,
+   "formatstand": null,
+   "makoFileId": 11418,
+   "ablage": "regelwerk"
+  },
+  {
+   "datei": "CL_Verwendungszwecke_1.0_12253",
+   "art": "Codeliste",
+   "typ": "Verwendungszwecke",
+   "version": "1.0",
+   "gueltigVon": null,
+   "gueltigBis": null,
+   "standdatum": null,
+   "formatstand": null,
+   "makoFileId": 12253,
+   "ablage": "regelwerk"
+  },
+  {
+   "datei": "CL_SLP_TUM_1.1_9089",
+   "art": "Codeliste",
+   "typ": "SLP/TUM",
+   "version": "1.1",
+   "gueltigVon": null,
+   "gueltigBis": null,
+   "standdatum": null,
+   "formatstand": null,
+   "makoFileId": 9089,
+   "ablage": "regelwerk"
+  },
+  {
+   "datei": "CL_Temperaturanbieter_1.0i_8735",
+   "art": "Codeliste",
+   "typ": "Temperaturanbieter",
+   "version": "1.0i",
+   "gueltigVon": null,
+   "gueltigBis": null,
+   "standdatum": null,
+   "formatstand": null,
+   "makoFileId": 8735,
+   "ablage": "regelwerk"
+  },
+  {
+   "datei": "CL_Zeitreihentypen_1.1d_8854",
+   "art": "Codeliste",
+   "typ": "Zeitreihentypen",
+   "version": "1.1d",
+   "gueltigVon": null,
+   "gueltigBis": null,
+   "standdatum": null,
+   "formatstand": null,
+   "makoFileId": 8854,
+   "ablage": "regelwerk"
+  },
+  {
+   "datei": "CL_Laendercodes_1.0_8856",
+   "art": "Codeliste",
+   "typ": "Laendercodes",
+   "version": "1.0",
+   "gueltigVon": null,
+   "gueltigBis": null,
+   "standdatum": null,
+   "formatstand": null,
+   "makoFileId": 8856,
+   "ablage": "regelwerk"
+  },
+  {
+   "datei": "GPKE_Teil1-3_BK6-24-174.pdf",
+   "art": "GPKE-Festlegung (BNetzA)",
+   "typ": "Marktprozesse",
+   "version": "BK6-24-174",
+   "gueltigVon": null,
+   "gueltigBis": null,
+   "standdatum": null,
+   "formatstand": null,
+   "makoFileId": null,
+   "ablage": "regelwerk"
+  },
+  {
+   "datei": "GPKE_Teil4_BK6-22-024.pdf",
+   "art": "GPKE-Festlegung (BNetzA)",
+   "typ": "Marktprozesse",
+   "version": "BK6-22-024",
+   "gueltigVon": null,
+   "gueltigBis": null,
+   "standdatum": null,
+   "formatstand": null,
+   "makoFileId": null,
+   "ablage": "regelwerk"
+  }
+ ],
+ "zuordnung": {
+  "202604": {
+   "IFTSTA": {
+    "ahbVersion": "2.0h",
+    "unhKennung": "IFTSTA:D:18A:UN:2.0g",
+    "pruefIds": 35,
+    "datenordner": "202604/Berichte/IFTSTA"
+   },
+   "INSRPT": {
+    "ahbVersion": "1.1g",
+    "unhKennung": "INSRPT:D:10A:UN:1.1a",
+    "pruefIds": 8,
+    "datenordner": "202604/Berichte/INSRPT"
+   },
+   "COMDIS": {
+    "ahbVersion": "1.0h",
+    "unhKennung": "COMDIS:D:17A:UN:1.0g",
+    "pruefIds": 2,
+    "datenordner": "202604/Rechnungsstellung/COMDIS"
+   },
+   "INVOIC": {
+    "ahbVersion": "1.0a",
+    "unhKennung": "INVOIC:D:06A:UN:2.8e",
+    "pruefIds": 11,
+    "datenordner": "202604/Rechnungsstellung/INVOIC"
+   },
+   "PRICAT": {
+    "ahbVersion": "2.0f",
+    "unhKennung": "PRICAT:D:20B:UN:2.0e",
+    "pruefIds": 3,
+    "datenordner": "202604/Rechnungsstellung/PRICAT"
+   },
+   "REMADV": {
+    "ahbVersion": "1.0a",
+    "unhKennung": "REMADV:D:05A:UN:2.9e",
+    "pruefIds": 4,
+    "datenordner": "202604/Rechnungsstellung/REMADV"
+   },
+   "PARTIN": {
+    "ahbVersion": "1.0f",
+    "unhKennung": "PARTIN:D:20B:UN:1.0f",
+    "pruefIds": 14,
+    "datenordner": "202604/Stammdaten/PARTIN"
+   },
+   "UTILTS": {
+    "ahbVersion": "1.0",
+    "unhKennung": "UTILTS:D:18A:UN:1.1e",
+    "pruefIds": 8,
+    "datenordner": "202604/Stammdaten/UTILTS"
+   },
+   "ORDERS": {
+    "ahbVersion": "1.1a",
+    "unhKennung": "ORDERS:D:09B:UN:1.4b",
+    "pruefIds": 46,
+    "datenordner": "202604/Bestellvorgang/ORDERS"
+   },
+   "ORDRSP": {
+    "ahbVersion": "1.1a",
+    "unhKennung": "ORDRSP:D:10A:UN:1.4b",
+    "pruefIds": 40,
+    "datenordner": "202604/Bestellvorgang/ORDRSP"
+   },
+   "ORDCHG": {
+    "ahbVersion": "1.0a",
+    "unhKennung": "ORDCHG:D:20B:UN:1.1",
+    "pruefIds": 3,
+    "datenordner": "202604/Bestellvorgang/ORDCHG"
+   },
+   "QUOTES": {
+    "ahbVersion": "1.1",
+    "unhKennung": "QUOTES:D:10A:UN:1.3b",
+    "pruefIds": 5,
+    "datenordner": "202604/Bestellvorgang/QUOTES"
+   },
+   "REQOTE": {
+    "ahbVersion": "1.1",
+    "unhKennung": "REQOTE:D:10A:UN:1.3c",
+    "pruefIds": 5,
+    "datenordner": "202604/Bestellvorgang/REQOTE"
+   },
+   "MSCONS": {
+    "ahbVersion": "3.1g",
+    "unhKennung": "MSCONS:D:04B:UN:2.4c",
+    "pruefIds": 25,
+    "datenordner": "202604/Bewegungsdaten/MSCONS"
+   },
+   "APERAK": {
+    "ahbVersion": "1.0",
+    "unhKennung": "APERAK:D:07B:UN:2.1i",
+    "pruefIds": 2,
+    "datenordner": "202604/Servicenachrichten/APERAK"
+   },
+   "CONTRL": {
+    "ahbVersion": "1.0",
+    "unhKennung": "CONTRL:D:3:UN:2.0b",
+    "pruefIds": 3,
+    "datenordner": "202604/Servicenachrichten/CONTRL"
+   },
+   "UTILMD Strom": {
+    "ahbVersion": "S2.1",
+    "unhKennung": "UTILMD:D:11A:UN:S2.1",
+    "pruefIds": 187,
+    "datenordner": "202604/Stammdaten/UTILMD/Strom"
+   },
+   "UTILMD Gas": {
+    "ahbVersion": "G1.1",
+    "unhKennung": "UTILMD:D:11A:UN:G1.1",
+    "pruefIds": 88,
+    "datenordner": "202604/Stammdaten/UTILMD/Gas"
+   }
+  },
+  "202610": {
+   "IFTSTA": {
+    "ahbVersion": "2.1",
+    "unhKennung": "IFTSTA:D:18A:UN:2.1",
+    "pruefIds": 32,
+    "datenordner": "202610/Berichte/IFTSTA"
+   },
+   "INSRPT": {
+    "ahbVersion": "1.1g",
+    "unhKennung": "INSRPT:D:10A:UN:1.1a",
+    "pruefIds": 8,
+    "datenordner": "202610/Berichte/INSRPT"
+   },
+   "COMDIS": {
+    "ahbVersion": "1.0h",
+    "unhKennung": "COMDIS:D:17A:UN:1.0g",
+    "pruefIds": 2,
+    "datenordner": "202610/Rechnungsstellung/COMDIS"
+   },
+   "INVOIC": {
+    "ahbVersion": "1.0b",
+    "unhKennung": "INVOIC:D:06A:UN:2.8e",
+    "pruefIds": 11,
+    "datenordner": "202610/Rechnungsstellung/INVOIC"
+   },
+   "PRICAT": {
+    "ahbVersion": "2.1",
+    "unhKennung": "PRICAT:D:20B:UN:2.1",
+    "pruefIds": 3,
+    "datenordner": "202610/Rechnungsstellung/PRICAT"
+   },
+   "REMADV": {
+    "ahbVersion": "1.0a",
+    "unhKennung": "REMADV:D:05A:UN:2.9e",
+    "pruefIds": 4,
+    "datenordner": "202610/Rechnungsstellung/REMADV"
+   },
+   "PARTIN": {
+    "ahbVersion": "1.1",
+    "unhKennung": "PARTIN:D:20B:UN:1.1",
+    "pruefIds": 14,
+    "datenordner": "202610/Stammdaten/PARTIN"
+   },
+   "UTILTS": {
+    "ahbVersion": "1.1",
+    "unhKennung": "UTILTS:D:18A:UN:1.1e",
+    "pruefIds": 8,
+    "datenordner": "202610/Stammdaten/UTILTS"
+   },
+   "ORDERS": {
+    "ahbVersion": "1.1b",
+    "unhKennung": "ORDERS:D:09B:UN:1.4c",
+    "pruefIds": 44,
+    "datenordner": "202610/Bestellvorgang/ORDERS"
+   },
+   "ORDRSP": {
+    "ahbVersion": "1.1b",
+    "unhKennung": "ORDRSP:D:10A:UN:1.4c",
+    "pruefIds": 39,
+    "datenordner": "202610/Bestellvorgang/ORDRSP"
+   },
+   "ORDCHG": {
+    "ahbVersion": "1.1",
+    "unhKennung": "ORDCHG:D:20B:UN:1.2",
+    "pruefIds": 3,
+    "datenordner": "202610/Bestellvorgang/ORDCHG"
+   },
+   "QUOTES": {
+    "ahbVersion": "1.1a",
+    "unhKennung": "QUOTES:D:10A:UN:1.3c",
+    "pruefIds": 5,
+    "datenordner": "202610/Bestellvorgang/QUOTES"
+   },
+   "REQOTE": {
+    "ahbVersion": "1.2",
+    "unhKennung": "REQOTE:D:10A:UN:1.3c",
+    "pruefIds": 5,
+    "datenordner": "202610/Bestellvorgang/REQOTE"
+   },
+   "MSCONS": {
+    "ahbVersion": "3.2",
+    "unhKennung": "MSCONS:D:04B:UN:2.5",
+    "pruefIds": 25,
+    "datenordner": "202610/Bewegungsdaten/MSCONS"
+   },
+   "APERAK": {
+    "ahbVersion": "1.1",
+    "unhKennung": "APERAK:D:07B:UN:2.2",
+    "pruefIds": 2,
+    "datenordner": "202610/Servicenachrichten/APERAK"
+   },
+   "CONTRL": {
+    "ahbVersion": "1.0",
+    "unhKennung": "CONTRL:D:3:UN:2.0b",
+    "pruefIds": 3,
+    "datenordner": "202610/Servicenachrichten/CONTRL"
+   },
+   "UTILMD Strom": {
+    "ahbVersion": "S2.2",
+    "unhKennung": "UTILMD:D:11A:UN:S2.2",
+    "pruefIds": 189,
+    "datenordner": "202610/Stammdaten/UTILMD/Strom"
+   },
+   "UTILMD Gas": {
+    "ahbVersion": "G1.2",
+    "unhKennung": "UTILMD:D:11A:UN:G1.2",
+    "pruefIds": 89,
+    "datenordner": "202610/Stammdaten/UTILMD/Gas"
+   }
+  }
+ }
+}

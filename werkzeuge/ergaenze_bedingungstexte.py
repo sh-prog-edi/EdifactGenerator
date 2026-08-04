@@ -146,7 +146,10 @@ def bearbeite_ordner(ordner: Path, formatstand: str) -> dict:
     if not fehlend:
         return bericht
 
-    pruefids = [p.stem for p in ordner.glob("*.js") if re.fullmatch(r"\d+", p.stem)]
+    # Prüf-IDs des Ordners aus der Formular-Meta (die Regel-Einzeldateien <PID>.js
+    # existieren seit dem Feldauswahl-Umbau nicht mehr).
+    meta_treffer = re.search(r"var \w+ = (\{.*\});", meta_datei.read_text(encoding="utf-8"), re.S)
+    pruefids = sorted(json.loads(meta_treffer.group(1)).keys()) if meta_treffer else []
     texte = texte_aus_ahbdaten(pruefids, formatstand)
     nachtrag = {nr: texte[nr] for nr in fehlend if nr in texte}
     if not nachtrag:

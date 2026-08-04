@@ -2303,3 +2303,58 @@ dieselbe Seite liefert mit `?stand=202604` S2.1/187 Prüf-IDs und mit
 `?stand=202610` S2.2/189 Prüf-IDs, ohne JS-Fehler. Der Bestand sinkt von 43 auf
 23 HTML-Seiten; ein künftiger Formatstand (202704 …) ist ein Datenordner, ein
 Registry-Lauf und ein `STAENDE`-Eintrag — keine Baumkopie.
+
+## 42. Phase 4: Datenpipeline und Quellen-Manifest (04.08.2026)
+
+**Auftrag.** Phase 4 des Umbauplans: den Extraktions-Workflow formalisieren
+(Pipeline mit erzwungener Reihenfolge, Zeitscheiben-Schutz) und die Quellenlage
+der BDEW-Dokumente maschinenlesbar machen.
+
+**Umsetzung.**
+
+1. **Nachbearbeitungsskripte auf die Feldauswahl-Datenschicht umgestellt** (die
+   offene Vorbedingung aus Abschnitt 39/LIESMICH): `ergaenze_zeitscheiben.py`,
+   `aktualisiere_utilmd_regeln.py` und `ergaenze_bedingungstexte.py` lesen und
+   schreiben jetzt `pruef-ids/_regeln.js` statt der entfallenen Einzeldateien
+   `<PID>.js`. Gemeinsames Modul `werkzeuge/regeln_io.py`: Serialisierung über
+   Node im Format des Migrators (JSON.stringify …, 1) — Roundtrip über alle vier
+   Ziele byte-identisch (Selbsttest im Modul). `ergaenze_zeitscheiben.py`
+   entfernt bestehende Zeitscheiben-Felder nie mehr ersatzlos: Ohne Codes aus
+   der AHB-Datenbasis bleibt der Eintrag unverändert (der erste Umbauversuch
+   hätte bei unvollständiger Datenbasis Felder gestrippt — vom eigenen Testlauf
+   aufgedeckt und behoben). Funktionsnachweise ohne Originaldokumente:
+   `aktualisiere_utilmd_regeln.py` läuft auf dem Repo-Bestand mit 0 Befunden
+   (idempotent), `ergaenze_zeitscheiben.py` erzeugt aus nachgestellten
+   AHB-Daten exakt die bestehenden Felder (0 Änderungen).
+2. **`werkzeuge/pipeline.py`** (4.1/4.4): fährt die dokumentierte Reihenfolge am
+   Stück (extrahiere_alle → baue_form_meta → teile_sts_positionen →
+   saeubere_beschreibungen → aktualisiere_utilmd_regeln → ergaenze_zeitscheiben
+   → repariere_bedingungen → ergaenze_bedingungstexte → korrigiere_prozess_meta
+   → baue_prozessketten), danach Registry-Neubau und Regression (Smoke, auf
+   Wunsch voll). Optionen: `--ab <Schritt>`, `--nur-pruefen`,
+   `--volle-regression`, `--ohne-regression`; Arbeitsordner über
+   `EDIGEN_ARBEITSORDNER` (Standard: zwei Ebenen über dem Repo), Layout-Prüfung
+   mit klarer Abbruchmeldung. **Zeitscheiben-Schutz:** Vor dem Lauf wird je
+   UTILMD-Ziel festgehalten, welche Prüf-IDs Verwendungszeitraum-Felder führen
+   (heute 89/0/91/0); schrumpft die Menge, bricht die Pipeline mit Befund ab —
+   die bekannte baue_form_meta-Falle ist damit maschinell abgesichert. Die
+   EBD-Kette bleibt bewusst außerhalb (blockweise Läufe mit Zeitgrenze).
+3. **`docs/QUELLEN_MANIFEST.json`** (4.2): 86 Dokumente der Wissensdatenbank
+   (Bestand Google Drive, 02.08.2026) mit Name, Art, Typ, Version, Gültigkeit,
+   Standdatum, BDEW-MAKO-fileId und Ablage — Spiegel FV2604 (53 AHB/MIG-DOCX),
+   die elf FV2610-MIGs und das Regelwerk (EBD 4.2/4.3, Allgemeine Festlegungen
+   6.1c/6.1d, Anwendungsübersicht 3.3/4.0, zehn Codelisten, GPKE-Festlegungen).
+   Dazu die **Zuordnung** je Formatstand+Nachrichtentyp (36 Einträge):
+   AHB-Version, UNH-Kennung, Prüf-ID-Zahl, Datenordner. Die 202610-AHBs liegen
+   nicht im Spiegel (Reproduktionsweg Abschnitt 7) — im Manifest vermerkt.
+4. Punkt 4.3 des Plans (Wissensdatenbank strikt außerhalb des Repos) war bereits
+   umgesetzt (`.gitignore`, `scripts/pruefe_paket.js`) und ist jetzt im
+   Manifest-Hinweis dokumentiert.
+
+**Nachweis.** `pipeline.py --nur-pruefen` grün (Zeitscheiben-Bestand + Smoke);
+Roundtrip-Selbsttest `regeln_io.py` identisch auf allen vier Zielen;
+Idempotenz-Läufe der umgestellten Skripte ohne Repo-Änderung; volle Regression
+grün (32 Läufe). Ein Extraktionslauf mit echten Dokumenten braucht weiterhin die
+Wissensdatenbank im Arbeitsordner — der nächste Formatstand-Wechsel ist damit:
+Dokumente einspielen, `pipeline.py`, Golden lesen/aktualisieren, Manifest
+nachführen.

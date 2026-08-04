@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-ergaenze_zeitscheiben.py — ergänzt in den kuratierten UTILMD-Regeldateien die Felder
-für den Verwendungszeitraum der Daten (SG6 RFF + DTM+Z25/Z26).
+ergaenze_zeitscheiben.py — ergänzt in der Feldauswahl-Datenschicht der kuratierten
+UTILMD-Masken (`pruef-ids/_regeln.js`) die Felder für den Verwendungszeitraum der
+Daten (SG6 RFF + DTM+Z25/Z26).
 
 Der AHB führt die Gruppe als Wiederholung mit fortlaufender Zeitraum-ID ([126]); die
 Praxis nach einem Lieferbeginn kennt zwei Zeitscheiben: „Keine Daten" (Z53) bis zum
@@ -17,13 +18,17 @@ Ergänzt werden je Prüf-ID mit Verwendungszeitraum:
   DTM_Z25_2 / DTM_Z26_2   Verwendung der Daten ab/bis des zweiten Zeitraums
 Alle Felder sind optional; bleiben sie leer, ändert sich die erzeugte Nachricht nicht.
 Das Skript ist wiederholbar: vorhandene Einträge werden ersetzt.
+
+Seit dem Feldauswahl-Umbau (Phase 2) liegen die Regeln als EINE Datendatei je Ziel;
+gelesen und geschrieben wird über werkzeuge/regeln_io.py (formatstabil).
 """
 
 from __future__ import annotations
 
 import json
-import re
 from pathlib import Path
+
+import regeln_io
 
 GENERATOR = Path("edigen/EdifactGenerator")
 AHBDATEN = {"202604": Path("ahbdaten/FV2604"), "202610": Path("ahbdaten/FV2610")}
@@ -59,48 +64,48 @@ def zeitraum_codes(stand: str, pruefi: str) -> list[str]:
     return sorted(codes)
 
 
-def optionen(codes: list[str]) -> str:
-    teile = ['{ v: "", t: "– keine Angabe –" }']
-    teile += [f'{{ v: "{c}", t: "{c} – {QUALITAET[c]}" }}' for c in codes]
-    return "[" + ", ".join(teile) + "]"
+def optionen(codes: list[str]) -> list[dict]:
+    return [{"v": "", "t": "– keine Angabe –"}] + [
+        {"v": c, "t": f"{c} – {QUALITAET[c]}"} for c in codes
+    ]
 
 
-def felder(codes: list[str]) -> str:
+def felder(codes: list[str]) -> list[dict]:
     opt = optionen(codes)
-    return (
-        f'        {{ id: "RFF_VZ_QUALITAET", name: "SG6 RFF: Qualität Verwendungszeitraum 1", '
-        f'status: "Kann", isSelect: true, options: {opt}, '
-        f'rule: "AHB: Verwendungszeitraum der Daten, Zeitraum-ID 1 [126]" }},\n'
-        f'        {{ id: "RFF_VZ_QUALITAET_2", name: "SG6 RFF: Qualität Verwendungszeitraum 2", '
-        f'status: "Kann", isSelect: true, options: {opt}, '
-        f'rule: "AHB: zweiter Verwendungszeitraum, Zeitraum-ID 2 [126]" }},\n'
-        f'        {{ id: "DTM_Z25_2", name: "SG4 DTM+Z25: Verwendung der Daten ab (Zeitraum 2)", '
-        f'status: "Kann", isDate: true, rule: "AHB: zweiter Verwendungszeitraum [131] ⊻ [401]" }},\n'
-        f'        {{ id: "DTM_Z26_2", name: "SG4 DTM+Z26: Verwendung der Daten bis (Zeitraum 2)", '
-        f'status: "Kann", isDate: true, rule: "AHB: zweiter Verwendungszeitraum [471]" }},\n'
-    )
+    return [
+        {"id": "RFF_VZ_QUALITAET", "name": "SG6 RFF: Qualität Verwendungszeitraum 1",
+         "status": "Kann", "isSelect": True, "options": opt,
+         "rule": "AHB: Verwendungszeitraum der Daten, Zeitraum-ID 1 [126]"},
+        {"id": "RFF_VZ_QUALITAET_2", "name": "SG6 RFF: Qualität Verwendungszeitraum 2",
+         "status": "Kann", "isSelect": True, "options": opt,
+         "rule": "AHB: zweiter Verwendungszeitraum, Zeitraum-ID 2 [126]"},
+        {"id": "DTM_Z25_2", "name": "SG4 DTM+Z25: Verwendung der Daten ab (Zeitraum 2)",
+         "status": "Kann", "isDate": True,
+         "rule": "AHB: zweiter Verwendungszeitraum [131] ⊻ [401]"},
+        {"id": "DTM_Z26_2", "name": "SG4 DTM+Z26: Verwendung der Daten bis (Zeitraum 2)",
+         "status": "Kann", "isDate": True,
+         "rule": "AHB: zweiter Verwendungszeitraum [471]"},
+    ]
 
 
-def bearbeite(datei: Path, stand: str) -> bool:
-    text = datei.read_text(encoding="utf-8")
-    # vorhandene Ergänzungen entfernen (Wiederholbarkeit)
-    text = re.sub(r'^[ \t]*\{ id: "(?:' + "|".join(FELD_IDS) + r')",[^\n]*\n', "", text, flags=re.M)
-    if 'id: "DTM_Z25"' not in text:
+def bearbeite(regel: dict, stand: str, pruefi: str) -> bool:
+    """Ersetzt die Zeitscheiben-Felder einer Prüf-ID, wenn die AHB-Datenbasis
+    Qualitätscodes liefert. Liefert sie keine (oder führt die Prüf-ID keinen
+    Verwendungszeitraum), bleibt der Eintrag UNVERÄNDERT — bestehende Felder
+    werden nie ersatzlos entfernt (Schutz vor unvollständiger Datenbasis)."""
+    segmente = regel.get("segments") or []
+    ohne = [s for s in segmente if s.get("id") not in FELD_IDS]
+    if not any(s.get("id") == "DTM_Z25" for s in ohne):
         return False
-    codes = zeitraum_codes(stand, datei.stem)
+    codes = zeitraum_codes(stand, pruefi)
     if not codes:
         return False
-    # hinter der letzten Zeile des ersten Verwendungszeitraums einfügen
-    muster = re.compile(r'^([ \t]*\{ id: "DTM_Z2[56]",[^\n]*)\n', re.M)
-    treffer = list(muster.finditer(text))
-    if not treffer:
-        return False
-    letzte = treffer[-1]
-    zeile = letzte.group(1)
-    # fehlendes Komma ergänzen, wenn der Eintrag der letzte im Array war
-    ersatz = zeile if zeile.rstrip().endswith(",") else zeile.rstrip() + ","
-    text = text[:letzte.start()] + ersatz + "\n" + felder(codes) + text[letzte.end():]
-    datei.write_text(text, encoding="utf-8")
+    # hinter dem letzten Eintrag des ersten Verwendungszeitraums einfügen
+    letzte = max(i for i, s in enumerate(ohne) if s.get("id") in ("DTM_Z25", "DTM_Z26"))
+    neu = ohne[:letzte + 1] + felder(codes) + ohne[letzte + 1:]
+    if neu == segmente:
+        return False   # unverändert — Datei nicht als geändert zählen
+    regel["segments"] = neu
     return True
 
 
@@ -108,11 +113,14 @@ if __name__ == "__main__":
     gesamt = 0
     for rel in ORDNER:
         stand = rel.split("/")[0]
-        ordner = GENERATOR / rel / "pruef-ids"
+        pfad = GENERATOR / rel / "pruef-ids" / "_regeln.js"
+        kopf, regeln = regeln_io.lade(pfad)
         n = 0
-        for datei in sorted(ordner.glob("[0-9]*.js")):
-            if bearbeite(datei, stand):
+        for pruefi in sorted(regeln):
+            if bearbeite(regeln[pruefi], stand, pruefi):
                 n += 1
+        if n:
+            regeln_io.schreibe(pfad, kopf, regeln)
         print(f"{rel:38s} {n} Prüf-IDs mit Verwendungszeitraum ergänzt")
         gesamt += n
-    print(f"\nGesamt: {gesamt} Regeldateien")
+    print(f"\nGesamt: {gesamt} Prüf-IDs")
