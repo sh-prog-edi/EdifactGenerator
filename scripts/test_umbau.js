@@ -31,6 +31,23 @@ const FREMD =
   "UNH+M0001+DELFOR:D:96A:UN'BGM+241+DOC77'DTM+137:202401010101:203'" +
   "NAD+MS+4012345678901::9'UNT+5+M0001'UNZ+1+ALTREF9'";
 
+// Sammel-Datei: zwei INVOIC je UNB (Sammelrechnung) — Auswahl je NACHRICHT am UNH.
+const SAMMEL =
+  "UNA:+.? 'UNB+UNOC:3+9900000000001:500+9900000000002:500+250601:0900+SR2025060100'" +
+  "UNH+SR1+INVOIC:D:11A:UN:2.8e'BGM+380+RE-1001'DTM+137:202506010900:303'" +
+  "LIN+1'MOA+9:100.00'UNS+S'MOA+86:100.00'UNT+8+SR1'" +
+  "UNH+SR2+INVOIC:D:11A:UN:2.8e'BGM+380+RE-1002'DTM+137:202506010900:303'" +
+  "LIN+1'MOA+9:50.00'UNS+S'MOA+86:50.00'UNT+8+SR2'" +
+  "UNZ+2+SR2025060100'";
+
+// REMADV mit zwei avisierten Rechnungen (DOC) — Auswahl je Rechnung, Summenteil bleibt.
+const REMADV =
+  "UNA:+.? 'UNB+UNOC:3+9900000000001:500+9900000000002:500+250601:0900+RA2025060100'" +
+  "UNH+RA1+REMADV:D:08A:UN:2.9d'BGM+481+AVIS-1'DTM+137:202506010900:303'" +
+  "NAD+MS+9900000000001::293'NAD+MR+9900000000002::293'" +
+  "DOC+380+RE-2001'MOA+12:100.00'DOC+380+RE-2002'MOA+12:60.00'" +
+  "UNS+S'MOA+12:160.00'UNT+12+RA1'UNZ+1+RA2025060100'";
+
 (async () => {
   const browser = await chromium.launch();
   const fehler = [];
@@ -213,6 +230,88 @@ const FREMD =
   pruefe('Fremdtyp: NAD bleibt unangetastet', fremd.ausgabe.includes("NAD+MS+4012345678901::9'"));
   pruefe('Fremdtyp: ohne Vorgänge keine Vorgangsauswahl',
     (await page.evaluate(() => document.getElementById('vorgangsWahl').style.display)) === 'none');
+
+  // ---- 5. Sammel-Datei: mehrere UNH je UNB (INVOIC-Sammelrechnung) --------
+  const sammel = await page.evaluate(([text]) => {
+    document.getElementById('eingabe').value = text;
+    einlesen();
+    const kaesten = document.querySelectorAll('input[name="nachrichtwahl"]').length;
+    const labels = Array.from(document.querySelectorAll('.vorgangswahl')).map(l => l.textContent);
+    umbauen();
+    return {
+      kaesten, labels,
+      wahlSichtbar: document.getElementById('vorgangsWahl').style.display !== 'none',
+      ausgabe: document.getElementById('umbauOut').value.replace(/\n/g, ''),
+    };
+  }, [SAMMEL]);
+  pruefe('Sammel-Datei: je Nachricht eine Checkbox am UNH (2, INVOIC ohne innere Vorgänge)',
+    sammel.kaesten === 2);
+  pruefe('Sammel-Datei: Auswahl nennt Typ und ursprüngliche Rechnungsnummer',
+    sammel.labels.some(t => /Nachricht 1 verwenden \(INVOIC — Dokument RE-1001\)/.test(t)) &&
+    sammel.labels.some(t => /Nachricht 2 verwenden \(INVOIC — Dokument RE-1002\)/.test(t)));
+  pruefe('Sammel-Datei: Auswahlpanel sichtbar', sammel.wahlSichtbar);
+  const sunb = (/UNB\+([^']*)'/.exec(sammel.ausgabe) || [])[1] || '';
+  const sref = sunb.split('+')[4] || '';
+  const dar2 = String(Number(sref) + 1);
+  pruefe('Sammel-Datei: Umbau vergibt je Nachricht eigene Nummern (UNZ+2)',
+    /^\d{12}$/.test(sref) &&
+    sammel.ausgabe.includes('UNH+' + sref + '+INVOIC') &&
+    sammel.ausgabe.includes('UNH+' + dar2 + '+INVOIC') &&
+    sammel.ausgabe.includes("UNZ+2+" + sref + "'"));
+
+  // Nachricht 1 abwählen: nur die zweite Rechnung bleibt, UNZ zählt neu.
+  const nurZweite = await page.evaluate(() => {
+    const kasten = document.querySelector('input[name="nachrichtwahl"][value="0"]');
+    kasten.checked = false;
+    kasten.dispatchEvent(new Event('change'));
+    return {
+      umfang: document.getElementById('ausgabeUmfang').textContent,
+      ausgabe: document.getElementById('umbauOut').value.replace(/\n/g, ''),
+    };
+  });
+  pruefe('Sammel-Datei: Abwahl Nachricht 1 — nur Nachricht 2 bleibt, UNZ+1',
+    !nurZweite.ausgabe.includes('UNH+' + sref + '+INVOIC') &&
+    nurZweite.ausgabe.includes('UNH+' + dar2 + '+INVOIC') &&
+    nurZweite.ausgabe.includes("UNZ+1+" + sref + "'"));
+  pruefe('Sammel-Datei: Umfangstext nennt die Nachrichtenauswahl',
+    /1 von 2 Nachrichten/.test(nurZweite.umfang));
+
+  // Ohne jeden Haken: Hinweis statt leerer Hülle; „alle setzen" stellt alles her.
+  const ohneNachricht = await page.evaluate(() => {
+    alleVorgaenge(false);
+    const hinweis = document.getElementById('ausgabeUmfang').textContent;
+    const leer = document.getElementById('umbauOut').value;
+    alleVorgaenge(true);
+    return { hinweis, leer, danach: document.getElementById('umbauOut').value.replace(/\n/g, '') };
+  });
+  pruefe('Sammel-Datei: ohne Haken Hinweis „Keine Nachricht angehakt"',
+    /Keine Nachricht angehakt/.test(ohneNachricht.hinweis) && ohneNachricht.leer === '');
+  pruefe('Sammel-Datei: „alle Haken setzen" stellt beide Nachrichten wieder her',
+    ohneNachricht.danach.includes("UNZ+2+" + sref + "'"));
+
+  // ---- 6. REMADV: Rechnungsauswahl am DOC + Summen-Hinweis ----------------
+  const remadv = await page.evaluate(([text]) => {
+    document.getElementById('eingabe').value = text;
+    einlesen();
+    const labels = Array.from(document.querySelectorAll('.vorgangswahl')).map(l => l.textContent);
+    umbauen();
+    const kasten = document.querySelector('input[name="vorgangswahl"][value="0"]');
+    kasten.checked = false;
+    kasten.dispatchEvent(new Event('change'));
+    return {
+      labels,
+      umfang: document.getElementById('ausgabeUmfang').textContent,
+      ausgabe: document.getElementById('umbauOut').value.replace(/\n/g, ''),
+    };
+  }, [REMADV]);
+  pruefe('REMADV: Auswahl nennt die Rechnungsnummern (DOC DE1004)',
+    remadv.labels.some(t => /Rechnung RE-2001 verwenden/.test(t)) &&
+    remadv.labels.some(t => /Rechnung RE-2002 verwenden/.test(t)));
+  pruefe('REMADV: Abwahl Rechnung 1 — RE-2002 bleibt, Summenteil (UNS+S, MOA) erhalten',
+    !remadv.ausgabe.includes('DOC+380+RE-2001') && remadv.ausgabe.includes('DOC+380+RE-2002') &&
+    remadv.ausgabe.includes("UNS+S'") && remadv.ausgabe.includes("MOA+12:160.00'"));
+  pruefe('REMADV: Hinweis auf nicht neu berechnete Summensegmente',
+    /Summen-\/Kontrollsegmente/.test(remadv.umfang));
 
   pruefe('keine JS-Fehler auf der Seite', jsFehler.length === 0);
 

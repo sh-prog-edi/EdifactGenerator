@@ -2503,3 +2503,59 @@ API ist offen erreichbar. Umgesetzt wurden beide daraus abgeleiteten Ideen.
 Werkzeug syntaxgeprüft — der erste lokale Lauf beim Auftraggeber validiert
 Pagination und Ausgabe. Kein Eingriff in Prüfgrundlagen; die elf
 Klarstellungen sind Arbeitsvorrat für die Punkte B/D/E und den Validator.
+
+## 48. Umbau: Dokument- und Vorgangsauswahl für alle aggregierenden Nachrichtentypen (05.08.2026)
+
+**Auftrag.** Die Anhak-Auswahl einzelner Vorgänge, die der Umbau bisher nur für
+UTILMD (IDE+24) bot, soll überall dort verfügbar sein, wo eine Übertragungsdatei
+mehrere fachliche Einheiten aggregiert — z. B. INVOIC-Sammelrechnungen (mehrere
+UNH/UNT je UNB, Rechnungsnummer im BGM) oder MSCONS mit mehreren Lieferstellen.
+Dazu war je Nachrichtentyp zu klären, welches Segment ein neues Teil-Dokument
+eröffnet.
+
+**Analyse — zwei Aggregationsebenen.** MaKo-Dateien aggregieren auf zwei Ebenen,
+und beide brauchen eine eigene Auswahl:
+
+1. **Mehrere Nachrichten je Übertragungsdatei** (mehrere UNH…UNT je UNB): der
+   Normalfall der INVOIC-Sammelrechnung, syntaktisch aber bei jedem Typ möglich.
+   Kennzeichen des Teil-Dokuments ist die Dokumentennummer im BGM (DE1004) —
+   bei INVOIC die Rechnungsnummer.
+2. **Mehrere Einheiten je Nachricht** (wiederholte Segmentgruppen unterhalb
+   eines UNH). Der eröffnende Trigger je Typ (aus den MIG-/AHB-Strukturen der
+   Meta-Dateien abgeleitet, Tabelle `VORGANG_TRIGGER` in `_engine/umbau.js`):
+   UTILMD `IDE+24` (wie bisher; IDE+Z01-Übersichten lösen nicht aus), UTILTS
+   `IDE`, ORDERS/ORDRSP/ORDCHG/QUOTES/REQOTE `LIN` (SG29-Vorgang), MSCONS `NAD`
+   **nur im Positionsteil nach UNS** (SG5-Lieferstelle — die Kopf-NAD MS/MR
+   zählen nicht), IFTSTA `CNI`/`EQD`, REMADV `DOC` (avisierte Rechnung,
+   Nummer im DOC C503) und PRICAT `PGI` (Preisgruppe).
+   **INVOIC erhält bewusst KEINEN inneren Trigger:** Rechnungspositionen (LIN)
+   sind kein eigenständiges Dokument — eine Teilauswahl bräche die MOA-/TAX-
+   Summen der Rechnung. Sammelrechnungen laufen über Ebene 1.
+
+**Umsetzung.**
+
+1. **`_engine/umbau.js`**: `vorgaenge()` generalisiert (Trigger je UNH-Typ aus
+   `VORGANG_TRIGGER`, UNS-Grenze, Kennwert je Einheit — bei DOC die
+   Rechnungsnummer); neu `nachrichten()` (UNH-Bereiche mit Typ, Referenz und
+   BGM-Dokumentennummer); `filterVorgaenge(segmente, auswahl,
+   gewaehlteNachrichten)` um die Nachrichtenauswahl erweitert. Je Nachricht
+   bleiben Kopfteil (bis zum ersten Trigger) und **Schlussteil** (ab Ende des
+   letzten Vorgangsbereichs — UNS+S/Summensegmente bei ORDERS/REMADV) erhalten;
+   Nachrichten ohne Vorgangsbegriff werden als Ganzes über- oder abgewählt.
+   UNT (DE0074) und UNZ (DE0036) zählen wie bisher neu.
+2. **`umbau.html`**: Checkbox je Einheit an jeder Trigger-Zeile (Beschriftung
+   nach Einheit: „Vorgang", „Rechnung RE-…", „Lieferstelle", „Preisgruppe";
+   Prüf-ID, sofern im Bereich) und — bei Sammel-Dateien — Checkbox je
+   NACHRICHT an der UNH-Zeile („Nachricht 2 verwenden (INVOIC — Dokument
+   RE-1002)", mit der ursprünglichen Rechnungsnummer als Wiedererkennung).
+   Umfangstext nennt beide Teilauswahlen; bei Typen mit Summensegmenten
+   (MSCONS/REMADV/PRICAT) warnt ein Hinweis, dass MOA/CNT-Summen bei
+   Teilauswahl nicht neu berechnet werden. Ohne jeden Haken entsteht wie
+   bisher keine leere Hülle, sondern ein Hinweis.
+
+**Nachweis.** Einheitentest (Node, synthetische Fixtures INVOIC-Sammel 3×UNH,
+REMADV 3×DOC mit Summen-MOA, MSCONS 2 Lieferstellen mit Kopf-NAD-Abgrenzung,
+UTILMD-Rückwärtskompatibilität samt Alt-Signatur) vollständig grün;
+`scripts/test_umbau.js` um Sammel-INVOIC- und REMADV-Fälle erweitert
+(45 → 56 Prüfungen, u. a. UNZ-Neuzählung nach Nachrichten-Abwahl und
+Summenteil-Erhalt) — 56/56. Regression komplett grün (32 Läufe).

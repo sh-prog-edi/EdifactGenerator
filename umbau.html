@@ -175,7 +175,8 @@ function leeren(){
 // ---- Zustand ---------------------------------------------------------------
 let segmente = null;      // zerlegte Nachricht (Werte entschärft)
 let umgebaut = false;
-let vorgangsListe = [];   // SG4-Vorgänge (IDE+24) mit Segmentbereich und Prüf-ID
+let vorgangsListe = [];
+let nachrichtenListe = [];   // SG4-Vorgänge (IDE+24) mit Segmentbereich und Prüf-ID
 
 // DECODER des Validators invertieren: je Segmenttag Position -> Datenelement-Nummer.
 const DE_NAME = (() => {
@@ -263,17 +264,24 @@ function zeigeEditor(){
   const wurzel = $('segmentEditor');
   wurzel.innerHTML = '';
   vorgangsListe = EdiUmbau.vorgaenge(segmente);
+  nachrichtenListe = EdiUmbau.nachrichten(segmente);
   gewaehlt = 'alle';
-  const vorgangAnSegment = {};   // Segmentindex des IDE -> Vorgangsindex
+  const vorgangAnSegment = {};   // Segmentindex des Trigger-Segments -> Vorgangsindex
   vorgangsListe.forEach((v, n) => { vorgangAnSegment[v.von] = n; });
-  const mehrereNachrichten = segmente.filter(s => s.tag === 'UNH').length > 1;
+  const nachrichtAnSegment = {}; // Segmentindex des UNH -> Nachrichtindex
+  nachrichtenListe.forEach((n, x) => { nachrichtAnSegment[n.von] = x; });
+  const mehrereNachrichten = nachrichtenListe.length > 1;
+  // Anzeigename der anhakbaren Einheit je Trigger-Segment (siehe EdiUmbau.vorgaenge)
+  const EINHEIT = { IDE: 'Vorgang', LIN: 'Vorgang', DOC: 'Rechnung', NAD: 'Lieferstelle',
+                    CNI: 'Vorgang', EQD: 'Vorgang', PGI: 'Preisgruppe' };
 
   segmente.forEach((seg, i) => {
     const zeile = document.createElement('div');
     zeile.className = 'segzeile';
     const q = (seg.elemente[0] || [])[0] || '';
-    const istVorgang = seg.tag === 'IDE' && q === '24';
-    if (istVorgang) zeile.className = 'segzeile vorgang';
+    const istVorgang = vorgangAnSegment[i] !== undefined;
+    const istNachrichtenKopf = mehrereNachrichten && nachrichtAnSegment[i] !== undefined;
+    if (istVorgang || istNachrichtenKopf) zeile.className = 'segzeile vorgang';
     const tag = document.createElement('span');
     tag.className = 'segtag'; tag.textContent = seg.tag;
     zeile.appendChild(tag);
@@ -308,14 +316,32 @@ function zeigeEditor(){
       kasten.checked = true;
       kasten.addEventListener('change', felderInDieAusgabe);
       wahl.appendChild(kasten);
+      const einheit = EINHEIT[v.tag] || 'Vorgang';
+      const kennung = v.tag === 'DOC' && v.kennwert ? ` ${v.kennwert}` : '';
       wahl.appendChild(document.createTextNode(
-        ` Vorgang verwenden${mehrereNachrichten ? ` (Nachricht ${v.nachricht + 1})` : ''}` +
+        ` ${einheit}${kennung} verwenden${mehrereNachrichten ? ` (Nachricht ${v.nachricht + 1})` : ''}` +
         (v.pruefi ? ` — Prüf-ID ${v.pruefi}` : '')));
+      zeile.appendChild(wahl);
+    }
+    // Sammel-Dateien (mehrere UNH je UNB, z. B. INVOIC-Sammelrechnung): Auswahl
+    // je NACHRICHT am UNH — abgewählte Nachrichten wandern nicht in die Ausgabe.
+    if (istNachrichtenKopf){
+      const x = nachrichtAnSegment[i];
+      const nd = nachrichtenListe[x];
+      const wahl = document.createElement('label');
+      wahl.className = 'vorgangswahl';
+      const kasten = document.createElement('input');
+      kasten.type = 'checkbox'; kasten.name = 'nachrichtwahl'; kasten.value = String(x);
+      kasten.checked = true;
+      kasten.addEventListener('change', felderInDieAusgabe);
+      wahl.appendChild(kasten);
+      wahl.appendChild(document.createTextNode(
+        ` Nachricht ${x + 1} verwenden (${nd.typ}${nd.bgm ? ` — Dokument ${nd.bgm}` : ''})`));
       zeile.appendChild(wahl);
     }
     wurzel.appendChild(zeile);
   });
-  $('vorgangsWahl').style.display = vorgangsListe.length > 1 ? '' : 'none';
+  $('vorgangsWahl').style.display = (vorgangsListe.length > 1 || mehrereNachrichten) ? '' : 'none';
   $('panelSegmente').style.display = '';
 }
 
@@ -325,8 +351,16 @@ function gewaehlteVorgaenge(){
   return haken.filter(k => k.checked).map(k => vorgangsListe[Number(k.value)]);
 }
 
+// Gewählte Nachrichten (Sammel-Dateien); null = keine Auswahl angeboten (alle).
+function gewaehlteNachrichtIndizes(){
+  const haken = Array.from(document.querySelectorAll('input[name="nachrichtwahl"]'));
+  if (!haken.length) return null;
+  return haken.filter(k => k.checked).map(k => Number(k.value));
+}
+
 function alleVorgaenge(an){
-  document.querySelectorAll('input[name="vorgangswahl"]').forEach(k => { k.checked = an; });
+  document.querySelectorAll('input[name="vorgangswahl"], input[name="nachrichtwahl"]')
+    .forEach(k => { k.checked = an; });
   felderInDieAusgabe();
 }
 
@@ -375,18 +409,35 @@ function felderInDieAusgabe(){
   let umfang = vorgangsListe.length > 1
     ? `Ausgabe: alle ${vorgangsListe.length} Vorgänge.` : '';
   const gewaehlt = gewaehlteVorgaenge();
+  const nachrichtIdx = gewaehlteNachrichtIndizes();
   if (vorgangsListe.length > 1 && !gewaehlt.length){
     $('ausgabeUmfang').textContent = 'Kein Vorgang angehakt — mindestens einen Haken setzen, sonst gibt es nichts zu erzeugen.';
     $('umbauOut').value = '';
     $('panelAusgabe').style.display = '';
     return;
   }
-  if (vorgangsListe.length > 1 && gewaehlt.length < vorgangsListe.length){
-    ausgabe = EdiUmbau.filterVorgaenge(segmente, gewaehlt);
-    const nummern = gewaehlt.map(v =>
-      `${v.nr}${segmente.filter(s => s.tag === 'UNH').length > 1 ? ` (Nachricht ${v.nachricht + 1})` : ''}${v.pruefi ? ` [${v.pruefi}]` : ''}`);
-    umfang = `Ausgabe: ${gewaehlt.length} von ${vorgangsListe.length} Vorgängen — ${nummern.join(', ')} — ` +
+  if (nachrichtIdx !== null && !nachrichtIdx.length){
+    $('ausgabeUmfang').textContent = 'Keine Nachricht angehakt — mindestens einen Haken setzen, sonst gibt es nichts zu erzeugen.';
+    $('umbauOut').value = '';
+    $('panelAusgabe').style.display = '';
+    return;
+  }
+  const vorgangTeilauswahl = vorgangsListe.length > 1 && gewaehlt.length < vorgangsListe.length;
+  const nachrichtTeilauswahl = nachrichtIdx !== null && nachrichtIdx.length < nachrichtenListe.length;
+  if (vorgangTeilauswahl || nachrichtTeilauswahl){
+    ausgabe = EdiUmbau.filterVorgaenge(segmente, gewaehlt, nachrichtIdx);
+    const teile = [];
+    if (nachrichtTeilauswahl)
+      teile.push(`${nachrichtIdx.length} von ${nachrichtenListe.length} Nachrichten`);
+    if (vorgangTeilauswahl){
+      const nummern = gewaehlt.map(v =>
+        `${v.nr}${nachrichtenListe.length > 1 ? ` (Nachricht ${v.nachricht + 1})` : ''}${v.pruefi ? ` [${v.pruefi}]` : ''}`);
+      teile.push(`${gewaehlt.length} von ${vorgangsListe.length} Vorgängen — ${nummern.join(', ')}`);
+    }
+    umfang = `Ausgabe: ${teile.join(' · ')} — ` +
       `Segmentzähler (UNT) und Nachrichtenzähler (UNZ) sind an den verkürzten Umfang angepasst.`;
+    if (vorgangTeilauswahl && gewaehlt.some(v => v.summenHinweis))
+      umfang += ' Hinweis: Summen-/Kontrollsegmente (MOA/CNT) werden nicht neu berechnet — bei Teilauswahl prüfen.';
   }
   $('ausgabeUmfang').textContent = umfang;
   $('umbauOut').value = EdiUmbau.serialisiere(ausgabe);

@@ -202,31 +202,98 @@
     return bericht;
   }
 
-  // ---- Vorgänge (SG4 IDE+24) ---------------------------------------------
-  // Eine Nachricht kann mehrere Vorgänge tragen, auch zu unterschiedlichen
-  // Prüf-IDs (RFF+Z13 steht je Vorgang). vorgaenge() liefert je Vorgang den
-  // Segmentbereich [von..bis) innerhalb seiner Nachricht sowie die Prüf-ID,
-  // soweit der Vorgang eine führt.
+  // ---- Vorgänge / Teil-Dokumente je Nachrichtentyp ------------------------
+  // Viele MaKo-Nachrichten aggregieren mehrere fachliche Einheiten in EINER
+  // UNH-Nachricht. Welches Segment eine neue Einheit eröffnet, hängt am Typ
+  // (UNH-Kennung); der Umbau bietet je Einheit die Anhak-Auswahl:
+  //   UTILMD/UTILTS  IDE   Vorgang (UTILMD nur IDE+24; IDE+Z01-Übersichten nicht)
+  //   ORDERS-Familie LIN   Bestellvorgang/-position
+  //   MSCONS         NAD   Lieferstelle/Objekt (nur im Positionsteil nach UNS)
+  //   IFTSTA         CNI/EQD  Sendung bzw. Equipment-Vorgang
+  //   REMADV         DOC   avisierte Rechnung (Summensegmente danach beachten!)
+  //   PRICAT         PGI   Preisgruppe/Preisblatt
+  // INVOIC führt bewusst KEINEN inneren Trigger: Rechnungspositionen einer
+  // Rechnung sind kein eigenständiges Dokument (Teilauswahl bräche die
+  // MOA-/TAX-Summen). Sammelrechnungen aggregieren über MEHRERE UNH je UNB —
+  // dafür gibt es die Nachrichtenauswahl (nachrichten()/filterVorgaenge).
+  var VORGANG_TRIGGER = {
+    UTILMD: { tags: ["IDE"], qualifier: "24" },
+    UTILTS: { tags: ["IDE"] },
+    ORDERS: { tags: ["LIN"] }, ORDRSP: { tags: ["LIN"] }, ORDCHG: { tags: ["LIN"] },
+    QUOTES: { tags: ["LIN"] }, REQOTE: { tags: ["LIN"] },
+    MSCONS: { tags: ["NAD"], nachUNS: true, summenHinweis: true },
+    IFTSTA: { tags: ["CNI", "EQD"] },
+    REMADV: { tags: ["DOC"], summenHinweis: true },
+    PRICAT: { tags: ["PGI"], summenHinweis: true },
+  };
+
+  // Nachrichtentyp (UNH DE0065) je UNH-Bereich, z. B. "UTILMD".
+  function typVon(unhSegment) {
+    return ((unhSegment.elemente[1] || [])[0] || "").toUpperCase();
+  }
+
+  // UNH-Bereiche der Übertragungsdatei: je Nachricht {von, bis, typ, ref, bgm}.
+  // `bis` zeigt HINTER das UNT; ref = Nachrichten-Referenz (UNH DE0062),
+  // bgm = Dokumentennummer (BGM DE1004, z. B. die Rechnungsnummer der INVOIC).
+  function nachrichten(segmente) {
+    var liste = [];
+    var offen = null;
+    segmente.forEach(function (seg, i) {
+      if (seg.tag === "UNH") {
+        offen = { von: i, bis: -1, typ: typVon(seg), ref: (seg.elemente[0] || [])[0] || "", bgm: "" };
+        return;
+      }
+      if (!offen) return;
+      if (seg.tag === "BGM" && !offen.bgm)
+        offen.bgm = (seg.elemente[1] || [])[0] || "";
+      if (seg.tag === "UNT") { offen.bis = i + 1; liste.push(offen); offen = null; }
+    });
+    return liste;
+  }
+
+  // Teil-Dokumente (Vorgänge) je Nachricht gemäß VORGANG_TRIGGER. Liefert je
+  // Einheit den Segmentbereich [von..bis) innerhalb ihrer Nachricht, die Prüf-ID
+  // (RFF+Z13 im Bereich, UTILMD) sowie ein Anzeige-Label (Trigger + Kennwert).
   function vorgaenge(segmente) {
     var liste = [];
     var nachricht = -1;
+    var trigger = null;
+    var hinterUNS = false;
     var offen = null;
     var schliesse = function (bis) {
       if (offen) { offen.bis = bis; liste.push(offen); offen = null; }
     };
     segmente.forEach(function (seg, i) {
       var q = (seg.elemente[0] || [])[0] || "";
-      if (seg.tag === "UNH") { schliesse(i); nachricht += 1; return; }
+      if (seg.tag === "UNH") {
+        schliesse(i); nachricht += 1; hinterUNS = false;
+        trigger = VORGANG_TRIGGER[typVon(seg)] || null;
+        return;
+      }
+      if (seg.tag === "UNS") { schliesse(i); hinterUNS = true; return; }
       if (seg.tag === "UNT" || seg.tag === "UNZ") { schliesse(i); return; }
-      if (seg.tag === "IDE" && q === "24") {
+      if (trigger && trigger.tags.indexOf(seg.tag) >= 0
+          && (!trigger.qualifier || q === trigger.qualifier)
+          && (!trigger.nachUNS || hinterUNS)) {
         schliesse(i);
-        offen = { von: i, bis: -1, nachricht: nachricht, nr: liste.filter(function (v) { return v.nachricht === nachricht; }).length + 1, pruefi: "" };
+        var kennwert = q || (seg.elemente[0] || []).join(":");
+        offen = { von: i, bis: -1, nachricht: nachricht,
+                  nr: liste.filter(function (v) { return v.nachricht === nachricht; }).length + 1,
+                  pruefi: "", tag: seg.tag, kennwert: kennwert,
+                  summenHinweis: !!trigger.summenHinweis };
         return;
       }
       if (offen && seg.tag === "RFF" && q === "Z13" && !offen.pruefi)
         offen.pruefi = (seg.elemente[0] || [])[1] || "";
     });
     schliesse(segmente.length);
+    // REMADV: Die Dokumentennummer steht im DOC-Segment selbst (C503, 2. Element).
+    liste.forEach(function (v) {
+      if (v.tag === "DOC") {
+        var doc = segmente[v.von];
+        v.kennwert = ((doc.elemente[1] || [])[0]) || v.kennwert;
+      }
+    });
     return liste;
   }
 
@@ -239,20 +306,36 @@
   // `auswahl` ist die Liste der zu behaltenden Vorgänge aus vorgaenge(); die
   // Auswahl aller Vorgänge liefert die Nachricht unverändert (bis auf die neu
   // gezählten UNT/UNZ-Werte, die dann dem vollen Umfang entsprechen).
-  function filterVorgaenge(segmente, auswahl) {
-    // Je Nachricht: Segmentindex des ersten IDE (Ende des Kopfteils) und die
-    // behaltenen Vorgangsbereiche.
-    var ersterIdeJeNachricht = {};
+  function filterVorgaenge(segmente, auswahl, gewaehlteNachrichten) {
+    // Je Nachricht: Kopfteil-Ende (erster Trigger), Schlussteil-Beginn (Ende des
+    // letzten Vorgangsbereichs — z. B. UNS+S/Summenteil bei ORDERS/REMADV) und
+    // die behaltenen Vorgangsbereiche.
+    var ersterTriggerJeNachricht = {};
+    var schlussAbJeNachricht = {};
+    var hatVorgaenge = {};
     vorgaenge(segmente).forEach(function (v) {
-      if (!(v.nachricht in ersterIdeJeNachricht) || v.von < ersterIdeJeNachricht[v.nachricht])
-        ersterIdeJeNachricht[v.nachricht] = v.von;
+      hatVorgaenge[v.nachricht] = true;
+      if (!(v.nachricht in ersterTriggerJeNachricht) || v.von < ersterTriggerJeNachricht[v.nachricht])
+        ersterTriggerJeNachricht[v.nachricht] = v.von;
+      if (!(v.nachricht in schlussAbJeNachricht) || v.bis > schlussAbJeNachricht[v.nachricht])
+        schlussAbJeNachricht[v.nachricht] = v.bis;
     });
     var behalteBereiche = {};   // nachricht -> [[von,bis], …]
-    var behalteNachricht = {};  // nachricht -> true
+    var behalteNachricht = {};  // nachricht -> true (mind. ein gewählter Vorgang)
     (auswahl || []).forEach(function (v) {
       (behalteBereiche[v.nachricht] = behalteBereiche[v.nachricht] || []).push([v.von, v.bis]);
       behalteNachricht[v.nachricht] = true;
     });
+    // Nachrichtenauswahl (Sammel-Dateien, z. B. mehrere INVOIC je UNB): ohne
+    // Angabe bleiben alle; Nachrichten ohne eigene Vorgangsauswahl bleiben
+    // erhalten, sofern sie nicht ausdrücklich abgewählt sind.
+    var nachrichtGewaehlt = function (n) {
+      if (gewaehlteNachrichten == null) return true;
+      return gewaehlteNachrichten.indexOf(n) >= 0;
+    };
+    var bleibt = function (n) {
+      return nachrichtGewaehlt(n) && (!hatVorgaenge[n] || behalteNachricht[n]);
+    };
 
     var kopie = [];
     var uebernehmen = function (seg) {
@@ -263,19 +346,21 @@
       if (seg.tag === "UNB" || seg.tag === "UNZ") { uebernehmen(seg); return; }
       if (seg.tag === "UNH") {
         nachricht += 1;
-        if (behalteNachricht[nachricht]) { uebernehmen(seg); unhIdxKopie = kopie.length - 1; }
+        if (bleibt(nachricht)) { uebernehmen(seg); unhIdxKopie = kopie.length - 1; }
         return;
       }
-      if (!behalteNachricht[nachricht]) return;
+      if (!bleibt(nachricht)) return;
       if (seg.tag === "UNT") {
         uebernehmen(seg);
         // Segmentzähler DE0074: UNH bis UNT einschließlich, im verkürzten Umfang
         kopie[kopie.length - 1].elemente[0] = [String(kopie.length - unhIdxKopie)];
         return;
       }
-      var kopfteil = i < ersterIdeJeNachricht[nachricht];
+      if (!hatVorgaenge[nachricht]) { uebernehmen(seg); return; }
+      var kopfteil = i < ersterTriggerJeNachricht[nachricht];
+      var schlussteil = i >= schlussAbJeNachricht[nachricht];
       var vorgangsteil = (behalteBereiche[nachricht] || []).some(function (b) { return i >= b[0] && i < b[1]; });
-      if (kopfteil || vorgangsteil) uebernehmen(seg);
+      if (kopfteil || schlussteil || vorgangsteil) uebernehmen(seg);
     });
     // Nachrichtenzähler im UNZ (DE0036): nur Nachrichten mit gewählten Vorgängen bleiben
     kopie.forEach(function (seg) {
@@ -294,6 +379,7 @@
     tagesende: tagesende,
     dtmWert: dtmWert,
     vorgaenge: vorgaenge,
+    nachrichten: nachrichten,
     filterVorgaenge: filterVorgaenge,
   };
   global.EdiUmbau = api;

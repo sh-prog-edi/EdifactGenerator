@@ -5,6 +5,18 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **05.08.2026** – **Umbau: Dokument- und Vorgangsauswahl für alle aggregierenden
+  Nachrichtentypen.** Die Anhak-Auswahl des Umbau-Werkzeugs (bisher nur UTILMD,
+  IDE+24) deckt jetzt beide Aggregationsebenen ab: je **Nachricht** bei
+  Sammel-Dateien (mehrere UNH je UNB, z. B. INVOIC-Sammelrechnung — Checkbox an
+  der UNH-Zeile mit Typ und Rechnungsnummer aus dem BGM) und je **Einheit**
+  innerhalb einer Nachricht gemäß Trigger-Tabelle (UTILMD/UTILTS IDE, ORDERS-
+  Familie LIN, MSCONS NAD-Lieferstelle nach UNS, IFTSTA CNI/EQD, REMADV
+  DOC-Rechnung, PRICAT PGI-Preisgruppe). INVOIC bewusst ohne inneren Trigger
+  (Positionsauswahl bräche die Rechnungssummen). Kopf- und Summenteil bleiben
+  erhalten, UNT/UNZ zählen neu; bei Typen mit Summensegmenten warnt die Ausgabe
+  vor nicht neu berechneten MOA/CNT. `scripts/test_umbau.js` 45 → 56 Prüfungen.
+  → Protokoll Abschnitt 48.
 - **05.08.2026** – **MaKo-Plattform angebunden: Dokument-Frühwarnung und
   Q&A-Quelle.** Neues Werkzeug `werkzeuge/mako_plattform.py` (lokal):
   `--dokumente` gleicht das Quellen-Manifest gegen bdew-mako.de/api/documents ab
