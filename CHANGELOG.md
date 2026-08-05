@@ -5,6 +5,15 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **05.08.2026** – **MaKo-Plattform angebunden: Dokument-Frühwarnung und
+  Q&A-Quelle.** Neues Werkzeug `werkzeuge/mako_plattform.py` (lokal):
+  `--dokumente` gleicht das Quellen-Manifest gegen bdew-mako.de/api/documents ab
+  (Frühwarnung neuer Fassungen), `--fragen` sammelt die Q&A des BDEW-Forums
+  Datenformate. Erstlauf in `docs/MAKO_ABGLEICH_20260805.md`: Manifest für
+  202604/202610 aktuell; 12 Konsultationsfassungen des künftigen Formatstands
+  (u. a. UTILMD S2.3) und die fehlenden 202610-UTILMD-Spiegeldateien
+  identifiziert (fileIds 12279/12281); elf projektrelevante Q&A-Klarstellungen
+  als Arbeitsvorrat für Validator und Punkte B/D/E. → Protokoll Abschnitt 47.
 - **04.08.2026** – **Version 0.10.0-beta; Versionsanzeige auf allen Seiten.** Neue
   zentrale Pflegestelle `_engine/version.js`: Alle 23 Seiten zeigen unten rechts ein
   dezentes Badge mit Version und (wo vorhanden) aktivem Formatstand. Die

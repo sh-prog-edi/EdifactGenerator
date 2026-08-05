@@ -2471,3 +2471,35 @@ Auftraggebers — der Release-Workflow baut daraus das ZIP.
 **Nachweis.** Badge auf Startseite/Maske/Validator korrekt (mit bzw. ohne
 Formatstand), keine JS-Fehler; Paketprüfung mit neuem Versions-Check grün;
 volle Regression grün (32 Läufe).
+
+## 47. MaKo-Plattform angebunden: Dokument-Frühwarnung und Q&A-Quelle (05.08.2026)
+
+**Auftrag.** Zugriffsprüfung auf bdew-mako.de ergab: Die Seiten (questions,
+marketProcess) sind eine reine JavaScript-Anwendung, aber die dahinterliegende
+API ist offen erreichbar. Umgesetzt wurden beide daraus abgeleiteten Ideen.
+
+**Umsetzung.**
+
+1. **`werkzeuge/mako_plattform.py`** (lokal, wie die übrigen Werkzeuge):
+   `--dokumente` gleicht `docs/QUELLEN_MANIFEST.json` gegen `/api/documents` ab
+   und meldet Fassungen oberhalb des Manifest-Bestands (Frühwarnung nächster
+   Formatstand); `--fragen [--suche X]` sammelt die veröffentlichten Q&A des
+   BDEW-Forums Datenformate als Tabelle. DevExtreme-Pagination (skip/take,
+   sort nach fileId) im Werkzeug hinterlegt; Downloads bleiben bewusst der
+   Hand-Weg (`/api/downloadFile/<fileId>`).
+2. **Erstlauf** (Ergebnis in `docs/MAKO_ABGLEICH_20260805.md`): Manifest für
+   202604/202610 aktuell; 15 Fassungen oberhalb — 12 Konsultationsfassungen
+   des KÜNFTIGEN Formatstands (u. a. UTILMD Strom S2.3/AHB 2.3, Frist
+   31.08.2026) und die drei UTILMD-Strom-Dateivarianten 12279/12280/12281,
+   darunter die im Spiegel fehlenden 202610-AHB/MIG-Dateien. Q&A: ~85 Tickets
+   gesichtet, elf unmittelbar projektrelevante Klarstellungen dokumentiert —
+   darunter PRI-n..15-Längenzählung ohne Dezimaltrennzeichen, QTY-Nachkomma-
+   stellen, die UTILMD-Pflicht der SG „Daten der Marktlokation" bei
+   Keine-Daten-Zeiträumen (2025-00494, prüfrelevant für Validator/Punkt D),
+   APERAK-Bündelung (Punkt B) und E_0406-Schritt-82/A90 (Punkt E); die
+   DTM-303-Tickets bestätigen unsere MaKo-Zeitdarstellung.
+
+**Nachweis.** API-Erkundung und Erstlauf über WebFetch (Chat-Konvention);
+Werkzeug syntaxgeprüft — der erste lokale Lauf beim Auftraggeber validiert
+Pagination und Ausgabe. Kein Eingriff in Prüfgrundlagen; die elf
+Klarstellungen sind Arbeitsvorrat für die Punkte B/D/E und den Validator.
