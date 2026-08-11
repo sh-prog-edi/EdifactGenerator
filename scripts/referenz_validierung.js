@@ -31,6 +31,7 @@ const streng = process.argv.includes('--streng');
 
 const registry = require(path.join(ROOT, '_engine/daten/validator-registry.js'));
 const { ladeGenerator } = require(path.join(ROOT, '_engine/tests/harness.js'));
+const EdiUmbau = require(path.join(ROOT, '_engine/umbau.js'));
 
 if (!fs.existsSync(ORDNER)) {
     console.log(`Referenzordner nicht vorhanden: ${ORDNER}`);
@@ -89,6 +90,48 @@ function validatorFuer(ziel) {
     return lader[dataDir];
 }
 
+// ---- Zerlegung einer Übertragungsdatei in einzeln prüfbare Einheiten -------
+// Echte Übertragungsdateien aggregieren zwei Ebenen (siehe Umbau, Protokoll 48):
+//   1. mehrere Nachrichten je UNB (Sammel-Datei, z. B. 1143 MSCONS in einer Datei)
+//   2. mehrere Vorgänge je UTILMD-Nachricht mit je EIGENER Prüf-ID (RFF+Z13)
+// Ohne Zerlegung prüft die Suite den ganzen Dateitext gegen die ERSTE Prüf-ID —
+// das erzeugt Scheinbefunde (fremde Segmente „nicht vorgesehen", Muss-Segmente
+// je Wiederholung mehrfach gezählt). Hier wird die Datei mit derselben
+// Engine-Mechanik wie das Umbau-Werkzeug in Einheiten zerlegt und jede Einheit
+// einzeln erkannt und validiert.
+function einheiten(text) {
+    const segmente = EdiUmbau.zerlege(text);
+    const nachr = EdiUmbau.nachrichten(segmente);
+    if (nachr.length === 0) return [{ text, herkunft: '' }];
+    const unb = segmente.find(s => s.tag === 'UNB') || { tag: 'UNB', elemente: [] };
+    const origUnz = segmente.find(s => s.tag === 'UNZ');
+    // Datenaustauschreferenz (UNB DE0020): sie steht im UNZ-Trailer, NICHT die
+    // Nachrichtenreferenz (UNH DE0062). Beim Zerlegen die Interchange-Referenz
+    // beibehalten, sonst meldet der Validator UNZ≠UNB fälschlich.
+    const interchangeRef = (unb.elemente[4] || [])[0]
+        || (origUnz && (origUnz.elemente[1] || [])[0]) || '1';
+    const liste = [];
+    nachr.forEach((n, idx) => {
+        // Mini-Übertragung: UNB + genau diese Nachricht (UNH…UNT) + UNZ (1 Nachricht).
+        const mini = [unb].concat(segmente.slice(n.von, n.bis),
+            [{ tag: 'UNZ', elemente: [['1'], [interchangeRef]] }]);
+        const vg = EdiUmbau.vorgaenge(mini);
+        const pruefis = [...new Set(vg.map(v => v.pruefi).filter(Boolean))];
+        const mehrfach = nachr.length > 1 ? ` [Nachricht ${idx + 1}/${nachr.length}` +
+            (n.bgm ? `, ${n.bgm}` : '') + ']' : '';
+        if (pruefis.length >= 2) {
+            // UTILMD mit mehreren Vorgängen unterschiedlicher Prüf-ID: je Vorgang isolieren.
+            vg.forEach(v => liste.push({
+                text: EdiUmbau.serialisiere(EdiUmbau.filterVorgaenge(mini, [v], null)),
+                herkunft: `${mehrfach ? mehrfach.slice(0, -1) + ', ' : ' ['}Vorgang ${v.nr}${v.pruefi ? ' PID ' + v.pruefi : ''}]`,
+            }));
+        } else {
+            liste.push({ text: EdiUmbau.serialisiere(mini), herkunft: mehrfach });
+        }
+    });
+    return liste;
+}
+
 // ---- Lauf ------------------------------------------------------------------
 const dateien = sammle(ORDNER);
 if (!dateien.length) {
@@ -97,54 +140,93 @@ if (!dateien.length) {
     process.exit(0);
 }
 
-let hart = 0, befundSumme = 0, hinweisSumme = 0, erkannt = 0;
-console.log(`Referenz-Testsuite: ${dateien.length} Nachricht(en) aus ${ORDNER}\n`);
+let hart = 0, befundSumme = 0, hinweisSumme = 0;
+let dateienErkannt = 0, einheitenGesamt = 0, einheitenErkannt = 0, einheitenSauber = 0;
+console.log(`Referenz-Testsuite: ${dateien.length} Datei(en) aus ${ORDNER}\n`);
 
 for (const datei of dateien) {
     const rel = path.relative(ORDNER, datei);
     const text = fs.readFileSync(datei, 'utf8');
-    const e = erkenne(text);
-    if (e.fehler) {
-        console.log(`✗ ${rel}: nicht erkannt — ${e.fehler}`);
-        hart++;
-        continue;
-    }
-    erkannt++;
-    let ergebnis;
+    let teile;
     try {
-        ergebnis = validatorFuer(e.ziel).validiere(text, e.pruefi);
+        teile = einheiten(text);
     } catch (fehler) {
-        console.log(`✗ ${rel}: Validierung abgebrochen — ${fehler.message}`);
+        console.log(`✗ ${rel}: Zerlegung abgebrochen — ${fehler.message}`);
         hart++;
         continue;
     }
-    const fehlerListe = ergebnis.findings.filter(f => f.level === 'FEHLER');
-    const hinweise = ergebnis.findings.length - fehlerListe.length;
-    befundSumme += fehlerListe.length;
-    hinweisSumme += hinweise;
-    const kopf = `${e.ziel.format}${e.ziel.sparte ? ' ' + e.ziel.sparte : ''} ${e.ziel.stand}` +
-        (e.pruefi ? ` PID ${e.pruefi}` : ' (ohne RFF+Z13)');
-    console.log(`${fehlerListe.length ? '!' : '✓'} ${rel}: ${kopf} — ` +
-        `${fehlerListe.length} Fehler, ${hinweise} Hinweise`);
-    fehlerListe.slice(0, 5).forEach(f => console.log(`     [${f.seg}] ${f.msg}`));
-    if (fehlerListe.length > 5) console.log(`     … ${fehlerListe.length - 5} weitere`);
 
-    // Erwartungsdatei abgleichen (falls vorhanden)
+    // Befunde über alle Einheiten der Datei bündeln: gleiche Meldung wird
+    // zusammengefasst gezählt (eine Sammel-Datei mit 1143 gleichartigen
+    // Nachrichten ergibt EINEN Befund mit Häufigkeit, nicht 1143 Zeilen).
+    const gebuendelt = new Map();   // msg -> { seg, anzahl, level }
+    let einheitenDerDatei = 0, erkannteEinheiten = 0, fehlerEinheiten = 0;
+    let letztesZiel = null, letztePruefi = null;
+    const nichtErkannt = new Set();
+
+    for (const teil of teile) {
+        einheitenDerDatei++;
+        einheitenGesamt++;
+        const e = erkenne(teil.text);
+        if (e.fehler) { nichtErkannt.add(e.fehler); continue; }
+        erkannteEinheiten++;
+        einheitenErkannt++;
+        letztesZiel = e.ziel; letztePruefi = e.pruefi;
+        let ergebnis;
+        try {
+            ergebnis = validatorFuer(e.ziel).validiere(teil.text, e.pruefi);
+        } catch (fehler) {
+            gebuendelt.set('Validierung abgebrochen: ' + fehler.message,
+                { seg: '—', anzahl: (gebuendelt.get('Validierung abgebrochen: ' + fehler.message)?.anzahl || 0) + 1, level: 'FEHLER' });
+            continue;
+        }
+        const fehlerListe = ergebnis.findings.filter(f => f.level === 'FEHLER');
+        if (fehlerListe.length) fehlerEinheiten++; else einheitenSauber++;
+        ergebnis.findings.forEach(f => {
+            const vorhanden = gebuendelt.get(f.msg) || { seg: f.seg, anzahl: 0, level: f.level };
+            vorhanden.anzahl++;
+            gebuendelt.set(f.msg, vorhanden);
+        });
+    }
+
+    if (erkannteEinheiten > 0) dateienErkannt++;
+    const fehlerBefunde = [...gebuendelt.values()].filter(f => f.level === 'FEHLER');
+    const hinweisBefunde = [...gebuendelt.values()].filter(f => f.level !== 'FEHLER');
+    befundSumme += fehlerBefunde.reduce((s, f) => s + f.anzahl, 0);
+    hinweisSumme += hinweisBefunde.reduce((s, f) => s + f.anzahl, 0);
+
+    const kopf = letztesZiel
+        ? `${letztesZiel.format}${letztesZiel.sparte ? ' ' + letztesZiel.sparte : ''} ${letztesZiel.stand}`
+        : '(nicht erkannt)';
+    const umfang = einheitenDerDatei > 1 ? ` · ${einheitenDerDatei} Einheiten` : '';
+    const marke = nichtErkannt.size ? '✗' : (fehlerBefunde.length ? '!' : '✓');
+    console.log(`${marke} ${rel}: ${kopf}${umfang} — ` +
+        `${fehlerBefunde.length} Fehlerart(en), ${hinweisBefunde.length} Hinweisart(en)` +
+        (fehlerEinheiten ? `, ${fehlerEinheiten}/${erkannteEinheiten} Einheiten mit Fehler` : ''));
+    if (nichtErkannt.size) { [...nichtErkannt].forEach(m => console.log(`     ✗ nicht erkannt: ${m}`)); hart += nichtErkannt.size; }
+    fehlerBefunde.sort((a, b) => b.anzahl - a.anzahl).slice(0, 8).forEach(f =>
+        console.log(`     [${f.seg}] ${[...gebuendelt.entries()].find(([, v]) => v === f)[0]}` +
+            (f.anzahl > 1 ? `  (${f.anzahl}×)` : '')));
+    if (fehlerBefunde.length > 8) console.log(`     … ${fehlerBefunde.length - 8} weitere Fehlerart(en)`);
+
+    // Erwartungsdatei abgleichen (falls vorhanden) — bezieht sich auf die
+    // (erste) erkannte Prüf-ID der Datei.
     const erwartungsDatei = datei + '.erwartung.json';
     if (fs.existsSync(erwartungsDatei)) {
         const erwartung = JSON.parse(fs.readFileSync(erwartungsDatei, 'utf8'));
-        if (erwartung.pruefi && erwartung.pruefi !== e.pruefi) {
-            console.log(`   ✗ Erwartung verletzt: Prüf-ID ${e.pruefi} statt ${erwartung.pruefi}`);
+        if (erwartung.pruefi && erwartung.pruefi !== letztePruefi) {
+            console.log(`   ✗ Erwartung verletzt: Prüf-ID ${letztePruefi} statt ${erwartung.pruefi}`);
             hart++;
         }
-        if (erwartung.fehlerfrei === true && fehlerListe.length) {
+        if (erwartung.fehlerfrei === true && fehlerBefunde.length) {
             console.log(`   ✗ Erwartung verletzt: Nachricht sollte fehlerfrei validieren`);
             hart++;
         }
     }
 }
 
-console.log(`\nZusammenfassung: ${erkannt}/${dateien.length} erkannt · ` +
+console.log(`\nZusammenfassung: ${dateienErkannt}/${dateien.length} Dateien erkannt · ` +
+    `${einheitenErkannt}/${einheitenGesamt} Einheiten erkannt (${einheitenSauber} fehlerfrei) · ` +
     `${befundSumme} Fehler-Befunde · ${hinweisSumme} Hinweise · ${hart} harte Abweichungen`);
 console.log('Befunde an echten Nachrichten zuerst FACHLICH bewerten (Extraktion? Validator? ' +
     'Nachricht?) und im Protokoll festhalten — nicht pauschal wegfiltern.');

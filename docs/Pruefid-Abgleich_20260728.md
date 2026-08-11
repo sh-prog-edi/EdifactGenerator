@@ -2559,3 +2559,52 @@ UTILMD-Rückwärtskompatibilität samt Alt-Signatur) vollständig grün;
 `scripts/test_umbau.js` um Sammel-INVOIC- und REMADV-Fälle erweitert
 (45 → 56 Prüfungen, u. a. UNZ-Neuzählung nach Nachrichten-Abwahl und
 Summenteil-Erhalt) — 56/56. Regression komplett grün (32 Läufe).
+
+## 49. Referenz-Testsuite: Einheiten-Zerlegung und erste Auswertung an echten Nachrichten (11.08.2026)
+
+**Auftrag.** Der Auftraggeber hat 18 anonymisierte, im Markt gelaufene
+Übertragungsdateien bereitgestellt (Lieferantensicht, Strom/Gas, Formatstand
+202604): UTILMD, MSCONS, APERAK, CONTRL. Damit wird die Referenz-Testsuite
+(offener Punkt A) erstmals an echtem Material betrieben.
+
+**Befund beim Erstlauf — Sammel-/Mehr-Vorgang-Dateien.** Die Suite validierte
+bis dahin den gesamten Dateitext gegen die ERSTE Prüf-ID. Echte Dateien
+aggregieren aber auf zwei Ebenen: mehrere Nachrichten je UNB (eine MSCONS-Datei
+enthielt 1143 Nachrichten, eine APERAK-Datei 224) und mehrere Vorgänge mit je
+eigener Prüf-ID je UTILMD-Nachricht. Ohne Zerlegung entstanden Scheinbefunde
+(2286 „fehlende Muss-Segmente" allein aus der 1143er-Datei; fremde Segmente
+eines zweiten Vorgangs als „nicht vorgesehen").
+
+**Umsetzung (Suite).** `scripts/referenz_validierung.js` zerlegt jede Datei nun
+mit derselben Engine-Mechanik wie das Umbau-Werkzeug (`EdiUmbau.zerlege`,
+`nachrichten`, `vorgaenge`, `filterVorgaenge`, `serialisiere`) in einzeln
+prüfbare Einheiten: je Nachricht (UNH…UNT, in eine Mini-Übertragung mit
+korrekter Interchange-Referenz im UNZ verpackt) und bei mehreren Prüf-IDs je
+Vorgang. Befunde werden je Datei gebündelt (gleiche Meldung mit Häufigkeit, statt
+1143 Einzelzeilen). Ergebnis: 18/18 Dateien erkannt, 1384 Einheiten, 230
+fehlerfrei; die beiden Sammeldateien lösen sich sauber auf (APERAK 224/224
+fehlerfrei). Eine beim Umbau der Suite selbst eingebaute Fehlerquelle (UNZ trug
+zunächst die Nachrichten- statt der Interchange-Referenz) wurde vor dem Abschluss
+erkannt und behoben.
+
+**Auswertung (fachlich).** Die Rest-Befunde gehen sämtlich auf drei
+Validator-Präzisierungen zurück — keine Extraktionslücke, kein echter
+Nachrichtenfehler. Details in `docs/REFERENZ_BEFUNDE_20260811.md`:
+
+1. **Segment-Muss ohne Segmentgruppen-Begrenzung.** Trägt ein Segment
+   `expr = "Muss"`, hängt die Einschränkung aber an der Segmentgruppe
+   (`sgExpr`, z. B. `Soll […]` oder `Muss [Bedingung]`), stuft der Validator es
+   sofort als hartes Muss ein und wertet die Gruppenbedingung nicht mehr aus.
+   Belegt an LOC+Z21 (55036/55037, Entweder-oder mit LOC+Z16), RFF
+   Verwendungszeitraum (55220, nur bei Datenclearing), MSCONS RFF+AGI/AGK/Z30
+   (13019/13002/13017) u. a. Höchster Hebel; Korrektur bewegt Golden.
+2. **DTM-Formatcodes 104/304 zu eng.** 304 ohne Sekunden (`\d{12}\+00` statt
+   `\d{14}\+00`, Wert `20260810113506+00`), 104 mit Bindestrich statt zwei
+   MMDD-Grenzen (`02010204`). Klar umrissene Korrektur.
+3. **CAV-Aufbau-Hinweis** (55653, Einzelfall) — MIG-Auszug prüfen.
+
+**Nachweis.** Referenzlauf lokal grün erkannt (18/18); Regression unverändert
+grün (32 Läufe; die Suite selbst läuft nur lokal mit Referenzordner). Die drei
+Validator-Korrekturen sind der nächste Arbeitsschritt (eigene Auslieferung mit
+Golden-Diff-Sichtung), NICHT Teil dieses Commits — hier wird nur die Suite
+ertüchtigt und der Befund dokumentiert. Nachrichten bleiben lokal.

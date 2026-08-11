@@ -5,6 +5,19 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **11.08.2026** – **Referenz-Testsuite: Einheiten-Zerlegung und erste Auswertung
+  an echten Nachrichten.** `npm run referenz` zerlegt jede Übertragungsdatei mit
+  der Umbau-Engine (`EdiUmbau`) in einzeln prüfbare Einheiten — je Nachricht
+  (UNH…UNT) und, bei UTILMD mit mehreren Prüf-IDs, je Vorgang — und bündelt
+  Befunde je Datei. Damit lösen sich Sammel-Übertragungen sauber auf (eine
+  APERAK-Datei mit 224 Nachrichten validiert vollständig fehlerfrei; eine
+  MSCONS-Datei mit 1143 Nachrichten statt 2286 Scheinbefunden). Erstlauf an 18
+  anonymisierten Marktnachrichten (Lieferantensicht, 202604): 18/18 erkannt, 1384
+  Einheiten, 230 fehlerfrei. Alle Rest-Befunde sind Validator-Präzisierungen
+  (Segment-Muss ohne Segmentgruppen-Begrenzung; DTM-Formatcodes 104/304 zu eng) —
+  keine Extraktionslücke, kein Nachrichtenfehler; Auswertung in
+  `docs/REFERENZ_BEFUNDE_20260811.md`, die Korrekturen folgen als eigener Schritt.
+  → Protokoll Abschnitt 49.
 - **05.08.2026** – **Umbau: Dokument- und Vorgangsauswahl für alle aggregierenden
   Nachrichtentypen.** Die Anhak-Auswahl des Umbau-Werkzeugs (bisher nur UTILMD,
   IDE+24) deckt jetzt beide Aggregationsebenen ab: je **Nachricht** bei
