@@ -69,12 +69,23 @@
   .msgblock.markiert{outline:2px solid var(--accent);outline-offset:2px;}
   .msgblock > h3{margin:0 0 10px;font-size:14px;color:var(--heading);
     display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-  /* Sprungnavigation zu Nachrichten mit Befund (Fehler/Hinweise) */
-  .msgnav{position:sticky;top:8px;z-index:5;display:flex;align-items:center;gap:10px;
+  /* Werkzeugleiste (Suche + Sprungnavigation): klebt beim Scrollen oben, damit sie
+     durchgehend erreichbar bleibt — nicht nur am Anfang der Nachricht. Als direktes
+     Kind des Ergebnis-Panels reicht ihr Klebe-Bereich über die ganze Segmentliste. */
+  .werkzeugleiste{position:sticky;top:8px;z-index:6;display:flex;align-items:center;gap:14px;
     flex-wrap:wrap;background:var(--panel);border:1px solid var(--border);border-radius:10px;
     box-shadow:var(--shadow);padding:8px 12px;margin:0 0 10px;font-size:13px;color:var(--muted);}
-  .msgnav .go.klein{padding:5px 12px;font-size:13px;}
-  .msgnav #msgnavPos{font-variant-numeric:tabular-nums;color:var(--heading);font-weight:600;}
+  .werkzeugleiste .go.klein{padding:5px 12px;font-size:13px;}
+  .werkzeugleiste .suche{display:flex;align-items:center;gap:8px;flex:1 1 320px;}
+  .werkzeugleiste .suche input{flex:1 1 auto;min-width:160px;padding:6px 10px;border:1px solid var(--border);
+    border-radius:8px;background:var(--panel);color:var(--text);font-size:13px;}
+  .werkzeugleiste .suchinfo{font-variant-numeric:tabular-nums;color:var(--heading);white-space:nowrap;}
+  .werkzeugleiste .befundnav{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .werkzeugleiste #msgnavPos{font-variant-numeric:tabular-nums;color:var(--heading);font-weight:600;}
+  mark.suchtreffer{background:#ffe58a;color:#3a2a00;border-radius:3px;padding:0 1px;}
+  mark.suchtreffer.aktiv{background:#f0ad4e;outline:2px solid #c8871f;}
+  [data-theme="dark"] mark.suchtreffer{background:#7a5a12;color:#ffe9b0;}
+  [data-theme="dark"] mark.suchtreffer.aktiv{background:#a9781f;outline-color:#e0b968;}
   .lade{color:var(--muted);font-size:13px;}
 </style>
 </head>
@@ -114,6 +125,7 @@
 
   <div class="panel" id="panelErgebnis" style="display:none">
     <h2>3. Ergebnis <span id="ampel"></span></h2>
+    <div id="werkzeugLeiste" class="werkzeugleiste"></div>
     <div id="globalMeldungen"></div>
     <div id="segmentListe"></div>
   </div>
@@ -372,20 +384,23 @@ async function starteMehrfach(einheiten, gesamtText){
       `<h3>${label} — ${typ}${pid} ${badge}</h3>` +
       globalHtml(res) + segListeHtml(r.parsed, res, { ohneUmschlag: true, ohneUna: true }) + `</div>`;
   });
-  // Sprungnavigation zu Nachrichten mit Befund (Fehler oder Hinweise/bedingte Muss)
+  // Befund-Navigation in die (sticky) Werkzeugleiste, damit sie beim Scrollen
+  // durchgehend erreichbar bleibt.
   befundPos = -1;
-  const nav = befundBloecke.length
-    ? `<div class="msgnav">` +
-        `<span>${befundBloecke.length} von ${einheiten.length} Nachrichten mit Befund (Fehler/Hinweise)</span>` +
-        `<button class="go secondary klein" onclick="springeBefund(-1)">▲ zurück</button>` +
+  const befundNav = befundBloecke.length
+    ? `<div class="befundnav">` +
+        `<span>${befundBloecke.length}/${einheiten.length} mit Befund</span>` +
+        `<button class="go secondary klein" onclick="springeBefund(-1)">▲ Befund</button>` +
         `<span id="msgnavPos">–</span>` +
-        `<button class="go secondary klein" onclick="springeBefund(1)">nächster Befund ▼</button>` +
+        `<button class="go secondary klein" onclick="springeBefund(1)">Befund ▼</button>` +
       `</div>`
     : '';
   let cnBox = '';
   try { cnBox = codenummernBoxHtml(AhbValidator.parse(gesamtText || '')); } catch (ex){}
-  $('globalMeldungen').innerHTML = cnBox + nav;
   $('segmentListe').innerHTML = out;
+  $('werkzeugLeiste').innerHTML = werkzeugHtml(befundNav);
+  $('globalMeldungen').innerHTML = cnBox;
+  sucheZuruecksetzen();
 }
 
 // Zwischen den Nachrichtenblöcken mit Befund vor-/zurückspringen.
@@ -401,6 +416,96 @@ function springeBefund(richtung){
   }
   const pos = document.getElementById('msgnavPos');
   if (pos) pos.textContent = (befundPos + 1) + '/' + befundBloecke.length;
+}
+
+// ---- Universelles Suchfeld: Text-String in der Nachricht finden -------------
+// Findet jede (auch mehrfache) Fundstelle im gesamten Segmentbereich (über alle
+// Nachrichtenblöcke), hebt sie hervor, zählt sie und springt Treffer für Treffer
+// mit Angabe der Fundstelle (Nachricht/Segment).
+let suchTreffer = [], suchPos = -1;
+function werkzeugHtml(befundNav){
+  return `<div class="suche">` +
+      `<input id="suchfeld" type="search" autocomplete="off" spellcheck="false" ` +
+        `placeholder="In der Nachricht suchen (z. B. RFF+Z13 oder eine Melo)…" ` +
+        `oninput="sucheAusfuehren()" onkeydown="if(event.key==='Enter'){event.preventDefault();springeTreffer(event.shiftKey?-1:1);}">` +
+      `<button class="go secondary klein" onclick="springeTreffer(-1)" title="voriger Treffer">◀</button>` +
+      `<span id="suchInfo" class="suchinfo">–</span>` +
+      `<button class="go secondary klein" onclick="springeTreffer(1)" title="nächster Treffer">▶</button>` +
+    `</div>` + (befundNav || '');
+}
+function loescheTreffer(){
+  const c = $('segmentListe'); if (!c) return;
+  c.querySelectorAll('mark.suchtreffer').forEach(m => {
+    m.replaceWith(document.createTextNode(m.textContent));
+  });
+  c.normalize();
+  suchTreffer = []; suchPos = -1;
+}
+function sucheZuruecksetzen(){
+  const f = $('suchfeld'); if (f) f.value = '';
+  loescheTreffer();
+  aktualisiereSuchInfo();
+}
+function sucheAusfuehren(){
+  loescheTreffer();
+  const f = $('suchfeld'); const q = f ? f.value : '';
+  if (q){
+    const c = $('segmentListe');
+    const ql = q.toLowerCase();
+    const walker = document.createTreeWalker(c, NodeFilter.SHOW_TEXT, {
+      acceptNode: n => (n.nodeValue && n.parentNode && n.parentNode.nodeName !== 'MARK')
+        ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT
+    });
+    const knoten = []; let n;
+    while ((n = walker.nextNode())) knoten.push(n);
+    knoten.forEach(node => {
+      const text = node.nodeValue, lower = text.toLowerCase();
+      let idx = lower.indexOf(ql);
+      if (idx < 0) return;
+      const frag = document.createDocumentFragment();
+      let last = 0;
+      while (idx >= 0){
+        if (idx > last) frag.appendChild(document.createTextNode(text.slice(last, idx)));
+        const m = document.createElement('mark');
+        m.className = 'suchtreffer';
+        m.textContent = text.slice(idx, idx + q.length);
+        frag.appendChild(m); suchTreffer.push(m);
+        last = idx + q.length;
+        idx = lower.indexOf(ql, last);
+      }
+      if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+      node.replaceWith(frag);
+    });
+  }
+  suchPos = -1;
+  aktualisiereSuchInfo();
+  if (suchTreffer.length) springeTreffer(1);
+}
+function springeTreffer(richtung){
+  if (!suchTreffer.length) return;
+  if (suchPos >= 0 && suchTreffer[suchPos]) suchTreffer[suchPos].classList.remove('aktiv');
+  suchPos = (suchPos + richtung + suchTreffer.length) % suchTreffer.length;
+  const m = suchTreffer[suchPos];
+  m.classList.add('aktiv');
+  m.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  aktualisiereSuchInfo();
+}
+function aktualisiereSuchInfo(){
+  const info = $('suchInfo'); if (!info) return;
+  const n = suchTreffer.length;
+  const f = $('suchfeld');
+  if (!n){ info.textContent = (f && f.value) ? 'kein Treffer' : '–'; return; }
+  let ort = '';
+  if (suchPos >= 0 && suchTreffer[suchPos]){
+    const m = suchTreffer[suchPos];
+    const seg = m.closest ? m.closest('.seg') : null;
+    const block = m.closest ? m.closest('.msgblock') : null;
+    const segnr = seg && seg.querySelector('.segnr') ? seg.querySelector('.segnr').textContent.trim() : '';
+    const bl = block && block.querySelector('h3') ? block.querySelector('h3').textContent.split('—')[0].trim() : '';
+    const teile = [bl, segnr ? 'Segment ' + segnr : ''].filter(Boolean);
+    ort = teile.length ? ' · ' + teile.join(', ') : '';
+  }
+  info.textContent = `${n} Treffer` + (suchPos >= 0 ? ` — ${suchPos + 1}/${n}${ort}` : '');
 }
 
 // Erkennung + Validierung EINER Nachricht (kein DOM-Zugriff) — liefert Ergebnis
@@ -526,8 +631,10 @@ async function starteEinzeln(text){
     : (bmAnz
         ? `<span class="badge warn">fehlerfrei · ${bmAnz} bedingte Muss offen</span>`
         : `<span class="badge ok">fehlerfrei</span>`);
-  $('globalMeldungen').innerHTML = codenummernBoxHtml(r.parsed) + globalHtml(res);
   $('segmentListe').innerHTML = segListeHtml(r.parsed, res, {});
+  $('werkzeugLeiste').innerHTML = werkzeugHtml('');   // Suche (Einzelansicht ohne Befund-Navigation)
+  $('globalMeldungen').innerHTML = codenummernBoxHtml(r.parsed) + globalHtml(res);
+  sucheZuruecksetzen();
   baueAntwortPanel(r.det, r.e, r.parsed, res);
 }
 

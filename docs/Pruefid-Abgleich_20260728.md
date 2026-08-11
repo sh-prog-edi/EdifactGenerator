@@ -2886,3 +2886,31 @@ Stelle. Rein informativ, keine Änderung an der Prüf-Logik.
 
 **Nachweis.** `test_validator_mehrfach`, `test_engine_pages` grün, keine
 JS-Fehler; Regression grün (34 Läufe).
+
+## 59. Validator: universelles Suchfeld und durchgehend sichtbare Werkzeugleiste (11.08.2026)
+
+**Auftrag.** Ein universelles Suchfeld für Text-Strings in der Nachricht (z. B.
+RFF+Z13 oder eine hineinkopierte Melo), mit Fundstellen-Hervorhebung, Trefferzahl
+und Sprung zwischen den Treffern; außerdem sollen die Schaltflächen der
+Sprungnavigation nicht nur am Anfang der Nachricht erreichbar sein.
+
+**Umsetzung (`validator.html`).**
+
+- **Sticky Werkzeugleiste.** Die Navigation lag bisher in `#globalMeldungen`, das
+  beim Scrollen mit aus dem Bild lief (das sticky-Element klebt nur innerhalb
+  seines kurzen Elternelements). Neu ist eine eigene Leiste `#werkzeugLeiste`
+  (`position:sticky`) als DIREKTES Kind des Ergebnis-Panels — ihr Klebebereich
+  reicht damit über die ganze Segmentliste, die Leiste bleibt durchgehend oben
+  sichtbar. Die Befund-Navigation ist in diese Leiste umgezogen.
+- **Universelles Suchfeld.** Sucht live (auch mehrfach) im gesamten Segmentbereich
+  über alle Nachrichtenblöcke: Jede Fundstelle wird hervorgehoben (`<mark>`), die
+  Trefferzahl ausgegeben, und ◀/▶ (bzw. Enter/Shift+Enter) springen Treffer für
+  Treffer mit Angabe der Fundstelle (Nachricht und Segmentnummer, z. B. „15
+  Treffer — 1/15 · Nachricht 1/15 · …, Segment 11"). Umgesetzt über einen
+  TreeWalker über die Textknoten der gerenderten Segmentliste; die Hervorhebungen
+  werden bei jeder neuen Suche/Validierung sauber zurückgesetzt.
+
+**Nachweis.** `test_validator_mehrfach`/`test_engine_pages` grün, keine JS-Fehler;
+Probe an der 15er-INVOIC-Sammeldatei: „RFF+Z13" → 15 Treffer (je Nachricht Segment
+11), Teilstring-Suche „50457" → 13 Treffer. Werkzeugleiste `position:sticky` als
+Kind von `panelErgebnis`. Regression grün (34 Läufe).

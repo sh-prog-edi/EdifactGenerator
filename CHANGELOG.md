@@ -12,6 +12,13 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
   Erwartungsdateien selbst bleiben bewusst NICHT im Repo (echte Zähler-/
   Rechnungsdaten möglich; zeitlich begrenzte Formatrelevanz) — nur der
   PID-Abdeckungsnachweis wird versioniert.
+- **11.08.2026** – **Validator: universelles Suchfeld + durchgehend sichtbare
+  Werkzeugleiste.** Neues Suchfeld findet beliebige Text-Strings in der Nachricht
+  (z. B. RFF+Z13 oder eine Melo) über alle Nachrichtenblöcke, hebt jede Fundstelle
+  hervor, zählt die Treffer und springt mit ◀/▶ (bzw. Enter) Treffer für Treffer
+  samt Fundstelle (Nachricht/Segment). Such- und Befund-Navigation sitzen jetzt in
+  einer sticky Werkzeugleiste, die beim Scrollen oben bleibt (vorher lief die
+  Navigation aus dem Bild). → Protokoll Abschnitt 59.
 - **11.08.2026** – **Validator: Hinweis/Link zur Codenummern-Prüfung bei den
   Vergabestellen.** Das Ergebnis listet die Marktpartner-Codenummern aus UNB und
   NAD mit der zuständigen Vergabestelle (BDEW/Strom bei DE3055=293 bzw. UNB=500,
