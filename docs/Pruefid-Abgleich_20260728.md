@@ -2707,3 +2707,32 @@ CONTRL) vollständig sauber; über die Serie Abschnitt 50–52: Fehler-Befunde
 **Nachweis.** Vertragstests grün; Golden unverändert; Regression komplett grün
 (32 Läufe). Nächster Schritt: stabile Nachrichten als Dauer-Referenz mit
 `<datei>.erwartung.json` (`fehlerfrei: true`) verankern.
+
+## 53. Validator-Seite: Sammel-/Mehr-PID-Dateien je Nachricht prüfen (11.08.2026)
+
+**Auftrag.** Auftraggeber-Befund: In einer INVOIC-Datei mit mehreren UNH und
+UNTERSCHIEDLICHEN Prüf-IDs (z. B. 31006 gefolgt von 31005) meldete der
+interaktive Validator (`validator.html`) die Segmente der Folgenachricht
+fälschlich als Fehler — inklusive der PID-abhängigen Segmente.
+
+**Ursache.** `validator.html` prüfte den GESAMTEN Dateitext gegen die ERSTE
+erkannte Prüf-ID. Die in Abschnitt 49 gebaute Zerlegung je Nachricht/Vorgang war
+bisher nur in der Referenz-Testsuite umgesetzt, nicht im interaktiven Validator.
+
+**Umsetzung.** `validator.html` bindet nun `_engine/umbau.js` ein und zerlegt die
+Eingabe mit derselben Mechanik wie die Referenzsuite in Einheiten — je Nachricht
+(UNH…UNT) und, bei UTILMD mit mehreren Prüf-IDs, je Vorgang. `starte()` prüft:
+eine Einheit → unveränderte Einzel-Ansicht (`starteEinzeln`); mehrere Einheiten →
+je Einheit ein eigener Ergebnis-Block gegen ihre eigene Prüf-ID (`starteMehrfach`),
+mit Gesamt-Ampel. Die Prüf-/Rendern-Logik wurde dazu in `pruefeEinText` (Erkennung
++ Validierung, kein DOM) und Hilfsfunktionen `segListeHtml`/`globalHtml`
+zerlegt; die Einzel-Ansicht bleibt Byte-für-Byte wie zuvor (Original-Text, inkl.
+Antwort-Panel). Bei Mehrfachdateien ist das Antwort-Panel ausgeblendet (Antworten
+werden je Einzelnachricht erzeugt).
+
+**Nachweis.** Neuer Regressionstest `scripts/test_validator_mehrfach.js`
+(synthetische Daten, CI-tauglich): INVOIC-Sammel mit 31001+31006 → zwei Blöcke
+je eigener Prüf-ID; UTILMD mit zwei Vorgängen 55001+55036 → zwei Blöcke;
+Einzelnachricht → unveränderte Einzel-Ansicht; keine JS-Fehler. In der Regression
+registriert (nun 33 Läufe, grün). Zusätzlich lokal an der realen INVOIC-Sammel
+(15 Nachrichten, 31006/31005/31004) verifiziert: 15 Blöcke, alle fehlerfrei.

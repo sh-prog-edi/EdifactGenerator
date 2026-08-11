@@ -12,6 +12,15 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
   Erwartungsdateien selbst bleiben bewusst NICHT im Repo (echte Zähler-/
   Rechnungsdaten möglich; zeitlich begrenzte Formatrelevanz) — nur der
   PID-Abdeckungsnachweis wird versioniert.
+- **11.08.2026** – **Validator-Seite prüft Sammel-/Mehr-PID-Dateien je
+  Nachricht.** `validator.html` zerlegt eine Übertragungsdatei jetzt wie die
+  Referenzsuite in Einheiten (je UNH-Nachricht, bei UTILMD je Vorgang) und
+  prüft jede gegen IHRE eigene Prüf-ID — statt die ganze Datei gegen die erste.
+  Behebt Falschmeldungen bei INVOIC-Dateien mit mehreren Prüf-IDs (z. B. 31006
+  gefolgt von 31005). Mehrere Nachrichten werden als eigene Ergebnis-Blöcke mit
+  Gesamt-Ampel dargestellt; die Einzel-Ansicht bleibt unverändert. Neuer Test
+  `scripts/test_validator_mehrfach.js` (Regression nun 33 Läufe). → Protokoll
+  Abschnitt 53.
 - **11.08.2026** – **Validator: zweiter Merkmalswert (DE7110) im CAV-Composite.**
   Das CAV-Composite C889 trägt am Ende zwei Merkmalswerte DE7110; der Decoder
   kannte nur den ersten, sodass ein belegter zweiter Wert (z. B. `CAV+:::6:1`)

@@ -131,6 +131,7 @@
 <script src="_engine/daten/ahb-ergaenzungen.js"></script>
 <script src="_engine/nachricht-speichern.js"></script>
 <script src="_engine/ahb-validator.js"></script>
+<script src="_engine/umbau.js"></script>
 <script src="_engine/daten/bedingung-eval.js"></script>
 <script src="_engine/bedingung-hilfe.js"></script>
 <script>
@@ -190,20 +191,131 @@ async function ladeMeta(eintrag, pruefi){
   return { alle: metaCache[key] };
 }
 
+// Übertragungsdatei in einzeln prüfbare Einheiten zerlegen — je Nachricht
+// (UNH…UNT) und, bei UTILMD mit mehreren Prüf-IDs, je Vorgang. So wird jede
+// Nachricht gegen IHRE eigene Prüf-ID geprüft; in Sammel-/Mehr-PID-Dateien
+// (z. B. INVOIC 31006 gefolgt von 31005) werden die Segmente der Folgenachricht
+// nicht mehr fälschlich gegen die erste Prüf-ID gemeldet. Gleiche Mechanik wie
+// die Referenz-Testsuite (scripts/referenz_validierung.js).
+function baueEinheiten(text){
+  const segmente = EdiUmbau.zerlege(text);
+  const nachr = EdiUmbau.nachrichten(segmente);
+  if (!nachr.length) return [{ text, label: '' }];
+  const unb = segmente.find(s => s.tag === 'UNB') || { tag: 'UNB', elemente: [] };
+  const origUnz = segmente.find(s => s.tag === 'UNZ');
+  const interchangeRef = (unb.elemente[4] || [])[0]
+    || (origUnz && (origUnz.elemente[1] || [])[0]) || '1';
+  const liste = [];
+  nachr.forEach((n, idx) => {
+    const mini = [unb].concat(segmente.slice(n.von, n.bis),
+      [{ tag: 'UNZ', elemente: [['1'], [interchangeRef]] }]);
+    const vg = EdiUmbau.vorgaenge(mini);
+    const pruefis = [...new Set(vg.map(v => v.pruefi).filter(Boolean))];
+    const basis = nachr.length > 1
+      ? `Nachricht ${idx + 1}/${nachr.length}` + (n.bgm ? ` · ${n.bgm}` : '') : 'Nachricht';
+    if (pruefis.length >= 2){
+      vg.forEach(v => liste.push({
+        text: EdiUmbau.serialisiere(EdiUmbau.filterVorgaenge(mini, [v], null)),
+        label: `${basis} · Vorgang ${v.nr}${v.pruefi ? ' (Prüf-ID ' + v.pruefi + ')' : ''}`,
+      }));
+    } else {
+      liste.push({ text: EdiUmbau.serialisiere(mini), label: basis });
+    }
+  });
+  return liste;
+}
+
 async function starte(){
   const text = $('eingabe').value;
   if (!text.trim()) return;
-  const parsed = AhbValidator.parse(text);
-  const det = AhbValidator.erkenne(parsed, validatorRegistry);
-  const ek = $('erkennung');
+  const einheiten = baueEinheiten(text);
+  if (einheiten.length <= 1){ await starteEinzeln(text); return; }
+  await starteMehrfach(einheiten);
+}
+
+// Segmentliste einer Einheit als HTML (Segmentnummerierung ab UNH = 1 wie in der
+// CONTRL-Fehlerreferenz). ohneUmschlag: UNB/UNZ der Mini-Übertragung auslassen.
+function segListeHtml(parsed, res, opts){
+  opts = opts || {};
+  let html = '';
+  if (!opts.ohneUna && parsed.una)
+    html += `<div class="seg ok"><span class="segnr"></span>${parsed.una.replace(/</g,'&lt;')}</div>`;
+  let segNr = 0;
+  res.zeilen.forEach(z => {
+    const tag = (z.raw || '').slice(0, 3);
+    if (opts.ohneUmschlag && (tag === 'UNB' || tag === 'UNZ')) return;
+    if (tag === 'UNH') segNr = 1; else if (segNr > 0) segNr += 1;
+    const nummer = (segNr > 0 && tag !== 'UNZ' && tag !== 'UNB') ? String(segNr) : '';
+    if (tag === 'UNT') segNr = 0;
+    const cls = z.status === 'fehler' ? 'rot' : 'ok';
+    let inner = `<span class="segnr">${nummer}</span>` + z.raw.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    z.meldungen.forEach(m => { inner += `<span class="meld">✗ ${m.replace(/</g,'&lt;')}</span>`; });
+    z.hinweise.forEach(m => { inner += `<span class="hin">ℹ ${m.replace(/</g,'&lt;')}</span>`; });
+    html += `<div class="seg ${cls}">${inner}</div>`;
+  });
+  return html;
+}
+
+// Globale Meldungsboxen (Fehler, fehlende/bedingte Muss, Hinweise) einer Einheit.
+function globalHtml(res){
+  let g = '';
+  res.global.meldungen.forEach(m => { g += `<div class="globalbox rot">${m}</div>`; });
+  const exprSpan = s => `<span class="expr">${s.replace(/</g,'&lt;')}</span>`;
+  if (res.fehlendeMuss.length)
+    g += `<div class="globalbox rot">Fehlende Muss-Segmente laut AHB: ${res.fehlendeMuss.map(exprSpan).join('; ')}</div>`;
+  const bmAnz = res.bedingteMuss ? res.bedingteMuss.length : 0;
+  if (bmAnz)
+    g += `<div class="globalbox warn">Bedingte Muss-Segmente (nur unter Bedingung Pflicht – bitte fachlich prüfen): ${res.bedingteMuss.map(exprSpan).join('; ')}</div>`;
+  res.global.hinweise.forEach(m => { g += `<div class="globalbox info">${m}</div>`; });
+  return g;
+}
+
+// Mehrere Nachrichten/Vorgänge in einer Datei: jede Einheit gegen ihre eigene
+// Prüf-ID prüfen und als eigener Block darstellen.
+async function starteMehrfach(einheiten){
   $('panelErkennung').style.display = '';
   $('utilmdHinweis').innerHTML = '';
-  if (det.fehler){
-    ek.innerHTML = `<dt>Problem</dt><dd>${det.fehler}</dd>` +
-      (det.typ ? `<dt>UNH-Typ</dt><dd>${det.typ} (Version ${det.version || '–'})</dd>` : '');
-    $('panelErgebnis').style.display = 'none';
-    return;
-  }
+  $('panelAntwort').style.display = 'none';
+  const ergebnisse = [];
+  for (const eh of einheiten) ergebnisse.push(await pruefeEinText(eh.text));
+  const gesamtFehler = ergebnisse.reduce((n, r) => n + (r.res ? r.res.zusammenfassung.fehler : 1), 0);
+  const typen = [...new Set(ergebnisse.map(r => r.det && r.det.typ).filter(Boolean))];
+  $('erkennung').innerHTML =
+    `<dt>Übertragungsdatei</dt><dd>${einheiten.length} Nachrichten/Vorgänge${typen.length ? ' (' + typen.join(', ') + ')' : ''}</dd>` +
+    `<dt>Prüfweise</dt><dd>jede Nachricht wird gegen ihre eigene Prüf-ID geprüft</dd>`;
+  $('panelErgebnis').style.display = '';
+  $('ampel').innerHTML = gesamtFehler
+    ? `<span class="badge rot">${gesamtFehler} Fehler in ${einheiten.length} Nachrichten</span>`
+    : `<span class="badge ok">alle ${einheiten.length} Nachrichten fehlerfrei</span>`;
+  $('globalMeldungen').innerHTML = '';
+  let out = '';
+  ergebnisse.forEach((r, i) => {
+    const label = einheiten[i].label || `Nachricht ${i + 1}`;
+    if (r.det && r.det.fehler){
+      out += `<div style="margin-top:14px;border-top:1px solid var(--border);padding-top:10px">` +
+        `<h3 style="margin:.2em 0;font-size:15px">${label} <span class="badge rot">nicht erkannt</span></h3>` +
+        `<div class="globalbox rot">${r.det.fehler}</div></div>`;
+      return;
+    }
+    const res = r.res, f = res.zusammenfassung.fehler;
+    const bm = res.bedingteMuss ? res.bedingteMuss.length : 0;
+    const badge = f ? `<span class="badge rot">${f} Fehler</span>`
+      : (bm ? `<span class="badge warn">fehlerfrei · ${bm} bedingte Muss</span>` : `<span class="badge ok">fehlerfrei</span>`);
+    const pid = r.det.pruefi ? ` · Prüf-ID ${r.det.pruefi}` : '';
+    const typ = `${r.det.typ || ''}${r.e && r.e.sparte ? ' ' + r.e.sparte : ''}`;
+    out += `<div style="margin-top:14px;border-top:1px solid var(--border);padding-top:10px">` +
+      `<h3 style="margin:.2em 0;font-size:15px">${label} — ${typ}${pid} ${badge}</h3>` +
+      globalHtml(res) + segListeHtml(r.parsed, res, { ohneUmschlag: true, ohneUna: true }) + `</div>`;
+  });
+  $('segmentListe').innerHTML = out;
+}
+
+// Erkennung + Validierung EINER Nachricht (kein DOM-Zugriff) — liefert Ergebnis
+// und den fertigen Erkennungs-HTML-Text. Von starteEinzeln und starteMehrfach genutzt.
+async function pruefeEinText(text){
+  const parsed = AhbValidator.parse(text);
+  const det = AhbValidator.erkenne(parsed, validatorRegistry);
+  if (det.fehler) return { parsed, det };
   let e = det.eintrag;
   // Mehrdeutigkeit: gleiche UNH-Kennung in beiden Formatständen, aber
   // unterschiedliche AHBs (z.B. REQOTE 1.1/1.2 mit MIG 1.3c) -> beide Stände
@@ -211,7 +323,7 @@ async function starte(){
   const kandidatenGleich = det.alleTreffer.filter(t => t.unh === det.kennung &&
     t.format === e.format && t.sparte === e.sparte);
   const staende = [...new Set(det.alleTreffer.filter(t => t.unh === e.unh).map(t => t.stand))];
-  ek.innerHTML =
+  let erk =
     `<dt>Nachrichtentyp</dt><dd>${det.typ}${e.sparte ? ' ' + e.sparte : ''}</dd>` +
     `<dt>UNH-Kennung</dt><dd>${det.kennung}</dd>` +
     `<dt>Formatstand</dt><dd>${staende.join(' und ')} <span style="color:var(--muted)">(${e.unh})</span></dd>` +
@@ -224,11 +336,11 @@ async function starte(){
       const m = await ladeMeta(e, det.pruefi);
       meta = m.einzel !== undefined ? m.einzel : (m.alle || {})[det.pruefi];
       const b = meta && meta.beschreibung ? meta.beschreibung : '';
-      if (b) ek.innerHTML += `<dt>Anwendungsfall</dt><dd>${b}${meta.kommunikation ? ' · ' + meta.kommunikation : ''}</dd>`;
+      if (b) erk += `<dt>Anwendungsfall</dt><dd>${b}${meta.kommunikation ? ' · ' + meta.kommunikation : ''}</dd>`;
     } else if (det.pruefi){
-      ek.innerHTML += `<dt>Achtung</dt><dd>Prüf-ID ${det.pruefi} ist im AHB ${e.format} ${e.stand} nicht enthalten.</dd>`;
+      erk += `<dt>Achtung</dt><dd>Prüf-ID ${det.pruefi} ist im AHB ${e.format} ${e.stand} nicht enthalten.</dd>`;
     }
-  } catch (ex){ ek.innerHTML += `<dt>Achtung</dt><dd>${ex.message}</dd>`; }
+  } catch (ex){ erk += `<dt>Achtung</dt><dd>${ex.message}</dd>`; }
 
   const migKey = e.format === 'UTILMD' ? (e.sparte === 'Gas' ? 'UTILMD_GAS' : 'UTILMD_STROM') : e.format;
   // Bedingungen des Typs laden (für ahbicht-gestützte Muss-Auswertung + Hilfe-Popover)
@@ -272,9 +384,9 @@ async function starte(){
     if (best){
       res = best.res; e = best.kand; meta = best.meta;
       if (kandidatenGleich.length > 1 && best.kand.stand)
-        ek.innerHTML += `<dt>Stand-Wahl</dt><dd>${best.kand.stand} (beste Übereinstimmung bei identischer UNH-Kennung)</dd>`;
-      if (meta && meta.beschreibung && !ek.innerHTML.includes('Anwendungsfall'))
-        ek.innerHTML += `<dt>Anwendungsfall</dt><dd>${meta.beschreibung}</dd>`;
+        erk += `<dt>Stand-Wahl</dt><dd>${best.kand.stand} (beste Übereinstimmung bei identischer UNH-Kennung)</dd>`;
+      if (meta && meta.beschreibung && !erk.includes('Anwendungsfall'))
+        erk += `<dt>Anwendungsfall</dt><dd>${meta.beschreibung}</dd>`;
     } else {
       res = AhbValidator.validiere(parsed, ctx);
     }
@@ -284,19 +396,35 @@ async function starte(){
       const m = await ladeMeta(e, null);
       const best = AhbValidator.besteVariante(parsed, ctx, m.alle || {});
       res = best.res; variantenHinweis = best.key;
-      ek.innerHTML += `<dt>AHB-Variante</dt><dd>${best.key.replace(/_/g, ' ')} (beste Übereinstimmung)</dd>`;
+      erk += `<dt>AHB-Variante</dt><dd>${best.key.replace(/_/g, ' ')} (beste Übereinstimmung)</dd>`;
     } catch (ex){ res = AhbValidator.validiere(parsed, ctx); }
   } else {
     res = AhbValidator.validiere(parsed, ctx);
   }
 
+  let utilmdHinweisHtml = '';
   if (det.typ === 'UTILMD'){
-    $('utilmdHinweis').innerHTML = `<div class="globalbox info">UTILMD: für die geführte Prozess-Validierung
+    utilmdHinweisHtml = `<div class="globalbox info">UTILMD: für die geführte Prozess-Validierung
       (EBD-Antwortlogik, Produktpakete) steht zusätzlich die kuratierte Maske bereit:
       <a href="${e.seite.replace('vollformular.html','index.html')}">${e.stand} UTILMD ${e.sparte}</a></div>`;
   }
+  return { parsed, det, e, meta, res, variantenHinweis, erkennungHtml: erk, utilmdHinweisHtml };
+}
 
-  // Ergebnis rendern
+// Einzelne Nachricht in den Panels darstellen (unveränderte Einzel-Ansicht).
+async function starteEinzeln(text){
+  const r = await pruefeEinText(text);
+  $('panelErkennung').style.display = '';
+  $('utilmdHinweis').innerHTML = r.utilmdHinweisHtml || '';
+  if (r.det.fehler){
+    $('erkennung').innerHTML = `<dt>Problem</dt><dd>${r.det.fehler}</dd>` +
+      (r.det.typ ? `<dt>UNH-Typ</dt><dd>${r.det.typ} (Version ${r.det.version || '–'})</dd>` : '');
+    $('panelErgebnis').style.display = 'none';
+    $('panelAntwort').style.display = 'none';
+    return;
+  }
+  $('erkennung').innerHTML = r.erkennungHtml;
+  const res = r.res;
   $('panelErgebnis').style.display = '';
   const fehler = res.zusammenfassung.fehler;
   const bmAnz = res.bedingteMuss ? res.bedingteMuss.length : 0;
@@ -305,35 +433,9 @@ async function starte(){
     : (bmAnz
         ? `<span class="badge warn">fehlerfrei · ${bmAnz} bedingte Muss offen</span>`
         : `<span class="badge ok">fehlerfrei</span>`);
-  let g = '';
-  res.global.meldungen.forEach(m => { g += `<div class="globalbox rot">${m}</div>`; });
-  const exprSpan = s => `<span class="expr">${s.replace(/</g,'&lt;')}</span>`;
-  if (res.fehlendeMuss.length)
-    g += `<div class="globalbox rot">Fehlende Muss-Segmente laut AHB: ${res.fehlendeMuss.map(exprSpan).join('; ')}</div>`;
-  if (bmAnz)
-    g += `<div class="globalbox warn">Bedingte Muss-Segmente (nur unter Bedingung Pflicht – bitte fachlich prüfen): ${res.bedingteMuss.map(exprSpan).join('; ')}</div>`;
-  res.global.hinweise.forEach(m => { g += `<div class="globalbox info">${m}</div>`; });
-  $('globalMeldungen').innerHTML = g;
-  let html = '';
-  if (parsed.una) html += `<div class="seg ok"><span class="segnr"></span>${parsed.una.replace(/</g,'&lt;')}</div>`;
-  // Segmentzähler wie in der CONTRL-Fehlerreferenz (UCS DE0096): innerhalb jeder
-  // Nachricht ab UNH = 1 gezählt — so lässt sich die Segmentposition aus einer
-  // negativen CONTRL unmittelbar in der Liste wiederfinden. UNB/UNZ (Umschlag)
-  // zählen nicht mit und bleiben ohne Nummer.
-  let segNr = 0;
-  res.zeilen.forEach(z => {
-    const tag = (z.raw || '').slice(0, 3);
-    if (tag === 'UNH') segNr = 1; else if (segNr > 0) segNr += 1;
-    const nummer = (segNr > 0 && tag !== 'UNZ' && tag !== 'UNB') ? String(segNr) : '';
-    if (tag === 'UNT') segNr = 0;
-    const cls = z.status === 'fehler' ? 'rot' : 'ok';
-    let inner = `<span class="segnr">${nummer}</span>` + z.raw.replace(/&/g,'&amp;').replace(/</g,'&lt;');
-    z.meldungen.forEach(m => { inner += `<span class="meld">✗ ${m.replace(/</g,'&lt;')}</span>`; });
-    z.hinweise.forEach(m => { inner += `<span class="hin">ℹ ${m.replace(/</g,'&lt;')}</span>`; });
-    html += `<div class="seg ${cls}">${inner}</div>`;
-  });
-  $('segmentListe').innerHTML = html;
-  baueAntwortPanel(det, e, parsed, res);
+  $('globalMeldungen').innerHTML = globalHtml(res);
+  $('segmentListe').innerHTML = segListeHtml(r.parsed, res, {});
+  baueAntwortPanel(r.det, r.e, r.parsed, res);
 }
 
 // ---- Antwort erzeugen: vorbefüllte Generator-Maske öffnen -------------------

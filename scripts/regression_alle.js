@@ -50,6 +50,7 @@ const BROWSER_TESTS = [
     'scripts/test_nachricht_speichern.js',    // läuft rund 2 Minuten
     'scripts/test_umbau.js',
     'scripts/test_validator_komponenten.js',
+    'scripts/test_validator_mehrfach.js',
 ];
 
 let hart = 0, weich = 0;
