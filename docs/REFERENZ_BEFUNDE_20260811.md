@@ -1,21 +1,35 @@
 # Referenz-Testsuite — erste Auswertung an echten Nachrichten (11.08.2026)
 
-Grundlage: 18 anonymisierte, im Markt gelaufene Übertragungsdateien
-(Lieferantensicht, Strom/Gas, Formatstand 202604), bereitgestellt vom
-Auftraggeber. Werkzeug: `scripts/referenz_validierung.js` (`npm run referenz`)
-nach dem Umbau auf Einheiten-Zerlegung (Protokoll Abschnitt 49). Die Nachrichten
-selbst bleiben lokal (`referenznachrichten/`), nie im Repo/Chat/CI.
+Grundlage: 23 anonymisierte, im Markt gelaufene Übertragungsdateien
+(Lieferantensicht, Strom/Gas, Formatstand 202604): UTILMD, MSCONS, INVOIC,
+REMADV, APERAK, CONTRL — bereitgestellt vom Auftraggeber in zwei Chargen.
+Werkzeug: `scripts/referenz_validierung.js` (`npm run referenz`) nach dem Umbau
+auf Einheiten-Zerlegung (Protokoll Abschnitt 49). Die Nachrichten selbst bleiben
+lokal (`referenznachrichten/`), nie im Repo/Chat/CI.
 
 ## Lauf-Ergebnis
 
-18/18 Dateien erkannt (Typ, Formatstand, Prüf-ID über RFF+Z13). Nach Zerlegung
+23/23 Dateien erkannt (Typ, Formatstand, Prüf-ID über RFF+Z13). Nach Zerlegung
 in Einzelnachrichten (je UNH) und — bei UTILMD mit mehreren Prüf-IDs — in
-Einzelvorgänge: **1384 Einheiten**, davon **230 fehlerfrei**. Zwei Dateien sind
-Sammel-Übertragungen (APERAK 224 Nachrichten → nach Korrektur vollständig
-fehlerfrei; MSCONS-Lastgang 1143 Nachrichten).
+Einzelvorgänge: **1491 Einheiten**, davon **336 fehlerfrei**. Fünf Dateien sind
+Sammel-Übertragungen (APERAK 224 bzw. 15 Nachrichten, INVOIC 75 bzw. 15
+Nachrichten, MSCONS-Lastgang 1143 Nachrichten) — alle lösen sich sauber auf.
 
-Fehlerfrei bestätigt (Dateien): CONTRL, APERAK (Sammeldatei), UTILMD Strom 55001
-(3 Hinweise), 55126, 55010, UTILMD Gas 44001, 44017.
+Fehlerfrei bestätigt (Dateien): CONTRL, beide APERAK-Sammeldateien, beide
+REMADV (33001; auch die große mit ~127 DOC-Positionen und UNT+370), eine
+INVOIC-Sammeldatei (75 Nachrichten), UTILMD Strom 55001 (3 Hinweise), 55126,
+55010, UTILMD Gas 44001, 44017.
+
+**INVOIC und REMADV validieren als Ganzes korrekt.** Die REMADV-Dateien mit
+vielen DOC-Positionen (avisierte Rechnungen) und die INVOIC-Sammelrechnungen
+(mehrere UNH je UNB) laufen ohne Fehler durch — die Zerlegung je Nachricht und
+die Summensegment-Behandlung stimmen. Nur EINE von 15 INVOIC-Nachrichten einer
+Datei fällt auf (Storno-/Gutschriftskopf BGM+Z25, PID 31004): gemeldet werden
+NAD+ZSH (Netzbetreiberkontonummer), MOA+113 (Vorausbezahlter Betrag) und
+MOA+Z01 (Gemeinderabatt) — allesamt Ursache 1 (Segment-Muss, Gruppe bedingt).
+Randnotiz: Der Abschnittsname zu NAD+ZSH trägt in der Extraktion ein
+versprengtes Leerzeichen („Netzbetreiberkontonumme r") — kosmetische
+Bereinigung der Meta, kein Validierungsfehler.
 
 ## Kernbefund: alle Rest-Befunde sind Validator-Präzisierungen
 
