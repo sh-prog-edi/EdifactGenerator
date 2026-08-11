@@ -742,14 +742,26 @@
           const ec = deE ? echteCodes(deE) : [];
           const q = ec.length === 1 ? "+" + ec[0] : "";
           const label = `${inst.seg}${q}${inst.section ? " (" + inst.section + ")" : ""}`;
-          if (klasse === "hart") { fehlendeMuss.push(label); return; }
-          // Trägt das Segment selbst keine Bedingung, gilt die der Segmentgruppe.
-          const erg = bedingungErfuellt(inst.expr) !== null
-            ? bedingungErfuellt(inst.expr)
-            : bedingungErfuellt(inst.sgExpr);           // true/false/null
-          if (erg === true) fehlendeMuss.push(`${label} — Bedingung erfüllt (${inst.expr})`);
+          // Ein Segment ist nur dann UNBEDINGTE Pflicht, wenn sowohl das Segment
+          // selbst („Muss") als auch seine Segmentgruppe („sgExpr") unbedingt Muss
+          // sind. Trägt die Gruppe eine Bedingung (Muss [nn]) oder nur Soll/Kann,
+          // richtet sich die Pflicht des Segments nach der Gruppe — sonst meldet
+          // der Validator ein hartes Muss, das der AHB im konkreten Anwendungsfall
+          // gar nicht verlangt (z. B. LOC+Z21 Tranche neben vorhandener LOC+Z16;
+          // MSCONS RFF+AGI in einer Soll-Gruppe). Fehlt eine sgExpr (Segmente auf
+          // Nachrichtenebene), bleibt es beim Segment-Status — Abwärtskompatibilität.
+          const grpKlasse = inst.sgExpr ? mussKlasse(inst.sgExpr) : "hart";
+          if (klasse === "hart" && grpKlasse === "hart") { fehlendeMuss.push(label); return; }
+          // Maßgeblichen Bedingungsausdruck bestimmen: die konditionale Ebene
+          // (bevorzugt die Gruppe, sonst das Segment selbst) auswerten.
+          const condExpr = grpKlasse === "bedingt" ? inst.sgExpr
+            : (klasse === "bedingt" ? inst.expr : inst.sgExpr);
+          const erg = bedingungErfuellt(condExpr) !== null
+            ? bedingungErfuellt(condExpr)
+            : bedingungErfuellt(klasse === "bedingt" ? inst.expr : inst.sgExpr); // true/false/null
+          if (erg === true) fehlendeMuss.push(`${label} — Bedingung erfüllt (${condExpr})`);
           else if (erg === false) { /* Bedingung trifft nicht zu: Segment nicht erforderlich */ }
-          else bedingteMuss.push(`${label} — bedingtes Muss: „${inst.expr}"`);
+          else bedingteMuss.push(`${label} — bedingtes Muss (Gruppe „${inst.sgExpr || inst.expr}")`);
         }
       });
     }

@@ -5,6 +5,18 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **11.08.2026** – **Validator: Segment-Muss an der Segmentgruppen-Pflicht
+  ausgerichtet.** Der universelle Validator meldete Segmente als „fehlendes Muss",
+  die der AHB im konkreten Anwendungsfall nicht verlangt: Ein Segment mit
+  `expr = "Muss"` wurde als harte Pflicht gewertet, obwohl die Einschränkung an
+  der Segmentgruppe (`sgExpr`, z. B. `Soll […]`/`Muss [Bedingung]`) hängt. Jetzt
+  ist ein Segment nur unbedingte Pflicht, wenn Segment UND Gruppe unbedingt Muss
+  sind; sonst entscheidet die Gruppenbedingung (erfüllt → hart, nicht erfüllt →
+  entfällt, unentscheidbar → Warnung). Wirkung am Referenzkorpus (23 echte
+  Dateien): Fehler-Befunde 2310 → 5, fehlerfreie Einheiten 336 → 1487 von 1491;
+  informative Selbstvalidierung 280/154/259/155 → 135/103/135/104. Golden
+  unverändert, Regression grün, Vertragstests grün. Offen bleiben DTM-Formatcodes
+  104/304 und ein CAV-Einzelfall. → Protokoll Abschnitt 50.
 - **11.08.2026** – **Referenz-Testsuite: Einheiten-Zerlegung und erste Auswertung
   an echten Nachrichten.** `npm run referenz` zerlegt jede Übertragungsdatei mit
   der Umbau-Engine (`EdiUmbau`) in einzeln prüfbare Einheiten — je Nachricht

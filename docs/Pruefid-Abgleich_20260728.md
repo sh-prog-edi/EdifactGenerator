@@ -2608,3 +2608,39 @@ grün (32 Läufe; die Suite selbst läuft nur lokal mit Referenzordner). Die dre
 Validator-Korrekturen sind der nächste Arbeitsschritt (eigene Auslieferung mit
 Golden-Diff-Sichtung), NICHT Teil dieses Commits — hier wird nur die Suite
 ertüchtigt und der Befund dokumentiert. Nachrichten bleiben lokal.
+
+## 50. Validator: Segment-Muss an der Segmentgruppen-Pflicht ausrichten (11.08.2026)
+
+**Auftrag.** Ursache 1 aus der Referenz-Auswertung (Abschnitt 49): Der Validator
+meldete Segmente als „fehlendes Muss", die der AHB im konkreten Anwendungsfall
+gar nicht verlangt. Ursache war die Muss-Prüfung in `_engine/ahb-validator.js`:
+Trägt ein Segment `expr = "Muss"`, wurde es sofort als hartes Pflicht-Segment
+gewertet — die einschränkende Bedingung hängt aber häufig an der Segment**gruppe**
+(`sgExpr`, z. B. `Soll […]` oder `Muss [Bedingung]`) und wurde nicht mehr
+ausgewertet.
+
+**Umsetzung.** Der „hart"-Zweig der Muss-Prüfung ist erweitert: Ein Segment ist
+nur dann unbedingte Pflicht, wenn Segment (`expr`) UND Segmentgruppe (`sgExpr`)
+unbedingt Muss sind (`grpKlasse === "hart"`). Andernfalls entscheidet die
+konditionale Ebene — bevorzugt die Gruppenbedingung, sonst die Segmentbedingung:
+erfüllt → hartes Muss („Bedingung erfüllt"), nicht erfüllt → Segment nicht
+erforderlich, nicht maschinell entscheidbar → Warnung (`bedingteMuss`). Fehlt
+eine `sgExpr` (Segmente auf Nachrichtenebene), bleibt es beim Segment-Status —
+die bestehenden Verträge (`test_muss_validierung`, `test_bedingung_hart`) sind
+damit unberührt.
+
+**Wirkung (Referenzkorpus, 23 Dateien / 1491 Einheiten).** Fehler-Befunde
+2310 → 5; fehlerfreie Einheiten 336 → 1487. Real gelaufene UTILMD/MSCONS/INVOIC/
+REMADV/APERAK validieren nun bis auf die Rest-Ursachen 2/3 sauber. Die
+informative Selbstvalidierung sank entsprechend (nur falsch-harte Meldungen
+entfallen): 202604 Strom 280→135, Gas 154→103; 202610 Strom 259→135, Gas
+155→104.
+
+**Verbliebene Befunde (nächste Schritte).** Ursache 2 (DTM-Formatcodes 104/304
+zu eng), Ursache 3 (CAV-Aufbau-Hinweis 55653) und eine Extraktionslücke (55218
+CAV+Z22 ohne `sgExpr`) — siehe `docs/REFERENZ_BEFUNDE_20260811.md`.
+
+**Nachweis.** Vertragstests grün; Golden unverändert (der Validator ändert keine
+erzeugten Nachrichten, nur deren Bewertung); Regression komplett grün (32 Läufe).
+Reduktion sind ausschließlich zuvor falsch-harte Muss-Meldungen in bedingten/
+Soll-Gruppen — an echten Marktnachrichten und den Vertragstests gegengeprüft.

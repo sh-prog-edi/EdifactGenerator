@@ -93,13 +93,31 @@ CAV; MIG-Auszug dieser Stelle prüfen. Niedrige Priorität.
 
 ## Arbeitsvorrat (Reihenfolge)
 
-1. **Validator Ursache 1** — Segment-Muss durch Segmentgruppen-Pflicht begrenzen.
-   Höchster Hebel (deckt fast alle Rest-Befunde). Bewegt Golden/Selbstvalidierung
-   (heute 280/154/259/155 informative Befunde) — Golden-Diff sorgfältig sichten.
-2. **Validator Ursache 2** — DTM 104/304 korrigieren. Kleiner, klar umrissen.
-3. **Ursache 3** — CAV-MIG-Auszug 55653 prüfen.
-4. Nach den Korrekturen erneuter Referenzlauf; stabil fehlerfreie Nachrichten mit
-   `<datei>.erwartung.json` (`fehlerfrei: true`) zur Dauer-Referenz erheben.
+1. **Validator Ursache 1 — ERLEDIGT (11.08.2026, Protokoll Abschnitt 50).**
+   Segment-Muss wird jetzt durch die Segmentgruppen-Pflicht begrenzt: hart nur,
+   wenn Segment UND Gruppe (`sgExpr`) unbedingt Muss sind; sonst greift die
+   Gruppenbedingung. Wirkung am Referenzkorpus: Fehler-Befunde 2310 → 5,
+   fehlerfreie Einheiten 336 → 1487 (von 1491). Informative Selbstvalidierung
+   sank 280/154/259/155 → 135/103/135/104; Golden unverändert, Regression grün
+   (32 Läufe), Vertragstests (`test_muss_validierung`, `test_bedingung_hart`)
+   unverändert grün.
+2. **Validator Ursache 2** — DTM 104/304 korrigieren (`304`: Sekunden zulassen
+   `\d{14}\+00`; `104`: `\d{8}` statt `\d{4}-\d{4}`). Klein, klar umrissen. OFFEN.
+3. **Ursache 3** — CAV-MIG-Auszug 55653 prüfen. OFFEN.
+4. **Extraktionslücke** — 55218 CAV+Z22 („Verbrauchsaufteilung temperaturabhängige
+   Marktlokation") trägt keine `sgExpr`; die Gruppenbedingung fehlt in der
+   Extraktion, daher bleibt der Befund hart stehen. Bedingung nachziehen. OFFEN.
+5. Nach den restlichen Korrekturen erneuter Referenzlauf; stabil fehlerfreie
+   Nachrichten mit `<datei>.erwartung.json` (`fehlerfrei: true`) zur Dauer-Referenz
+   erheben.
+
+## Verbliebene Befunde nach der Ursache-1-Korrektur (5)
+
+- 55653: CAV-Aufbau-Hinweis (Ursache 3) und DTM `01020102` Formatcode 104
+  (Ursache 2).
+- 55218: DTM `02010204` Formatcode 104 (Ursache 2) und CAV+Z22 (Extraktionslücke,
+  Punkt 4).
+- MSCONS 13010: DTM `20260810113506+00` Formatcode 304 (Ursache 2).
 
 Keiner der Befunde wird pauschal weggefiltert — die Korrekturen präzisieren den
 Validator, die Referenznachrichten werden anschließend als Regressionsanker
