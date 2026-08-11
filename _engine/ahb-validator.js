@@ -105,6 +105,13 @@
     "FTX:3": { de: "4440", gruppe: "C108", was: "Freitext" },
   };
 
+  // Zusätzliche belegbare Composite-Komponenten, die der Decoder (ein DE je
+  // Position) nicht abbilden kann, weil sich ein DE im selben Composite
+  // wiederholt: CAV C889 trägt am Ende ZWEI Merkmalswerte DE7110 (Komponenten 4
+  // und 5). Der Decoder kennt nur die erste (7110 → [0,3]); ein Wert an der
+  // zweiten (z. B. „CAV+:::6:1") ist laut MIG regelkonform und kein Aufbaufehler.
+  const KOMP_ZUSATZ = { "CAV:0": [4] };   // Element 0, Komponente 4 (0-basiert) = 2. DE7110
+
   // ---- Decoder: Segment+DE -> Element/Komponente (BDEW-MIG-Layouts) --------
   const DECODER = {
     UNH: { "0062": [0, 0], "0065": [1, 0], "0052": [1, 1], "0054": [1, 2], "0051": [1, 3], "0057": [1, 4] },
@@ -333,8 +340,10 @@
         if (!deErste) return;                          // erste Komponente hier unbekannt
         if (((el[0] || "") + "").replace(/\?(.)/g, "$1").trim()) return;   // belegt -> Aufbau in Ordnung
         const wdh = WIEDERHOLUNGS_DE[seg.tag + ":" + e];
+        const zusatz = KOMP_ZUSATZ[seg.tag + ":" + e] || [];
         for (let k = 1; k < el.length; k++) {
           if (posDe[e + ":" + k]) continue;            // eigenständige bekannte Folgeposition
+          if (zusatz.includes(k)) continue;            // bekannte Composite-Wiederholung (z. B. 2. DE7110 im CAV)
           const v = ((el[k] || "") + "").replace(/\?(.)/g, "$1").trim();
           if (!v) continue;
           if (wdh) {

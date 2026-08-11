@@ -2679,3 +2679,31 @@ grün; Golden unverändert; Regression komplett grün (32 Läufe). Damit ist der
 Referenzkorpus bis auf einen dokumentierten MIG-Einzelfall vollständig
 fehlerfrei — die echten Marktnachrichten sind bereit, als Dauer-Referenz
 (`erwartung.json`) verankert zu werden.
+
+## 52. Validator: zweiter Merkmalswert (DE7110) im CAV-Composite (11.08.2026)
+
+**Auftrag.** Letzter Rest-Befund der Referenz-Auswertung (Ursache 3): 55653
+meldete an `CAV+:::6:1` „Wert '1' an Komponente 5, führendes DE7111 leer — im
+MIG-Auszug kein benutztes Datenelement".
+
+**Analyse.** Das CAV-Composite C889 trägt am Ende ZWEI Merkmalswerte DE7110
+(Komponenten 4 und 5). Der Decoder (`_engine/ahb-validator.js`, ein DE je
+Position) kannte nur den ersten (`"7110": [0,3]`). Ein Wert an der zweiten
+7110-Komponente ist laut MIG regelkonform (zwei Merkmalswerte, z. B. „6" und
+„1"), wurde aber als unbeschriebene Komponente gemeldet.
+
+**Umsetzung.** Kleine, datengetriebene Whitelist `KOMP_ZUSATZ = { "CAV:0": [4] }`
+für belegbare Composite-Wiederholungen, die der Ein-DE-je-Position-Decoder nicht
+abbilden kann; `pruefeKomponenten` überspringt diese Positionen. Wirkt nur auf
+die deklarierte Stelle (2. DE7110 im CAV) — keine echten Aufbaufehler werden
+unterdrückt.
+
+**Wirkung.** Referenzkorpus jetzt **0 Fehler-Befunde** (1491/1491 Einheiten
+fehlerfrei; die 92 Hinweise bleiben informativ). Damit ist der gesamte
+23-Dateien-Korpus echter Marktnachrichten (UTILMD/MSCONS/INVOIC/REMADV/APERAK/
+CONTRL) vollständig sauber; über die Serie Abschnitt 50–52: Fehler-Befunde
+2310 → 0.
+
+**Nachweis.** Vertragstests grün; Golden unverändert; Regression komplett grün
+(32 Läufe). Nächster Schritt: stabile Nachrichten als Dauer-Referenz mit
+`<datei>.erwartung.json` (`fehlerfrei: true`) verankern.

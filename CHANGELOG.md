@@ -5,6 +5,13 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **11.08.2026** – **Validator: zweiter Merkmalswert (DE7110) im CAV-Composite.**
+  Das CAV-Composite C889 trägt am Ende zwei Merkmalswerte DE7110; der Decoder
+  kannte nur den ersten, sodass ein belegter zweiter Wert (z. B. `CAV+:::6:1`)
+  fälschlich als unbeschriebene Komponente gemeldet wurde. Kleine Whitelist für
+  belegbare Composite-Wiederholungen behebt das. Damit validiert der gesamte
+  Referenzkorpus (23 echte Marktnachrichten-Dateien, 1491 Einheiten) **0 Fehler-
+  Befunde** — über die Serie 2310 → 0. Regression grün. → Protokoll Abschnitt 52.
 - **11.08.2026** – **Validator: DTM-Formatcodes 104/304 und CAV-Gruppenpflicht
   aus dem CCI.** `304` lässt Sekunden zu (echte MSCONS-Zeitstempel), `104`
   akzeptiert zwei MMDD-Grenzen ohne Bindestrich (jahreszeitenabhängige

@@ -110,16 +110,18 @@ CAV; MIG-Auszug dieser Stelle prüfen. Niedrige Priorität.
    leitet die Gruppenpflicht eines CAV nun vom vorangehenden CCI derselben Gruppe
    ab (ein Merkmalswert kann nie pflichtiger sein als sein Merkmal) — reproduzierbar,
    ohne Eingriff in die generierten Metas.
-4. **Ursache 3** — CAV-MIG-Auszug 55653 („Wert '1' an Komponente 5, DE7111 leer")
-   prüfen. Einzelfall, niedrige Priorität. OFFEN.
-5. Erneuter Referenzlauf zeigt jetzt 1490/1491 Einheiten fehlerfrei; stabil
+4. **Ursache 3 — ERLEDIGT (11.08.2026, Abschnitt 52).** CAV-Composite C889 trägt
+   zwei Merkmalswerte DE7110; der Decoder kannte nur den ersten. Whitelist für die
+   zweite 7110-Komponente ergänzt (`CAV+:::6:1` ist regelkonform).
+5. Erneuter Referenzlauf zeigt jetzt 1491/1491 Einheiten fehlerfrei; stabil
    fehlerfreie Nachrichten mit `<datei>.erwartung.json` (`fehlerfrei: true`) zur
    Dauer-Referenz erheben.
 
-## Verbliebener Befund (1)
+## Ergebnis: Korpus vollständig fehlerfrei
 
-- 55653: CAV-Aufbau-Hinweis (Ursache 3) — MIG-Auszug dieser CAV-Stelle prüfen.
-  Alle übrigen Befunde des Korpus sind behoben (Fehler-Befunde 2310 → 1).
+Nach den Korrekturen der Abschnitte 50–52 validieren **alle 1491 Einheiten** des
+23-Dateien-Korpus **fehlerfrei** (0 Fehler-Befunde; 92 informative Hinweise
+bleiben). Über die Serie: Fehler-Befunde **2310 → 0**.
 
 Keiner der Befunde wird pauschal weggefiltert — die Korrekturen präzisieren den
 Validator, die Referenznachrichten werden anschließend als Regressionsanker
