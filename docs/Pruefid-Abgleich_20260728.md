@@ -2644,3 +2644,38 @@ CAV+Z22 ohne `sgExpr`) — siehe `docs/REFERENZ_BEFUNDE_20260811.md`.
 erzeugten Nachrichten, nur deren Bewertung); Regression komplett grün (32 Läufe).
 Reduktion sind ausschließlich zuvor falsch-harte Muss-Meldungen in bedingten/
 Soll-Gruppen — an echten Marktnachrichten und den Vertragstests gegengeprüft.
+
+## 51. Validator: DTM-Formatcodes 104/304 und CAV-Gruppenpflicht aus dem CCI (11.08.2026)
+
+**Auftrag.** Ursachen 2 und die Extraktionslücke aus der Referenz-Auswertung
+(Abschnitt 49/50).
+
+**Umsetzung.**
+
+1. **DTM-Formatcodes 104/304** (`_engine/ahb-validator.js`, `DTM_FORMATE`):
+   `304` war aus `303` übernommen (`\d{12}\+00`) und wies echte Zeitstempel mit
+   Sekunden ab — jetzt `\d{12}(\d{2})?\+00` (CCYYMMDDHHMMSS+00, Sekunden optional).
+   `104` verlangte einen Bindestrich (`\d{4}-\d{4}`), echte Werte für
+   jahreszeitenabhängige Zeiträume sind zwei MMDD-Grenzen ohne Trenner
+   (`02010204`) — jetzt `\d{4}-?\d{4}`. Kein Golden nutzt diese Codes (nur `:303`
+   kommt erzeugt vor), die Änderung ist damit regressfrei.
+2. **CAV-Gruppenpflicht aus dem CCI.** Ein CAV (Merkmalswert) gehört zum
+   vorangehenden CCI (Merkmal) derselben Segmentgruppe; sein Pflichtstatus kann
+   nie über dem des CCI liegen. Fehlte dem CAV in der Extraktion die Gruppenangabe
+   (`sgExpr`), meldete der Validator nach Abschnitt 50 weiter ein hartes CAV-Muss,
+   obwohl das zugehörige Merkmal nur bedingt/Soll ist (55218 CAV+Z22
+   „Verbrauchsaufteilung temperaturabhängige Marktlokation": CCI „Soll [166]", CAV
+   ohne `sgExpr`). Der Validator leitet die Gruppenangabe eines CAV jetzt aus dem
+   letzten CCI desselben Blocks ab. Ein CAV wird dadurch nie HÄRTER als sein CCI —
+   die Regel kann keine echten Pflichtbefunde unterdrücken.
+
+**Wirkung.** Referenzkorpus (23 Dateien / 1491 Einheiten): Fehler-Befunde
+5 → 1 (1490 fehlerfrei). Verbliebener Befund: ein CAV-Aufbau-Hinweis bei 55653
+(Ursache 3, MIG-Auszug — Einzelfall). Informative Selbstvalidierung Strom
+135 → 132 (die CAV-Erbregel), Gas unverändert 103/104.
+
+**Nachweis.** Vertragstests (`test_muss_validierung`, `test_bedingung_hart`)
+grün; Golden unverändert; Regression komplett grün (32 Läufe). Damit ist der
+Referenzkorpus bis auf einen dokumentierten MIG-Einzelfall vollständig
+fehlerfrei — die echten Marktnachrichten sind bereit, als Dauer-Referenz
+(`erwartung.json`) verankert zu werden.

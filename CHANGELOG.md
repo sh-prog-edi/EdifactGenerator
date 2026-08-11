@@ -5,6 +5,15 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **11.08.2026** – **Validator: DTM-Formatcodes 104/304 und CAV-Gruppenpflicht
+  aus dem CCI.** `304` lässt Sekunden zu (echte MSCONS-Zeitstempel), `104`
+  akzeptiert zwei MMDD-Grenzen ohne Bindestrich (jahreszeitenabhängige
+  Zeiträume); kein Golden nutzt diese Codes, daher regressfrei. Zudem leitet
+  der Validator die Gruppenpflicht eines CAV aus dem vorangehenden CCI ab (ein
+  Merkmalswert ist nie pflichtiger als sein Merkmal) — behebt die
+  Extraktionslücke bei 55218 CAV+Z22 reproduzierbar. Referenzkorpus: Fehler-
+  Befunde 5 → 1 (1490/1491 Einheiten fehlerfrei; Rest ein MIG-Einzelfall bei
+  55653). Regression grün. → Protokoll Abschnitt 51.
 - **11.08.2026** – **Validator: Segment-Muss an der Segmentgruppen-Pflicht
   ausgerichtet.** Der universelle Validator meldete Segmente als „fehlendes Muss",
   die der AHB im konkreten Anwendungsfall nicht verlangt: Ein Segment mit

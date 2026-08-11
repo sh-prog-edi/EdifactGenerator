@@ -211,9 +211,13 @@
     return { ok: true };
   }
 
-  const DTM_FORMATE = { "303": /^\d{12}\+00$/, "304": /^\d{12}\+00$/, "203": /^\d{12}$/,
+  // 304: CCYYMMDDHHMMSS+00 (mit Sekunden) — an echten MSCONS-Zeitstempeln belegt;
+  //      12-stellige Form (ohne Sekunden) bleibt zugelassen.
+  // 104: zwei MMDD-Grenzen für jahreszeitenabhängige Zeiträume (z. B. „02010204");
+  //      der optionale Bindestrich bleibt zugelassen (Abwärtskompatibilität).
+  const DTM_FORMATE = { "303": /^\d{12}\+00$/, "304": /^\d{12}(\d{2})?\+00$/, "203": /^\d{12}$/,
                         "102": /^\d{8}$/, "610": /^\d{6}$/, "106": /^\d{4}$/,
-                        "104": /^\d{4}-\d{4}$/, "802": /^\d{1,2}$/, "602": /^\d{4}$/,
+                        "104": /^\d{4}-?\d{4}$/, "802": /^\d{1,2}$/, "602": /^\d{4}$/,
                         "501": /^\d{8}(\+00)?$/,
                         // Z01 = ZZRB (Kündigungsfrist, MIG UTILMD): Anzahl + Einheit T/W/M
                         // + Bezugszeitpunkt M/Q/H/J/T/R, z. B. 30TM
@@ -730,6 +734,22 @@
         });
       }
 
+      // Ein CAV (Merkmalswert) gehört zum vorangehenden CCI (Merkmal) derselben
+      // Segmentgruppe; sein Pflichtstatus kann nie über dem des CCI liegen. Fehlt
+      // dem CAV in der Extraktion die Gruppenangabe (sgExpr), erbt es die des
+      // zugehörigen CCI im selben Block — sonst meldet der Validator ein hartes
+      // CAV-Muss, obwohl das zugehörige Merkmal nur bedingt/Soll ist (belegt an
+      // UTILMD 55218 CAV+Z22 „Verbrauchsaufteilung temperaturabhängige
+      // Marktlokation": CCI trägt „Soll [166]", das CAV hatte keine sgExpr).
+      const effSgExpr = instanzen.map(i => i.sgExpr);
+      const letztesCciSg = {};
+      instanzen.forEach((inst, idx) => {
+        const b = blockVon[idx];
+        if (inst.seg === "CCI") letztesCciSg[b] = inst.sgExpr;
+        else if (inst.seg === "CAV" && !inst.sgExpr && letztesCciSg[b] != null)
+          effSgExpr[idx] = letztesCciSg[b];
+      });
+
       instanzen.forEach((inst, idx) => {
         if (["UNH", "UNT", "UNB", "UNZ"].includes(inst.seg)) return;
         if (inst.sg && !aktiveBloecke.has(blockVon[idx])) return;
@@ -750,18 +770,19 @@
           // gar nicht verlangt (z. B. LOC+Z21 Tranche neben vorhandener LOC+Z16;
           // MSCONS RFF+AGI in einer Soll-Gruppe). Fehlt eine sgExpr (Segmente auf
           // Nachrichtenebene), bleibt es beim Segment-Status — Abwärtskompatibilität.
-          const grpKlasse = inst.sgExpr ? mussKlasse(inst.sgExpr) : "hart";
+          const sgExpr = effSgExpr[idx];
+          const grpKlasse = sgExpr ? mussKlasse(sgExpr) : "hart";
           if (klasse === "hart" && grpKlasse === "hart") { fehlendeMuss.push(label); return; }
           // Maßgeblichen Bedingungsausdruck bestimmen: die konditionale Ebene
           // (bevorzugt die Gruppe, sonst das Segment selbst) auswerten.
-          const condExpr = grpKlasse === "bedingt" ? inst.sgExpr
-            : (klasse === "bedingt" ? inst.expr : inst.sgExpr);
+          const condExpr = grpKlasse === "bedingt" ? sgExpr
+            : (klasse === "bedingt" ? inst.expr : sgExpr);
           const erg = bedingungErfuellt(condExpr) !== null
             ? bedingungErfuellt(condExpr)
-            : bedingungErfuellt(klasse === "bedingt" ? inst.expr : inst.sgExpr); // true/false/null
+            : bedingungErfuellt(klasse === "bedingt" ? inst.expr : sgExpr); // true/false/null
           if (erg === true) fehlendeMuss.push(`${label} — Bedingung erfüllt (${condExpr})`);
           else if (erg === false) { /* Bedingung trifft nicht zu: Segment nicht erforderlich */ }
-          else bedingteMuss.push(`${label} — bedingtes Muss (Gruppe „${inst.sgExpr || inst.expr}")`);
+          else bedingteMuss.push(`${label} — bedingtes Muss (Gruppe „${sgExpr || inst.expr}")`);
         }
       });
     }

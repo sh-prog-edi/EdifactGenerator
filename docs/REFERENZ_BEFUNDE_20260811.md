@@ -101,23 +101,25 @@ CAV; MIG-Auszug dieser Stelle prüfen. Niedrige Priorität.
    sank 280/154/259/155 → 135/103/135/104; Golden unverändert, Regression grün
    (32 Läufe), Vertragstests (`test_muss_validierung`, `test_bedingung_hart`)
    unverändert grün.
-2. **Validator Ursache 2** — DTM 104/304 korrigieren (`304`: Sekunden zulassen
-   `\d{14}\+00`; `104`: `\d{8}` statt `\d{4}-\d{4}`). Klein, klar umrissen. OFFEN.
-3. **Ursache 3** — CAV-MIG-Auszug 55653 prüfen. OFFEN.
-4. **Extraktionslücke** — 55218 CAV+Z22 („Verbrauchsaufteilung temperaturabhängige
-   Marktlokation") trägt keine `sgExpr`; die Gruppenbedingung fehlt in der
-   Extraktion, daher bleibt der Befund hart stehen. Bedingung nachziehen. OFFEN.
-5. Nach den restlichen Korrekturen erneuter Referenzlauf; stabil fehlerfreie
-   Nachrichten mit `<datei>.erwartung.json` (`fehlerfrei: true`) zur Dauer-Referenz
-   erheben.
+2. **Validator Ursache 2 — ERLEDIGT (11.08.2026, Protokoll Abschnitt 51).**
+   DTM-Formatcodes korrigiert: `304` lässt Sekunden zu (`\d{12}(\d{2})?\+00`),
+   `104` akzeptiert zwei MMDD-Grenzen mit optionalem Bindestrich (`\d{4}-?\d{4}`).
+   Kein Golden nutzt diese Codes (nur `:303`), daher regressfrei.
+3. **Extraktionslücke 55218 CAV+Z22 — ERLEDIGT (11.08.2026, Abschnitt 51).** Das
+   zugehörige CCI trägt „Soll [166]", dem CAV fehlte die `sgExpr`. Der Validator
+   leitet die Gruppenpflicht eines CAV nun vom vorangehenden CCI derselben Gruppe
+   ab (ein Merkmalswert kann nie pflichtiger sein als sein Merkmal) — reproduzierbar,
+   ohne Eingriff in die generierten Metas.
+4. **Ursache 3** — CAV-MIG-Auszug 55653 („Wert '1' an Komponente 5, DE7111 leer")
+   prüfen. Einzelfall, niedrige Priorität. OFFEN.
+5. Erneuter Referenzlauf zeigt jetzt 1490/1491 Einheiten fehlerfrei; stabil
+   fehlerfreie Nachrichten mit `<datei>.erwartung.json` (`fehlerfrei: true`) zur
+   Dauer-Referenz erheben.
 
-## Verbliebene Befunde nach der Ursache-1-Korrektur (5)
+## Verbliebener Befund (1)
 
-- 55653: CAV-Aufbau-Hinweis (Ursache 3) und DTM `01020102` Formatcode 104
-  (Ursache 2).
-- 55218: DTM `02010204` Formatcode 104 (Ursache 2) und CAV+Z22 (Extraktionslücke,
-  Punkt 4).
-- MSCONS 13010: DTM `20260810113506+00` Formatcode 304 (Ursache 2).
+- 55653: CAV-Aufbau-Hinweis (Ursache 3) — MIG-Auszug dieser CAV-Stelle prüfen.
+  Alle übrigen Befunde des Korpus sind behoben (Fehler-Befunde 2310 → 1).
 
 Keiner der Befunde wird pauschal weggefiltert — die Korrekturen präzisieren den
 Validator, die Referenznachrichten werden anschließend als Regressionsanker
