@@ -5,6 +5,13 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **11.08.2026** – **Prüfnachweis der Gegenprobe an echten Nachrichten.** Neuer
+  Vermerk `docs/REFERENZ_PRUEFNACHWEIS.md` hält dauerhaft fest, gegen welche
+  realen Prüf-IDs (23 Marktnachrichten-Dateien, Formatstand 202604, 1491
+  Einheiten, alle fehlerfrei) gegengeprüft wurde. Die Nachrichten und
+  Erwartungsdateien selbst bleiben bewusst NICHT im Repo (echte Zähler-/
+  Rechnungsdaten möglich; zeitlich begrenzte Formatrelevanz) — nur der
+  PID-Abdeckungsnachweis wird versioniert.
 - **11.08.2026** – **Validator: zweiter Merkmalswert (DE7110) im CAV-Composite.**
   Das CAV-Composite C889 trägt am Ende zwei Merkmalswerte DE7110; der Decoder
   kannte nur den ersten, sodass ein belegter zweiter Wert (z. B. `CAV+:::6:1`)

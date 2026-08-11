@@ -79,3 +79,12 @@ präzisieren) oder an der Nachricht selbst (dokumentieren)? Pauschales
 Wegfiltern ist ausgeschlossen — genau diese Fälle sind der Zweck der Suite.
 Aus stabilen, bewerteten Nachrichten entsteht mit `erwartung.json`-Dateien
 schrittweise die dauerhafte Referenz-Testsuite.
+
+## Kein eingecheckter Nachrichten-/Erwartungsbestand — nur ein Prüfnachweis
+
+Die echten Nachrichten und etwaige `erwartung.json`-Dateien bleiben **strikt
+lokal** und werden nicht ins Repository übernommen: Sie können (auch anonymisiert)
+noch echte Zähler-/Rechnungsdaten enthalten, und ihre Relevanz ist durch die
+wiederkehrenden Formatumstellungen zeitlich begrenzt. Dauerhaft im Repo steht
+stattdessen nur der **Prüfnachweis** `docs/REFERENZ_PRUEFNACHWEIS.md`: welche
+realen Prüf-IDs mit welchem Ergebnis gegengeprüft wurden — ohne Nachrichteninhalt.
