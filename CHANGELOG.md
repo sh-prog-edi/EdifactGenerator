@@ -12,6 +12,18 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
   Erwartungsdateien selbst bleiben bewusst NICHT im Repo (echte Zähler-/
   Rechnungsdaten möglich; zeitlich begrenzte Formatrelevanz) — nur der
   PID-Abdeckungsnachweis wird versioniert.
+- **11.08.2026** – **Validator: konditionale Muss-Bedingungen werden jetzt
+  ausgewertet + Sprungnavigation.** Drei Ursachen behoben, warum bedingte Muss
+  nie aufgelöst wurden: (1) `validator.html` baute den Bedingungspfad ohne
+  Stand-Verzeichnis (aus `seite` statt `metaPfad`); (2) der Harness/die
+  Referenzsuite bekamen die Bedingungen nicht in den VM-Kontext (jetzt via
+  module.exports); (3) gemischte „Muss […] Soll […]"-Ausdrücke wurden nicht
+  geparst. INVOIC 31004: 7 → 4 bedingte Muss (drei über IMD-Präsenz maschinell
+  aufgelöst); die verbleibenden echten Abhängigkeiten (Ursprungs-/Stornorechnung,
+  Rolle MGV) tragen nun ihren Klartext. Zusätzlich: In der Mehr-PID-Ansicht führt
+  eine sticky Navileiste per „nächster/voriger Befund" zu den Rahmen mit Fehlern/
+  Hinweisen (grün/amber/rot). Referenzsuite weiter 1491/1491 fehlerfrei,
+  Regression grün. → Protokoll Abschnitte 55–56.
 - **11.08.2026** – **Validator: Rahmen je Nachricht/Prüf-ID in der Mehrfach-
   Ansicht.** Bei Sammel-/Mehr-PID-Dateien wird jeder Nachrichten-/Vorgangs-
   abschnitt optisch in einen eigenen Kasten (`.msgblock`) gefasst — mit

@@ -133,6 +133,17 @@ function ladeGenerator(engineDir, dataDir, opts = {}){
     for (const f of dateien) combined += '\n' + fs.readFileSync(f,'utf8') + '\n';
     vm.runInContext(combined, sandbox, { filename:'combined.js' });
 
+    // Bedingungen bereitstellen: die per-Typ-Datei _bedingungen.js legt ihre Daten
+    // in eine typspezifische Variable und exportiert EdiBedingungen nur über window.
+    // Im VM-Sandbox (kein window) käme sonst nichts an, sodass jede konditionale
+    // Muss-Bedingung als „nicht entscheidbar" (Warnung) behandelt würde. Über
+    // module.exports der Datei die Bedingungen nachziehen.
+    try {
+      const bed = require(path.join(pd, '_bedingungen.js'));
+      if (bed && typeof bed === 'object')
+        sandbox.EdiBedingungen = Object.assign(sandbox.EdiBedingungen || {}, bed);
+    } catch (e) { /* Typ ohne Bedingungsdatei */ }
+
     // Prüf-IDs der kuratierten Maske (nur UTILMD-Ziele führen _regeln.js; für
     // andere Ziele dient der Harness als reiner Validator-Lader, z. B. für die
     // Referenz-Testsuite scripts/referenz_validierung.js).

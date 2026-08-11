@@ -60,9 +60,17 @@
     padding:12px 14px;margin:14px 0;background:var(--bg);}
   .msgblock:first-child{margin-top:6px;}
   .msgblock.ok{border-left-color:var(--ok-text);}
+  .msgblock.warnung{border-left-color:#f0ad4e;}
   .msgblock.rot{border-left-color:var(--warn-text);}
+  .msgblock.markiert{outline:2px solid var(--accent);outline-offset:2px;}
   .msgblock > h3{margin:0 0 10px;font-size:14px;color:var(--heading);
     display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  /* Sprungnavigation zu Nachrichten mit Befund (Fehler/Hinweise) */
+  .msgnav{position:sticky;top:8px;z-index:5;display:flex;align-items:center;gap:10px;
+    flex-wrap:wrap;background:var(--panel);border:1px solid var(--border);border-radius:10px;
+    box-shadow:var(--shadow);padding:8px 12px;margin:0 0 10px;font-size:13px;color:var(--muted);}
+  .msgnav .go.klein{padding:5px 12px;font-size:13px;}
+  .msgnav #msgnavPos{font-variant-numeric:tabular-nums;color:var(--heading);font-weight:600;}
   .lade{color:var(--muted);font-size:13px;}
 </style>
 </head>
@@ -169,9 +177,12 @@ function leeren(){
 const skriptCache = {};   // Pfad -> Promise
 const metaCache = {};     // Schlüssel -> Meta-Objekt(e)
 const bedCache = {};      // Pfad -> Bedingungen des Typs ({nn:{text,art,check}})
-// Bedingungsdatei des erkannten Typs laden (Momentaufnahme, da EdiBedingungen global akkumuliert)
-async function ladeBedingungen(seite){
-  const pfad = seite.replace(/[^/]*$/, 'pruef-ids/_bedingungen.js');
+// Bedingungsdatei des erkannten Typs laden (Momentaufnahme, da EdiBedingungen global akkumuliert).
+// Pfad aus metaPfad ableiten (enthält den Formatstand), NICHT aus `seite` — dort steckt der
+// Stand nur als ?stand=-Parameter, sodass das Stand-Verzeichnis im Pfad fehlte (Bedingungen
+// wurden nie geladen, alle konditionalen Muss blieben Warnungen).
+async function ladeBedingungen(metaPfad){
+  const pfad = metaPfad.replace(/[^/]*$/, '_bedingungen.js');
   if (!(pfad in bedCache)){
     const vorher = window.EdiBedingungen;
     window.EdiBedingungen = {};
@@ -295,27 +306,57 @@ async function starteMehrfach(einheiten){
   $('ampel').innerHTML = gesamtFehler
     ? `<span class="badge rot">${gesamtFehler} Fehler in ${einheiten.length} Nachrichten</span>`
     : `<span class="badge ok">alle ${einheiten.length} Nachrichten fehlerfrei</span>`;
-  $('globalMeldungen').innerHTML = '';
   let out = '';
+  befundBloecke = [];
   ergebnisse.forEach((r, i) => {
     const label = einheiten[i].label || `Nachricht ${i + 1}`;
     if (r.det && r.det.fehler){
-      out += `<div class="msgblock rot">` +
+      befundBloecke.push(i);
+      out += `<div class="msgblock rot" id="msgblock-${i}">` +
         `<h3>${label} <span class="badge rot">nicht erkannt</span></h3>` +
         `<div class="globalbox rot">${r.det.fehler}</div></div>`;
       return;
     }
     const res = r.res, f = res.zusammenfassung.fehler;
     const bm = res.bedingteMuss ? res.bedingteMuss.length : 0;
+    const hatHinweis = bm > 0 || (res.global.hinweise && res.global.hinweise.length > 0)
+      || res.zeilen.some(z => z.hinweise && z.hinweise.length > 0);
+    const status = f ? 'rot' : (hatHinweis ? 'warnung' : 'ok');
+    if (f || hatHinweis) befundBloecke.push(i);
     const badge = f ? `<span class="badge rot">${f} Fehler</span>`
       : (bm ? `<span class="badge warn">fehlerfrei · ${bm} bedingte Muss</span>` : `<span class="badge ok">fehlerfrei</span>`);
     const pid = r.det.pruefi ? ` · Prüf-ID ${r.det.pruefi}` : '';
     const typ = `${r.det.typ || ''}${r.e && r.e.sparte ? ' ' + r.e.sparte : ''}`;
-    out += `<div class="msgblock ${f ? 'rot' : 'ok'}">` +
+    out += `<div class="msgblock ${status}" id="msgblock-${i}">` +
       `<h3>${label} — ${typ}${pid} ${badge}</h3>` +
       globalHtml(res) + segListeHtml(r.parsed, res, { ohneUmschlag: true, ohneUna: true }) + `</div>`;
   });
+  // Sprungnavigation zu Nachrichten mit Befund (Fehler oder Hinweise/bedingte Muss)
+  befundPos = -1;
+  $('globalMeldungen').innerHTML = befundBloecke.length
+    ? `<div class="msgnav">` +
+        `<span>${befundBloecke.length} von ${einheiten.length} Nachrichten mit Befund (Fehler/Hinweise)</span>` +
+        `<button class="go secondary klein" onclick="springeBefund(-1)">▲ zurück</button>` +
+        `<span id="msgnavPos">–</span>` +
+        `<button class="go secondary klein" onclick="springeBefund(1)">nächster Befund ▼</button>` +
+      `</div>`
+    : '';
   $('segmentListe').innerHTML = out;
+}
+
+// Zwischen den Nachrichtenblöcken mit Befund vor-/zurückspringen.
+let befundBloecke = [], befundPos = -1;
+function springeBefund(richtung){
+  if (!befundBloecke.length) return;
+  befundPos = (befundPos + richtung + befundBloecke.length) % befundBloecke.length;
+  const el = document.getElementById('msgblock-' + befundBloecke[befundPos]);
+  if (el){
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el.classList.add('markiert');
+    setTimeout(() => el.classList.remove('markiert'), 1200);
+  }
+  const pos = document.getElementById('msgnavPos');
+  if (pos) pos.textContent = (befundPos + 1) + '/' + befundBloecke.length;
 }
 
 // Erkennung + Validierung EINER Nachricht (kein DOM-Zugriff) — liefert Ergebnis
@@ -353,7 +394,7 @@ async function pruefeEinText(text){
   const migKey = e.format === 'UTILMD' ? (e.sparte === 'Gas' ? 'UTILMD_GAS' : 'UTILMD_STROM') : e.format;
   // Bedingungen des Typs laden (für ahbicht-gestützte Muss-Auswertung + Hilfe-Popover)
   let bedingungen = {};
-  try { bedingungen = await ladeBedingungen(e.seite); window.EdiBedingungen = bedingungen; } catch(ex){}
+  try { bedingungen = await ladeBedingungen(e.metaPfad); window.EdiBedingungen = bedingungen; } catch(ex){}
   const ctx = {
     meta, pruefi: det.pruefi, stand: e.stand, format: e.format, unhSoll: e.unh,
     migFormat: (migFormate[e.stand] || {})[migKey] || { felder: {}, maxWdh: {} },

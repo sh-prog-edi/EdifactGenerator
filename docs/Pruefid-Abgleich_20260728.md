@@ -2777,3 +2777,58 @@ INSRPT liefern je zwei Prüf-IDs aus zwei Vorgängen; INVOIC/MSCONS/ORDERS liefe
 keine Vorgangs-PID (eine je UNH); mehrere UNH werden typunabhängig zerlegt. In
 der Regression registriert (nun 34 Läufe, grün). Umbau-E2E (56/56) und der
 Einheitentest unverändert grün.
+
+## 55. Validator: konditionale Muss-Bedingungen tatsächlich auswerten (11.08.2026)
+
+**Auftrag.** Auftraggeber-Befund: INVOIC 31004 zeigte „orange, fehlerfrei, 7
+bedingte Muss" — ob die Abhängigkeiten nicht geprüft und aufgelöst werden können.
+
+**Ursachen (drei).**
+
+1. **Bedingungspfad falsch (validator.html).** `ladeBedingungen` baute den Pfad
+   aus `seite` (Registry-URL mit `?stand=`-Parameter, ohne Stand-Verzeichnis) —
+   das Stand-Verzeichnis fehlte, der Load schlug fehl, `EdiBedingungen` blieb
+   leer, jede Bedingung galt als „nicht entscheidbar" (Warnung). Behoben: Pfad aus
+   `metaPfad` ableiten (`…/<stand>/…/pruef-ids/_bedingungen.js`).
+2. **Bedingungen im Prüfpfad nicht bereitgestellt (Harness/Referenzsuite).** Die
+   per-Typ-Datei `_bedingungen.js` legt ihre Daten in eine typspezifische Variable
+   und exportiert `EdiBedingungen` nur über `window`; im VM-Sandbox (kein window)
+   kam nichts an. Behoben: Der Harness zieht die Bedingungen über `module.exports`
+   der Datei nach (`sandbox.EdiBedingungen`).
+3. **Gemischte Status-Ausdrücke (ahb-validator.js).** `bedingungErfuellt` verlangte
+   „Muss [...]" bis Zeilenende und scheiterte an gemischten Ausdrücken wie
+   „Muss [47] Soll [19] ∧ [1]". Behoben: nur der führende „Muss [...]"-Teil wird
+   ausgewertet (Bedingungsausdrücke enthalten nur Zahlen/Klammern/∧∨⊻; der Lauf
+   endet am nächsten Statuswort).
+
+**Ergebnis (INVOIC 31004).** Von sieben bedingten Muss lösen sich drei
+maschinell auf (DTM+Z42/Z43 über [55] „Wenn IMD++ABS"; DTM+203 über [47] „Wenn
+IMD++Z43" — beide IMD-Qualifier stehen nicht in der Nachricht → nicht
+erforderlich): 7 → 4. Die verbleibenden vier sind echte fachliche Abhängigkeiten,
+die aus DIESER Nachricht nicht entscheidbar sind — Verweise auf die Ursprungs-/
+Stornorechnung ([34] „Wenn in Ursprungsrechnung vorhanden", [1]) bzw. die
+Empfängerrolle ([31] „MP-ID in NAD+MR in Rolle MGV") und ein Querbezug ohne
+hinterlegten Check ([58]). Diese tragen jetzt ihren **Klartext** in der Warnung
+(„… abhängig von: [31] Wenn MP-ID in NAD+MR in der Rolle MGV"), statt nur den
+rohen Bedingungscode.
+
+**Nachweis.** Vertragstests (`test_muss_validierung`, `test_bedingung_hart`)
+grün; Referenzsuite weiter 1491/1491 fehlerfrei (0 Fehler; die Bedingungsauswertung
+erzeugt keine neuen harten Befunde an echten Nachrichten); Regression komplett
+grün (34 Läufe). Golden/Selbstvalidierung unverändert.
+
+## 56. Validator: Rahmen mit Sprungnavigation zu Befunden (11.08.2026)
+
+**Auftrag.** In der Mehr-PID-Ansicht eine Sprungnavigation zu den Rahmen mit
+Fehlern bzw. Hinweisen (und zurück).
+
+**Umsetzung.** Jeder Nachrichtenblock trägt nun einen statusabhängigen Akzent:
+grün (fehlerfrei), amber (nur Hinweise/bedingte Muss), rot (Fehler). Über der
+Ergebnisliste sitzt eine **sticky Navileiste** „N von M Nachrichten mit Befund
+(Fehler/Hinweise)" mit „▲ zurück" / „nächster Befund ▼" und Positionsanzeige;
+`springeBefund()` rollt zum jeweiligen Block (`scrollIntoView`, kurzer
+Markierungsrahmen) und läuft zyklisch durch alle Blöcke mit Fehler oder Hinweis.
+Rein visuell/navigatorisch; Prüf-Logik und Einzel-Ansicht unverändert.
+
+**Nachweis.** `test_validator_mehrfach` und `test_engine_pages` grün, keine
+JS-Fehler; Regression grün (34 Läufe).

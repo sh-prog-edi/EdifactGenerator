@@ -718,10 +718,30 @@
         if (node.op === "xor") return vals.some(v => v === null) ? null : (vals.filter(v => v === true).length === 1);
         return null;
       }
+      // Bedingung eines (ggf. gemischten) Status-Ausdrucks auswerten: nur der
+      // führende „Muss [...]"-Teil ist maßgeblich; ein nachfolgender Soll/Kann-Teil
+      // (z. B. „Muss [47] Soll [19] ∧ [1]") wird abgeschnitten. Bedingungsausdrücke
+      // enthalten nur Zahlen, Klammern und die Operatoren ∧ ∨ ⊻ — der Lauf endet am
+      // ersten Buchstaben (nächstes Statuswort).
+      function bedingungsAusdruck(expr) {
+        const m = /^Muss\s+([\[\]\d\s∧∨⊻()]+)/.exec(expr || "");
+        return m ? m[1].trim() : null;
+      }
       function bedingungErfuellt(expr) {
-        const m = /^Muss\s*(\[.*)$/.exec(expr || "");
-        if (!m || !ctx.condTree) return null;
-        return evalNode(ctx.condTree[m[1].trim()]);
+        if (!ctx.condTree) return null;
+        const a = bedingungsAusdruck(expr);
+        return a ? evalNode(ctx.condTree[a]) : null;
+      }
+      // Klartext der Bedingungen eines Ausdrucks (für die Warnung bei nicht
+      // maschinell entscheidbaren Bedingungen — z. B. Verweise auf die
+      // Ursprungs-/Stornorechnung, die aus dieser Nachricht nicht prüfbar sind).
+      function bedingungsText(expr) {
+        const roh = bedingungsAusdruck(expr) || String(expr || "");
+        const nums = roh.match(/\d+/g) || [];
+        return nums.map(function (n) {
+          var b = ctx.bedingungen && ctx.bedingungen[n];
+          return b && b.text ? "[" + n + "] " + b.text : "[" + n + "]";
+        }).join("; ");
       }
 
       // Eine Segmentgruppe kann an einen Codewert einer anderen gebunden sein
@@ -791,7 +811,10 @@
             : bedingungErfuellt(klasse === "bedingt" ? inst.expr : sgExpr); // true/false/null
           if (erg === true) fehlendeMuss.push(`${label} — Bedingung erfüllt (${condExpr})`);
           else if (erg === false) { /* Bedingung trifft nicht zu: Segment nicht erforderlich */ }
-          else bedingteMuss.push(`${label} — bedingtes Muss (Gruppe „${sgExpr || inst.expr}")`);
+          else {
+            const txt = bedingungsText(condExpr);
+            bedingteMuss.push(`${label} — bedingtes Muss${txt ? ", abhängig von: " + txt : ' (Gruppe „' + (sgExpr || inst.expr) + '")'}`);
+          }
         }
       });
     }
