@@ -739,9 +739,54 @@
         const roh = bedingungsAusdruck(expr) || String(expr || "");
         const nums = roh.match(/\d+/g) || [];
         return nums.map(function (n) {
-          var b = ctx.bedingungen && ctx.bedingungen[n];
-          return b && b.text ? "[" + n + "] " + b.text : "[" + n + "]";
+          var bd = ctx.bedingungen && ctx.bedingungen[n];
+          return bd && bd.text ? "[" + n + "] " + bd.text : "[" + n + "]";
         }).join("; ");
+      }
+
+      // Konkreter Bezug einer nicht auflösbaren Bedingung: Verweist sie auf eine
+      // Ursprungs-/Vorgängernachricht, wird deren Referenz (RFF+OI/ACW/TN) samt
+      // Belegdatum (folgendes DTM) ausgegeben — so hat der Prüfer die DAR und das
+      // Erstellungsdatum der Bezugsnachricht direkt zur Hand. Nennt die Bedingung
+      // ein Segment DIESER Nachricht (z. B. NAD+MR, MOA+113), wird dessen
+      // Vorhandensein/Wert gezeigt.
+      const BEZUG_RFF = { OI: "Ursprungsrechnung", ACW: "vorherige Nachricht", TN: "referenzierter Vorgang" };
+      function bezugDatum(idx) {
+        const d = segs[idx + 1];
+        if (!d || d.tag !== "DTM") return "";
+        const t = String((d.elemente[0] || [])[1] || "").replace(/\?(.)/g, "$1");
+        const m = /^(\d{4})(\d{2})(\d{2})/.exec(t);
+        return m ? m[3] + "." + m[2] + "." + m[1] : "";
+      }
+      function konkreterBezug(condText) {
+        const teile = [];
+        if (/Ursprung|Storno|zu stornierend|vorherig|vorangeg/i.test(condText || "")) {
+          for (let i = a; i <= b; i++) {
+            const s = segs[i];
+            if (!s || s.tag !== "RFF") continue;
+            const q = (s.elemente[0] || [])[0];
+            if (!BEZUG_RFF[q]) continue;
+            const wert = (s.elemente[0] || [])[1] || "";
+            const dat = bezugDatum(i);
+            teile.push(BEZUG_RFF[q] + " " + wert + (dat ? ", Belegdatum " + dat : ""));
+          }
+        }
+        const ref = /\b([A-Z]{3})\+([A-Z0-9]{1,3})\b/.exec(condText || "");
+        if (ref && QUAL_DE[ref[1]]) {
+          const tag = ref[1], code = ref[2];
+          let treffer = null;
+          for (let j = a; j <= b; j++) {
+            const sg = segs[j];
+            if (sg && sg.tag === tag && deWert(sg, QUAL_DE[tag]) === code) { treffer = sg; break; }
+          }
+          if (treffer) {
+            const id = tag === "NAD" ? ((treffer.elemente[1] || [])[0] || "") : "";
+            teile.push(tag + "+" + code + (id ? ": " + id : " (vorhanden)"));
+          } else {
+            teile.push(tag + "+" + code + " nicht in dieser Nachricht");
+          }
+        }
+        return teile.join("; ");
       }
 
       // Eine Segmentgruppe kann an einen Codewert einer anderen gebunden sein
@@ -813,7 +858,8 @@
           else if (erg === false) { /* Bedingung trifft nicht zu: Segment nicht erforderlich */ }
           else {
             const txt = bedingungsText(condExpr);
-            bedingteMuss.push(`${label} — bedingtes Muss${txt ? ", abhängig von: " + txt : ' (Gruppe „' + (sgExpr || inst.expr) + '")'}`);
+            const bezug = konkreterBezug(txt);
+            bedingteMuss.push(`${label} — bedingtes Muss${txt ? ", abhängig von: " + txt : ' (Gruppe „' + (sgExpr || inst.expr) + '")'}${bezug ? " → " + bezug : ""}`);
           }
         }
       });

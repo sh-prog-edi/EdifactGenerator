@@ -12,6 +12,13 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
   Erwartungsdateien selbst bleiben bewusst NICHT im Repo (echte Zähler-/
   Rechnungsdaten möglich; zeitlich begrenzte Formatrelevanz) — nur der
   PID-Abdeckungsnachweis wird versioniert.
+- **11.08.2026** – **Validator: Bezug auf die Ursprungs-/Bezugsnachricht bei
+  offenen Bedingungen.** Nicht maschinell auflösbare bedingte Muss, die auf eine
+  andere Nachricht verweisen, nennen jetzt die Bezugsnachricht: RFF+OI/ACW/TN
+  (Ursprungsrechnung/vorherige Nachricht/Vorgang) samt Belegdatum aus dem
+  folgenden DTM (z. B. „→ Ursprungsrechnung MMM… , Belegdatum 23.02.2026").
+  Nennt die Bedingung ein Segment dieser Nachricht (NAD+MR, MOA+113), wird dessen
+  Wert bzw. Fehlen gezeigt. → Protokoll Abschnitt 57.
 - **11.08.2026** – **Validator: konditionale Muss-Bedingungen werden jetzt
   ausgewertet + Sprungnavigation.** Drei Ursachen behoben, warum bedingte Muss
   nie aufgelöst wurden: (1) `validator.html` baute den Bedingungspfad ohne

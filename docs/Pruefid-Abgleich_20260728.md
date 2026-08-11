@@ -2832,3 +2832,30 @@ Rein visuell/navigatorisch; Prüf-Logik und Einzel-Ansicht unverändert.
 
 **Nachweis.** `test_validator_mehrfach` und `test_engine_pages` grün, keine
 JS-Fehler; Regression grün (34 Läufe).
+
+## 57. Validator: Bezug auf die Ursprungs-/Bezugsnachricht bei offenen Bedingungen (11.08.2026)
+
+**Auftrag.** Bei nicht maschinell auflösbaren Bedingungen, die auf eine andere
+Nachricht verweisen (z. B. „Wenn in Ursprungsrechnung vorhanden", „Wenn MP-ID in
+NAD+MR in der Rolle MGV"), soll der Hinweis die Bezugsnachricht benennen — DAR
+bzw. Belegnummer und, falls vorhanden, das Erstellungsdatum.
+
+**Umsetzung.** Der Validator reichert jede verbleibende bedingte-Muss-Warnung um
+einen konkreten Bezug an (`konkreterBezug` in `_engine/ahb-validator.js`):
+
+- Verweist die Bedingung auf eine Ursprungs-/Vorgänger-/Stornonachricht, werden
+  die Referenzsegmente der Nachricht ausgewertet — `RFF+OI` (Ursprungsrechnung),
+  `RFF+ACW` (vorherige Nachricht), `RFF+TN` (referenzierter Vorgang) — samt
+  Belegdatum aus dem folgenden `DTM` (z. B. „→ Ursprungsrechnung
+  MMM200001091370, Belegdatum 23.02.2026").
+- Nennt die Bedingung ein Segment DIESER Nachricht (z. B. `NAD+MR`, `MOA+113`),
+  wird dessen Wert bzw. Fehlen gezeigt („→ NAD+MR: 9904…"; „→ MOA+113 nicht in
+  dieser Nachricht"), sodass der Prüfer die Bedingung selbst beurteilen kann.
+
+**Ergebnis (INVOIC 31004).** Die vier verbleibenden bedingten Muss tragen jetzt
+ihren Bezug: [34] → Ursprungsrechnung samt Belegdatum, [31] → die NAD+MR-MP-ID,
+[58] → „MOA+113 nicht in dieser Nachricht".
+
+**Nachweis.** Vertragstests grün; Referenzsuite weiter 1491/1491 fehlerfrei;
+Regression komplett grün (34 Läufe). Rein informativ (Hinweistext); keine
+Änderung an Fehler-/Golden-Bewertung.
