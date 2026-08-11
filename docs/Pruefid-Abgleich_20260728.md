@@ -2859,3 +2859,30 @@ ihren Bezug: [34] → Ursprungsrechnung samt Belegdatum, [31] → die NAD+MR-MP-
 **Nachweis.** Vertragstests grün; Referenzsuite weiter 1491/1491 fehlerfrei;
 Regression komplett grün (34 Läufe). Rein informativ (Hinweistext); keine
 Änderung an Fehler-/Golden-Bewertung.
+
+## 58. Validator: Hinweis/Link zur Codenummern-Prüfung bei den Vergabestellen (11.08.2026)
+
+**Auftrag.** Recherche ergab: Ein echter Codenummernabgleich (ist eine MP-ID real
+vergeben, an wen, in welcher Rolle) braucht das Verzeichnis der Vergabestellen,
+das bei BDEW (Strom) und DVGW (Gas) registrierungs-/vertragspflichtig und nicht
+frei als Liste/API abrufbar ist. Der Auftraggeber hat keinen solchen Zugang;
+gewünscht ist daher lediglich ein Hinweis mit Link zur manuellen Prüfung.
+
+**Umsetzung (`validator.html`).** Das Ergebnis zeigt oben eine Info-Box, die die
+Marktpartner-Codenummern aus UNB (Absender/Empfänger) und den NAD-Segmenten
+sammelt und je Nummer die zuständige Vergabestelle samt Prüf-Link nennt. Die
+Zuordnung folgt der in der Nachricht codierten Stelle — UNB-Kennung
+(500 = BDEW/Strom, 502 = DVGW/Gas) bzw. NAD DE3055 (293 = BDEW, 332 = DVGW,
+9 = GS1/GLN):
+
+- BDEW (Strom): https://bdew-codes.de/Codenumbers/BDEWCodes
+- DVGW (Gas): https://www.dvgw-sc.de/leistungen/it-dienstleistungen/datenaustausch-gas/marktkommunikation-gas
+- GS1 (GLN): https://www.gs1-germany.de/…/global-location-number-gln/
+
+Zusätzlich trägt der Seitenfuß dieselben Links als dauerhafte Referenz. Der
+Hinweistext stellt klar: Der Validator prüft nur Format und Konsistenz der
+MP-IDs, nicht deren tatsächliche Vergabe — die bestätigt nur die zuständige
+Stelle. Rein informativ, keine Änderung an der Prüf-Logik.
+
+**Nachweis.** `test_validator_mehrfach`, `test_engine_pages` grün, keine
+JS-Fehler; Regression grün (34 Läufe).

@@ -12,6 +12,12 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
   Erwartungsdateien selbst bleiben bewusst NICHT im Repo (echte Zähler-/
   Rechnungsdaten möglich; zeitlich begrenzte Formatrelevanz) — nur der
   PID-Abdeckungsnachweis wird versioniert.
+- **11.08.2026** – **Validator: Hinweis/Link zur Codenummern-Prüfung bei den
+  Vergabestellen.** Das Ergebnis listet die Marktpartner-Codenummern aus UNB und
+  NAD mit der zuständigen Vergabestelle (BDEW/Strom bei DE3055=293 bzw. UNB=500,
+  DVGW/Gas bei 332/502, GS1 bei 9) und je einem Prüf-Link; der Seitenfuß führt die
+  Links dauerhaft. Klarstellung: Der Validator prüft nur Format/Konsistenz, nicht
+  die tatsächliche Vergabe. → Protokoll Abschnitt 58.
 - **11.08.2026** – **Validator: Bezug auf die Ursprungs-/Bezugsnachricht bei
   offenen Bedingungen.** Nicht maschinell auflösbare bedingte Muss, die auf eine
   andere Nachricht verweisen, nennen jetzt die Bezugsnachricht: RFF+OI/ACW/TN

@@ -52,6 +52,10 @@
   .globalbox{border-radius:8px;padding:10px 12px;margin:8px 0;font-size:13px;}
   .globalbox.rot{background:var(--warn-bg);color:var(--warn-text);}
   .globalbox.info{background:var(--accent-bg);color:var(--heading);}
+  .globalbox .cnliste{margin:6px 0 0;padding-left:20px;}
+  .globalbox .cnliste li{margin:2px 0;}
+  .globalbox .cnliste code{font-size:12.5px;}
+  .globalbox a{color:var(--accent);font-weight:600;}
   .badge.warn{background:#f0ad4e;color:#3a2a00;}
   .globalbox.warn{background:#fbeecb;color:#6a5100;border:1px solid #f0ad4e;}
   [data-theme="dark"] .globalbox.warn{background:#3a2f12;color:#f0d98a;border-color:#6b551f;}
@@ -128,6 +132,10 @@
     Prüfgrundlagen: AHB-Formular-Metas des Generators, BDEW-MIG-Feldformate, EBD 4.2/4.3,
     EDI@Energy-Codelisten, Allgemeine Festlegungen 6.1c/6.1d (alles BDEW-MAKO, freie Fassungen).
     Hinweis: Muss-Segmente optionaler Untergruppen werden nur innerhalb verwendeter Gruppen geprüft.
+    <br>Codenummern-Prüfung bei den Vergabestellen:
+    <a href="https://bdew-codes.de/Codenumbers/BDEWCodes" target="_blank" rel="noopener">BDEW (Strom) ↗</a> ·
+    <a href="https://www.dvgw-sc.de/leistungen/it-dienstleistungen/datenaustausch-gas/marktkommunikation-gas" target="_blank" rel="noopener">DVGW (Gas) ↗</a>.
+    Der Validator prüft nur Format und Konsistenz der Marktpartner-IDs, nicht deren tatsächliche Vergabe.
   </footer>
 </div>
 
@@ -249,7 +257,7 @@ async function starte(){
   if (!text.trim()) return;
   const einheiten = baueEinheiten(text);
   if (einheiten.length <= 1){ await starteEinzeln(text); return; }
-  await starteMehrfach(einheiten);
+  await starteMehrfach(einheiten, text);
 }
 
 // Segmentliste einer Einheit als HTML (Segmentnummerierung ab UNH = 1 wie in der
@@ -289,9 +297,42 @@ function globalHtml(res){
   return g;
 }
 
+// Hinweis mit Link zur Codenummern-Prüfung bei der jeweiligen Vergabestelle.
+// Der Validator prüft nur Format und Konsistenz der Marktpartner-IDs, nicht deren
+// tatsächliche Vergabe — die kann nur die zuständige Stelle bestätigen (Strom:
+// BDEW/Energie Codes und Services; Gas: DVGW Service & Consult). Die zuständige
+// Stelle steht in der Nachricht: UNB-Kennung (500=BDEW/Strom, 502=DVGW/Gas) und
+// NAD DE3055 (293=BDEW, 332=DVGW, 9=GS1/GLN).
+const VERGABESTELLEN = {
+  '293': { label: 'BDEW (Strom)',  name: 'BDEW', url: 'https://bdew-codes.de/Codenumbers/BDEWCodes' },
+  '500': { label: 'BDEW (Strom)',  name: 'BDEW', url: 'https://bdew-codes.de/Codenumbers/BDEWCodes' },
+  '332': { label: 'DVGW (Gas)',    name: 'DVGW', url: 'https://www.dvgw-sc.de/leistungen/it-dienstleistungen/datenaustausch-gas/marktkommunikation-gas' },
+  '502': { label: 'DVGW (Gas)',    name: 'DVGW', url: 'https://www.dvgw-sc.de/leistungen/it-dienstleistungen/datenaustausch-gas/marktkommunikation-gas' },
+  '9':   { label: 'GS1 (GLN)',     name: 'GS1',  url: 'https://www.gs1-germany.de/gs1-standards/identifikation/global-location-number-gln/' },
+};
+function codenummernBoxHtml(parsed){
+  const gefunden = new Map();   // MP-ID -> Vergabestelle
+  const merke = (id, agentur) => { if (id && /^\d{6,}$/.test(id) && VERGABESTELLEN[agentur]) gefunden.set(id, VERGABESTELLEN[agentur]); };
+  (parsed.segmente || []).forEach(s => {
+    if (s.tag === 'UNB'){
+      merke((s.elemente[1] || [])[0], (s.elemente[1] || [])[1]);
+      merke((s.elemente[2] || [])[0], (s.elemente[2] || [])[1]);
+    } else if (s.tag === 'NAD'){
+      const g = s.elemente[1] || [];
+      merke(g[0], g[2]);
+    }
+  });
+  if (!gefunden.size) return '';
+  const zeilen = [...gefunden.entries()].map(([id, v]) =>
+    `<li><code>${id}</code> — ${v.label} · <a href="${v.url}" target="_blank" rel="noopener">bei ${v.name} prüfen ↗</a></li>`).join('');
+  return `<div class="globalbox info"><strong>Marktpartner-Codenummern bei der Vergabestelle prüfen</strong> ` +
+    `(der Validator prüft nur Format und Konsistenz, nicht die tatsächliche Vergabe):` +
+    `<ul class="cnliste">${zeilen}</ul></div>`;
+}
+
 // Mehrere Nachrichten/Vorgänge in einer Datei: jede Einheit gegen ihre eigene
 // Prüf-ID prüfen und als eigener Block darstellen.
-async function starteMehrfach(einheiten){
+async function starteMehrfach(einheiten, gesamtText){
   $('panelErkennung').style.display = '';
   $('utilmdHinweis').innerHTML = '';
   $('panelAntwort').style.display = 'none';
@@ -333,7 +374,7 @@ async function starteMehrfach(einheiten){
   });
   // Sprungnavigation zu Nachrichten mit Befund (Fehler oder Hinweise/bedingte Muss)
   befundPos = -1;
-  $('globalMeldungen').innerHTML = befundBloecke.length
+  const nav = befundBloecke.length
     ? `<div class="msgnav">` +
         `<span>${befundBloecke.length} von ${einheiten.length} Nachrichten mit Befund (Fehler/Hinweise)</span>` +
         `<button class="go secondary klein" onclick="springeBefund(-1)">▲ zurück</button>` +
@@ -341,6 +382,9 @@ async function starteMehrfach(einheiten){
         `<button class="go secondary klein" onclick="springeBefund(1)">nächster Befund ▼</button>` +
       `</div>`
     : '';
+  let cnBox = '';
+  try { cnBox = codenummernBoxHtml(AhbValidator.parse(gesamtText || '')); } catch (ex){}
+  $('globalMeldungen').innerHTML = cnBox + nav;
   $('segmentListe').innerHTML = out;
 }
 
@@ -482,7 +526,7 @@ async function starteEinzeln(text){
     : (bmAnz
         ? `<span class="badge warn">fehlerfrei · ${bmAnz} bedingte Muss offen</span>`
         : `<span class="badge ok">fehlerfrei</span>`);
-  $('globalMeldungen').innerHTML = globalHtml(res);
+  $('globalMeldungen').innerHTML = codenummernBoxHtml(r.parsed) + globalHtml(res);
   $('segmentListe').innerHTML = segListeHtml(r.parsed, res, {});
   baueAntwortPanel(r.det, r.e, r.parsed, res);
 }
