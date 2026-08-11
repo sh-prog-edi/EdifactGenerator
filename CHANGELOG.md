@@ -12,6 +12,12 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
   Erwartungsdateien selbst bleiben bewusst NICHT im Repo (echte Zähler-/
   Rechnungsdaten möglich; zeitlich begrenzte Formatrelevanz) — nur der
   PID-Abdeckungsnachweis wird versioniert.
+- **11.08.2026** – **Validator: Rahmen je Nachricht/Prüf-ID in der Mehrfach-
+  Ansicht.** Bei Sammel-/Mehr-PID-Dateien wird jeder Nachrichten-/Vorgangs-
+  abschnitt optisch in einen eigenen Kasten (`.msgblock`) gefasst — mit
+  statusabhängigem Akzentbalken (grün = fehlerfrei, orange = Fehler) und
+  Kopfzeile (Nachricht k/N · Dokumentnummer — Typ · Prüf-ID · Status). Ersetzt
+  die bisherigen Trennlinien; erleichtert die Zuordnung in großen Dateien.
 - **11.08.2026** – **Prüf-ID-Zerlegung für alle Nachrichtentypen geprüft; INSRPT
   ergänzt.** Systematisch bestimmt, welche Typen mehrere unterschiedliche
   Prüf-IDs je UNH-Nachricht führen können (RFF+Z13 in einer je Vorgang

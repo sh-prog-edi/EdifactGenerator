@@ -55,6 +55,14 @@
   .badge.warn{background:#f0ad4e;color:#3a2a00;}
   .globalbox.warn{background:#fbeecb;color:#6a5100;border:1px solid #f0ad4e;}
   [data-theme="dark"] .globalbox.warn{background:#3a2f12;color:#f0d98a;border-color:#6b551f;}
+  /* Rahmen je Nachricht/Prüf-ID in der Mehrfach-Ansicht (Sammel-/Mehr-PID-Datei) */
+  .msgblock{border:1px solid var(--border);border-left-width:4px;border-radius:10px;
+    padding:12px 14px;margin:14px 0;background:var(--bg);}
+  .msgblock:first-child{margin-top:6px;}
+  .msgblock.ok{border-left-color:var(--ok-text);}
+  .msgblock.rot{border-left-color:var(--warn-text);}
+  .msgblock > h3{margin:0 0 10px;font-size:14px;color:var(--heading);
+    display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
   .lade{color:var(--muted);font-size:13px;}
 </style>
 </head>
@@ -292,8 +300,8 @@ async function starteMehrfach(einheiten){
   ergebnisse.forEach((r, i) => {
     const label = einheiten[i].label || `Nachricht ${i + 1}`;
     if (r.det && r.det.fehler){
-      out += `<div style="margin-top:14px;border-top:1px solid var(--border);padding-top:10px">` +
-        `<h3 style="margin:.2em 0;font-size:15px">${label} <span class="badge rot">nicht erkannt</span></h3>` +
+      out += `<div class="msgblock rot">` +
+        `<h3>${label} <span class="badge rot">nicht erkannt</span></h3>` +
         `<div class="globalbox rot">${r.det.fehler}</div></div>`;
       return;
     }
@@ -303,8 +311,8 @@ async function starteMehrfach(einheiten){
       : (bm ? `<span class="badge warn">fehlerfrei · ${bm} bedingte Muss</span>` : `<span class="badge ok">fehlerfrei</span>`);
     const pid = r.det.pruefi ? ` · Prüf-ID ${r.det.pruefi}` : '';
     const typ = `${r.det.typ || ''}${r.e && r.e.sparte ? ' ' + r.e.sparte : ''}`;
-    out += `<div style="margin-top:14px;border-top:1px solid var(--border);padding-top:10px">` +
-      `<h3 style="margin:.2em 0;font-size:15px">${label} — ${typ}${pid} ${badge}</h3>` +
+    out += `<div class="msgblock ${f ? 'rot' : 'ok'}">` +
+      `<h3>${label} — ${typ}${pid} ${badge}</h3>` +
       globalHtml(res) + segListeHtml(r.parsed, res, { ohneUmschlag: true, ohneUna: true }) + `</div>`;
   });
   $('segmentListe').innerHTML = out;
