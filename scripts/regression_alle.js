@@ -49,6 +49,7 @@ const BROWSER_TESTS = [
     'scripts/test_layout_kalender.js',        // läuft rund 4 Minuten
     'scripts/test_nachricht_speichern.js',    // läuft rund 2 Minuten
     'scripts/test_umbau.js',
+    'scripts/test_umbau_pidzerlegung.js',
     'scripts/test_validator_komponenten.js',
     'scripts/test_validator_mehrfach.js',
 ];

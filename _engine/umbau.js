@@ -209,13 +209,21 @@
   //   UTILMD/UTILTS  IDE   Vorgang (UTILMD nur IDE+24; IDE+Z01-Übersichten nicht)
   //   ORDERS-Familie LIN   Bestellvorgang/-position
   //   MSCONS         NAD   Lieferstelle/Objekt (nur im Positionsteil nach UNS)
-  //   IFTSTA         CNI/EQD  Sendung bzw. Equipment-Vorgang
+  //   IFTSTA         CNI/EQD  Sendung bzw. Equipment-Vorgang (RFF+Z13 je Vorgang)
+  //   INSRPT         DOC   Vorgang/Bericht (RFF+Z13 je DOC, SG4)
   //   REMADV         DOC   avisierte Rechnung (Summensegmente danach beachten!)
   //   PRICAT         PGI   Preisgruppe/Preisblatt
   // INVOIC führt bewusst KEINEN inneren Trigger: Rechnungspositionen einer
   // Rechnung sind kein eigenständiges Dokument (Teilauswahl bräche die
   // MOA-/TAX-Summen). Sammelrechnungen aggregieren über MEHRERE UNH je UNB —
   // dafür gibt es die Nachrichtenauswahl (nachrichten()/filterVorgaenge).
+  //
+  // Mehrere UNTERSCHIEDLICHE Prüf-IDs je UNH-Nachricht sind nur dort möglich, wo
+  // der RFF+Z13 (Prüfidentifikator) in einer je Vorgang wiederholten Gruppe sitzt:
+  // UTILMD/UTILTS (SG6 unter IDE), IFTSTA (SG4 EQD bzw. SG15 CNI) und INSRPT (SG4
+  // nach DOC). Bei allen übrigen Typen steht der RFF+Z13 im Nachrichtenkopf (SG1
+  // bzw. ohne SG) — dort trägt jede UNH-Nachricht genau eine Prüf-ID, mehrere
+  // Prüf-IDs kommen nur über MEHRERE UNH je Datei vor (typunabhängig zerlegt).
   var VORGANG_TRIGGER = {
     UTILMD: { tags: ["IDE"], qualifier: "24" },
     UTILTS: { tags: ["IDE"] },
@@ -223,6 +231,7 @@
     QUOTES: { tags: ["LIN"] }, REQOTE: { tags: ["LIN"] },
     MSCONS: { tags: ["NAD"], nachUNS: true, summenHinweis: true },
     IFTSTA: { tags: ["CNI", "EQD"] },
+    INSRPT: { tags: ["DOC"] },
     REMADV: { tags: ["DOC"], summenHinweis: true },
     PRICAT: { tags: ["PGI"], summenHinweis: true },
   };

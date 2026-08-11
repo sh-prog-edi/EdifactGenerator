@@ -12,6 +12,15 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
   Erwartungsdateien selbst bleiben bewusst NICHT im Repo (echte Zähler-/
   Rechnungsdaten möglich; zeitlich begrenzte Formatrelevanz) — nur der
   PID-Abdeckungsnachweis wird versioniert.
+- **11.08.2026** – **Prüf-ID-Zerlegung für alle Nachrichtentypen geprüft; INSRPT
+  ergänzt.** Systematisch bestimmt, welche Typen mehrere unterschiedliche
+  Prüf-IDs je UNH-Nachricht führen können (RFF+Z13 in einer je Vorgang
+  wiederholten Gruppe): UTILMD/UTILTS (SG6/IDE), IFTSTA (SG4 EQD / SG15 CNI) und
+  INSRPT (SG4/DOC). Die Kopf-Typen (ORDERS-Familie, MSCONS, INVOIC, PRICAT,
+  PARTIN, REMADV, COMDIS) tragen eine Prüf-ID je UNH — mehrere nur über mehrere
+  UNH (typunabhängig zerlegt). Fehlend war nur INSRPT: `VORGANG_TRIGGER` um DOC
+  ergänzt. Neuer Matrixtest `scripts/test_umbau_pidzerlegung.js` (Regression nun
+  34 Läufe). → Protokoll Abschnitt 54.
 - **11.08.2026** – **Validator-Seite prüft Sammel-/Mehr-PID-Dateien je
   Nachricht.** `validator.html` zerlegt eine Übertragungsdatei jetzt wie die
   Referenzsuite in Einheiten (je UNH-Nachricht, bei UTILMD je Vorgang) und

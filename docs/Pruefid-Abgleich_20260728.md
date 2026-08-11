@@ -2736,3 +2736,44 @@ je eigener Prüf-ID; UTILMD mit zwei Vorgängen 55001+55036 → zwei Blöcke;
 Einzelnachricht → unveränderte Einzel-Ansicht; keine JS-Fehler. In der Regression
 registriert (nun 33 Läufe, grün). Zusätzlich lokal an der realen INVOIC-Sammel
 (15 Nachrichten, 31006/31005/31004) verifiziert: 15 Blöcke, alle fehlerfrei.
+
+## 54. Prüf-ID-Zerlegung: alle Nachrichtentypen geprüft, INSRPT ergänzt (11.08.2026)
+
+**Auftrag.** Systematische Prüfung, welche Nachrichtentypen — wie UTILMD und
+INVOIC — aggregiert mehrere UNTERSCHIEDLICHE Prüf-IDs enthalten dürfen, und
+Anpassung, wo nötig.
+
+**Analyse (zwei Ebenen).**
+
+1. **Mehrere UNH je Datei** (Sammel-Übertragung): typunabhängig möglich und
+   bereits abgedeckt — `validator.html` und die Referenzsuite zerlegen jede
+   Datei je UNH (`EdiUmbau.nachrichten`), jede Nachricht gegen ihre eigene
+   Prüf-ID.
+2. **Mehrere Prüf-IDs je UNH-Nachricht** (Vorgangsebene): nur dort möglich, wo
+   der RFF+Z13 (Prüfidentifikator) in einer je Vorgang wiederholten Gruppe sitzt.
+   Position des RFF+Z13 je Typ aus den Metas ermittelt:
+
+   | RFF+Z13-Sitz | Typen | mehrere PID je UNH |
+   |---|---|---|
+   | SG6 unter IDE (Vorgang) | UTILMD, UTILTS | ja |
+   | SG4 EQD / SG15 CNI (Vorgang) | IFTSTA | ja |
+   | SG4 nach DOC (Vorgang) | INSRPT | ja |
+   | SG1 / ohne SG (Kopf) | ORDERS-Familie, MSCONS, INVOIC, PRICAT, PARTIN, REMADV, COMDIS | nein (eine PID je UNH) |
+   | kein RFF+Z13 | APERAK, CONTRL | — |
+
+   Die MIG-`maxWdh` ist für diese Frage untauglich: Sie beschreibt die
+   Ein-PID-AHB-Struktur (je Vorgang ein Segment, daher IDE=1 auch bei UTILMD),
+   nicht die Aggregation mehrerer Vorgänge/Prüf-IDs in einer Nachricht.
+
+**Umsetzung.** UTILMD, UTILTS und IFTSTA (EQD- und CNI-Variante) wurden bereits
+korrekt in mehrere Prüf-ID-Vorgänge zerlegt. Einzige Lücke: **INSRPT** (RFF+Z13
+je DOC-Vorgang) fehlte in `VORGANG_TRIGGER` — ergänzt um `INSRPT: { tags: ["DOC"] }`.
+Die Kopf-Typen (SG1/ohne SG) brauchen keinen inneren Trigger: eine Prüf-ID je
+UNH; mehrere Prüf-IDs entstehen ausschließlich über mehrere UNH.
+
+**Nachweis.** Neuer Node-Regressionstest `scripts/test_umbau_pidzerlegung.js`
+(synthetische Daten) sichert die gesamte Matrix: UTILMD/UTILTS/IFTSTA(EQD+CNI)/
+INSRPT liefern je zwei Prüf-IDs aus zwei Vorgängen; INVOIC/MSCONS/ORDERS liefern
+keine Vorgangs-PID (eine je UNH); mehrere UNH werden typunabhängig zerlegt. In
+der Regression registriert (nun 34 Läufe, grün). Umbau-E2E (56/56) und der
+Einheitentest unverändert grün.
