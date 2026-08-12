@@ -3114,3 +3114,34 @@ Nutzerfall 55037 nennt die Codes ZW3/ZW4; PID 55002 weist die an ZAP geknüpfte
 Bedingung als „nur wenn [nnn] …" aus. Test grün (0 Fehlalarme, 76/76, 18/18).
 Einstiegsseite: Details zugeklappt vorbelegt, öffnet per Klick, 36/29 Zeilen,
 0 Konsolenfehler. Seiten-Smoke 416/416, Schnell-Regression grün.
+
+## 65. Dokumentenstand 202610: fehlende MIG-Versionen ergänzt („None" behoben) (12.08.2026)
+
+**Frage.** Im kommenden Formatstand 202610 stand bei mehreren MIG (u. a. MSCONS)
+„None". Beim BDEW liegen PDF und DOCX — ist das ein Problem, können die Dokumente
+nicht verarbeitet werden?
+
+**Bewertung.** „None" war ein reines **Label-/Datenproblem**, kein Verarbeitungs-
+problem. Beim Katalogisieren der FV2610-MIG im Quellen-Manifest wurde nur die
+Download-ID (`makoFileId`) erfasst, das Feld `version` blieb `null`; der
+Übersichts-Generator hat dieses `null` zusätzlich fälschlich als Text „None"
+ausgegeben. Die Dokumente selbst sind vorhanden und verarbeitbar — dieselben
+DOCX/PDF-Wege wie bei der Fehlerkorrektur 06.08.2026 (Abschnitt 60: edi_energy-
+Spiegel + python-docx bzw. PDF-Extraktion). Für die **Validierung** ist MSCONS
+202610 bereits hinterlegt: `_engine/daten/mig-formate.js` führt 92 MSCONS-
+Feldformate für den Formatstand 202610.
+
+**Umsetzung.** Die maßgeblichen FV2610-MIG-Versionen aus dem konsolidierten
+edi_energy-Spiegel übernommen (Dateinamen tragen die Version):
+
+* MSCONS **MIG 2.5** (AHB 3.2), IFTSTA 2.1, APERAK 2.2, ORDCHG 1.2, ORDERS 1.4c,
+  ORDRSP 1.4c, PARTIN 1.1, PRICAT 2.1, QUOTES 1.3c — jeweils gültig ab 01.10.2026.
+
+Damit sind im Quellen-Manifest (`docs/QUELLEN_MANIFEST.json`, 11 Einträge
+nachgetragen) und in `_engine/daten/dokumentenstand.js` keine „None"-Versionen
+mehr vorhanden; die Einstiegsseite zeigt für beide Formatstände je 36 Zeilen mit
+echten Versions- und Standangaben. Der Übersichts-Generator gibt leere Versionen
+nicht mehr als „None" aus.
+
+**Nachweis.** Paket-Prüfung bestanden, Schnell-Regression grün, Seiten-Smoke
+416/416; Einstiegsseite ohne „None", 72 Einträge, 0 Konsolenfehler.

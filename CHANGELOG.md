@@ -12,6 +12,15 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
   Erwartungsdateien selbst bleiben bewusst NICHT im Repo (echte Zähler-/
   Rechnungsdaten möglich; zeitlich begrenzte Formatrelevanz) — nur der
   PID-Abdeckungsnachweis wird versioniert.
+- **12.08.2026** – **Dokumentenstand 202610: fehlende MIG-Versionen ergänzt
+  („None" behoben).** Die FV2610-MIG waren im Quellen-Manifest nur per
+  Download-ID erfasst (`version: null`), der Übersichts-Generator gab das als
+  „None" aus — ein Label-Problem, kein Verarbeitungsproblem (MSCONS 202610 ist in
+  `mig-formate.js` mit 92 Feldern hinterlegt). Die maßgeblichen Versionen aus dem
+  konsolidierten edi_energy-Spiegel nachgetragen: u. a. **MSCONS MIG 2.5**,
+  IFTSTA 2.1, APERAK 2.2, ORDCHG 1.2, ORDERS/ORDRSP 1.4c, PARTIN 1.1, PRICAT 2.1,
+  QUOTES 1.3c (gültig ab 01.10.2026). Manifest und `dokumentenstand.js` enthalten
+  keine „None"-Versionen mehr. → Protokoll Abschnitt 65.
 - **12.08.2026** – **Verfeinerung: fehlendes Muss-DE mit Abhängigkeiten;
   Dokumentenstand einklappbar.** Die Meldung zum fehlenden Muss-Datenelement
   nennt jetzt konkret die zulässigen Codes mit Klartext und je Code die

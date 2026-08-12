@@ -4,16 +4,19 @@
 // Nachweis-Schicht für die Einstiegsseite: Sie macht sichtbar, auf welcher
 // Dokumentversion die Prüfgrundlage des Generators beruht und welche einzelnen
 // Fehlerkorrekturen (Änd-IDs der BDEW-Änderungshistorie) eingearbeitet wurden.
-// Aufgeführt sind ALLE verarbeiteten Nachrichtentypen beider Formatstände
-// (Quelle: docs/QUELLEN_MANIFEST.json, Feld „zuordnung" für die AHB-Version je
-// Typ, „dokumente" für MIG-Version und Standdatum). Die Originaldokumente selbst
-// liegen nicht im Repository (siehe README/Lizenz).
+// Aufgeführt sind ALLE verarbeiteten Nachrichtentypen beider Formatstände.
+// Quellen der Versionsangaben: docs/QUELLEN_MANIFEST.json (Feld „zuordnung" für
+// die AHB-Version je Typ) sowie — für den kommenden Formatstand 202610 — die
+// konsolidierten Fassungen des edi_energy-Spiegels (Hochfrequenz), aus dem die
+// MIG-Versionen und Standdaten übernommen sind (z. B. MIG MSCONS 2.5). Die
+// kuratierten UTILMD-Fassungen der Fehlerkorrektur 06.08.2026 bleiben erhalten.
+// Die Originaldokumente selbst liegen nicht im Repository (siehe README/Lizenz).
 //
 // Pflege: bei jeder übernommenen Dokumentfassung/Fehlerkorrektur hier fortführen
 // (Version bzw. `stand` der Dokumente und einen Eintrag unter `aenderungen`).
 // `hoechsteMakoFileId`: höchste bekannte Download-ID der BDEW-MAKO-Plattform aus
-// dem Quellen-Manifest — Bezugswert für die Aktualitätsprüfung (siehe Schalter
-// auf der Einstiegsseite).
+// dem Quellen-Manifest — Bezugswert für die Aktualitätsprüfung (Schalter auf der
+// Einstiegsseite).
 var EdiDokumentenstand = {
   aktualisiert: "2026-08-12",
   hoechsteMakoFileId: 12277,
@@ -66,31 +69,38 @@ var EdiDokumentenstand = {
         { art: "MIG", typ: "UTILMD Strom", version: "S2.2", stand: "06.08.2026" },
         { art: "AHB", typ: "UTILMD Gas", version: "1.2", stand: "06.08.2026" },
         { art: "MIG", typ: "UTILMD Gas", version: "G1.2", stand: "06.08.2026" },
-        { art: "AHB", typ: "APERAK", version: "1.1" },
-        { art: "MIG", typ: "APERAK", version: "None" },
-        { art: "AHB", typ: "COMDIS", version: "1.0h" },
-        { art: "AHB", typ: "CONTRL", version: "1.0" },
-        { art: "AHB", typ: "IFTSTA", version: "2.1" },
-        { art: "MIG", typ: "IFTSTA", version: "None" },
-        { art: "AHB", typ: "INSRPT", version: "1.1g" },
-        { art: "AHB", typ: "INVOIC", version: "1.0b" },
-        { art: "AHB", typ: "MSCONS", version: "3.2" },
-        { art: "MIG", typ: "MSCONS", version: "None" },
-        { art: "AHB", typ: "ORDCHG", version: "1.1" },
-        { art: "MIG", typ: "ORDCHG", version: "None" },
-        { art: "AHB", typ: "ORDERS", version: "1.1b" },
-        { art: "MIG", typ: "ORDERS", version: "None" },
-        { art: "AHB", typ: "ORDRSP", version: "1.1b" },
-        { art: "MIG", typ: "ORDRSP", version: "None" },
-        { art: "AHB", typ: "PARTIN", version: "1.1" },
-        { art: "MIG", typ: "PARTIN", version: "None" },
-        { art: "AHB", typ: "PRICAT", version: "2.1" },
-        { art: "MIG", typ: "PRICAT", version: "None" },
-        { art: "AHB", typ: "QUOTES", version: "1.1a" },
-        { art: "MIG", typ: "QUOTES", version: "None" },
-        { art: "AHB", typ: "REMADV", version: "1.0a" },
-        { art: "AHB", typ: "REQOTE", version: "1.2" },
-        { art: "AHB", typ: "UTILTS", version: "1.1" },
+        { art: "AHB", typ: "APERAK", version: "1.1", stand: "01.10.2026" },
+        { art: "MIG", typ: "APERAK", version: "2.2", stand: "01.10.2026" },
+        { art: "AHB", typ: "COMDIS", version: "1.0h", stand: "01.04.2026" },
+        { art: "MIG", typ: "COMDIS", version: "1.0g", stand: "01.04.2026" },
+        { art: "AHB", typ: "CONTRL", version: "1.0", stand: "11.12.2025" },
+        { art: "MIG", typ: "CONTRL", version: "2.0b", stand: "11.12.2025" },
+        { art: "AHB", typ: "IFTSTA", version: "2.1", stand: "01.10.2026" },
+        { art: "MIG", typ: "IFTSTA", version: "2.1", stand: "01.10.2026" },
+        { art: "AHB", typ: "INSRPT", version: "1.1g", stand: "11.12.2025" },
+        { art: "MIG", typ: "INSRPT", version: "1.1a", stand: "26.07.2024" },
+        { art: "AHB", typ: "INVOIC", version: "1.0b", stand: "01.10.2026" },
+        { art: "MIG", typ: "INVOIC", version: "2.8e", stand: "01.10.2025" },
+        { art: "AHB", typ: "MSCONS", version: "3.2", stand: "01.10.2026" },
+        { art: "MIG", typ: "MSCONS", version: "2.5", stand: "01.10.2026" },
+        { art: "AHB", typ: "ORDCHG", version: "1.1", stand: "01.10.2026" },
+        { art: "MIG", typ: "ORDCHG", version: "1.2", stand: "01.10.2026" },
+        { art: "AHB", typ: "ORDERS", version: "1.1b", stand: "01.10.2026" },
+        { art: "MIG", typ: "ORDERS", version: "1.4c", stand: "01.10.2026" },
+        { art: "AHB", typ: "ORDRSP", version: "1.1b", stand: "01.10.2026" },
+        { art: "MIG", typ: "ORDRSP", version: "1.4c", stand: "01.10.2026" },
+        { art: "AHB", typ: "PARTIN", version: "1.1", stand: "01.10.2026" },
+        { art: "MIG", typ: "PARTIN", version: "1.1", stand: "01.10.2026" },
+        { art: "AHB", typ: "PRICAT", version: "2.1", stand: "01.10.2026" },
+        { art: "MIG", typ: "PRICAT", version: "2.1", stand: "01.10.2026" },
+        { art: "AHB", typ: "QUOTES", version: "1.1a", stand: "01.10.2026" },
+        { art: "MIG", typ: "QUOTES", version: "1.3c", stand: "01.10.2026" },
+        { art: "AHB", typ: "REMADV", version: "1.0a", stand: "01.04.2026" },
+        { art: "MIG", typ: "REMADV", version: "2.9e", stand: "01.04.2026" },
+        { art: "AHB", typ: "REQOTE", version: "1.2", stand: "01.10.2026" },
+        { art: "MIG", typ: "REQOTE", version: "1.3c", stand: "01.10.2025" },
+        { art: "AHB", typ: "UTILTS", version: "1.1", stand: "01.10.2026" },
+        { art: "MIG", typ: "UTILTS", version: "1.1e", stand: "06.06.2025" },
       ],
     },
   },
