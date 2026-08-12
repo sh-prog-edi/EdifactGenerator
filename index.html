@@ -74,6 +74,21 @@
   .aendbadge{font-size:11px;padding:2px 8px;border-radius:20px;white-space:nowrap;}
   .aendbadge.ein{background:var(--ok-bg);color:var(--ok);}
   .aendbadge.bew{background:var(--plan-bg);color:var(--plan);}
+  .doknetz{margin-top:14px;}
+  .netzbtn{font:inherit;font-size:13px;font-weight:600;color:var(--heading);background:var(--panel);
+    border:1px solid var(--border);border-radius:8px;padding:8px 14px;cursor:pointer;box-shadow:var(--shadow);}
+  .netzbtn:hover{border-color:var(--accent);}
+  .netzbtn:disabled{opacity:.6;cursor:progress;}
+  .netzstatus{font-size:12px;color:var(--muted);margin-left:10px;}
+  .netzerg{margin-top:10px;}
+  .netzerg>div{border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:13px;background:var(--panel);box-shadow:var(--shadow);}
+  .netzerg .netzneu{border-left:4px solid var(--plan);}
+  .netzerg .netzok{border-left:4px solid var(--ok);}
+  .netzerg .netzhinweis{border-left:4px solid var(--muted);}
+  .netzerg p{margin:6px 0;}
+  .netzerg ul{margin:6px 0;padding-left:18px;}
+  .netzerg li{padding:2px 0;font-size:12.5px;}
+  .netzerg code{font-size:12px;}
 </style>
 </head>
 <body data-theme="light">
@@ -139,6 +154,7 @@
 
   <h2 class="grid-title">Stand der verarbeiteten Dokumente (AHB / MIG)</h2>
   <div id="dokstand"></div>
+  <div id="doknetz" class="doknetz"></div>
 
   <footer>
     Ordnerstruktur angelehnt an das BDEW-Marktkommunikations-Portal. Formatstände (JJJJMM) folgen den
@@ -551,6 +567,92 @@ initVersion();
     '<p style="font-size:11.5px;color:var(--muted);margin:10px 0 0">Vollständige Quellenliste: ' +
     '<code>docs/QUELLEN_MANIFEST.json</code>. Originaldokumente des BDEW liegen nicht im Repository. ' +
     'Stand dieser Übersicht: ' + esc(D.aktualisiert) + '.</p>';
+})();
+</script>
+<script>
+// Schalter: aktive Prüfung auf neuere BDEW-Dokumente gegen bdew-mako.de/api.
+// Die verarbeitete Prüfgrundlage kennt die höchste Datei-ID (hoechsteMakoFileId);
+// die Plattform-API liefert je Dokument eine fileId. Findet die Abfrage eine
+// höhere fileId, existieren neuere Fassungen. Bei lokalem Aufruf über file://
+// verhindert die Browser-Sicherheitsrichtlinie (CORS/Origin null) den Zugriff
+// häufig — dann degradiert der Schalter sichtbar und nennt den verlässlichen
+// lokalen Weg (werkzeuge/mako_plattform.py --dokumente) samt Plattform-Link.
+(function(){
+  var D = window.EdiDokumentenstand;
+  var host = document.getElementById('doknetz');
+  if (!D || !host) return;
+  var BASIS = 'https://bdew-mako.de/api';
+  var recorded = D.hoechsteMakoFileId || 0;
+  var esc = function(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); };
+  host.innerHTML = '<button id="netzPruefBtn" class="netzbtn" type="button">Auf neue BDEW-Dokumente prüfen</button>'
+    + '<span id="netzStatus" class="netzstatus"></span><div id="netzErgebnis" class="netzerg"></div>';
+  var btn = document.getElementById('netzPruefBtn');
+  var stat = document.getElementById('netzStatus');
+  var erg = document.getElementById('netzErgebnis');
+
+  function degradieren(grund){
+    erg.innerHTML = '<div class="netzhinweis">'
+      + '<p><strong>Automatische Netzprüfung nicht möglich.</strong> ' + esc(grund) + '</p>'
+      + '<p>Verarbeiteter Stand: höchste Datei-ID <code>' + recorded + '</code>, Übersicht vom ' + esc(D.aktualisiert) + '.</p>'
+      + '<p>Verlässliche Prüfung lokal: <code>python3 werkzeuge/mako_plattform.py --dokumente</code> '
+      + '(gleicht das Manifest gegen <code>/api/documents</code> ab). '
+      + 'Direkt auf der Plattform: <a href="https://bdew-mako.de/dokumente" target="_blank" rel="noopener">bdew-mako.de/dokumente</a>.</p></div>';
+  }
+
+  function pruefe(){
+    btn.disabled = true; stat.textContent = 'prüfe …'; erg.innerHTML = '';
+    var ctl = new AbortController();
+    var timeout = setTimeout(function(){ ctl.abort(); }, 15000);
+    var take = 500, skip = 0, maxId = 0, gesamt = 0, neuere = [];
+
+    function seite(){
+      return fetch(BASIS + '/documents?skip=' + skip + '&take=' + take,
+                   { signal: ctl.signal, headers: { 'Accept': 'application/json' } })
+        .then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+        .then(function(arr){
+          if (!Array.isArray(arr) || !arr.length) return false;
+          arr.forEach(function(doc){
+            gesamt++;
+            var fid = doc.fileId || 0;
+            if (fid > maxId) maxId = fid;
+            if (fid > recorded) neuere.push(doc);
+          });
+          if (arr.length < take || skip > 8000) return false;
+          skip += take; return true;
+        });
+    }
+    function schleife(){
+      return seite().then(function(weiter){ return weiter ? schleife() : null; });
+    }
+
+    schleife().then(function(){
+      clearTimeout(timeout); stat.textContent = '';
+      if (!gesamt) { degradieren('Die Plattform lieferte keine Dokumentliste.'); return; }
+      if (maxId > recorded) {
+        neuere.sort(function(a,b){ return (b.fileId||0) - (a.fileId||0); });
+        var liste = neuere.slice(0,8).map(function(d){
+          var korr = d.isErrorCorrection ? ' · Fehlerkorrektur' + (d.correctionDate ? ' ' + esc(String(d.correctionDate).slice(0,10)) : '') : '';
+          return '<li><code>' + (d.fileId||'') + '</code> ' + esc(d.title||'') + korr + '</li>';
+        }).join('');
+        erg.innerHTML = '<div class="netzneu"><p><strong>' + neuere.length + ' neuere Dokument-Fassung(en)</strong> auf der Plattform '
+          + '(höchste Datei-ID ' + maxId + ' &gt; verarbeitet ' + recorded + ').</p>'
+          + '<ul>' + liste + '</ul>'
+          + '<p>Detailabgleich und Einarbeitung: <code>python3 werkzeuge/mako_plattform.py --dokumente</code>.</p></div>';
+      } else {
+        erg.innerHTML = '<div class="netzok"><p><strong>Prüfgrundlage ist aktuell.</strong> '
+          + 'Keine Dokument-Fassung über der verarbeiteten Datei-ID ' + recorded + ' gefunden ('
+          + gesamt + ' Dokumente geprüft).</p></div>';
+      }
+    }).catch(function(e){
+      clearTimeout(timeout); stat.textContent = '';
+      var grund = (e && e.name === 'AbortError')
+        ? 'Zeitüberschreitung bei der Plattform-Abfrage.'
+        : 'Der Browser konnte die Plattform nicht abfragen (bei lokalem Aufruf über file:// verhindert die Sicherheitsrichtlinie/CORS den Zugriff).';
+      degradieren(grund);
+    }).then(function(){ btn.disabled = false; });
+  }
+
+  btn.addEventListener('click', pruefe);
 })();
 </script>
 </body>

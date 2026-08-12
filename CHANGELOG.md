@@ -12,6 +12,27 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
   Erwartungsdateien selbst bleiben bewusst NICHT im Repo (echte Zähler-/
   Rechnungsdaten möglich; zeitlich begrenzte Formatrelevanz) — nur der
   PID-Abdeckungsnachweis wird versioniert.
+- **12.08.2026** – **Einstiegsseite: vollständiger Dokumentenstand + Netzprüf-
+  Schalter.** Die Übersicht „Stand der verarbeiteten Dokumente" listet jetzt
+  **alle 18 Nachrichtentypen** beider Formatstände (AHB/MIG mit Version und
+  Standdatum), erzeugt aus `docs/QUELLEN_MANIFEST.json` (Feld `zuordnung` +
+  `dokumente`); die kuratierten UTILMD-Fassungen der Fehlerkorrektur 06.08.2026
+  bleiben erhalten. Neuer Schalter „Auf neue BDEW-Dokumente prüfen" fragt
+  `bdew-mako.de/api/documents` ab und vergleicht die höchste `fileId` mit der
+  verarbeiteten (`hoechsteMakoFileId` = 12277); bei lokalem `file://`-Aufruf
+  degradiert er sichtbar (CORS) und nennt den lokalen Weg
+  `werkzeuge/mako_plattform.py --dokumente`. → Protokoll Abschnitt 63.
+- **12.08.2026** – **Validator: fehlendes Muss-Datenelement wird rot.** Bisher
+  prüfte der Validator nur Codes vorhandener DE und fehlende Muss-Segmente, nicht
+  aber, ob ein als Muss geführtes Datenelement einer genutzten Segmentinstanz
+  belegt ist. Dadurch blieb z. B. `STS+7++ZC8'` grün, obwohl die Muss-Ergänzung
+  (Transaktionsgrundergänzung, C556 3. Gruppe) fehlte. Neu: positionsgenaue
+  Muss-Präsenzprüfung je DE (`pos`/`sub`), maßgeblich sind unbedingtes DE-„X"/„M"
+  und — bei codierten DE — mindestens ein unbedingter Muss-Code; bedingte Marker
+  („X [nnn]", optionale Codes wie „S [9P0..1]") lösen bewusst keinen harten
+  Fehler aus. Nachweis über alle 553 Prüf-IDs (`scripts/test_de_muss_praesenz.js`):
+  0 Fehlalarme, 76/76 entfernte Muss-Ergänzungen erkannt, 18/18 optionale still;
+  23 echte Nachrichten weiterhin fehlerfrei. → Protokoll Abschnitt 62.
 - **12.08.2026** – **Einstiegsseite: Stand der verarbeiteten Dokumente + Änd-ID-
   Liste.** Die Startseite zeigt jetzt je Formatstand die verarbeiteten AHB/MIG-
   Versionen (UTILMD Strom/Gas; aktiver Formatstand hervorgehoben) und eine

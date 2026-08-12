@@ -648,6 +648,36 @@
           if (!codes.includes(v))
             F(i, `DE${deE.de} "${v}": laut AHB zulässig sind ${codes.slice(0, 12).join(", ")}${codes.length > 12 ? ", …" : ""}.`);
         }
+        // Muss-Präsenzprüfung je Datenelement: ein im AHB unbedingt als „X"/„M"
+        // geführtes Datenelement der genutzten Segmentinstanz muss belegt sein.
+        // Positionsgenau über pos/sub geprüft, damit wiederholte DE-Nummern
+        // getrennt betrachtet werden (STS C556: Transaktionsgrund pos 2 vs.
+        // Transaktionsgrundergänzung pos 3 — beide DE9013). So fällt z. B.
+        // „STS+7++ZC8'" auf, dem die Muss-Ergänzung (ZW3/ZW4) fehlt.
+        //
+        // Maßgeblich ist bei codierten Datenelementen NICHT der DE-Status allein
+        // (er steht in der Extraktion oft pauschal auf „X"), sondern der Status
+        // der Codes selbst: Nur wenn mindestens ein Code unbedingtes Muss ist, ist
+        // das DE Pflicht. Sind alle Codes bedingt/Soll/Kann (z. B. die dritte
+        // STS+7-Ergänzung „für Lieferende bei befristeter Anmeldung": E01/E03 mit
+        // „S [9P0..1]"), bleibt das DE optional — sonst meldete der Validator ein
+        // Muss, das der AHB gar nicht verlangt. Freie Wert-DE ohne Codeliste
+        // (Datum, Betrag, Vorgangsnummer …) sind bei unbedingtem „X" stets Pflicht.
+        // Bedingte DE-Marker („X [nnn]") bleiben außen vor — ihre Bedingungen sind
+        // nicht durchgängig maschinell entscheidbar; die konditionale Muss-Prüfung
+        // erfolgt auf Segment-/Gruppenebene weiter unten.
+        const deUnbedingt = e => /^[XxM]$/.test(String(e == null ? "" : e).trim());
+        for (const deE of inst.des) {
+          if (deE.pos == null) continue;
+          if (!deUnbedingt(deE.expr)) continue;
+          const codeListe = deE.codes || [];
+          if (codeListe.length && !codeListe.some(c => deUnbedingt(c[2]))) continue;
+          const roh = wert(seg, deE.pos, deE.sub || 0).replace(/\?(.)/g, "$1").trim();
+          if (roh) continue;
+          const wo = deE.name ? ` (${deE.name})` : "";
+          F(i, `${seg.tag}${qualWert(seg) ? "+" + qualWert(seg) : ""}: Pflichtangabe DE${deE.de}${wo} fehlt `
+             + `— im AHB der Prüf-ID ${ctx.pruefi} ist dieses Datenelement ein Muss.`);
+        }
         // DTM-Wertformat gegen Formatcode (2379)
         if (seg.tag === "DTM") {
           const fmt = deWert(seg, "2379"), v = deWert(seg, "2380");

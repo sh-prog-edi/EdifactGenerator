@@ -2986,3 +2986,99 @@ eingearbeitet; 26312/27508/27509/27513/27524 bewertet).
 
 **Nachweis.** Startseite rendert ohne JS-Fehler (2 Karten, 6 Änderungen);
 Regression grün (34 Läufe).
+
+## 62. Validator: fehlendes Muss-Datenelement wird rot (STS-Ergänzung u. a.) (12.08.2026)
+
+**Auftrag.** Eine alte Strom-Nachricht (S1.1a) wurde anhand der Validator-Hinweise
+auf S2.1 umgebaut. Danach fiel auf: `STS+7++ZC8'` wurde **grün** gewertet, obwohl
+dem Segment der Status-Zusatz (die Transaktionsgrundergänzung, C556 3. Gruppe)
+fehlt — erwartet war ein **rotes** Feld mit Fehlerhinweis. Anschließend alle PID
+auf vollständige und korrekte Syntaxprüfung kontrollieren.
+
+**Ursache.** Der Validator prüfte je genutzter Segmentinstanz die **Codes
+vorhandener** Datenelemente sowie fehlende Muss-**Segmente** — aber nie, ob ein als
+Muss geführtes **Datenelement** einer vorhandenen Segmentinstanz auch belegt ist.
+Ein leeres Pflicht-DE (z. B. die STS-Ergänzung) rutschte damit unbemerkt durch.
+
+**Umsetzung.** In `_engine/ahb-validator.js` (Instanz-Schleife von
+`validiereNachricht`) eine **Muss-Präsenzprüfung je Datenelement** ergänzt:
+positionsgenau über `pos`/`sub` (nicht über die DE-Nummer, denn STS führt DE9013
+mehrfach: Transaktionsgrund pos 2, Ergänzung pos 3, Ergänzung für befristetes
+Lieferende pos 4). Maßgeblich ist der Pflichtstatus wie sonst auch:
+
+* Das DE selbst muss **unbedingtes** „X"/„M" sein (bedingte Marker wie „X [192]",
+  „X [580]" bleiben außen vor — ihre Bedingungen sind nicht durchgängig maschinell
+  entscheidbar; ein harter Fehler wäre dort nicht belastbar).
+* Bei **codierten** DE zählt zusätzlich der Code-Status: nur wenn mindestens ein
+  Code unbedingtes Muss ist, ist das DE Pflicht. Sind alle Codes bedingt/Soll
+  (z. B. die dritte STS+7-Ergänzung „für Lieferende bei befristeter Anmeldung":
+  E01/E03 mit „S [9P0..1]"), bleibt das DE optional.
+* **Freie** Wert-DE ohne Codeliste (Datum, Betrag, Vorgangsnummer …) sind bei
+  unbedingtem „X" stets Pflicht.
+
+Fehlt ein so bestimmtes Muss-DE, meldet der Validator es als harten Fehler
+(„… Pflichtangabe DE9013 (Transaktionsgrundergänzung) fehlt …") → rotes Feld.
+
+**Nachweis (alle PID).** Neuer Test `scripts/test_de_muss_praesenz.js` prüft über
+**alle 553 Prüf-IDs** aller vier Ziele:
+
+1. **Kein Fehlalarm** — jede vom Generator erzeugte Golden-Nachricht bleibt frei
+   von „Pflichtangabe … fehlt" (0/553).
+2. **Wirksamkeit** — für jede STS+7-Instanz mit unbedingter Muss-Ergänzung wird
+   diese aus der Nachricht entfernt; der Validator meldet sie zuverlässig
+   (76/76). Optionale/bedingte Ergänzungen bleiben korrekt stumm (18/18).
+3. **Nutzerfall** — `STS+7++ZC8'` (PID 55037) ergibt genau einen Ergänzungs-
+   Pflichtfehler.
+
+Gegenprobe an 23 echten Marktnachrichten (1491 Einheiten): weiterhin 0 Fehler.
+Golden- und Selbstvalidierung unverändert (132 dokumentierte Befunde, keiner davon
+„Pflichtangabe"). Regression grün.
+
+**Abgrenzung.** DE-Ebene meldet nur **unbedingte** Muss-Lücken hart. Bedingte
+Muss-DE („X [nnn]") werden bewusst nicht als harter Fehler gewertet; die
+konditionale Muss-Auswertung bleibt auf Segment-/Gruppenebene (Abschnitt 55).
+
+## 63. Einstiegsseite: alle Nachrichtentypen im Dokumentenstand + Netzprüf-Schalter (12.08.2026)
+
+**Auftrag.** (a) Die Stände **aller** verarbeiteten Dokumente **aller**
+Nachrichtentypen in die Liste der Einstiegsseite aufnehmen (bisher nur UTILMD
+Strom/Gas). (b) Einen Schalter einbauen, der aktiv im Netz auf neuere Dokumente
+prüft.
+
+**(a) Vollständiger Dokumentenstand.** `_engine/daten/dokumentenstand.js` neu aus
+`docs/QUELLEN_MANIFEST.json` erzeugt: Basis ist das Feld `zuordnung` (führt für
+beide Formatstände alle **18** verarbeiteten Nachrichtentypen mit AHB-Version),
+angereichert um MIG-Version und Standdatum aus dem Feld `dokumente`. Ergebnis je
+Formatstand: 202604 mit 36 Zeilen (18 Typen × AHB/MIG), 202610 mit 29 Zeilen
+(AHB je Typ vollständig; MIG, soweit im Manifest hinterlegt). Die kuratierten
+UTILMD-Fassungen der Fehlerkorrektur 06.08.2026 (Strom 2.2/S2.2, Gas 1.2/G1.2 —
+Abschnitt 60/61) bleiben erhalten. Der Renderer der Einstiegsseite zeigt beide
+Karten unverändert (aktiver Formatstand hervorgehoben), jetzt mit allen Typen;
+die Änd-ID-Liste bleibt bestehen. Neu im Datensatz: `hoechsteMakoFileId` (höchste
+bekannte Download-ID der MAKO-Plattform aus dem Manifest, aktuell 12277) als
+Bezugswert für die Netzprüfung.
+
+**(b) Netzprüf-Schalter.** Button „Auf neue BDEW-Dokumente prüfen" unter der
+Dokumentenstand-Übersicht (`index.html`, `#doknetz`). Er fragt
+`https://bdew-mako.de/api/documents` (DevExtreme-Paginierung `skip/take`) ab,
+ermittelt die höchste `fileId` und vergleicht sie mit `hoechsteMakoFileId`:
+
+* höhere `fileId` gefunden → Meldung „N neuere Dokument-Fassung(en)" samt der
+  neuesten Titel (mit Fehlerkorrektur-Kennzeichen/Datum) und Hinweis auf den
+  Detailabgleich `werkzeuge/mako_plattform.py --dokumente`;
+* keine höhere `fileId` → „Prüfgrundlage ist aktuell";
+* Abfrage nicht möglich (der Regelfall beim lokalen Aufruf über `file://`:
+  CORS/Origin `null`, oder offline/Zeitüberschreitung) → **sichtbare
+  Degradation** mit verarbeitetem Stand, dem verlässlichen lokalen Befehl und
+  einem direkten Plattform-Link. AbortController mit 15 s Timeout,
+  Seiten-Obergrenze gegen Endlospaginierung.
+
+Bewusste Grenze: Eine vollautomatische Browser-Prüfung ist bei lokaler Nutzung
+über `file://` durch die Sicherheitsrichtlinie des Browsers nicht garantiert; der
+Schalter ist daher ehrlich degradierend gebaut und nennt stets den verlässlichen
+Weg über das lokale Werkzeug. Über HTTP(S) mit erlaubtem CORS führt er den
+tatsächlichen Abgleich aus.
+
+**Nachweis.** Einstiegsseite lädt ohne Konsolenfehler; zwei Karten mit 36/29
+Zeilen; Schalter vorhanden und nach Lauf wieder aktiv; Klick unter `file://`
+liefert die erwartete Degradations-Meldung. Seiten-Smoke 416/416, Regression grün.
