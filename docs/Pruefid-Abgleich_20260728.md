@@ -2914,3 +2914,52 @@ Sprungnavigation nicht nur am Anfang der Nachricht erreichbar sein.
 Probe an der 15er-INVOIC-Sammeldatei: „RFF+Z13" → 15 Treffer (je Nachricht Segment
 11), Teilstring-Suche „50457" → 13 Treffer. Werkzeugleiste `position:sticky` als
 Kind von `panelErgebnis`. Regression grün (34 Läufe).
+
+## 60. Neue Fehlerkorrekturen 06.08.2026: UTILMD Gas AHB 1.2 & Strom MIG S2.2 (12.08.2026)
+
+**Auftrag.** Neue konsolidierte Lesefassungen mit Fehlerkorrektionen (Stand
+06.08.2026, Umsetzung 01.10.2026 = Formatstand 202610/FV2610) prüfen, die
+Änderungshistorie zeigen und die Änderungen einarbeiten.
+
+**Beschaffung.** WebFetch erreichte bei den großen PDFs die Änderungshistorie am
+Dokumentende nicht (Gas-AHB S. 293, Strom-MIG S. 534–536 jenseits des
+Extraktionslimits), die Word-Dateien kamen nur als Binärdaten, die XML-Fassungen
+sind zugriffsbeschränkt. Über den **Hochfrequenz-Spiegel `edi_energy_mirror`**
+(GitHub, per Klon) ließen sich die Word-Fassungen holen: `AHB_UTILMD_G1.2 …
+20260806 … 12303.docx` und `MIG_UTILMD_S2.2 … 20260806 … 12306.docx`. Die
+Änderungshistorie wurde mit `python-docx` extrahiert (Tabelle am Dokumentende;
+Status-Spalte enthält das Änderungsdatum). Übersicht als HTML an den Auftraggeber
+geliefert; die Dokumente selbst bleiben (wie stets) außerhalb des Repositorys.
+
+**Änderungen mit Datum 06.08.2026.**
+
+Gas AHB 1.2:
+- **27512** — SG4 DTM Kündigungstermin des Vertrags, DE2380, Anwendungsfälle
+  44018/44041 (Ablehnung Kündigung): Bedingung `X [UB2] ∧ [209]` →
+  `X ([UB2] ∧ [209]) ⊻ [44]` (neu: [44] „Wenn im DE2379 der Code 106 vorhanden").
+  Grund: bei Code 106 konnte kein Wert im DE2380 angegeben werden, die Bedingung
+  fehlte.
+
+Strom MIG S2.2:
+- **26312 / 27508 / 27509** — RFF (Objektcode Lokationsbündel), PIA (OBIS
+  Netzlokation), SG10 (Zugeordnete Definition Steuerbare Ressource): BDEW-Status
+  R → D. MIG-interne Konsistenz — der AHB führt bereits Muss+Bedingung; der
+  Generator validiert AHB-basiert, `st` wird im Validator nur für „N" (Nicht
+  benutzt) ausgewertet. **Kein Generator-Datenänderungsbedarf.**
+- **27513** — PIA OBIS-Kennzahl der Tranche, dritte DE-Gruppe DE7140: Format
+  „C N" → „N", „leer" → „Nicht benutzt". Betrifft die 3. C212-Wiederholung —
+  unterhalb der Modellierungstiefe des generischen `PIA 7140`-Eintrags in
+  `mig-formate.js`. **Kein Generator-Datenänderungsbedarf.**
+- **27524** — CCI Vergütungsverpflichtung EEG/KWKG: Beschreibungstext um einen
+  Hinweis (Zeitscheiben/Schätzung) ergänzt. Rein redaktionell.
+
+**Umsetzung.** Nur die AHB-relevante Änderung **27512** berührt die
+Prüfgrundlage. Sie wurde präzise in `202610/Stammdaten/UTILMD/Gas/pruef-ids/_form-meta.js`
+eingearbeitet (nur die zwei Instanzen 44018/44041 DTM Kündigungstermin DE2380:
+neue `expr` und Bedingungstext um [44] ergänzt). Die MIG-Änderungen sind
+MIG-intern bzw. redaktionell und ändern die AHB-getriebene Prüfung nicht; die
+kanonische Vollübernahme erfolgt beim nächsten Pipeline-Lauf auf den neuen
+FV2610-Dokumenten.
+
+**Nachweis.** Zielgenaue Kontrolle (44018/44041 tragen die neue Bedingung);
+Golden unverändert; Regression grün (34 Läufe).

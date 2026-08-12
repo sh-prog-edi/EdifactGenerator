@@ -12,6 +12,15 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
   Erwartungsdateien selbst bleiben bewusst NICHT im Repo (echte Zähler-/
   Rechnungsdaten möglich; zeitlich begrenzte Formatrelevanz) — nur der
   PID-Abdeckungsnachweis wird versioniert.
+- **12.08.2026** – **Fehlerkorrektur 06.08.2026 eingearbeitet (UTILMD Gas AHB 1.2 /
+  Strom MIG S2.2, Formatstand 202610).** Neue konsolidierte Lesefassungen über den
+  Hochfrequenz-Spiegel edi_energy_mirror geholt, Änderungshistorie extrahiert und
+  bewertet. Generator-relevant war die AHB-Änderung **27512** (Gas): Bedingung der
+  DTM Kündigungstermin DE2380 in den Ablehnungen 44018/44041 auf
+  `X ([UB2] ∧ [209]) ⊻ [44]` erweitert (neue Bedingung [44] „Wenn DE2379 Code 106").
+  Die Strom-MIG-Änderungen (BDEW-Status R→D, DE7140-Format, Beschreibung) sind
+  MIG-intern/redaktionell und ändern die AHB-getriebene Prüfung nicht. Regression
+  grün. → Protokoll Abschnitt 60.
 - **11.08.2026** – **Validator: universelles Suchfeld + durchgehend sichtbare
   Werkzeugleiste.** Neues Suchfeld findet beliebige Text-Strings in der Nachricht
   (z. B. RFF+Z13 oder eine Melo) über alle Nachrichtenblöcke, hebt jede Fundstelle
