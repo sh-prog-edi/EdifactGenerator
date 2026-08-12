@@ -3176,3 +3176,36 @@ MIG-Feldebene, Codelisten und EBD geprüft, nicht über per-PID-Regeln).
 (Provenienz-Tabelle, Format-für-Format-Übersicht mit Änderungszahlen und
 Kernthemen, Stichprobenverifikation, Abgrenzung, Fazit). Kein Code-/Datenänderung
 an der Prüfgrundlage; reine Bewertung.
+
+## 67. Einstiegsseite: PDF-Links zu den BDEW-Lesefassungen (12.08.2026)
+
+**Auftrag.** Zu jedem Dokument der Formatstand-Liste einen Link auf die
+konsolidierte Lesefassung (PDF) auf den BDEW-Seiten. Zuvor lizenzrechtlich bewerten.
+
+**Lizenzbewertung (keine Rechtsberatung).** Verlinkt wird per Deep-Link auf die
+plattformeigene Datei-URL des Rechteinhabers (`https://bdew-mako.de/api/downloadFile/
+<fileId>`). Das ist etwas grundlegend anderes als das Kopieren/Spiegeln der
+Dokumente (das im Projekt bewusst unterbleibt): Ein Hyperlink auf eine vom
+Rechteinhaber selbst frei zugänglich bereitgestellte Datei verletzt nach
+gefestigter Rechtsprechung (BGH „Paperboy") kein Urheberrecht — es wird nichts
+vervielfältigt oder öffentlich zugänglich gemacht, sondern nur auf die Originalquelle
+verwiesen. Die betreffenden EDI@Energy-Lesefassungen sind auf der MAKO-Plattform
+öffentlich abrufbar (`isFree=true`; der Endpunkt liefert die PDF direkt ohne Login,
+stichprobenhaft verifiziert). Umgesetzt wurde die vorsichtige Variante: reiner
+Hyperlink (kein Framing/Embedding), `target="_blank" rel="noopener noreferrer"`,
+klare Kennzeichnung „öffnet auf bdew-mako.de (BDEW)", keine Spiegelung im Repo.
+Rest-/Randrisiken: die Plattform kann Datei-IDs/URLs ändern (dann Link ins Leere —
+kein Rechtsproblem) und einzelne Dokumente könnten künftig hinter Login wandern; die
+Nutzungsbedingungen des BDEW bleiben maßgeblich. Belastbare Aussage nur BDEW/Anwalt.
+
+**Umsetzung.** In `_engine/daten/dokumentenstand.js` je Dokument das Feld `pdf` =
+Datei-ID der konsolidierten Lesefassung (PDF, „oooo") ergänzt — aus dem
+edi_energy-Spiegel für beide Formatstände (72/72 Zeilen abgedeckt). `index.html`
+rendert die Versionsangabe als Link „<Version> ↗" auf
+`https://bdew-mako.de/api/downloadFile/<pdf>` (neuer Tab, `noopener noreferrer`) und
+weist unter der Liste auf die Herkunft (BDEW-MaKo-Plattform) hin.
+
+**Nachweis.** 72/72 Links als korrekte BDEW-Deep-Links (HTTPS, target/rel gesetzt),
+Einstiegsseite ohne Konsolenfehler; Ziel-URLs stichprobenhaft als echte PDF
+verifiziert (u. a. MSCONS AHB 12172, UTILMD Strom AHB 10553). Seiten-Smoke 416/416,
+Schnell-Regression grün.

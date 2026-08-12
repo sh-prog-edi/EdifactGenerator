@@ -64,6 +64,8 @@
   .dokcard tr:first-child td{border-top:none;}
   .dokcard td.art{color:var(--muted);white-space:nowrap;padding-right:10px;}
   .dokcard td.ver{text-align:right;font-weight:600;white-space:nowrap;}
+  .dokcard td.ver a.pdflink{color:var(--accent);text-decoration:none;}
+  .dokcard td.ver a.pdflink:hover{text-decoration:underline;}
   .dokcard td.stand{text-align:right;color:var(--muted);font-size:11.5px;white-space:nowrap;padding-left:8px;}
   details.dokstaende{border:1px solid var(--border);border-radius:10px;background:var(--panel);padding:0 16px;box-shadow:var(--shadow);}
   details.dokstaende>summary{cursor:pointer;padding:12px 0;font-size:13px;color:var(--heading);font-weight:600;}
@@ -545,8 +547,13 @@ initVersion();
     var s = D.staende[stand];
     summe += (s.dokumente || []).length;
     var zeilen = s.dokumente.map(function(d){
+      var ver = d.pdf
+        ? '<a class="pdflink" href="https://bdew-mako.de/api/downloadFile/' + d.pdf +
+          '" target="_blank" rel="noopener noreferrer" title="Konsolidierte Lesefassung (PDF) auf bdew-mako.de öffnen">' +
+          esc(d.version) + ' ↗</a>'
+        : esc(d.version);
       return '<tr><td class="art">' + esc(d.art) + ' ' + esc(d.typ) + '</td>' +
-        '<td class="ver">' + esc(d.version) + '</td>' +
+        '<td class="ver">' + ver + '</td>' +
         '<td class="stand">' + (d.stand ? 'Stand ' + esc(d.stand) : '') + '</td></tr>';
     }).join('');
     karten += '<div class="dokcard' + (stand === aktiv ? ' aktiv' : '') + '">' +
@@ -573,8 +580,10 @@ initVersion();
     + summe + ' Einträge (AHB/MIG aller Nachrichtentypen)</summary>'
     + '<div class="dokgrid">' + karten + '</div></details>';
   ziel.innerHTML = staendeBlock + details +
-    '<p style="font-size:11.5px;color:var(--muted);margin:10px 0 0">Vollständige Quellenliste: ' +
-    '<code>docs/QUELLEN_MANIFEST.json</code>. Originaldokumente des BDEW liegen nicht im Repository. ' +
+    '<p style="font-size:11.5px;color:var(--muted);margin:10px 0 0">Die Versions-Links (↗) öffnen die ' +
+    'konsolidierte Lesefassung (PDF) direkt auf der BDEW-MaKo-Plattform ' +
+    '(<code>bdew-mako.de</code>); die Dokumente liegen beim BDEW, nicht in diesem Projekt. ' +
+    'Vollständige Quellenliste: <code>docs/QUELLEN_MANIFEST.json</code>. ' +
     'Stand dieser Übersicht: ' + esc(D.aktualisiert) + '.</p>';
 })();
 </script>

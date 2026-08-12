@@ -12,6 +12,13 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
   Erwartungsdateien selbst bleiben bewusst NICHT im Repo (echte Zähler-/
   Rechnungsdaten möglich; zeitlich begrenzte Formatrelevanz) — nur der
   PID-Abdeckungsnachweis wird versioniert.
+- **12.08.2026** – **Einstiegsseite: PDF-Links zu den BDEW-Lesefassungen.** Jede
+  Zeile der Dokumentenstand-Liste verlinkt die konsolidierte Lesefassung (PDF) per
+  Deep-Link auf die BDEW-MaKo-Plattform (`bdew-mako.de/api/downloadFile/<id>`, neuer
+  Tab, `noopener`). Datenfeld `pdf` je Dokument ergänzt (72/72). Lizenz: reiner
+  Deep-Link auf die frei zugängliche Originalquelle des Rechteinhabers (isFree=true,
+  ohne Login) — kein Spiegeln/Kopieren; rechtlich unbedenklich (BGH „Paperboy"),
+  Details in Protokoll Abschnitt 67. → Protokoll Abschnitt 67.
 - **12.08.2026** – **Änderungsbewertung 202610 über alle Nachrichtentypen.**
   Übergang 202604→202610 für alle 14 geänderten Formate (AHB/MIG) bewertet:
   Änderungshistorien aus den edi_energy-DOCX extrahiert und gegen die
