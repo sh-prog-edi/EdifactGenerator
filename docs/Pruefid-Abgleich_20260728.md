@@ -2963,3 +2963,26 @@ FV2610-Dokumenten.
 
 **Nachweis.** Zielgenaue Kontrolle (44018/44041 tragen die neue Bedingung);
 Golden unverändert; Regression grün (34 Läufe).
+
+## 61. Einstiegsseite: Stand der verarbeiteten Dokumente und Änd-ID-Liste (12.08.2026)
+
+**Auftrag.** Auf der Startseite dauerhaft den Stand der verarbeiteten Dokumente
+(AHB und MIG) zeigen und eine Liste der aufgenommenen bzw. eingearbeiteten
+Änd-IDs verlinken.
+
+**Umsetzung.** Neue Nachweis-Datenschicht `_engine/daten/dokumentenstand.js`
+(`EdiDokumentenstand`): je Formatstand die AHB/MIG-Versionen (UTILMD Strom/Gas)
+plus eine Liste der Änderungen (Änd-ID, Dokument, Datum, Kurztext, Flag
+`eingearbeitet`). `index.html` rendert daraus unter „Stand der verarbeiteten
+Dokumente (AHB / MIG)" zwei Karten (der kalendarisch aktive Formatstand ist
+hervorgehoben) und eine aufklappbare Liste „Eingearbeitete Änderungen (Änd-IDs)"
+mit Status-Badge (eingearbeitet/bewertet). Verweist auf
+`docs/QUELLEN_MANIFEST.json` als vollständige Quellenliste; Originaldokumente
+bleiben außerhalb des Repos.
+
+Erstbefüllung mit den Fassungen 202604 (S2.1/G1.1) und 202610 (2.2/S2.2, 1.2/
+G1.2, Stand 06.08.2026) sowie den sechs Änderungen aus Abschnitt 60 (27512
+eingearbeitet; 26312/27508/27509/27513/27524 bewertet).
+
+**Nachweis.** Startseite rendert ohne JS-Fehler (2 Karten, 6 Änderungen);
+Regression grün (34 Läufe).

@@ -12,6 +12,12 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
   Erwartungsdateien selbst bleiben bewusst NICHT im Repo (echte Zähler-/
   Rechnungsdaten möglich; zeitlich begrenzte Formatrelevanz) — nur der
   PID-Abdeckungsnachweis wird versioniert.
+- **12.08.2026** – **Einstiegsseite: Stand der verarbeiteten Dokumente + Änd-ID-
+  Liste.** Die Startseite zeigt jetzt je Formatstand die verarbeiteten AHB/MIG-
+  Versionen (UTILMD Strom/Gas; aktiver Formatstand hervorgehoben) und eine
+  aufklappbare Liste der eingearbeiteten bzw. bewerteten Änderungen (Änd-IDs mit
+  Status). Neue Datenschicht `_engine/daten/dokumentenstand.js`. → Protokoll
+  Abschnitt 61.
 - **12.08.2026** – **Fehlerkorrektur 06.08.2026 eingearbeitet (UTILMD Gas AHB 1.2 /
   Strom MIG S2.2, Formatstand 202610).** Neue konsolidierte Lesefassungen über den
   Hochfrequenz-Spiegel edi_energy_mirror geholt, Änderungshistorie extrahiert und

@@ -52,6 +52,28 @@
   .card li a{color:inherit;text-decoration:none;}
   .card li a:hover .msg{text-decoration:underline;color:var(--accent);}
   footer{margin-top:34px;font-size:12px;color:var(--muted);border-top:1px solid var(--border);padding-top:14px;}
+  /* Stand der verarbeiteten Dokumente */
+  .dokgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;}
+  .dokcard{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px 16px;box-shadow:var(--shadow);}
+  .dokcard.aktiv{border-left:4px solid var(--accent);}
+  .dokcard h3{font-size:13.5px;margin:0 0 4px;color:var(--heading);display:flex;justify-content:space-between;align-items:baseline;gap:8px;}
+  .dokcard .aktivHinweis{font-size:11px;color:var(--accent);font-weight:600;}
+  .dokcard .bez{font-size:11.5px;color:var(--muted);margin:0 0 8px;}
+  .dokcard table{width:100%;border-collapse:collapse;font-size:13px;}
+  .dokcard td{padding:3px 0;border-top:1px solid var(--border);}
+  .dokcard tr:first-child td{border-top:none;}
+  .dokcard td.art{color:var(--muted);white-space:nowrap;padding-right:10px;}
+  .dokcard td.ver{text-align:right;font-weight:600;white-space:nowrap;}
+  .dokcard td.stand{text-align:right;color:var(--muted);font-size:11.5px;white-space:nowrap;padding-left:8px;}
+  details.aenderungen{margin-top:14px;border:1px solid var(--border);border-radius:10px;background:var(--panel);padding:0 16px;box-shadow:var(--shadow);}
+  details.aenderungen summary{cursor:pointer;padding:12px 0;font-size:13px;color:var(--heading);font-weight:600;}
+  details.aenderungen ul{list-style:none;margin:0 0 12px;padding:0;}
+  details.aenderungen li{padding:9px 0;border-top:1px solid var(--border);font-size:13px;display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;}
+  .aendid{font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums;}
+  .aendmeta{color:var(--muted);font-size:11.5px;}
+  .aendbadge{font-size:11px;padding:2px 8px;border-radius:20px;white-space:nowrap;}
+  .aendbadge.ein{background:var(--ok-bg);color:var(--ok);}
+  .aendbadge.bew{background:var(--plan-bg);color:var(--plan);}
 </style>
 </head>
 <body data-theme="light">
@@ -115,6 +137,9 @@
   <h2 class="grid-title">Übersicht der Themen (Verfügbarkeit)</h2>
   <div class="themes" id="grid"></div>
 
+  <h2 class="grid-title">Stand der verarbeiteten Dokumente (AHB / MIG)</h2>
+  <div id="dokstand"></div>
+
   <footer>
     Ordnerstruktur angelehnt an das BDEW-Marktkommunikations-Portal. Formatstände (JJJJMM) folgen den
     regulatorischen Anpassungen zum 01.04. und 01.10. jedes Jahres. Zentrale Engine unter
@@ -125,6 +150,7 @@
 <script src="_engine/theme.js"></script>
 <script src="_engine/version.js"></script>
 <script src="_engine/stand.js"></script>
+<script src="_engine/daten/dokumentenstand.js"></script>
 <script>
 // ------------------------------------------------------------------
 // Manifest: verfügbare Kombinationen (Thema -> Nachrichtentyp -> Varianten).
@@ -484,6 +510,48 @@ function renderGrid(){
 }
 
 initVersion();
+</script>
+<script>
+// Stand der verarbeiteten Dokumente (AHB/MIG) + eingearbeitete Änderungen rendern.
+(function(){
+  var D = window.EdiDokumentenstand;
+  var ziel = document.getElementById('dokstand');
+  if (!D || !ziel) return;
+  var aktiv = (window.EdiStand && EdiStand.aktiv && EdiStand.aktiv()) || '';
+  var esc = function(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); };
+  var karten = '';
+  Object.keys(D.staende).forEach(function(stand){
+    var s = D.staende[stand];
+    var zeilen = s.dokumente.map(function(d){
+      return '<tr><td class="art">' + esc(d.art) + ' ' + esc(d.typ) + '</td>' +
+        '<td class="ver">' + esc(d.version) + '</td>' +
+        '<td class="stand">' + (d.stand ? 'Stand ' + esc(d.stand) : '') + '</td></tr>';
+    }).join('');
+    karten += '<div class="dokcard' + (stand === aktiv ? ' aktiv' : '') + '">' +
+      '<h3>Formatstand ' + esc(stand) + (stand === aktiv ? '<span class="aktivHinweis">aktiv</span>' : '') + '</h3>' +
+      '<p class="bez">' + esc(s.bezeichnung) + '</p>' +
+      '<table>' + zeilen + '</table></div>';
+  });
+  var aenderungen = (D.aenderungen || []);
+  var lis = aenderungen.map(function(a){
+    var badge = a.eingearbeitet
+      ? '<span class="aendbadge ein">eingearbeitet</span>'
+      : '<span class="aendbadge bew">bewertet</span>';
+    return '<li><span class="aendid">Änd-ID ' + esc(a.id) + '</span>' + badge +
+      '<span><span>' + esc(a.kurz) + '</span><br><span class="aendmeta">' +
+      esc(a.dok) + ' · ' + esc(a.datum) + ' · Formatstand ' + esc(a.stand) + '</span></span></li>';
+  }).join('');
+  var einAnz = aenderungen.filter(function(a){ return a.eingearbeitet; }).length;
+  var details = aenderungen.length
+    ? '<details class="aenderungen"><summary>Eingearbeitete Änderungen (Änd-IDs) — ' +
+        einAnz + ' eingearbeitet, ' + (aenderungen.length - einAnz) + ' bewertet</summary>' +
+        '<ul>' + lis + '</ul></details>'
+    : '';
+  ziel.innerHTML = '<div class="dokgrid">' + karten + '</div>' + details +
+    '<p style="font-size:11.5px;color:var(--muted);margin:10px 0 0">Vollständige Quellenliste: ' +
+    '<code>docs/QUELLEN_MANIFEST.json</code>. Originaldokumente des BDEW liegen nicht im Repository. ' +
+    'Stand dieser Übersicht: ' + esc(D.aktualisiert) + '.</p>';
+})();
 </script>
 </body>
 </html>
