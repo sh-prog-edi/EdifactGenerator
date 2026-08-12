@@ -12,6 +12,14 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
   Erwartungsdateien selbst bleiben bewusst NICHT im Repo (echte Zähler-/
   Rechnungsdaten möglich; zeitlich begrenzte Formatrelevanz) — nur der
   PID-Abdeckungsnachweis wird versioniert.
+- **12.08.2026** – **Änderungsbewertung 202610 über alle Nachrichtentypen.**
+  Übergang 202604→202610 für alle 14 geänderten Formate (AHB/MIG) bewertet:
+  Änderungshistorien aus den edi_energy-DOCX extrahiert und gegen die
+  Prüfgrundlage abgeglichen. Ergebnis: die Prüfgrundlage 202610 ist bereits
+  durchgängig aus den neuen Fassungen gebaut (MIG-Felder je Format aus neuer
+  Datei-ID, EBD 4.3, UTILMD S2.2/G1.2, standspezifische Codelisten) — kein
+  Nachtrag am Prüf-Code nötig. Bericht: `docs/AENDERUNGSBEWERTUNG_202610.md`.
+  → Protokoll Abschnitt 66.
 - **12.08.2026** – **Dokumentenstand 202610: fehlende MIG-Versionen ergänzt
   („None" behoben).** Die FV2610-MIG waren im Quellen-Manifest nur per
   Download-ID erfasst (`version: null`), der Übersichts-Generator gab das als

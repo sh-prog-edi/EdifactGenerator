@@ -3145,3 +3145,34 @@ nicht mehr als „None" aus.
 
 **Nachweis.** Paket-Prüfung bestanden, Schnell-Regression grün, Seiten-Smoke
 416/416; Einstiegsseite ohne „None", 72 Einträge, 0 Konsolenfehler.
+
+## 66. Änderungsbewertung 202610 über ALLE Nachrichtentypen (12.08.2026)
+
+**Auftrag.** Die Änderungsbewertung 202604→202610 nicht nur für MSCONS, sondern für
+alle Datenformate durchführen (Änderungshistorie aus den DOCX ziehen, gegen die
+Prüfgrundlage abgleichen — wie bei UTILMD in Abschnitt 60).
+
+**Vorgehen.** Aus dem edi_energy-Spiegel (Hochfrequenz) die konsolidierten
+FV2610-DOCX aller 14 geänderten Formate (AHB und MIG) geholt und je Dokument die
+Änderungshistorie extrahiert (`/tmp`-Pipeline mit python-docx; Tabellenerkennung
+über den Spaltenkopf „Änd-ID/Grund/Status"). Die echten Änderungen (ohne reine
+Versions-/Layoutzeilen) je Format thematisch klassifiziert und gegen die
+Datenschichten des Repositorys geprüft.
+
+**Kernbefund.** Die Prüfgrundlage für 202610 ist bereits durchgängig aus den neuen
+Fassungen aufgebaut — belegt Schicht für Schicht:
+* MIG-Feldebene (`mig-formate.js`): Quelle je Format = neue Datei-ID (MSCONS 12174
+  = 2.5, APERAK 12152 = 2.2, …). Stichprobe verifiziert: das „Kontaktdaten-Konzept"
+  entfernt CTA/COM in MSCONS/APERAK/PARTIN.
+* Antwortcodes (`ebd-antwortcodes.js`): 202610 = EBD 4.3.
+* UTILMD-AHB: Fassung S2.2/G1.2 plus Fehlerkorrektur 06.08.2026 (Abschnitt 60/61).
+* Codelisten: standspezifisch (`konfigurationen_202610`).
+
+Kein Nachtrag am Prüf-Code nötig. Systembedingt außerhalb des Validator-Modells
+bleibt das per-Prüf-ID-AHB-Regelwerk der Nicht-UTILMD-Formate (dort wird über
+MIG-Feldebene, Codelisten und EBD geprüft, nicht über per-PID-Regeln).
+
+**Ergebnis.** Ausführlicher Bericht in `docs/AENDERUNGSBEWERTUNG_202610.md`
+(Provenienz-Tabelle, Format-für-Format-Übersicht mit Änderungszahlen und
+Kernthemen, Stichprobenverifikation, Abgrenzung, Fazit). Kein Code-/Datenänderung
+an der Prüfgrundlage; reine Bewertung.
