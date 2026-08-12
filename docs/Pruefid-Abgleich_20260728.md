@@ -3205,6 +3205,14 @@ rendert die Versionsangabe als Link „<Version> ↗" auf
 `https://bdew-mako.de/api/downloadFile/<pdf>` (neuer Tab, `noopener noreferrer`) und
 weist unter der Liste auf die Herkunft (BDEW-MaKo-Plattform) hin.
 
+**Nachtrag (12.08.2026).** Statt `target="_blank"` trägt jeder Link nun einen
+festen Fensternamen `bdew-pdf-<fileId>`. Wiederholte Klicks auf DASSELBE Dokument
+nutzen dadurch dasselbe Browserfenster/-Tab (bei Inline-Anzeige greift dann der
+Browser-Cache, kein Neuladen); verschiedene Dokumente öffnen weiterhin eigene
+Fenster. Ein prüfen „liegt lokal schon vor?" ist aus einer Browser-Seite nicht
+möglich (Dateisystem-Sandbox) und ein eigener PDF-Cache bliebe bewusst außen vor
+(Eigenständigkeit/Lizenz-Trennung). `rel="noopener noreferrer"` bleibt gesetzt.
+
 **Nachweis.** 72/72 Links als korrekte BDEW-Deep-Links (HTTPS, target/rel gesetzt),
 Einstiegsseite ohne Konsolenfehler; Ziel-URLs stichprobenhaft als echte PDF
 verifiziert (u. a. MSCONS AHB 12172, UTILMD Strom AHB 10553). Seiten-Smoke 416/416,

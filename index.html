@@ -549,7 +549,8 @@ initVersion();
     var zeilen = s.dokumente.map(function(d){
       var ver = d.pdf
         ? '<a class="pdflink" href="https://bdew-mako.de/api/downloadFile/' + d.pdf +
-          '" target="_blank" rel="noopener noreferrer" title="Konsolidierte Lesefassung (PDF) auf bdew-mako.de öffnen">' +
+          '" target="bdew-pdf-' + d.pdf + '" rel="noopener noreferrer" ' +
+          'title="Konsolidierte Lesefassung (PDF) auf bdew-mako.de öffnen — wiederholte Klicks nutzen dasselbe Fenster">' +
           esc(d.version) + ' ↗</a>'
         : esc(d.version);
       return '<tr><td class="art">' + esc(d.art) + ' ' + esc(d.typ) + '</td>' +
