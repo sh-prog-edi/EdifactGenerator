@@ -112,6 +112,23 @@ for (const ziel of ZIELE) {
   const v = G.validiere(kaputt, '55037');
   const treffer = v.findings.filter(f => istPflichtFehler(f) && f.seg === 'STS' && /ergänzung/i.test(f.msg));
   ok(treffer.length === 1, `Nutzerfall STS+7++ZC8' (55037): genau ein Ergänzungs-Pflichtfehler erwartet, ist ${treffer.length}`);
+  // Verfeinerung: die Meldung nennt die konkret zulässigen Codes (nicht nur „im AHB nachschauen").
+  const msgTxt = (treffer[0] || {}).msg || '';
+  ok(/zulässige Angabe/.test(msgTxt) && /ZW3/.test(msgTxt) && /ZW4/.test(msgTxt),
+     `Nutzerfall 55037: Meldung soll die zulässigen Codes (ZW3/ZW4) nennen — ist: ${msgTxt}`);
+}
+
+// (4) Abhängigkeit im Klartext: eine an einen bedingten Code geknüpfte Ergänzung
+//     wird mitsamt aufgelöster Bedingung („nur wenn [nnn] …") ausgewiesen.
+{
+  const G = ladeGenerator(path.join(ROOT, '_engine'), path.join(ROOT, '202604/Stammdaten/UTILMD/Strom'),
+                          { fixedNow: Date.UTC(2026, 9, 1, 8, 0, 0) });
+  const msg = G.generiere('55002');
+  const kaputt = msg.split(/\r?\n/).map(z => /^STS\+7\+/.test(z) ? "STS+7++E01'" : z).join('\n');
+  const v = G.validiere(kaputt, '55002');
+  const erg = v.findings.find(f => istPflichtFehler(f) && f.seg === 'STS' && /ergänzung/i.test(f.msg));
+  ok(!!erg && /nur wenn \[\d+\]/.test(erg.msg),
+     `55002: bedingte Ergänzung (ZAP) soll mit aufgelöster Abhängigkeit erscheinen — ist: ${erg && erg.msg}`);
 }
 
 console.log(`\nGeprüft: ${pidsGesamt} Prüf-IDs · Fehlalarme: ${fehlalarme}`);

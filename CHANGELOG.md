@@ -12,6 +12,13 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
   Erwartungsdateien selbst bleiben bewusst NICHT im Repo (echte Zähler-/
   Rechnungsdaten möglich; zeitlich begrenzte Formatrelevanz) — nur der
   PID-Abdeckungsnachweis wird versioniert.
+- **12.08.2026** – **Verfeinerung: fehlendes Muss-DE mit Abhängigkeiten;
+  Dokumentenstand einklappbar.** Die Meldung zum fehlenden Muss-Datenelement
+  nennt jetzt konkret die zulässigen Codes mit Klartext und je Code die
+  aufgelöste `[nnn]`-Abhängigkeit („… ZAP (ruhende Marktlokation) — nur wenn
+  [519] … ∧ [520] …") bzw. bei freien Wert-DE das MIG-Feldformat — statt nur auf
+  den AHB zu verweisen. Die Übersicht „Stand der verarbeiteten Dokumente" ist nun
+  einklappbar (`<details>`, standardmäßig zugeklappt). → Protokoll Abschnitt 64.
 - **12.08.2026** – **Einstiegsseite: vollständiger Dokumentenstand + Netzprüf-
   Schalter.** Die Übersicht „Stand der verarbeiteten Dokumente" listet jetzt
   **alle 18 Nachrichtentypen** beider Formatstände (AHB/MIG mit Version und

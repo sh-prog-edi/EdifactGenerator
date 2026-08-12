@@ -3082,3 +3082,35 @@ tatsächlichen Abgleich aus.
 **Nachweis.** Einstiegsseite lädt ohne Konsolenfehler; zwei Karten mit 36/29
 Zeilen; Schalter vorhanden und nach Lauf wieder aktiv; Klick unter `file://`
 liefert die erwartete Degradations-Meldung. Seiten-Smoke 416/416, Regression grün.
+
+## 64. Verfeinerung: fehlendes Muss-DE mit Abhängigkeiten; Dokumentenstand einklappbar (12.08.2026)
+
+**Auftrag.** (1) Die Meldung zum fehlenden Muss-Datenelement soll nicht nur „im
+AHB nachschauen" sagen, sondern die erwartete Angabe samt evtl. Abhängigkeiten
+konkret nennen. (2) Die Auflistung „Stand der verarbeiteten Dokumente" soll
+einklappbar sein.
+
+**(1) Konkrete Erwartung + Abhängigkeiten.** In `_engine/ahb-validator.js` die
+Muss-DE-Meldung erweitert: statt des pauschalen AHB-Verweises nennt sie jetzt bei
+codierten Datenelementen die **zulässigen Codes mit Klartext** (z. B. „zulässige
+Angabe: ZW3 (Erzeugende Marktlokation); ZW4 (Verbrauchende Marktlokation)"),
+und je Code die als `[nnn]` hinterlegte **Abhängigkeit** im Klartext
+(„… ZAP (ruhende Marktlokation) — nur wenn [519] Hinweis: … ∧ [520] Hinweis: …").
+Neue Helfer `bedingungsRefsText(expr, lokal)` (löst reine `[nnn]`-Referenzen auf;
+Paket-/Wiederholungsangaben wie `[9P0..1]` bleiben außen vor) und
+`lokaleBedingungen(text)` (liest prüf-ID-lokale Hinweise aus `inst.bedingungen`).
+Bei freien Wert-DE nennt die Meldung Feldname und **MIG-Feldformat**. Verweist eine
+Bedingung auf die Ursprungs-/Bezugsnachricht, wird deren Referenz über den
+bestehenden `konkreterBezug` angehängt.
+
+**(2) Einklappbare Übersicht.** Der Kartenblock der Dokumentstände steht in
+`index.html` jetzt in einem `<details class="dokstaende">` (standardmäßig
+zugeklappt), Summary „Verarbeitete Dokumente je Formatstand — N Einträge (AHB/MIG
+aller Nachrichtentypen)". Die Änd-ID-Liste und der Netzprüf-Schalter bleiben
+darunter sichtbar.
+
+**Nachweis.** `scripts/test_de_muss_praesenz.js` um zwei Prüfungen erweitert:
+Nutzerfall 55037 nennt die Codes ZW3/ZW4; PID 55002 weist die an ZAP geknüpfte
+Bedingung als „nur wenn [nnn] …" aus. Test grün (0 Fehlalarme, 76/76, 18/18).
+Einstiegsseite: Details zugeklappt vorbelegt, öffnet per Klick, 36/29 Zeilen,
+0 Konsolenfehler. Seiten-Smoke 416/416, Schnell-Regression grün.

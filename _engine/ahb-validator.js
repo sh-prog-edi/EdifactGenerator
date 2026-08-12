@@ -675,8 +675,30 @@
           const roh = wert(seg, deE.pos, deE.sub || 0).replace(/\?(.)/g, "$1").trim();
           if (roh) continue;
           const wo = deE.name ? ` (${deE.name})` : "";
+          // Statt „im AHB nachschauen" die konkret erwartete Angabe nennen:
+          // bei codierten DE die zulässigen Codes mit Klartext und — je Code —
+          // die als [nnn] hinterlegte Abhängigkeit; bei freien Wert-DE Name und
+          // MIG-Feldformat. Verweist eine Bedingung auf die Ursprungs-/Bezugs-
+          // nachricht, wird deren Referenz (DAR/Datum) angehängt (konkreterBezug).
+          let erwartet;
+          const bedSammlung = [];
+          const lokalBed = lokaleBedingungen(inst.bedingungen);
+          if (codeListe.length) {
+            const teile = codeListe.slice(0, 12).map(function (c) {
+              const bedText = bedingungsRefsText(c[2], lokalBed);
+              if (bedText) bedSammlung.push(bedText);
+              return c[0] + (c[1] ? " (" + c[1] + ")" : "") + (bedText ? " — nur wenn " + bedText : "");
+            });
+            erwartet = "zulässige Angabe: " + teile.join("; ")
+                     + (codeListe.length > 12 ? ", …" : "");
+          } else {
+            const feld = mig.felder[`${seg.tag} ${deE.de}`];
+            const fmt = feld && feld.fmt ? ` (Format ${feld.fmt})` : "";
+            erwartet = "erwartet: " + (deE.name || ("DE" + deE.de)) + fmt;
+          }
+          const bezug = konkreterBezug(bedSammlung.join(" "));
           F(i, `${seg.tag}${qualWert(seg) ? "+" + qualWert(seg) : ""}: Pflichtangabe DE${deE.de}${wo} fehlt `
-             + `— im AHB der Prüf-ID ${ctx.pruefi} ist dieses Datenelement ein Muss.`);
+             + `(Prüf-ID ${ctx.pruefi}) — ${erwartet}${bezug ? " → Bezug: " + bezug : ""}.`);
         }
         // DTM-Wertformat gegen Formatcode (2379)
         if (seg.tag === "DTM") {
@@ -761,6 +783,30 @@
         if (!ctx.condTree) return null;
         const a = bedingungsAusdruck(expr);
         return a ? evalNode(ctx.condTree[a]) : null;
+      }
+      // Klartext ausschließlich der als [nnn] referenzierten Bedingungen eines
+      // (Code-)Ausdrucks — Paket-/Wiederholungsangaben wie [9P0..1] bleiben außen
+      // vor (die eckige Klammer enthält dort keine reine Zahl). Für die Anzeige
+      // fehlender Muss-Datenelemente samt ihrer Abhängigkeiten.
+      function bedingungsRefsText(expr, lokal) {
+        const m = String(expr == null ? "" : expr).match(/\[(\d+)\]/g);
+        if (!m) return "";
+        return m.map(function (b) {
+          const n = b.slice(1, -1);
+          const bd = ctx.bedingungen && ctx.bedingungen[n];
+          const txt = (bd && bd.text) || (lokal && lokal[n]);
+          return txt ? "[" + n + "] " + txt : "[" + n + "]";
+        }).join(" ∧ ");
+      }
+      // Instanz-eigene Bedingungstexte („[519] Hinweis: …") aus dem Freitextfeld
+      // inst.bedingungen als Nummernkarte lesen — sie ergänzen die globale
+      // Bedingungsliste bei prüf-ID-lokalen Hinweisen.
+      function lokaleBedingungen(text) {
+        const karte = {};
+        const re = /\[(\d+)\]\s*([\s\S]*?)(?=(?:\n\s*\n\s*\[\d+\])|(?:\n\s*\[\d+\])|$)/g;
+        let t;
+        while ((t = re.exec(String(text || "")))) karte[t[1]] = t[2].trim();
+        return karte;
       }
       // Klartext der Bedingungen eines Ausdrucks (für die Warnung bei nicht
       // maschinell entscheidbaren Bedingungen — z. B. Verweise auf die
