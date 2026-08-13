@@ -5,6 +5,15 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **13.08.2026** – **Ablehnungs-Abgleich: Auswertung als dritte Spalte.** `3. Abgleich`
+  stand bisher unterhalb der zweispaltigen Reihe und rutschte mit wachsender
+  Nachrichtenlänge beliebig weit nach unten. Das Panel liegt jetzt in derselben Reihe
+  wie Nachricht und CONTRL: ohne Abgleich zwei Spalten, mit Abgleich drei
+  (Seitenbreite dafür 1520 → 1820 px). Unter 1400 px rückt der Abgleich unter die
+  CONTRL in die zweite Spalte — die Nachricht spannt dafür über beide Zeilen, sonst
+  landete er wieder am Ende der langen Spalte. → Protokoll Abschnitt 77.
+
+
 - **13.08.2026** – **Referenzprüfung: Gehört die CONTRL überhaupt zur
   Ursprungsnachricht?** Die Prüfung fehlte bislang vollständig: Aus dem UCI-Segment
   wurden nur DE0083/DE0085 gelesen, die Datenaustauschreferenz DE0020 der geprüften

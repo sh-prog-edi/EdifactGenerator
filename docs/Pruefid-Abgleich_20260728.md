@@ -3927,3 +3927,35 @@ und der genannten Datenaustauschreferenz, **keine** Fehlerkarten, **keine**
 Segmentmarkierung (`.seg.ziel-contrl` = 0); eine CONTRL ohne DE0020 meldet
 „Zuordnung nicht möglich". Die bestehenden Fälle prüfen gezielt
 `.ergebniskarte:not(.referenz)`. Volle Regression grün (40 Läufe).
+
+## 77. Ablehnungs-Abgleich: Auswertung als dritte Spalte (13.08.2026)
+
+**Rückmeldung.** Der Abgleich solle rechts neben der CONTRL erscheinen — bei sehr
+langen Nachrichten sei die Auswertung sonst erst nach langem Scrollen zu sehen.
+
+**Befund.** `3. Abgleich` stand als eigenes Panel unterhalb der zweispaltigen
+Reihe. Der linke Segmentbaum wächst mit der Nachrichtenlänge (mehrere Nachrichten
+je Übertragungsdatei ergeben mehrere Blöcke), sodass die Auswertung beliebig weit
+nach unten rutschte — genau dann, wenn man sie am dringendsten braucht.
+
+**Umsetzung.** Das Panel liegt jetzt in derselben Grid-Reihe wie Nachricht und
+CONTRL. Die Spaltenzahl richtet sich danach, ob es etwas zu zeigen gibt: Ohne
+Abgleich teilen sich Nachricht und CONTRL die Breite (zwei Spalten); sobald der
+Abgleich sichtbar wird, setzt `aktualisiereAbgleich()` die Klasse `mit-abgleich`
+und es werden drei Spalten. Die Seitenbreite wurde dafür von 1520 px auf 1820 px
+erhöht — sonst bliebe für die EDIFACT-Zeilen zu wenig Platz.
+
+Zwei Fallstufen für schmalere Fenster:
+
+- **≤ 1400 px:** zwei Spalten, wobei die Nachricht über beide Zeilen spannt
+  (`grid-row: 1 / span 2`) und der Abgleich unter die CONTRL in die zweite Spalte
+  rückt. Ohne das Spannen platziert das automatische Grid-Placement den Abgleich
+  unter die Nachricht — also wieder ans Ende der langen Spalte, was den Zweck der
+  Änderung zunichtemachen würde. (Grid-Zeilen richten sich nach dem höchsten
+  Element der Zeile; ein reines `grid-row: 2` genügt deshalb nicht.)
+- **≤ 980 px:** eine Spalte, alles untereinander wie bisher.
+
+**Nachweis.** Screenshots bei 1900 px (drei Spalten nebeneinander) und 1280 px
+(Abgleich unter der CONTRL) geprüft. Die bestehende Regression greift den
+Ein-/Ausblendezustand weiterhin über `panelAbgleich.style.display` und läuft
+unverändert; volle Regression grün (40 Läufe).

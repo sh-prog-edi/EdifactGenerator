@@ -1,7 +1,7 @@
 # Arbeitsstand / Übergabe
 
 Stand: 13.08.2026 (Phasen 2–4 abgeschlossen; zuletzt: Sicherheitsaudit Abschnitt 70,
-Ablehnungs-Abgleich CONTRL-Modus Abschnitte 71–76, zuletzt CONTRL-Prüfgrundlage aus
+Ablehnungs-Abgleich CONTRL-Modus Abschnitte 71–77, zuletzt CONTRL-Prüfgrundlage aus
 MIG und AHB gelesen, Referenzprüfung ergänzt) ·
 Projekt: **EdifactGenerator** · Auftraggeber: Steffen Haense
 
@@ -23,7 +23,7 @@ Energiemarkts (BDEW-MaKo): 18 Nachrichtentypen in zwei Formatständen (`202604` 
 30.09.2026, `202610` ab 01.10.2026), 975 Prüf-ID-Formulare, universeller Validator,
 Antwort- und Folgenachrichten, Umbau Produktivnachricht → Testnachricht, sowie ein
 Ablehnungs-Abgleich (abgelehnte Nachricht gegen negative CONTRL, `ablehnung-
-abgleich.html`, Abschnitte 71–76). Alle Prüfgrundlagen sind **maschinell aus den frei
+abgleich.html`, Abschnitte 71–77). Alle Prüfgrundlagen sind **maschinell aus den frei
 verfügbaren Originaldokumenten** gelesen; kostenpflichtige XML-/JSON-Fassungen werden
 nicht verwendet.
 

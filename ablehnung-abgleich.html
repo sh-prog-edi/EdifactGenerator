@@ -18,13 +18,35 @@
     --best-bg:#123a5c; --best-text:#cfe6fb;
     --frag-bg:#5c4610; --frag-text:#ffe9c2;
   }
-  .wrap{max-width:1520px;}
+  /* Breiter als die übrigen Seiten: Bei drei Spalten (Nachricht · CONTRL ·
+     Abgleich) bliebe sonst zu wenig Platz für die EDIFACT-Zeilen. */
+  .wrap{max-width:1820px;}
   .sub{color:var(--muted);font-size:13px;margin:0 0 18px;}
   .panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;
     box-shadow:var(--shadow);padding:16px 18px;margin:0 0 16px;}
   .panel h2{font-size:15px;margin:0 0 10px;color:var(--heading);}
+  /* Solange kein Abgleich vorliegt, teilen sich Nachricht und CONTRL die Breite;
+     sobald das Abgleich-Panel sichtbar ist, kommt es als DRITTE Spalte daneben
+     (Klasse wird in aktualisiereAbgleich() gesetzt). So bleibt die Auswertung
+     auch bei sehr langen Nachrichten im Blick, ohne scrollen zu müssen. */
   .zweispaltig{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start;}
-  @media (max-width:980px){.zweispaltig{grid-template-columns:1fr;}}
+  .zweispaltig.mit-abgleich{grid-template-columns:1fr 1fr 1fr;}
+  /* Reicht die Breite für drei Spalten nicht, rückt der Abgleich UNTER die
+     CONTRL in die zweite Spalte — nicht unter die (oft sehr lange) Nachricht,
+     wo ihn das automatische Grid-Placement sonst hinsetzen würde. */
+  @media (max-width:1400px){
+    .zweispaltig.mit-abgleich{grid-template-columns:1fr 1fr;align-items:stretch;}
+    /* Die Nachricht spannt über beide Zeilen, damit CONTRL und Abgleich in der
+       rechten Spalte übereinander stehen statt der Abgleich unter die Nachricht
+       zu rutschen (Grid-Zeilen richten sich sonst nach dem höchsten Element). */
+    .zweispaltig.mit-abgleich > .panel:first-child{grid-column:1;grid-row:1 / span 2;}
+    .zweispaltig.mit-abgleich > .panel:nth-child(2){align-self:start;}
+    .zweispaltig.mit-abgleich > #panelAbgleich{grid-column:2;grid-row:2;align-self:start;}
+  }
+  @media (max-width:980px){
+    .zweispaltig, .zweispaltig.mit-abgleich{grid-template-columns:1fr;}
+    .zweispaltig.mit-abgleich > #panelAbgleich{grid-column:1;grid-row:auto;}
+  }
   .spalte-scroll{max-height:70vh;overflow-y:auto;overscroll-behavior:contain;padding-right:4px;}
   .drop{border:2px dashed var(--accent);border-radius:12px;padding:16px 14px;text-align:center;
     color:var(--muted);font-size:13px;cursor:pointer;transition:background .15s;margin-bottom:8px;}
@@ -138,11 +160,15 @@
         negative CONTRL eines Marktpartners.</div>
       <div id="rechtsErgebnis"></div>
     </div>
-  </div>
 
-  <div class="panel" id="panelAbgleich" style="display:none">
-    <h2>3. Abgleich</h2>
-    <div id="abgleichErgebnis"></div>
+    <!-- ---------------- Rechts daneben: Abgleich ----------------
+         Bewusst in derselben Spaltenreihe wie 1. und 2. (Auftraggeber,
+         13.08.2026): Bei sehr langen Nachrichten stand der Abgleich unterhalb
+         des Segmentbaums und war nur nach langem Scrollen zu sehen. -->
+    <div class="panel" id="panelAbgleich" style="display:none">
+      <h2>3. Abgleich</h2>
+      <div id="abgleichErgebnis"></div>
+    </div>
   </div>
 
   <footer>Kein Nachladen fremder Inhalte — reines Client-Side-JavaScript, funktioniert auch offline (file://).</footer>
@@ -803,8 +829,16 @@ function aktualisiereAbgleich(){
     const z = el.querySelector('.contrl-zusatz');
     if (z) z.remove();
   });
-  if (!linkeEinheiten || !contrlErgebnis){ panel.style.display = 'none'; box.innerHTML = ''; return; }
+  // Die dritte Spalte nur aufspannen, solange es etwas zu zeigen gibt — sonst
+  // teilen sich Nachricht und CONTRL die volle Breite (siehe .mit-abgleich).
+  const reihe = panel.parentElement;
+  if (!linkeEinheiten || !contrlErgebnis){
+    panel.style.display = 'none';
+    if (reihe) reihe.classList.remove('mit-abgleich');
+    box.innerHTML = ''; return;
+  }
   panel.style.display = '';
+  if (reihe) reihe.classList.add('mit-abgleich');
   let html = '';
 
   // Referenzprüfung zuerst — und bei fehlender Zuordnung ENDE: Ohne passende
