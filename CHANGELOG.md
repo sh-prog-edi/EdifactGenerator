@@ -5,6 +5,29 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **13.08.2026** – **CONTRL-Codelisten maschinell aus dem MIG; Falschbefund
+  „RFF+TN fehlt" an positiver APERAK behoben.** Die Fehlercodeliste war von Hand
+  kuratiert (12 Codes) und teils sachlich falsch — Code 28 stand als „Ungültige
+  Segmentreihenfolge", der MIG sagt „Referenzen stimmen nicht überein"; Code 26
+  („Duplikat gefunden") fehlte ganz. Neues Werkzeug
+  `werkzeuge/lies_contrl_fehlercodes.py` liest sie jetzt maschinell aus dem MIG
+  CONTRL, **je Segment getrennt** (UCI 13, UCM 9, UCS 6, UCD 10 Codes; Code 26
+  meint im UCI ein Duplikat der Übertragungsdatei, im UCM eines der Nachricht),
+  samt MIG-Erläuterung. Ein Code, den die MIG nicht führt, wird jetzt ausdrücklich
+  benannt statt stumm leer zu bleiben. Zweiter, schwerwiegenderer Punkt: Der
+  Validator meldete an einer gültigen positiven APERAK „Fehlende Muss-Segmente
+  laut AHB: RFF+TN" — Ursache war der Rückfall „Segmentgruppen-Status fehlt ⇒
+  Gruppe ist Muss", der auch dort griff, wo der Gruppenstatus gar nicht extrahiert
+  wurde. Korrektur auf Regelebene: Fehlt einer Prüfgrundlage der Gruppenstatus
+  vollständig, gilt die Pflicht als *nicht entscheidbar* (weicher Hinweis) statt
+  als verletzt. Sweep über alle 925 Varianten: 923 bit-identisch, nur die zwei
+  betroffenen APERAK-Varianten ändern sich — echte Muss-Prüfungen bleiben scharf.
+  Bedingte Muss-Segmente werden im Ablehnungs-Abgleich jetzt überhaupt angezeigt
+  (fehlte bisher ganz). Neuer Test `scripts/test_contrl_codelisten.js`, Fall H im
+  Ablehnungs-Abgleich-Test. Offen bleibt die Wurzel: die AHB-Extraktion der
+  Servicenachrichten APERAK/CONTRL. → Protokoll Abschnitt 74.
+
+
 - **13.08.2026** – **Ablehnungs-Abgleich: Segmentbaum ohne Flächenfarbe, exakte
   Fehlerposition markiert.** Fehlerfreie Segmente im linken Baum zeigen jetzt
   normale Text-/Hintergrundfarbe statt Grün-Fill; fehlerhaft erkannte Segmente

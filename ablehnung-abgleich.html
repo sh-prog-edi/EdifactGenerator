@@ -69,6 +69,9 @@
   .globalbox{border-radius:8px;padding:9px 11px;margin:7px 0;font-size:12.5px;}
   .globalbox.rot{background:var(--warn-bg);color:var(--warn-text);}
   .globalbox.info{background:var(--accent-bg);color:var(--heading);}
+  /* Bedingtes Muss / nicht entscheidbare Pflicht: gelb, klar von Rot (echter
+     Fehler) unterschieden — die Aussage ist „bitte fachlich prüfen", nicht „falsch". */
+  .globalbox.warn{background:var(--frag-bg);color:var(--frag-text);}
   .msgblock{border:1px solid var(--border);border-left-width:4px;border-radius:10px;
     padding:10px 12px;margin:10px 0;background:var(--bg);}
   .msgblock.ok{border-left-color:var(--ok-text);}
@@ -375,6 +378,13 @@ function globalHtml(res){
   res.global.meldungen.forEach(m => { g += `<div class="globalbox rot">${esc(m)}</div>`; });
   if (res.fehlendeMuss.length)
     g += `<div class="globalbox rot">Fehlende Muss-Segmente laut AHB: ${res.fehlendeMuss.map(esc).join('; ')}</div>`;
+  // Bedingte Muss-Segmente wurden hier bisher gar nicht angezeigt (anders als in
+  // validator.html) — damit blieb u. a. der Hinweis unsichtbar, dass für
+  // APERAK/CONTRL der AHB-Gruppenstatus in der Prüfgrundlage fehlt und die Pflicht
+  // eines Segments deshalb nicht entscheidbar ist (Protokoll Abschnitt 74).
+  if ((res.bedingteMuss || []).length)
+    g += `<div class="globalbox warn">Bedingte Muss-Segmente (nur unter Bedingung Pflicht – ` +
+      `bitte fachlich prüfen): ${res.bedingteMuss.map(esc).join('; ')}</div>`;
   res.global.hinweise.forEach(m => { g += `<div class="globalbox info">${esc(m)}</div>`; });
   return g;
 }
@@ -547,9 +557,27 @@ function leseContrl(text){
   });
   return { parsed, dateiCode, dateiFehlercode, bloecke };
 }
-function fehlertext0085(code){
-  const eintrag = (typeof uciFehlercodes0085 !== 'undefined' ? uciFehlercodes0085 : []).find(c => c[0] === code);
-  return eintrag ? eintrag[1] : '';
+// Fehlercode-Klartext SEGMENTGENAU (Protokoll Abschnitt 74): DE0085 führt im UCI
+// (Übertragungsdatei), UCM (Nachricht), UCS (Segment) und UCD (Datenelement)
+// unterschiedliche Codes und Erläuterungen — Code 26 „Duplikat gefunden" meint im
+// UCI ein Duplikat der ÜBERTRAGUNGSDATEI, im UCM ein Duplikat der NACHRICHT.
+// Quelle: _engine/daten/uci-fehlercodes.js, maschinell aus dem MIG CONTRL.
+function fehlereintrag(code, segment, de){
+  if (typeof contrlFehlereintrag === 'function') return contrlFehlereintrag(code, segment, de);
+  const eintrag = (typeof uciFehlercodes0085 !== 'undefined' ? uciFehlercodes0085 : [])
+    .find(c => c[0] === String(code));
+  return eintrag ? { text: eintrag[1], erlaeuterung: eintrag[2] || '', quelle: '' }
+                 : { text: '', erlaeuterung: '', quelle: null };
+}
+function fehlertext0085(code, segment, de){
+  if (!String(code || '').trim()) return '';
+  const e = fehlereintrag(code, segment, de);
+  // quelle === null: Der Code steht in der BDEW-Codeliste des MIG gar nicht. Das
+  // ist selbst ein Befund — der absendende Marktpartner verwendet einen im
+  // deutschen Marktprozess nicht vorgesehenen Code. Kenntlich machen statt leer
+  // lassen (vorher stand dort nur die nackte Zahl ohne jeden Hinweis).
+  if (e.quelle === null) return 'Code nicht in der MIG-Codeliste geführt — bitte beim Absender klären';
+  return e.text;
 }
 
 async function pruefeRechts(){
@@ -564,11 +592,11 @@ async function pruefeRechts(){
   contrlErgebnis = c;
   const dateiText = c.dateiCode === '7'
     ? 'Übertragungsdatei angenommen (UCI DE0083 = 7)'
-    : `Übertragungsdatei abgelehnt (UCI DE0083 = 4, Fehlercode ${esc(c.dateiFehlercode)} – ${esc(fehlertext0085(c.dateiFehlercode))})`;
+    : `Übertragungsdatei abgelehnt (UCI DE0083 = 4, Fehlercode ${esc(c.dateiFehlercode)} – ${esc(fehlertext0085(c.dateiFehlercode, 'UCI'))})`;
   let html = `<div class="kv"><dt>Datei-Ebene</dt><dd>${dateiText}</dd>` +
     `<dt>Fehlerhafte Nachrichten</dt><dd>${c.bloecke.length}</dd></div>`;
   c.bloecke.forEach((b, i) => {
-    const ft = fehlertext0085(b.fehlercode);
+    const ft = fehlertext0085(b.fehlercode, 'UCM');
     html += `<div class="msgblock ${b.code === '4' ? 'rot' : 'ok'}"><h3>SG1 Nachricht ${i + 1}: ` +
       `${esc(b.typ)}${b.version ? ':' + esc(b.version) : ''} · Referenz ${esc(b.ref) || '—'}</h3>` +
       `<div class="kv"><dt>DE0083</dt><dd>${esc(b.code)}${b.code === '4' ? ' (abgelehnt)' : ' (angenommen)'}</dd>` +
@@ -576,11 +604,11 @@ async function pruefeRechts(){
       `<dt>SG2-Einträge</dt><dd>${b.ucs.length || '— (nur Nachrichtenebene)'}</dd></div>`;
     b.ucs.forEach(u => {
       html += `<div class="zeile">UCS Segmentposition ${esc(u.pos)}` +
-        (u.segCode ? ` · Code ${esc(u.segCode)} (${esc(fehlertext0085(u.segCode))})` : '') + '</div>';
+        (u.segCode ? ` · Code ${esc(u.segCode)} (${esc(fehlertext0085(u.segCode, 'UCS'))})` : '') + '</div>';
       u.ucd.forEach(d => {
         html += `<div class="zeile" style="padding-left:16px">↳ UCD Element ${esc(d.dePos)}` +
           (d.komp ? `, Komponente ${esc(d.komp)}` : '') +
-          ` · Code ${esc(d.code)} (${esc(fehlertext0085(d.code))})</div>`;
+          ` · Code ${esc(d.code)} (${esc(fehlertext0085(d.code, 'UCD'))})</div>`;
       });
     });
     html += `</div>`;
@@ -602,15 +630,44 @@ function springeUndHebeHervor(unitIdx, nummer){
 // Schwache Stichwort-Zuordnung DE0085-Code -> Art des Validator-Befunds, nur als
 // zusätzliches Signal (nicht als Ausschlusskriterium): hilft bei der Einordnung,
 // ob ein gefundener Befund tatsächlich zum gemeldeten Fehlercode passt.
+//
+// Die Muster sind gegen die ECHTEN Codebezeichnungen des MIG CONTRL gestellt
+// (Protokoll Abschnitt 74). Vorher stand hier eine kuratierte Liste, in der
+// Code 28 als „Ungültige Segmentreihenfolge" geführt war — der MIG-Text lautet
+// „Referenzen stimmen nicht überein" (UNB/UNZ bzw. UNH/UNT), das Stichwortmuster
+// suchte also nach der falschen Art von Befund.
 const CODE_STICHWORT = {
+  // 12 Ungültiger Wert / 13 Fehlt
   '13': /fehlt|nicht vorgesehen|Pflichtangabe/i,
   '12': /zulässig sind|kein Code|nicht in den? Codelisten|nicht vorgesehen/i,
+  // 15 Nicht unterstützt an dieser Position
+  '15': /nicht vorgesehen|Aufbau prüfen|an dieser Position/i,
+  // 16 Zu viele Bestandteile
+  '16': /übersteigt|zu viele/i,
+  // 19 Ungültige Dezimalbeschreibung / 38 Fehlende Ziffer vor dem Dezimalzeichen
+  '19': /Dezimal|numerisch/i,
+  '38': /Dezimal|numerisch/i,
+  // 21 Ungültige(s) Zeichen / 20+22 Service-Zeichen / 37 Zeichenart
+  '21': /Zeichen/i,
+  '20': /Zeichen|UNA/i,
+  '22': /Zeichen|UNA|Service/i,
+  '37': /Zeichen|Format|kein numerischer/i,
+  // 25 Test-Kennzeichen nicht unterstützt (UNB DE0035)
+  '25': /DE0035|Testkennzeichen|Test-Kennzeichen/i,
+  // 26 Duplikat gefunden — im Validator die Duplikatprüfung gleicher Segmente
+  '26': /×\s*in der Nachricht|doppelt|Duplikat|mehrfach/i,
+  // 28 Referenzen stimmen nicht überein (UNB/UNZ bzw. UNH/UNT)
+  '28': /≠\s*UNB-Referenz|DE0020|Referenz/i,
+  // 29 Kontrollzähler entspricht nicht der Anzahl empfangender Fälle
+  '29': /gemeldet, (aber|tatsächlich)|DE0036|DE0074/i,
+  // 32 Tiefere Ebene leer
+  '32': /keine Nachricht|leer/i,
+  // 35/36 Zu viele Segment- bzw. Segmentgruppen-Wiederholungen
+  '35': /Wiederholung|×\s*in der Nachricht/i,
+  '36': /Wiederholung|×\s*in der Nachricht/i,
+  // 39/40 Datenelement zu lang / zu kurz
   '39': /Länge \d+, erlaubt max/i,
   '40': /Länge \d+, erlaubt genau/i,
-  '16': /übersteigt|zu viele/i,
-  '35': /Wiederholung|nur 1 Wiederholung/i,
-  '28': /nicht vorgesehen|Aufbau prüfen/i,
-  '21': /Zeichen/i,
 };
 
 // Generische, AHB-unabhängige Positionsprüfung: liest den tatsächlichen Rohwert
@@ -650,7 +707,7 @@ function aktualisiereAbgleich(){
   let html = '';
 
   if (contrlErgebnis.dateiCode !== '7' && !contrlErgebnis.bloecke.length){
-    const ft = fehlertext0085(contrlErgebnis.dateiFehlercode);
+    const ft = fehlertext0085(contrlErgebnis.dateiFehlercode, 'UCI');
     html += `<div class="ergebniskarte frag"><h3>Ablehnung auf Datei-Ebene ` +
       `<span class="badge frag">kein Segmentbezug</span></h3>` +
       `<div class="zeile">Die gesamte Übertragungsdatei wurde zurückgewiesen (Fehlercode ` +
@@ -677,7 +734,7 @@ function aktualisiereAbgleich(){
     const einheit = linkeEinheiten[unitIdx];
     const agoHinweis = '';
     if (!b.ucs.length){
-      const ft = fehlertext0085(b.fehlercode);
+      const ft = fehlertext0085(b.fehlercode, 'UCM');
       const alleBefunde = (einheit.res.zeilen || []).flatMap(z => z.meldungen);
       html += `<div class="ergebniskarte frag"><h3>SG1 Nachricht ${bi + 1}: ${esc(einheit.label)} ` +
         `<span class="badge frag">nur Nachrichtenebene</span></h3>` +
@@ -712,7 +769,11 @@ function aktualisiereAbgleich(){
         const el0 = d.dePos ? Number(d.dePos) - 1 : null;
         const comp0 = d.dePos ? (d.komp ? Number(d.komp) - 1 : 0) : null;
         const de = el0 != null ? deNummerVon(zeile.tag, el0, comp0) : null;
-        const ft = fehlertext0085(d.code);
+        // Ein Code aus einem UCD-Eintrag gehört zur Datenelementebene, ein Code
+        // direkt am UCS zur Segmentebene — die Codelisten unterscheiden sich.
+        const ucEbene = u.ucd.length ? 'UCD' : 'UCS';
+        const eintrag = fehlereintrag(d.code, ucEbene);
+        const ft = fehlertext0085(d.code, ucEbene);
         const stichwort = CODE_STICHWORT[d.code];
         const alleAmSegment = zeile.meldungen.concat(zeile.hinweise.map(h => h));
         const trefferMeldungen = zeile.meldungen.filter(m =>
@@ -756,7 +817,13 @@ function aktualisiereAbgleich(){
           (d.dePos ? ` · Element ${d.dePos}${d.komp ? ', Komp. ' + d.komp : ''}${de ? ' (DE' + de + ')' : ''}` : '') +
           ` <span class="badge ${badge}">${badge === 'bestaetigt' ? 'bestätigt' : 'unklar'}</span> ` +
           `<button class="go secondary klein" onclick="springeUndHebeHervor(${unitIdx},${nummer})">im Segmentbaum zeigen</button></h3>` +
-          `<div class="zeile">CONTRL-Fehlercode ${esc(d.code)} – ${esc(ft)}</div>` +
+          `<div class="zeile">CONTRL-Fehlercode ${esc(d.code)} – ${esc(ft)}` +
+          (eintrag.quelle ? ` <span class="hinweistext" style="margin:0">(${esc(ucEbene)}-Ebene)</span>` : '') +
+          `</div>` +
+          // Erläuterung des Codes aus der MIG — macht z. B. bei Code 26 sichtbar,
+          // ob ein Duplikat der Übertragungsdatei oder der Nachricht gemeint ist.
+          (eintrag.erlaeuterung
+            ? `<div class="hinweistext">${esc(eintrag.erlaeuterung)}</div>` : '') +
           zielsegment +
           `<div class="zeile">${text}</div></div>`;
       });

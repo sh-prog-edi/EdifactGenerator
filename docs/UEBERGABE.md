@@ -1,7 +1,8 @@
 # Arbeitsstand / Übergabe
 
 Stand: 13.08.2026 (Phasen 2–4 abgeschlossen; zuletzt: Sicherheitsaudit Abschnitt 70,
-Ablehnungs-Abgleich CONTRL-Modus samt Kontrast-/Positionsmarkierung Abschnitte 71–73) ·
+Ablehnungs-Abgleich CONTRL-Modus Abschnitte 71–74, zuletzt CONTRL-Codelisten aus dem
+MIG und Muss-Falschbefund an Servicenachrichten behoben) ·
 Projekt: **EdifactGenerator** · Auftraggeber: Steffen Haense
 
 **Quelle der Wahrheit ist das Git-Repository**
@@ -22,7 +23,7 @@ Energiemarkts (BDEW-MaKo): 18 Nachrichtentypen in zwei Formatständen (`202604` 
 30.09.2026, `202610` ab 01.10.2026), 975 Prüf-ID-Formulare, universeller Validator,
 Antwort- und Folgenachrichten, Umbau Produktivnachricht → Testnachricht, sowie ein
 Ablehnungs-Abgleich (abgelehnte Nachricht gegen negative CONTRL, `ablehnung-
-abgleich.html`, Abschnitte 71–73). Alle Prüfgrundlagen sind **maschinell aus den frei
+abgleich.html`, Abschnitte 71–74). Alle Prüfgrundlagen sind **maschinell aus den frei
 verfügbaren Originaldokumenten** gelesen; kostenpflichtige XML-/JSON-Fassungen werden
 nicht verwendet.
 
@@ -143,6 +144,20 @@ eingegrenzten Abschnitt gegen Verwendbarkeit (Kommunikationsrichtung, Quelle:
 Korrektheit (Codelisten) laufen — nur unterstützend, nie abschließend bestätigend wie
 bei CONTRL. Bei Bedarf im Gesprächsverlauf der letzten Sitzung nachlesen (RFF-Feld-
 Semantik dort bereits geklärt) oder Protokoll-Abschnitt 71 (Machbarkeitsteil).
+
+**Wichtigster fachlicher Folgepunkt: AHB-Extraktion der Servicenachrichten
+(Abschnitt 74).** Für APERAK und CONTRL ist die Prüfgrundlage unvollständig: Der
+Segmentgruppen-Status (`sgExpr`) fehlt in allen Varianten beider Formatstände, die
+Anwendungsfall-Spalten des AHB sind nicht getrennt (202604 APERAK: beide Varianten
+identisch extrahiert; CONTRL beide Stände und APERAK 202610: `expr` durchgehend
+leer). Der Validator prüft diese vier Nachrichtentypen deshalb nur strukturell,
+nicht gegen den AHB — sichtbar als Hinweis „Pflicht nicht entscheidbar: Der
+AHB-Status der Segmentgruppe … ist in der Prüfgrundlage nicht hinterlegt". Das ist
+bewusst so gebaut (statt falscher harter Fehler, siehe 74.2) und verschwindet von
+selbst, sobald die Extraktion nachgezogen ist. Zu beachten: Der
+Servicenachrichten-AHB nutzt ein anderes Tabellenlayout als die übrigen Formate,
+und Formular-Metas dürfen nach der Fallstrick-Liste (Abschnitt 7) nur über ein
+**Nachbearbeitungsskript** geändert werden, nie über den Generator.
 
 **Ablehnungs-Abgleich, kleiner technischer Folgepunkt (Abschnitt 73):** Die
 zeichengenaue Markierung der Fehlerposition (bisher nur im Kasten

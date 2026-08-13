@@ -32,6 +32,7 @@ const NODE_TESTS = [
     'scripts/test_muss_validierung.js',
     'scripts/test_sts_aufbau.js',
     'scripts/test_de_muss_praesenz.js',
+    'scripts/test_contrl_codelisten.js',
 ];
 
 // Browser-Tests (Playwright; Reihenfolge wie in der Übergabe dokumentiert).

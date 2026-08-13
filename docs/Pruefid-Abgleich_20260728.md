@@ -3627,3 +3627,134 @@ im Sinne der Konvention, keine Insellösung neben dem zentralen, bereits
 sicherheitsgeprüften Parser zu bauen — die Zeichen-Offset-Logik aus
 `positionInSegment()` in `AhbValidator.parse()` selbst zu heben, statt sie ein
 zweites Mal nur für diese Seite zu pflegen.
+
+## 74. CONTRL-Codelisten maschinell; Falschbefund „RFF+TN fehlt" an pos. APERAK (13.08.2026)
+
+**Rückmeldung.** Zwei Punkte aus der Erprobung mit echten Marktnachrichten:
+(1) Die CONTRL-Fehlercodes sollten aus AHB/MIG geholt und hinterlegt werden —
+eine real erhaltene CONTRL mit DE0085 = 26 („Duplikat vorhanden") lief ohne
+Klartext durch. (2) Bei genau dieser CONTRL auf eine **positive APERAK** meldete
+der Abgleich „Fehlende Muss-Segmente laut AHB: RFF+TN…". Das ist sachlich falsch:
+In der APERAK sind die Referenzsegmente RFF+ACE/AGO (bzw. RFF+AVE) maßgeblich,
+ein RFF+TN ist dort nicht generell Pflicht — es liegt also gar kein Syntaxfehler
+vor, den der Validator hätte melden dürfen.
+
+### 74.1 Codelisten: von 12 kuratierten auf 22 maschinell gelesene Codes
+
+**Befund.** `_engine/daten/uci-fehlercodes.js` enthielt eine von Hand gepflegte
+Liste von 12 „gängigen" Codes — entgegen der Projektkonvention, Prüfgrundlagen
+maschinell aus den Originaldokumenten zu lesen. Die Gegenprobe gegen den MIG
+CONTRL zeigte nicht nur Lücken, sondern **inhaltliche Fehler**:
+
+| Code | bisher (kuratiert) | MIG CONTRL (Original) |
+|---|---|---|
+| 28 | „Ungültige Segmentreihenfolge" | **„Referenzen stimmen nicht überein"** |
+| 7 | „Ungültiger Absender/Empfänger" | „Empfänger der Übertragungsdatei ist nicht der tatsächliche Empfänger" |
+| 26 | *fehlte ganz* | „Duplikat gefunden" |
+| 15, 19, 20, 23, 25, 29, 32, 36, 37, 38 | *fehlten ganz* | — |
+
+Der Fehler bei Code 28 wirkte doppelt: Die Stichwortzuordnung `CODE_STICHWORT`
+im Ablehnungs-Abgleich suchte für 28 nach „nicht vorgesehen|Aufbau prüfen" —
+Muster, die zu „Ungültige Segmentreihenfolge" passen, aber nicht zum tatsächlich
+gemeinten UNB/UNZ-Referenzabgleich. Der Abgleich konnte einen echten Treffer
+also gar nicht als solchen erkennen.
+
+**Umsetzung.** Neues Werkzeug `werkzeuge/lies_contrl_fehlercodes.py` liest die
+Codelisten aus der Segmentlayout-Tabelle des MIG CONTRL. Wesentlich dabei: Die
+Liste ist **je Segment verschieden** — DE0085 führt im UCI (Übertragungsdatei),
+UCM (Nachricht), UCS (Segment) und UCD (Datenelement) unterschiedliche Codes und
+Erläuterungen. Code 26 meint im UCI ein Duplikat der ÜBERTRAGUNGSDATEI, im UCM
+ein Duplikat der NACHRICHT. Ausgabe deshalb als `contrlCodelisten[segment][de]`
+mit Eintragsformat `[code, Bezeichnung, Erläuterung]`, dazu `contrlFehlereintrag()`
+für den segmentgenauen Nachschlag mit Rückfall auf die Vereinigung. Die flache
+`uciFehlercodes0085` bleibt für den CONTRL-Generator (Dropdown) erhalten.
+Ergebnis: UCI 13, UCM 9, UCS 6, UCD 10 Codes; Vereinigung 22 statt 12.
+
+Der Ablehnungs-Abgleich schlägt jetzt je Ebene nach (UCI/UCM/UCS/UCD), zeigt die
+MIG-Erläuterung unter dem Fehlercode und macht einen Code, den die MIG **gar
+nicht führt**, ausdrücklich kenntlich („Code nicht in der MIG-Codeliste geführt —
+bitte beim Absender klären") statt ihn wie bisher stumm leer zu lassen. Das ist
+selbst ein Befund: Ein Marktpartner, der einen im deutschen Marktprozess nicht
+vorgesehenen Code sendet, ist auffällig. `CODE_STICHWORT` wurde vollständig an
+den echten MIG-Wortlaut angeglichen und um die neuen Codes ergänzt.
+
+### 74.2 Der Falschbefund: fehlender Segmentgruppen-Status wurde als „Muss" gelesen
+
+**Reproduktion.** Eine gültige positive APERAK (BGM+312, SG2 mit RFF+ACE, DTM+171
+und RFF+AGO, ohne SG4/SG5) durch `besteVariante` → `fehlendeMuss: ["RFF+TN
+(Referenznummer des Vorgangs)"]`. Befund bestätigt.
+
+**Quellenlage.** Der AHB APERAK (Lesefassung 1.0, Ordner Wissensdatenbank) führt
+die beiden Anwendungsfälle „Fehlermeldung" und „Anerkennungsmeldung" in
+nebeneinanderliegenden Spalten. Für das dritte SG2-RFF (Zähler 00007, RFF+TN)
+steht dort als Gruppenstatus **„Soll [16]"** mit `[16] Wenn der referenzierte
+Nachrichtentyp IFTSTA ist …` — und die Spalte des einen Anwendungsfalls ist
+überhaupt nicht belegt. RFF+TN ist dort also weder unbedingtes Muss noch
+überhaupt in beiden Anwendungsfällen vorgesehen.
+
+**Ursache im Code.** In den APERAK-/CONTRL-Formular-Metas ist `sgExpr` (der
+AHB-Status der Segmentgruppe) bei **allen** Instanzen `null` — die Spaltenstruktur
+des Servicenachrichten-AHB hat der Extraktor nicht getrennt. Der Validator las
+das über den Rückfall
+
+```js
+const grpKlasse = sgExpr ? mussKlasse(sgExpr) : "hart";
+```
+
+als „Gruppe ist unbedingtes Muss". Der Rückfall war für Segmente auf
+**Nachrichtenebene** gedacht (UNH/BGM/DTM — die haben gar keine Gruppe), griff
+aber genauso für Segmente INNERHALB einer Segmentgruppe, deren Gruppenstatus
+schlicht nicht extrahiert wurde. Aus „unbekannt" wurde damit „Pflicht".
+
+**Umfang (Sweep über alle 36 Formular-Metas, Konvention „beispielhaft heißt alle
+Prüf-IDs").** 22.463 Segmentinstanzen; 5.080 davon stehen in einer Segmentgruppe,
+tragen hartes Muss und haben kein `sgExpr`. Diese 5.080 pauschal zu entschärfen
+hätte echte Muss-Prüfungen blind gemacht. Die datengetriebene Unterscheidung
+trennt sauber:
+
+| | Varianten | Risiko-Instanzen | Bedeutung |
+|---|---:|---:|---|
+| A: **kein einziges** `sgExpr` trotz Segmentgruppen | **10** | 22 | Gruppenstatus für dieses Dokument nicht extrahiert → unbekannt |
+| B: `sgExpr` teilweise vorhanden | 915 | 5.058 | Extraktion funktioniert; fehlendes `sgExpr` heißt „Gruppe ohne eigenen Status" → Rückfall korrekt |
+
+Gruppe A sind **exakt** die Servicenachrichten APERAK und CONTRL in beiden
+Formatständen — nichts sonst.
+
+**Korrektur (auf Regelebene, nicht PID-spezifisch).** Der Validator ermittelt je
+Prüfgrundlage einmal `gruppenStatusBekannt` (trägt irgendeine Instanz mit
+Segmentgruppe ein `sgExpr`?). Ist er *nicht* bekannt, wird ein Segment innerhalb
+einer Segmentgruppe nicht mehr als fehlendes unbedingtes Muss gemeldet, sondern
+als bedingtes Muss mit sprechendem Text geführt: „Pflicht nicht entscheidbar: Der
+AHB-Status der Segmentgruppe SG2 ist in der Prüfgrundlage nicht hinterlegt". Die
+Regel greift nur beim UNBEDINGTEN Segment-Muss — trägt das Segment selbst eine
+Bedingung („Muss [1]"), entscheidet weiterhin die Bedingungsauswertung, die kein
+`sgExpr` braucht. Sie ist selbstheilend: Sobald die Servicenachrichten-Extraktion
+nachgezogen ist, greift sie automatisch nicht mehr.
+
+Zusätzlich zeigte die Seite `ablehnung-abgleich.html` bedingte Muss-Segmente
+bisher **gar nicht** an (anders als `validator.html`) — der neue Hinweis wäre
+unsichtbar geblieben. `globalHtml()` gibt sie jetzt als gelbe Box aus (klar von
+Rot = echter Fehler unterschieden).
+
+**Nachweis.** Vorher/Nachher-Sweep über **alle 925 Varianten** beider Formatstände
+mit je einer Nachricht, die jede Segmentgruppe aktiviert (sonst greifen die
+Gruppenregeln nicht — die erste Sweep-Fassung lief deshalb ins Leere und wurde
+verworfen): **923 Varianten bit-identisch**, 2 verändert — die beiden
+APERAK-Varianten 202604, dort je 9 → 2 harte Fehler, der Rest als Hinweis. CONTRL
+und APERAK 202610 bleiben unverändert, weil dort alle `expr` leer sind und
+ohnehin keine Muss-Prüfung stattfindet. Kernprüfungen unverändert grün
+(`test_muss_validierung`, `test_bedingung_hart`, `test_abhaengige_segmente`,
+`test_de_muss_praesenz` 76/76 · 18/18). Neue Regression
+`scripts/test_contrl_codelisten.js` und Fall H in
+`scripts/test_ablehnung_abgleich.js` decken den gemeldeten Fall end-to-end ab.
+
+**Offen (Folgearbeit).** Die eigentliche Wurzel bleibt die Extraktion der
+Servicenachrichten-AHB: Für APERAK/CONTRL fehlen Segmentgruppen-Status und die
+Trennung der Anwendungsfall-Spalten (202604 APERAK: beide Varianten identisch
+extrahiert; CONTRL beide Stände und APERAK 202610: `expr` durchgehend leer).
+Solange das so ist, prüft der Validator diese vier Nachrichtentypen nur
+strukturell, nicht gegen den AHB. Der Aufwand ist ein eigener Auftrag: Der
+Servicenachrichten-AHB nutzt ein anderes Tabellenlayout als die bereits
+unterstützten Formate, und die Formular-Metas dürfen laut Fallstrick-Liste nicht
+über das Generator-Werkzeug neu erzeugt werden, sondern nur über ein
+Nachbearbeitungsskript.

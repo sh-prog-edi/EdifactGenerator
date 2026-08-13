@@ -980,6 +980,24 @@
           effSgExpr[idx] = letztesCciSg[b];
       });
 
+      // Führt diese Prüfgrundlage überhaupt Segmentgruppen-Status? Fehlt bei einem
+      // Segment INNERHALB einer Segmentgruppe die sgExpr, gibt es zwei Ursachen:
+      // (a) die Gruppe hat im AHB keinen eigenen Status — dann ist der Rückfall auf
+      //     den Segment-Status richtig (Regelfall, 915 der 925 Varianten), oder
+      // (b) der Gruppenstatus wurde für dieses Dokument gar nicht extrahiert — dann
+      //     ist er schlicht UNBEKANNT und darf nicht als „Muss" gelesen werden.
+      // Unterschieden wird datengetrieben: Trägt keine EINZIGE Instanz mit
+      // Segmentgruppe eine sgExpr, ist die Gruppeninformation für diese Variante
+      // nicht vorhanden (Fall b). Das trifft aktuell genau die Servicenachrichten
+      // APERAK und CONTRL in beiden Formatständen zu (10 Varianten) — deren AHB
+      // führt die Anwendungsfälle in nebeneinanderliegenden Spalten, die der
+      // Extraktor nicht getrennt hat. Dort meldete der Validator z. B. an einer
+      // gültigen positiven APERAK „Fehlende Muss-Segmente laut AHB: RFF+TN", obwohl
+      // der AHB die zugehörige SG2 nur mit „Soll [16]" führt und dort RFF+AGO/ACE
+      // die maßgeblichen Referenzen sind (Protokoll Abschnitt 74).
+      const gruppenStatusBekannt = instanzen.some(i => i.sg && i.sgExpr) ||
+        !instanzen.some(i => i.sg);
+
       instanzen.forEach((inst, idx) => {
         if (["UNH", "UNT", "UNB", "UNZ"].includes(inst.seg)) return;
         if (inst.sg && !aktiveBloecke.has(blockVon[idx])) return;
@@ -1001,6 +1019,18 @@
           // MSCONS RFF+AGI in einer Soll-Gruppe). Fehlt eine sgExpr (Segmente auf
           // Nachrichtenebene), bleibt es beim Segment-Status — Abwärtskompatibilität.
           const sgExpr = effSgExpr[idx];
+          // Gruppenstatus für diese Prüfgrundlage gar nicht extrahiert (siehe
+          // gruppenStatusBekannt): dann ist die Pflicht des Segments UNBEKANNT, nicht
+          // „unbedingt". Als weiche Warnung führen statt als harter Fehler. Nur für
+          // das UNBEDINGTE Segment-Muss nötig — trägt das Segment selbst eine
+          // Bedingung („Muss [1]"), entscheidet ohnehin die Bedingungsauswertung
+          // weiter unten, die keine sgExpr braucht.
+          if (klasse === "hart" && inst.sg && !sgExpr && !gruppenStatusBekannt) {
+            bedingteMuss.push(`${label} — Pflicht nicht entscheidbar: Der AHB-Status ` +
+              `der Segmentgruppe ${inst.sg} ist in der Prüfgrundlage nicht hinterlegt ` +
+              `(Extraktionslücke, betrifft APERAK/CONTRL). Bitte im AHB nachsehen.`);
+            return;
+          }
           const grpKlasse = sgExpr ? mussKlasse(sgExpr) : "hart";
           if (klasse === "hart" && grpKlasse === "hart") { fehlendeMuss.push(label); return; }
           // Maßgeblichen Bedingungsausdruck bestimmen: die konditionale Ebene

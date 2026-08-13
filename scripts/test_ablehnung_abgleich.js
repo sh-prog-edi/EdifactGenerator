@@ -70,6 +70,27 @@ const CONTRL_COM_NUR_ELEMENT =
   "UCM+844156800099+UTILMD:D:11A:UN+4+13'UCS+6+13'UCD+13+1'" +
   "UNT+5+1'UNZ+1+1'";
 
+// ---- Fall H: POSITIVE APERAK (Anerkennungsmeldung, BGM+312) --------------
+// Rückmeldung des Auftraggebers (13.08.2026): Der Abgleich meldete an einer
+// gültigen positiven APERAK "Fehlende Muss-Segmente laut AHB: RFF+TN…". Falsch,
+// denn in der APERAK sind RFF+ACE/AGO die maßgeblichen Referenzen; der AHB führt
+// die zugehörige SG2 nur als "Soll [16]". Ursache: In den APERAK-/CONTRL-Metas
+// fehlt der Segmentgruppen-Status (sgExpr) vollständig, und der Validator las ein
+// fehlendes sgExpr als "Gruppe ist unbedingtes Muss" (Protokoll Abschnitt 74).
+const APERAK_POSITIV =
+  "UNA:+.? 'UNB+UNOC:3+9900000000002:500+9900000000001:500+260813:0900+ABC123++++++1'" +
+  "UNH+1+APERAK:D:07B:UN:2.1i'BGM+312+DOK4711'DTM+137:202608130900?+00:303'" +
+  "RFF+ACE:ABC123'DTM+171:202608130800?+00:303'RFF+AGO:ORIGDOK99'" +
+  "NAD+MS+9900000000002::293'NAD+MR+9900000000001::293'" +
+  "UNT+9+1'UNZ+1+ABC123'";
+
+// Negative CONTRL auf diese APERAK mit DE0085 = 26 ("Duplikat gefunden") —
+// der Code fehlte in der bisherigen kuratierten Codeliste vollständig.
+const CONTRL_DUPLIKAT =
+  "UNA:+.? 'UNB+UNOC:3+9900000000001:500+9900000000002:500+260813:0930+9++++++1'" +
+  "UNH+9+CONTRL:D:96A:UN'UCI+ABC123+9900000000001:500+9900000000002:500+4+26'" +
+  "UNT+3+9'UNZ+1+9'";
+
 // CONTRL zeigt auf ein unbeanstandetes Segment (5 = CTA) -> "nicht nachvollziehbar".
 const CONTRL_UNBEGRUENDET =
   "UNA:+.? 'UNB+UNOC:3+9900000000002:500+9900000000001:500+260803:0900+1++++++1'" +
@@ -251,6 +272,32 @@ const ok = (b, t) => { console.log((b ? '  OK  ' : ' FAIL ') + t); if (!b) fails
     (document.querySelector('.ergebniskarte .zielsegment mark.fehlerpos') || {}).textContent);
   ok(markFallG2 === ':EM',
     `Fall G2: CONTRL ohne Komponentenangabe (nur DE0098) markiert das ganze Element, nicht nur eine Komponente (erwartet ":EM", erhalten "${markFallG2}")`);
+
+  // ---- Fall H: positive APERAK -> KEIN falscher "fehlendes Muss"-Befund ----
+  await page.fill('#eingabeLinks', APERAK_POSITIV);
+  await page.fill('#eingabeRechts', CONTRL_DUPLIKAT);
+  await page.click('text=neg. CONTRL gegen Nachricht prüfen');
+  await page.waitForTimeout(900);
+  const aperak = await page.evaluate(() => ({
+    links: document.getElementById('linksErgebnis').innerText,
+    rechts: document.getElementById('rechtsErgebnis').innerText,
+    abgleich: document.getElementById('abgleichErgebnis').innerText,
+  }));
+  ok(/APERAK/.test(aperak.links), 'Fall H: positive APERAK wird als APERAK erkannt');
+  ok(!/Fehlende Muss-Segmente/.test(aperak.links),
+    'Fall H: KEIN falscher Befund "Fehlende Muss-Segmente" mehr (war: RFF+TN)');
+  ok(!/RFF\+TN[^\n]*fehlt/i.test(aperak.links),
+    'Fall H: RFF+TN wird nicht mehr als fehlendes Pflichtsegment gemeldet');
+  ok(/fehlerfrei/.test(aperak.links),
+    'Fall H: gültige positive APERAK gilt als fehlerfrei');
+  ok(/Pflicht nicht entscheidbar/.test(aperak.links),
+    'Fall H: stattdessen sprechender Hinweis auf die Extraktionslücke im AHB-Gruppenstatus');
+
+  // Fehlercode 26 muss jetzt Klartext haben (kam aus der MIG, fehlte vorher ganz)
+  ok(/Duplikat gefunden/.test(aperak.rechts),
+    'Fall H: DE0085 = 26 wird als „Duplikat gefunden" aufgelöst (neu aus dem MIG CONTRL)');
+  ok(/kein Segmentbezug/.test(aperak.abgleich),
+    'Fall H: Ablehnung auf Datei-Ebene ohne UCM korrekt eingeordnet');
 
   // ---- Leeren-Buttons blenden Abgleich-Panel wieder aus ---------------------
   await page.click('.panel:has(#eingabeLinks) button.secondary');
