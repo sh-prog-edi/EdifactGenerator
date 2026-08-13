@@ -695,16 +695,18 @@
           const codeListe = deE.codes || [];
           if (codeListe.length && !codeListe.some(c => deUnbedingt(c[2]))) continue;
           // Verlässlichkeitsgrenze des Status bei freien Wert-DE über den
-          // DECODER-Fallback: „X"/„M" der AHB-Extraktion heißt bei hinteren
-          // Elementen (Adressblock im NAD: Straße/Ort/Land) nur „verwendet" bzw.
+          // DECODER-Fallback: „X"/„M" der AHB-Extraktion heißt beim ADRESSBLOCK
+          // des NAD (Straße/Ort/Land, Elemente ab C059) nur „verwendet" bzw.
           // „Muss, WENN der Block genutzt wird" — die eigentliche Blockbedingung
           // steht dort an einem Geschwister-DE (PLZ „M [268] S [166]") und ging
           // je DE verloren (belegt am Kunden-NAD Z66–Z70: Name ohne Anschrift ist
           // zulässig). Als Pflicht gewertet wird ein freies DE über den Fallback
-          // deshalb nur in den führenden Elementen (Qualifier + Hauptwert, z. B.
-          // IDE DE7402, NAD DE3039, DTM C507). Positionsgenaue Instanzangaben
-          // (pos, STS-Pfad) und codierte DE bleiben unverändert scharf.
-          if (!codeListe.length && deE.pos == null && posPaar[0] > 2) continue;
+          // deshalb bis einschließlich Element 4 (Qualifier, Hauptwert und der
+          // NAME C080/DE3036 — ein leeres „NAD+Z46'" ist ein Fehler, belegt an
+          // PID 55658), NICHT aber die dahinterliegenden Anschrift-Elemente.
+          // Positionsgenaue Instanzangaben (pos, STS-Pfad) und codierte DE
+          // bleiben unverändert scharf.
+          if (!codeListe.length && deE.pos == null && posPaar[0] > 3) continue;
           const roh = wert(seg, posPaar[0], posPaar[1]).replace(/\?(.)/g, "$1").trim();
           if (roh) continue;
           const wo = deE.name ? ` (${deE.name})` : "";

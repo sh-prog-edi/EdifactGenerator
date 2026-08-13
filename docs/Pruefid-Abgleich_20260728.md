@@ -3288,3 +3288,30 @@ Befundfamilien als Allowlist): 553 Prüf-IDs, 0 Fehlalarme, 76/76, 18/18.
 Referenz-Suite: 23/23 Dateien, 1491/1491 Einheiten, weiterhin 0 Fehler (nun mit
 aktiven af-/Codelisten-Schichten). Antwortketten 35/35, Folgenachrichten 80/80, Validator-Komponenten 20/20.
 Regression grün.
+
+## 69. Nutzerauszug 55658: leeres NAD+Z46 — Fallback-Grenze um den Namen korrigiert (13.08.2026)
+
+**Auftrag.** Analyse eines UTILMD-Auszugs (PID 55658, Verwendungszeiträume mit
+RFF+Z47/DTM+Z25/Z26 und Kunden-Zuordnung NAD+Z46 → RFF+Z46), Fehler aufzeigen.
+
+**Analyse.** Der Auszug ist bis auf EINE Stelle korrekt: BGM+Z88 ist für 55658
+zulässig (E03/Z88), die Zeitraum-IDs stehen richtig in DE1156 (RFF+Z47::1/::2),
+die Referenzen darauf richtig in DE1154 (RFF+Z46:1/:2), C080-Aufbau
+(Duck:Donald::::Z01) und C059-Aufbau (Gänseweg::13:Badeteich — Hausnummer an
+Komponente 3, Ortsteil an 4, AF 2.17) stimmen; ein offener zweiter Zeitraum
+(nur DTM+Z25) ist zulässig. Der Fehler: das ZWEITE `NAD+Z46'` ist LEER — der
+Name (C080/DE3036) ist laut AHB Muss; dem zweiten Verwendungszeitraum ist damit
+kein Kunde zugeordnet.
+
+**Befund am Validator.** Auch nach Abschnitt 68 blieb dieses leere NAD+Z46 grün:
+die dort eingezogene Verlässlichkeitsgrenze des DECODER-Fallbacks (freie Wert-DE
+nur bis Element 2) schloss den NAMEN (C080/DE3036, Element 3) mit aus, obwohl
+nur die ANSCHRIFT-Elemente (ab C059) von der flachen X/M-Extraktion betroffen
+sind. Grenze auf „bis einschließlich Element 3" korrigiert: `NAD+Z46'` meldet
+jetzt „Pflichtangabe DE3036 (Name) fehlt"; Name-ohne-Anschrift (Z66–Z70) bleibt
+korrekt unbeanstandet.
+
+**Nachweis.** Nutzerauszug (in Golden-Träger rekonstruiert): genau 1 Fehler am
+leeren NAD+Z46. Gegenproben: Kunden-NAD name-only weiter grün, Fuzz 15/15,
+553 PIDs ohne Fehlalarm, Komponenten 20/20, Antwortketten 35/35, Referenz-Suite
+23/23 (1491 Einheiten, 0 Fehler). Regression grün.

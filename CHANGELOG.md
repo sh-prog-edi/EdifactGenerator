@@ -12,6 +12,13 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
   Erwartungsdateien selbst bleiben bewusst NICHT im Repo (echte Zähler-/
   Rechnungsdaten möglich; zeitlich begrenzte Formatrelevanz) — nur der
   PID-Abdeckungsnachweis wird versioniert.
+- **13.08.2026** – **Leeres NAD+Z46 (55658) wird rot: Fallback-Grenze korrigiert.**
+  Ein Nutzerauszug zeigte ein leeres `NAD+Z46'` (zweiter Verwendungszeitraum ohne
+  Kunden-Namen) — grün trotz Abschnitt 68, weil die Verlässlichkeitsgrenze des
+  DECODER-Fallbacks den Namen (C080/DE3036, Element 3) mit ausschloss. Grenze auf
+  „bis einschließlich Element 3" präzisiert: nur die Anschrift-Elemente (ab C059)
+  bleiben vom flachen X/M der Extraktion ausgenommen. Name-ohne-Anschrift
+  (Z66–Z70) bleibt gültig. → Protokoll Abschnitt 69.
 - **12.08.2026** – **PID 55658: drei Validatorlücken geschlossen.** Fuzz-Analyse
   (15 Syntaxfehler-Mutationen) deckte auf: (1) Die Muss-DE-Prüfung griff nur bei
   STS (`pos` fehlt sonst) — `IDE+24'` ohne Vorgangsnummer oder `NAD+MS:…`
