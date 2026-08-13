@@ -5,6 +5,25 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **13.08.2026** – **Ablehnungs-Abgleich: Nutzer-Feedback nach erster
+  Erprobung.** Ein Prüfen-Schalter statt zwei (rechts: "neg. CONTRL gegen
+  Nachricht prüfen", prüft beide Seiten inkl. Abgleich; Datei-Import auf
+  beiden Seiten löst denselben kombinierten Ablauf aus). Von der CONTRL
+  benanntes Segment wird im linken Segmentbaum jetzt dauerhaft mit rotem
+  Rahmen markiert (unabhängig von seiner Grün/Rot-Einfärbung durch den
+  Validator) und bekommt eine sprechende Zusatzzeile mit Fehlercode und
+  Ursache direkt am Segment. Neue generische (AHB-unabhängige)
+  Positionsprüfung als Rückfallebene: liest den Rohwert an der von UCS/UCD
+  benannten Element-/Komponentenposition und meldet eine Leerstelle auch dort,
+  wo der Validator keine eigene Geschäftsregel kennt. Dabei eine echte
+  Validatorlücke geschlossen: PIA/LIN DE7140 (Kennzahl/Artikelnummer) wurde
+  nicht als fehlend gemeldet, wenn DE7143 (Kennzahlart, z. B. "SRW" =
+  OBIS-Kennzahl) belegt, DE7140 selbst aber leer war (`PIA+5+:SRW`) — jetzt
+  eigene Meldung im Kernvalidator. Regressionstest auf 26/26 erweitert, volle
+  Regression grün (38 Läufe), Referenz-Suite an echten Marktnachrichten
+  weiterhin 23/23 · 1491/1491 fehlerfrei. → Protokoll Abschnitt 72.
+
+
 - **13.08.2026** – **Neue Seite `ablehnung-abgleich.html`: Ablehnung gegen neg.
   CONTRL abgleichen.** Zwei Spalten — links die abgelehnte Original-Nachricht,
   rechts die erhaltene negative CONTRL. Liest den strukturierten Fehlerzeiger

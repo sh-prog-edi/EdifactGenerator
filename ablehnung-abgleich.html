@@ -53,6 +53,9 @@
   .seg .segnr{display:inline-block;min-width:26px;margin-right:8px;text-align:right;
     opacity:.65;font-weight:400;user-select:none;}
   .seg.hervorgehoben{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg);}
+  .seg.ziel-contrl{border-color:var(--warn);}
+  .seg .contrl-zusatz{display:block;font-family:inherit;font-size:12px;margin-top:3px;
+    padding-left:12px;font-weight:600;color:var(--warn);}
   .globalbox{border-radius:8px;padding:9px 11px;margin:7px 0;font-size:12.5px;}
   .globalbox.rot{background:var(--warn-bg);color:var(--warn-text);}
   .globalbox.info{background:var(--accent-bg);color:var(--heading);}
@@ -103,7 +106,6 @@
         <input type="file" id="dateiLinks" accept=".txt,.edi,.edifact,text/plain" style="display:none">
       </div>
       <textarea id="eingabeLinks" spellcheck="false" placeholder="UNA:+.? '&#10;UNB+UNOC:3+…"></textarea>
-      <button class="go" onclick="pruefeLinks()">Nachricht prüfen</button>
       <button class="go secondary" onclick="leerenLinks()">Leeren</button>
       <div id="linksErgebnis"></div>
     </div>
@@ -116,7 +118,7 @@
         <input type="file" id="dateiRechts" accept=".txt,.edi,.edifact,text/plain" style="display:none">
       </div>
       <textarea id="eingabeRechts" spellcheck="false" placeholder="UNA:+.? '&#10;UNB+UNOC:3+…"></textarea>
-      <button class="go" onclick="pruefeRechts()">CONTRL auswerten</button>
+      <button class="go" onclick="pruefeAlles()">neg. CONTRL gegen Nachricht prüfen</button>
       <button class="go secondary" onclick="leerenRechts()">Leeren</button>
       <div class="hinweistext">Kann auch über den <a href="Servicenachrichten/CONTRL/index.html">CONTRL-Generator</a>
         erzeugt und hier eingefügt werden — vor allem gedacht ist die Maske aber für eine real erhaltene
@@ -148,6 +150,7 @@
 <script src="_engine/ahb-validator.js"></script>
 <script src="_engine/umbau.js"></script>
 <script src="_engine/daten/bedingung-eval.js"></script>
+<script src="_engine/bedingung-hilfe.js"></script>
 <script src="_engine/daten/uci-fehlercodes.js"></script>
 <script>
 const $ = id => document.getElementById(id);
@@ -176,7 +179,7 @@ function liesDatei(f, eingabeId){
   const r = new FileReader();
   r.onload = () => {
     $(eingabeId).value = String(r.result);
-    if (eingabeId === 'eingabeLinks') pruefeLinks(); else pruefeRechts();
+    pruefeAlles();
   };
   r.readAsText(f, 'utf-8');
 }
@@ -190,6 +193,15 @@ function leerenLinks(){
 function leerenRechts(){
   $('eingabeRechts').value = ''; $('rechtsErgebnis').innerHTML = '';
   contrlErgebnis = null; aktualisiereAbgleich();
+}
+
+// Einziger Auslöser für den vollständigen Ablauf (Button rechts, Datei-Import
+// auf beiden Seiten): prüft links die Original-Nachricht(en), liest rechts die
+// CONTRL aus und aktualisiert danach den Abgleich (pruefeRechts() ruft
+// aktualisiereAbgleich() ohnehin am Ende auf).
+async function pruefeAlles(){
+  await pruefeLinks();
+  await pruefeRechts();
 }
 
 // ---- Dynamisches Nachladen der Prüfgrundlage (wie validator.html) ---------
@@ -532,8 +544,38 @@ const CODE_STICHWORT = {
   '21': /Zeichen/i,
 };
 
+// Generische, AHB-unabhängige Positionsprüfung: liest den tatsächlichen Rohwert
+// an genau der von der CONTRL benannten Element-/Komponentenposition und meldet
+// eine Leerstelle, unabhängig davon, ob der Validator dafür eine eigene
+// Geschäftsregel kennt. Deckt z. B. "PIA+5+:SRW" ab (DE7143 „SRW“/OBIS-Kennzahl-
+// Art belegt, DE7140 — die Kennzahl selbst — leer): keine Codeliste, keine
+// AHB-Regel nötig, nur der Blick auf die vom Fehlerzeiger benannte Stelle.
+function generischeWertPruefung(einheit, idx, el0, comp0){
+  const seg = (einheit.parsed && einheit.parsed.segmente || [])[idx];
+  if (!seg) return null;
+  const el = (seg.elemente || [])[el0];
+  if (el === undefined) return { text: `Element ${el0 + 1} ist im Segment gar nicht belegt.` };
+  const wert = (comp0 != null ? el[comp0] : el[0]) || '';
+  if (String(wert).trim()) return null;   // Wert vorhanden -> generische Prüfung liefert nichts Zusätzliches
+  const andereBelegt = el.some((v, k) => k !== comp0 && v && String(v).trim());
+  return {
+    text: andereBelegt
+      ? `Komponente ${(comp0 || 0) + 1} ist leer, obwohl eine andere Komponente derselben Gruppe belegt ` +
+        `ist ("${el.filter(Boolean).join(':')}") — an der von der CONTRL benannten Stelle fehlt der Wert.`
+      : `Element ${el0 + 1}${comp0 != null ? ', Komponente ' + (comp0 + 1) : ''} ist an der von der ` +
+        `CONTRL benannten Stelle leer.`,
+  };
+}
+
 function aktualisiereAbgleich(){
   const panel = $('panelAbgleich'), box = $('abgleichErgebnis');
+  // Marker/Zusatzzeilen einer vorherigen Auswertung entfernen — sonst blieben sie
+  // nach einer neuen CONTRL-Auswertung im (unveränderten) linken Segmentbaum stehen.
+  document.querySelectorAll('.seg.ziel-contrl').forEach(el => {
+    el.classList.remove('ziel-contrl');
+    const z = el.querySelector('.contrl-zusatz');
+    if (z) z.remove();
+  });
   if (!linkeEinheiten || !contrlErgebnis){ panel.style.display = 'none'; box.innerHTML = ''; return; }
   panel.style.display = '';
   let html = '';
@@ -590,15 +632,24 @@ function aktualisiereAbgleich(){
           `Nachricht evtl. abweichend übertragen oder die CONTRL bezieht sich auf eine andere Fassung.</div></div>`;
         return;
       }
+      // Betroffenes Segment im linken Baum dauerhaft markieren (roter Rahmen) —
+      // unabhängig davon, ob der Validator dort selbst einen Befund hat: die
+      // CONTRL zeigt genau hierher, das soll auch optisch sichtbar bleiben.
+      const zielEl = document.getElementById(`lseg-${unitIdx}-${nummer}`);
+      if (zielEl) zielEl.classList.add('ziel-contrl');
+
       const codesHier = u.ucd.length ? u.ucd : [{ code: u.segCode, dePos: '', komp: '' }];
       codesHier.forEach(d => {
-        const de = d.dePos ? deNummerVon(zeile.tag, Number(d.dePos) - 1, d.komp ? Number(d.komp) - 1 : 0) : null;
+        const el0 = d.dePos ? Number(d.dePos) - 1 : null;
+        const comp0 = d.dePos ? (d.komp ? Number(d.komp) - 1 : 0) : null;
+        const de = el0 != null ? deNummerVon(zeile.tag, el0, comp0) : null;
         const ft = fehlertext0085(d.code);
         const stichwort = CODE_STICHWORT[d.code];
         const alleAmSegment = zeile.meldungen.concat(zeile.hinweise.map(h => h));
         const trefferMeldungen = zeile.meldungen.filter(m =>
           (!de || m.includes('DE' + de)) && (!stichwort || stichwort.test(m)));
         const nurSegmentTreffer = zeile.meldungen.filter(m => !de || m.includes('DE' + de));
+        const generisch = el0 != null ? generischeWertPruefung(einheit, idx, el0, comp0) : null;
         let art, badge, text;
         if (trefferMeldungen.length){
           art = 'bestaetigt'; badge = 'bestaetigt';
@@ -606,6 +657,9 @@ function aktualisiereAbgleich(){
         } else if (nurSegmentTreffer.length){
           art = 'bestaetigt'; badge = 'bestaetigt';
           text = `Validator findet an diesem Segment/DE einen Befund: ${nurSegmentTreffer.map(esc).join(' · ')}`;
+        } else if (generisch){
+          art = 'bestaetigt'; badge = 'bestaetigt';
+          text = `Generische Strukturprüfung bestätigt (unabhängig von AHB-Geschäftsregeln): ${esc(generisch.text)}`;
         } else if (zeile.meldungen.length){
           art = 'frag'; badge = 'frag';
           text = `Validator findet an diesem SEGMENT Befunde, aber nicht erkennbar am selben Datenelement — ` +
@@ -614,6 +668,17 @@ function aktualisiereAbgleich(){
           art = 'frag'; badge = 'frag';
           text = 'Validator findet an dieser Stelle keinen eigenen Befund — Ablehnung an dieser Position nicht nachvollziehbar, bitte fachlich prüfen.';
         }
+
+        // Sprechende Zusatzzeile direkt am Segment im linken Baum (nur einmal je
+        // Segment, falls mehrere UCD-Einträge auf dasselbe Segment zeigen).
+        if (zielEl && !zielEl.querySelector('.contrl-zusatz')){
+          const zusatz = document.createElement('span');
+          zusatz.className = 'contrl-zusatz';
+          zusatz.textContent = '⚑ CONTRL Fehlercode ' + d.code + ' – ' + ft +
+            (generisch ? ': ' + generisch.text : (nurSegmentTreffer.length ? ': ' + nurSegmentTreffer[0] : ''));
+          zielEl.appendChild(zusatz);
+        }
+
         html += `<div class="ergebniskarte ${art}"><h3>SG1 Nachricht ${bi + 1} · Segment ${nummer}` +
           (d.dePos ? ` · Element ${d.dePos}${d.komp ? ', Komp. ' + d.komp : ''}${de ? ' (DE' + de + ')' : ''}` : '') +
           ` <span class="badge ${badge}">${badge === 'bestaetigt' ? 'bestätigt' : 'unklar'}</span> ` +

@@ -434,6 +434,17 @@
         F(i, `NAD DE3207 "${land}": kein Code der Codeliste europäischer Ländercodes.`);
       if (seg.tag === "PIA" || seg.tag === "LIN") {
         const v = deWert(seg, "7140");
+        const liste = deWert(seg, "7143");
+        // C212 ist eine Wertepaar-Gruppe: DE7143 benennt NUR die Art der Kennzahl
+        // (z. B. "SRW" = OBIS-Kennzahl, Standardqualifier dieses Generators für
+        // PIA+5, siehe ahb-form-engine.js) — ohne DE7140 fehlt die Kennzahl selbst.
+        // Ein Segment wie "PIA+5+:SRW" (Komponente 1 leer, Komponente 2 belegt)
+        // ist deshalb unvollständig, auch wenn keine der übrigen, wertabhängigen
+        // Prüfungen unten greift (die laufen nur, wenn v belegt ist).
+        if (!v && liste)
+          F(i, `DE7140 fehlt, obwohl DE7143 "${liste}"${liste === "SRW" ? " (OBIS-Kennzahl)" : ""} `
+            + `eine Kennzahlart angibt — die Kennzahl/Artikelnummer selbst (C212) ist Bestandteil `
+            + `derselben Gruppe und muss mit angegeben werden.`);
         if (v) {
           if (OBIS_RE.test(v)) {
             if (cl.obis && !obisBekannt(v, cl.obis.codes))
@@ -450,7 +461,6 @@
             if (cl.artikelIds && !(v in cl.artikelIds.codes))
               F(i, `DE7140 "${v}": Artikel-ID nicht in der Codeliste der Artikelnummern und Artikel-ID 5.6.`);
           }
-          const liste = deWert(seg, "7143");
           if (liste === "Z16" && cl.verwendungszwecke && !(v in cl.verwendungszwecke.codes))
             F(i, `DE7140 "${v}": kein Code der Codeliste der Verwendungszwecke (DE7143=Z16).`);
         }

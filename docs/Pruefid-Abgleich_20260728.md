@@ -3469,3 +3469,77 @@ Segmentbezug" (Ablehnung auf Dateiebene ohne UCM), Fall "Empfang bestätigt"
 (CONTRL ohne Einwände), Fall "kein CONTRL" (Fehlermeldung statt Absturz),
 Hervorhebung per Klick, Leeren-Button, Datei-Import — alle 16/16 grün, keine
 Konsolen-/Seitenfehler. Volle Regression grün (38 Läufe).
+
+## 72. Ablehnungs-Abgleich: Nutzer-Feedback nach erster Erprobung (13.08.2026)
+
+**Rückmeldung.** Nach der ersten Auslieferung (Abschnitt 71) drei konkrete
+Punkte: (1) der separate Schalter "Nachricht prüfen" sei überflüssig, der
+rechte Schalter solle "neg. CONTRL gegen Nachricht prüfen" heißen und den
+kompletten Ablauf übernehmen; (2) das Ergebnisfenster zeige auch das
+fehlerhafte Segment grün — ein roter Rahmen mit sprechender Zusatzangabe wäre
+sinnvoller; (3) Machbarkeit einer einfachen Positionsprüfung statt vollem
+AHB-Abgleich, am Beispiel einer MSCONS 13017 mit `PIA+5+:SRW'` (Kennzahlart
+SRW = OBIS belegt, die Kennzahl selbst leer) — "hier fehlt die
+OBIS-Kennzahl".
+
+**1) Ein Prüfen-Schalter.** Der Schalter "Nachricht prüfen" (links) entfällt.
+Der rechte Schalter heißt jetzt "neg. CONTRL gegen Nachricht prüfen" und ruft
+`pruefeAlles()` auf (`pruefeLinks()` gefolgt von `pruefeRechts()`, das seinerseits
+den Abgleich aktualisiert). Datei-Import auf beiden Seiten (Drag&Drop wie
+Dateiauswahl) löst denselben kombinierten Ablauf aus, nicht mehr nur die
+jeweils eigene Seite — ein Import allein reicht damit für ein vollständiges
+Ergebnis, sofern die andere Seite bereits befüllt ist.
+
+**2) Persistente Segmentmarkierung statt Kolorierung durch den Validator
+allein.** Das von der CONTRL benannte Segment wird im linken Segmentbaum jetzt
+unabhängig von seiner Grün/Rot-Einfärbung dauerhaft mit einem roten Rahmen
+(`.seg.ziel-contrl`) markiert, sobald der Abgleich es einer CONTRL-Position
+zuordnen konnte — sichtbar bleibt außerdem, ob der Validator selbst (grüner
+oder roter Hintergrund) dort etwas findet. Zusätzlich wird direkt am Segment
+eine sprechende Zusatzzeile (⚑) mit dem CONTRL-Fehlercode und der konkreten
+Ursache eingefügt. Beide Marker werden bei jedem neuen Abgleich zuerst
+zurückgesetzt, damit nichts von einer vorherigen CONTRL-Auswertung stehen
+bleibt.
+
+**3) Generische (AHB-unabhängige) Positionsprüfung als Rückfallebene.**
+Machbarkeit bestätigt: Da der Abgleich die von UCS/UCD benannte Element-/
+Komponentenposition bereits aus dem geparsten Original-Segment auflöst, lässt
+sich dort unmittelbar prüfen, ob der Rohwert leer ist — unabhängig davon, ob
+der AHB-Validator für genau diese Stelle eine eigene Geschäftsregel kennt.
+Neue Funktion `generischeWertPruefung()`: liest den Rohwert an der Zielposition,
+meldet eine Leerstelle und benennt bei einer erkennbar teilbelegten Gruppe
+zusätzlich die anderen belegten Komponenten (z. B. "Komponente 1 ist leer,
+obwohl … Komponente … belegt ist"). Fließt in die Einordnung ein: findet der
+Validator dort nichts, aber die generische Prüfung eine Leerstelle, wird das
+Ergebnis trotzdem als "bestätigt" geführt (mit dem Hinweis "unabhängig von
+AHB-Geschäftsregeln"), statt als "nicht nachvollziehbar" zu erscheinen. Mit
+COM+DE3148 (leer, DE3155 „EM" belegt) verifiziert — dafür existiert keine
+eigene Validator-Regel; das Segment bleibt grün, wird aber trotzdem korrekt
+als CONTRL-Ziel gerahmt und "bestätigt" eingeordnet.
+
+**Zusätzlich: echte Validatorlücke geschlossen (PIA/LIN DE7140).** Das
+Beispiel der Nutzerin/des Nutzers (`PIA+5+:SRW'`) erwies sich nicht nur als
+Beleg für die generische Prüfung, sondern deckte eine reale Lücke im
+Kernvalidator auf: `pruefeCodelisten()` prüfte DE7140 (Kennzahl/Artikelnummer)
+bislang ausschließlich dann, wenn ein Wert vorhanden war (`if (v) { … }`) — war
+DE7140 leer, während DE7143 (Kennzahlart, z. B. "SRW" = OBIS-Kennzahl, siehe
+`ahb-form-engine.js`) belegt war, blieb das unbeanstandet, obwohl C212 eine
+Wertepaar-Gruppe ist. Behoben mit einer eigenen Prüfung vor der bestehenden
+Logik: `!v && liste` meldet "DE7140 fehlt, obwohl DE7143 … eine Kennzahlart
+angibt", mit ausgeschriebenem Klartext für den Sonderfall SRW/OBIS. Damit
+erkennt jetzt bereits der Kernvalidator (nicht erst die generische
+Rückfallebene) das Beispiel aus der Rückmeldung.
+
+**Nachweis.** Mit einer über den MSCONS-Generator erzeugten, danach an DE7140
+manuell geleerten PID-13017-Nachricht und einer passenden neg. CONTRL end-to-
+end verifiziert: Kernvalidator meldet "DE7140 fehlt …" eigenständig, der
+Abgleich stuft die Stelle als "bestätigt" ein, das Segment ist im linken Baum
+rot UND zusätzlich mit dem CONTRL-Rahmen markiert. Der COM-Fall (siehe oben)
+belegt getrennt davon die rein generische Rückfallebene. Regressionstest
+`scripts/test_ablehnung_abgleich.js` um 10 Prüfungen auf 26/26 erweitert
+(Schalter-Entfernung/-Umbenennung, kombinierter Ablauf, persistente
+Markierung, generischer Fall). Volle Regression grün (38 Läufe), Golden-
+Snapshots und Selbstvalidierung unverändert (130/105/134/106 dokumentierte
+Befunde wie vor dem Fix — keine neuen Fehlalarme durch die PIA/LIN-Änderung),
+Referenz-Suite an den 23 echten Marktnachrichten weiterhin 23/23 · 1491/1491
+Einheiten fehlerfrei (0 neue Befunde durch den PIA/LIN-Fix).
