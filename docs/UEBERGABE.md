@@ -1,8 +1,8 @@
 # Arbeitsstand / Übergabe
 
 Stand: 13.08.2026 (Phasen 2–4 abgeschlossen; zuletzt: Sicherheitsaudit Abschnitt 70,
-Ablehnungs-Abgleich CONTRL-Modus Abschnitte 71–72) · Projekt: **EdifactGenerator** ·
-Auftraggeber: Steffen Haense
+Ablehnungs-Abgleich CONTRL-Modus samt Kontrast-/Positionsmarkierung Abschnitte 71–73) ·
+Projekt: **EdifactGenerator** · Auftraggeber: Steffen Haense
 
 **Quelle der Wahrheit ist das Git-Repository**
 (<https://github.com/sh-prog-edi/EdifactGenerator>). Der Einstieg in eine neue Sitzung:
@@ -22,7 +22,7 @@ Energiemarkts (BDEW-MaKo): 18 Nachrichtentypen in zwei Formatständen (`202604` 
 30.09.2026, `202610` ab 01.10.2026), 975 Prüf-ID-Formulare, universeller Validator,
 Antwort- und Folgenachrichten, Umbau Produktivnachricht → Testnachricht, sowie ein
 Ablehnungs-Abgleich (abgelehnte Nachricht gegen negative CONTRL, `ablehnung-
-abgleich.html`, Abschnitte 71–72). Alle Prüfgrundlagen sind **maschinell aus den frei
+abgleich.html`, Abschnitte 71–73). Alle Prüfgrundlagen sind **maschinell aus den frei
 verfügbaren Originaldokumenten** gelesen; kostenpflichtige XML-/JSON-Fassungen werden
 nicht verwendet.
 
@@ -130,7 +130,7 @@ zusätzlich die Trailer `Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
 ## 6. Offene Punkte
 
 **Nächster geplanter Schritt: Ablehnungs-Abgleich, APERAK-Modus.** Die neue Seite
-`ablehnung-abgleich.html` (Abschnitte 71–72) gleicht eine abgelehnte Nachricht gegen
+`ablehnung-abgleich.html` (Abschnitte 71–73) gleicht eine abgelehnte Nachricht gegen
 eine negative CONTRL ab (strukturierter Fehlerzeiger SG1 UCM/SG2 UCS/UCD, Segment-/
 DE-Position wird im linken Segmentbaum markiert und gegen den unabhängigen Validator-
 Befund geprüft — inklusive einer generischen, AHB-unabhängigen Positionsprüfung als
@@ -143,6 +143,14 @@ eingegrenzten Abschnitt gegen Verwendbarkeit (Kommunikationsrichtung, Quelle:
 Korrektheit (Codelisten) laufen — nur unterstützend, nie abschließend bestätigend wie
 bei CONTRL. Bei Bedarf im Gesprächsverlauf der letzten Sitzung nachlesen (RFF-Feld-
 Semantik dort bereits geklärt) oder Protokoll-Abschnitt 71 (Machbarkeitsteil).
+
+**Ablehnungs-Abgleich, kleiner technischer Folgepunkt (Abschnitt 73):** Die
+zeichengenaue Markierung der Fehlerposition (bisher nur im Kasten
+"3. Abgleich") zusätzlich direkt im linken Segmentbaum — auf ausdrücklichen
+Wunsch des Auftraggebers zurückgestellt, da dafür zuerst die Zeichen-Offset-
+Logik aus `positionInSegment()` (`ablehnung-abgleich.html`) in den zentralen
+Parser `AhbValidator.parse()` gehoben werden sollte, statt sie ein zweites Mal
+nur für diese eine Seite zu pflegen.
 
 Fachlich: [`OFFENE_ASPEKTE.md`](OFFENE_ASPEKTE.md) (A–E; F ist mit dem Engine-Schritt
 geschlossen), als GitHub-Issues vorbereitet in [`ISSUES_VORLAGEN.md`](ISSUES_VORLAGEN.md)

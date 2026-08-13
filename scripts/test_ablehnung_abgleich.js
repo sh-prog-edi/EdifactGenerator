@@ -5,10 +5,14 @@
 // Nachricht wiedergefunden und mit dem unabhängigen Validator-Befund dort
 // abgeglichen — inklusive der Randfälle ohne Segmentbezug, ohne Treffer und
 // ohne echte CONTRL rechts, der EINEN kombinierten Prüfen-Schalter, der
-// dauerhaften Segment-Markierung (roter Rahmen) samt sprechender Zusatzzeile
-// im linken Segmentbaum, und der generischen (AHB-unabhängigen) Positions-
-// prüfung als Rückfallebene, wenn der Validator selbst keine Geschäftsregel
-// für die betroffene Stelle kennt.
+// dauerhaften Segment-Markierung (roter Rahmen, KEIN Flächen-Fill) samt
+// sprechender Zusatzzeile im linken Segmentbaum, der generischen (AHB-
+// unabhängigen) Positionsprüfung als Rückfallebene, wenn der Validator selbst
+// keine Geschäftsregel für die betroffene Stelle kennt, sowie der
+// zeichengenauen <mark>-Markierung der von der CONTRL benannten Fehlerstelle
+// im Zielsegment-Kasten von "3. Abgleich" (Auftraggeber-Feedback 13.08.2026:
+// kein Grün-/Rot-Flächenfill mehr im Baum, dickerer Rahmen statt Volltonfarbe,
+// exakte Fehlerposition rot markiert statt nur das ganze Segment).
 const { chromium } = require('playwright');
 const path = require('path');
 
@@ -56,6 +60,14 @@ const CONTRL_COM =
   "UNA:+.? 'UNB+UNOC:3+9900000000002:500+9900000000001:500+260803:0900+1++++++1'" +
   "UNH+1+CONTRL:D:96A:UN'UCI+844156800099+9900000000002:500+9900000000001:500+7'" +
   "UCM+844156800099+UTILMD:D:11A:UN+4+13'UCS+6+13'UCD+13+1:1'" +
+  "UNT+5+1'UNZ+1+1'";
+
+// Wie CONTRL_COM, aber UCD OHNE Komponentenangabe (nur DE0098, kein DE0104) —
+// Testfall für "ganzes Element markieren" statt nur eine Komponente.
+const CONTRL_COM_NUR_ELEMENT =
+  "UNA:+.? 'UNB+UNOC:3+9900000000002:500+9900000000001:500+260803:0900+1++++++1'" +
+  "UNH+1+CONTRL:D:96A:UN'UCI+844156800099+9900000000002:500+9900000000001:500+7'" +
+  "UCM+844156800099+UTILMD:D:11A:UN+4+13'UCS+6+13'UCD+13+1'" +
   "UNT+5+1'UNZ+1+1'";
 
 // CONTRL zeigt auf ein unbeanstandetes Segment (5 = CTA) -> "nicht nachvollziehbar".
@@ -115,12 +127,41 @@ const ok = (b, t) => { console.log((b ? '  OK  ' : ' FAIL ') + t); if (!b) fails
   ok(links.rot, 'Linke Segmentliste: NAD+Z63 (Segment 24) als fehlerhaft markiert');
   ok(/DE3124/.test(links.meldung), 'Linke Segmentliste: Meldung nennt DE3124');
 
+  // ---- Segmentbaum: kein Grün-/Rot-Flächenfill mehr, nur Rahmen (Feedback 13.08.2026) ----
+  const cssCheck = await page.evaluate(() => {
+    const cs = el => el ? getComputedStyle(el) : null;
+    const csOk = cs(document.getElementById('lseg-0-1'));    // UNH, fehlerfrei
+    const csRot = cs(document.getElementById('lseg-0-24'));  // NAD+Z63, eigener Befund
+    const transparent = c => c === 'rgba(0, 0, 0, 0)' || c === 'transparent';
+    return {
+      okBorderTransparent: csOk ? transparent(csOk.borderTopColor) : null,
+      okBackgroundTransparent: csOk ? transparent(csOk.backgroundColor) : null,
+      rotBorderFarbig: csRot ? !transparent(csRot.borderTopColor) : null,
+      rotBorderBreite: csRot ? csRot.borderTopWidth : null,
+      rotBackgroundTransparent: csRot ? transparent(csRot.backgroundColor) : null,
+    };
+  });
+  ok(cssCheck.okBorderTransparent === true, 'Segmentbaum: fehlerfreies Segment ohne farbigen Rahmen (kein Grün-Fill mehr)');
+  ok(cssCheck.okBackgroundTransparent === true, 'Segmentbaum: fehlerfreies Segment ohne Flächenfarbe');
+  ok(cssCheck.rotBorderFarbig === true, 'Segmentbaum: fehlerhaftes Segment mit farbigem Rahmen statt Flächenfarbe');
+  ok(cssCheck.rotBorderBreite === '3px', 'Segmentbaum: Rahmen fehlerhafter Segmente ist 3px (dicker als vorher)');
+  ok(cssCheck.rotBackgroundTransparent === true, 'Segmentbaum: fehlerhaftes Segment ohne Rot-Flächenfill');
+
   // ---- Fall A: CONTRL-Zeiger trifft exakt den bekannten Befund -------------
   let karte = await page.evaluate(() => document.querySelector('.ergebniskarte').outerHTML);
   ok(/bestaetigt/.test(karte) && /bestätigt/.test(karte), 'Fall A (Treffer DE3124): Badge „bestätigt“');
   ok(/Segment 24/.test(karte) && /Element 3, Komp\. 1/.test(karte) && /DE3124/.test(karte),
     'Fall A: Segment- und Element-Angabe korrekt (Segment 24, Element 3.1 -> DE3124)');
   ok(/NAD\+Z63/.test(karte), 'Fall A: Zielsegmenttext (NAD+Z63…) angezeigt');
+
+  // Exakte Fehlerposition im Zielsegment: DE3124 ist leer (Element 3, Komp. 1)
+  // -> markiert werden die beiden umschließenden Trennzeichen "+:" (nichts
+  // anderes ist an der Stelle vorhanden), analog zum vom Auftraggeber
+  // genannten Beispiel "Z02++++DE'" (13.08.2026).
+  const markFallA = await page.evaluate(() =>
+    (document.querySelector('.ergebniskarte .zielsegment mark.fehlerpos') || {}).textContent);
+  ok(markFallA === '+:',
+    `Fall A: exakte Fehlerposition im Zielsegment rot markiert (erwartet "+:", erhalten "${markFallA}")`);
 
   // Persistente Markierung im linken Baum: roter Rahmen + sprechende Zusatzzeile
   const markierung = await page.evaluate(() => {
@@ -177,8 +218,9 @@ const ok = (b, t) => { console.log((b ? '  OK  ' : ' FAIL ') + t); if (!b) fails
 
   // ---- Fall G: generische Positionsprüfung OHNE eigene AHB-Regel -----------
   // COM+:EM' — DE3148 leer, DE3155 „EM“ belegt; dafür gibt es keine eigene
-  // Geschäftsregel im Validator (Segment bleibt grün). Die generische Prüfung
-  // soll die Stelle trotzdem als „bestätigt“ einordnen und den Rahmen setzen.
+  // Geschäftsregel im Validator (Segment bekommt KEINEN eigenen roten Rahmen).
+  // Die generische Prüfung soll die Stelle trotzdem als „bestätigt“ einordnen
+  // und den (CONTRL-)Rahmen setzen.
   await page.fill('#eingabeLinks', COM_LEER);
   await page.fill('#eingabeRechts', CONTRL_COM);
   await page.click('text=neg. CONTRL gegen Nachricht prüfen');
@@ -189,13 +231,26 @@ const ok = (b, t) => { console.log((b ? '  OK  ' : ' FAIL ') + t); if (!b) fails
     return { rot: el ? el.classList.contains('rot') : null, zielContrl: el ? el.classList.contains('ziel-contrl') : null,
       zusatzText: z ? z.textContent : null };
   });
-  ok(comInfo.rot === false, 'Fall G: Segment 6 (COM) bleibt ohne eigenen Validator-Befund grün hinterlegt');
+  ok(comInfo.rot === false, 'Fall G: Segment 6 (COM) bleibt ohne eigenen Validator-Befund ohne roten Rahmen');
   ok(comInfo.zielContrl === true, 'Fall G: Segment 6 trotzdem mit rotem Rahmen markiert (CONTRL-Ziel)');
   ok(!!comInfo.zusatzText && /Komponente 1 ist leer/.test(comInfo.zusatzText),
     'Fall G: sprechende generische Zusatzzeile („Komponente 1 ist leer…“)');
   karte = await page.evaluate(() => document.querySelector('.ergebniskarte').outerHTML);
   ok(/ergebniskarte bestaetigt/.test(karte) && /Generische Strukturprüfung/.test(karte),
     'Fall G: Ergebniskarte „bestätigt“ über generische Strukturprüfung (ohne AHB-Regel)');
+  const markFallG = await page.evaluate(() =>
+    (document.querySelector('.ergebniskarte .zielsegment mark.fehlerpos') || {}).textContent);
+  ok(markFallG === '+:',
+    `Fall G: exakte Fehlerposition auch ohne AHB-Regel markiert (erwartet "+:", erhalten "${markFallG}")`);
+
+  // ---- Fall G2: CONTRL ohne Komponentenangabe -> ganzes Element markiert ---
+  await page.fill('#eingabeRechts', CONTRL_COM_NUR_ELEMENT);
+  await page.click('text=neg. CONTRL gegen Nachricht prüfen');
+  await page.waitForTimeout(700);
+  const markFallG2 = await page.evaluate(() =>
+    (document.querySelector('.ergebniskarte .zielsegment mark.fehlerpos') || {}).textContent);
+  ok(markFallG2 === ':EM',
+    `Fall G2: CONTRL ohne Komponentenangabe (nur DE0098) markiert das ganze Element, nicht nur eine Komponente (erwartet ":EM", erhalten "${markFallG2}")`);
 
   // ---- Leeren-Buttons blenden Abgleich-Panel wieder aus ---------------------
   await page.click('.panel:has(#eingabeLinks) button.secondary');

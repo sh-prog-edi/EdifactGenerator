@@ -3543,3 +3543,87 @@ Snapshots und Selbstvalidierung unverändert (130/105/134/106 dokumentierte
 Befunde wie vor dem Fix — keine neuen Fehlalarme durch die PIA/LIN-Änderung),
 Referenz-Suite an den 23 echten Marktnachrichten weiterhin 23/23 · 1491/1491
 Einheiten fehlerfrei (0 neue Befunde durch den PIA/LIN-Fix).
+
+## 73. Ablehnungs-Abgleich: Segmentbaum ohne Flächenfarbe, exakte Fehlerposition markiert (13.08.2026)
+
+**Rückmeldung.** Nach Abschnitt 72 weiteres Feedback: Grün- bzw. Rot-
+Flächenfarbe je Segment im linken Baum sei für das Aufzeigen einer
+Fehlerposition unzweckmäßig und unübersichtlich — komplett rot eingefärbte
+Segmente mit zusätzlich roter Schrift seien ebenfalls nicht hilfreich.
+Gewünscht: fehlerfreie Segmente „normal" je Farbschema, fehlerhaft erkannte
+Segmente mit etwas dickerem rotem Rahmen statt Flächenfarbe, und im besten
+Fall die exakte Fehlerposition innerhalb des Segments rot markiert (Beispiel
+des Auftraggebers: eine neg. CONTRL mit `UCS+12'UCD+13+6:1'` verweist auf ein
+Segment `Z02++++DE'` — markiert werden sollten genau die beiden `++` an der
+leeren Stelle). Auftrag ausdrücklich auf die Punkte 1 (Rahmen statt Fläche), 2
+(exakte Position im Abgleich-Kasten) und 4 (Doku/Tests) begrenzt; Punkt 3
+(dieselbe Positionsmarkierung zusätzlich direkt im Segmentbaum, inkl.
+Erweiterung von `AhbValidator.parse()` um Zeichen-Offsets) bewusst
+zurückgestellt.
+
+**Machbarkeit (vorab geprüft, siehe Rückmeldung an den Auftraggeber).**
+`validator.html` verwendet dasselbe Grün-/Rot-Fill-Muster wie
+`ablehnung-abgleich.html` — hier bewusst nicht mit angefasst, da nicht
+Gegenstand des Auftrags. Es existierte bereits ein rahmenbasierter Marker
+(`.seg.ziel-contrl`, 2px) für das von der CONTRL benannte Segment — Vorbild für
+die neue einheitliche Rahmen-Optik. Für die exakte Position liegen Element-/
+Komponentenindex (`el0`/`comp0`) im Abgleich-Kasten bereits aus dem CONTRL-
+Zeiger vor (UCD DE0098/DE0104); es fehlte nur die Übersetzung in eine Zeichen-
+Position im rohen Segmenttext.
+
+**Umsetzung Punkt 1 (Segmentbaum-CSS).** `.seg.ok` und `.seg.rot` verlieren
+ihre Flächenfarbe (`--ok-bg`/`--warn-bg`) und Textfarbe; Basis-`.seg` bekommt
+stattdessen normale Text-/Hintergrundfarbe (`--text`/transparent) und eine von
+2px auf 3px verbreiterte, standardmäßig transparente Rahmenbreite. `.seg.rot`
+und `.seg.ziel-contrl` färben jetzt beide nur noch den Rahmen (`--warn`) statt
+der Fläche — ein Segment kann beides gleichzeitig sein (eigener
+Validator-Befund UND CONTRL-Ziel), das ergibt keinen Konflikt, da beide
+denselben Rahmen setzen. Fehlermeldungen (`.seg .meld`) bleiben bewusst rot
+(`--warn`, statt der bisherigen, auf Rot-Fill abgestimmten `--warn-text`) –
+das ist die eigentliche Nutzinformation; Hinweise (`.seg .hin`) wechseln auf
+neutrales Grau (`--muted`) statt der bisherigen Grün-/Rot-Vererbung. Die
+Hervorhebungsregel `.seg.hervorgehoben` (Sprungziel "im Segmentbaum zeigen")
+steht jetzt zuletzt in der Kaskade, damit sie auch auf einem bereits roten
+Segment sichtbar bleibt (vorher gleiche Selektor-Spezifität wie
+`.seg.ziel-contrl`, das als späterer Selektor im Stylesheet gewonnen hätte).
+
+**Umsetzung Punkt 2 (exakte Position im Abgleich-Kasten).** Neue Funktion
+`positionInSegment(raw, servicezeichen, el0, comp0, ganzesElement)`: läuft den
+rohen (nicht entschärften) Segmenttext zeichenweise ab — dieselbe Trenner-/
+Freistellungslogik wie `AhbValidator.parse()`, hier bewusst ein zweites Mal
+lokal für diese eine Ansicht (siehe Hinweis zu Punkt 3 unten) — und liefert
+Start-/Endposition des benannten Elements bzw. der benannten Komponente.
+`ganzesElement=true` (wenn die CONTRL nur DE0098 ohne DE0104 nennt) markiert
+das komplette Element statt nur dessen erste Komponente. Ist die getroffene
+Stelle leer (der Regelfall bei einer fehlenden Pflichtangabe — auch im
+Beispiel des Auftraggebers), erweitert `erweitereBeiLeer()` die Markierung um
+je ein umschließendes Trennzeichen, damit überhaupt etwas sichtbar ist — genau
+das vom Auftraggeber vorgeschlagene Verhalten. `zielsegmentHtml()` baut daraus
+den Kasten mit `<mark class="fehlerpos">` um den Treffer; ist die Position
+nicht auflösbar, Fallback auf den unveränderten Rohtext wie bisher.
+
+**Nachweis.** Mit der bestehenden Fixtur aus Abschnitt 71/72 verifiziert:
+Segment 24 (`NAD+Z63`) hat ein leeres DE3124 (Element 3, Komponente 1,
+0-basiert `el0=2`, `comp0=0`) — `positionInSegment` liefert eine leere Spanne
+zwischen dem zweiten `+` und dem folgenden `:`, nach Erweiterung wird exakt
+`+:` markiert (Screenshot in Hell und Dunkel geprüft). Zusätzlicher Testfall
+mit CONTRL-Zeiger ohne Komponentenangabe (`UCD+13+1'` statt `UCD+13+1:1'`)
+bestätigt, dass dann das ganze Element (`:EM`, beide Komponenten von
+`COM+:EM'`) markiert wird statt nur die erste Komponente. CSS-Regression prüft
+zusätzlich per `getComputedStyle`, dass ein fehlerfreies Segment (UNH) ohne
+farbigen Rahmen/Fläche bleibt und ein fehlerhaftes Segment (NAD+Z63) einen
+3px breiten, farbigen Rahmen bei transparenter Fläche bekommt. Regressionstest
+`scripts/test_ablehnung_abgleich.js` um 9 Prüfungen auf 34/34 erweitert
+(CSS-Kontrast, `<mark>`-Position mit und ohne Erweiterung, ganzes Element).
+Volle Regression grün (38 Läufe), Golden-Snapshots und Selbstvalidierung
+unverändert (130/105/134/106 dokumentierte Befunde), Referenz-Suite weiterhin
+23/23 · 1491/1491 Einheiten fehlerfrei — die Änderung betrifft ausschließlich
+`ablehnung-abgleich.html` und ihren eigenen Test, keine Prüfgrundlage.
+
+**Offen (Punkt 3, zurückgestellt).** Dieselbe zeichengenaue Markierung
+zusätzlich direkt im Segmentbaum links: erfordert, den rohen Segmenttext dort
+in einen referenzierbaren `<span>` einzuwickeln (kosmetisch neutral) sowie —
+im Sinne der Konvention, keine Insellösung neben dem zentralen, bereits
+sicherheitsgeprüften Parser zu bauen — die Zeichen-Offset-Logik aus
+`positionInSegment()` in `AhbValidator.parse()` selbst zu heben, statt sie ein
+zweites Mal nur für diese Seite zu pflegen.

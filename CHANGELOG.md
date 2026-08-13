@@ -5,6 +5,23 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **13.08.2026** – **Ablehnungs-Abgleich: Segmentbaum ohne Flächenfarbe, exakte
+  Fehlerposition markiert.** Fehlerfreie Segmente im linken Baum zeigen jetzt
+  normale Text-/Hintergrundfarbe statt Grün-Fill; fehlerhaft erkannte Segmente
+  (eigener Validator-Befund oder von der CONTRL benanntes Ziel) bekommen einen
+  dickeren roten Rahmen (3px statt Flächenfarbe) statt Rot-Fill mit roter
+  Schrift — Fehlermeldungen selbst bleiben rot, das ist die eigentliche
+  Information. Im Kasten "3. Abgleich" wird die von der CONTRL benannte
+  Element-/Komponentenposition jetzt zeichengenau mit `<mark>` rot markiert
+  statt nur das ganze Segment anzuzeigen; ist die Stelle leer (Regelfall bei
+  fehlender Pflichtangabe), werden die beiden umschließenden Trennzeichen
+  markiert, damit die Fehlstelle sichtbar wird. Regressionstest um 9 Prüfungen
+  auf 34/34 erweitert, volle Regression grün (38 Läufe). Die zusätzliche
+  Positionsmarkierung direkt im Segmentbaum (erfordert eine Erweiterung des
+  zentralen Parsers um Zeichen-Offsets) bleibt bewusst offen. → Protokoll
+  Abschnitt 73.
+
+
 - **13.08.2026** – **`docs/UEBERGABE.md` aktualisiert.** Neue verbindliche Konvention
   aufgenommen: Formulierungen wie „z. B."/„beispielhaft"/„etc."/„usw." in Anfragen
   beziehen sich immer auf ALLE Prüf-IDs, nicht nur auf das genannte Beispiel — ein

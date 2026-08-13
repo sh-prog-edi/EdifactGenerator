@@ -43,19 +43,29 @@
   .badge.rot{background:var(--warn-bg);color:var(--warn-text);}
   .badge.bestaetigt{background:var(--best-bg);color:var(--best-text);}
   .badge.frag{background:var(--frag-bg);color:var(--frag-text);}
+  /* Segmentbaum: bewusst OHNE Volltonfarbe je Segment (weder Grün für "ok" noch
+     Rot-Fill+Rotschrift für "fehlerhaft") — bei Hunderten Segmenten ist das
+     unübersichtlich und entwertet Rot als Signalfarbe. Fehlerhaft erkannte
+     Segmente (eigener Validator-Befund) und das von der CONTRL benannte
+     Zielsegment bekommen stattdessen nur einen dickeren roten Rahmen; Text und
+     Hintergrund bleiben normal (Auftraggeber-Feedback 13.08.2026). */
   .seg{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;
     border-radius:8px;padding:6px 10px;margin:4px 0;white-space:pre-wrap;word-break:break-all;
-    border:2px solid transparent;}
-  .seg.ok{background:var(--ok-bg);color:var(--ok-text);}
-  .seg.rot{background:var(--warn-bg);color:var(--warn-text);}
-  .seg .meld{display:block;font-family:inherit;font-size:12px;margin-top:3px;padding-left:12px;font-weight:600;}
-  .seg .hin{display:block;font-size:11.5px;margin-top:2px;padding-left:12px;opacity:.85;font-weight:400;}
+    border:3px solid transparent;background:transparent;color:var(--text);}
+  .seg.rot,.seg.ziel-contrl{border-color:var(--warn);}
+  .seg .meld{display:block;font-family:inherit;font-size:12px;margin-top:3px;padding-left:12px;
+    font-weight:600;color:var(--warn);}
+  .seg .hin{display:block;font-size:11.5px;margin-top:2px;padding-left:12px;opacity:.85;
+    font-weight:400;color:var(--muted);}
   .seg .segnr{display:inline-block;min-width:26px;margin-right:8px;text-align:right;
     opacity:.65;font-weight:400;user-select:none;}
-  .seg.hervorgehoben{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg);}
-  .seg.ziel-contrl{border-color:var(--warn);}
   .seg .contrl-zusatz{display:block;font-family:inherit;font-size:12px;margin-top:3px;
     padding-left:12px;font-weight:600;color:var(--warn);}
+  /* .hervorgehoben zuletzt in der Kaskade, damit der temporäre Sprungziel-Rahmen
+     (Button "im Segmentbaum zeigen") auch auf einem bereits roten Segment sichtbar bleibt. */
+  .seg.hervorgehoben{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg);}
+  mark.fehlerpos{background:var(--warn-bg);color:var(--warn-text);border-radius:3px;
+    padding:0 2px;font-weight:700;}
   .globalbox{border-radius:8px;padding:9px 11px;margin:7px 0;font-size:12.5px;}
   .globalbox.rot{background:var(--warn-bg);color:var(--warn-text);}
   .globalbox.info{background:var(--accent-bg);color:var(--heading);}
@@ -394,6 +404,65 @@ function deNummerVon(tag, el0, comp0){
   return null;
 }
 
+// Zeichen-Position von Element/Komponente im ROHEN Segmenttext ermitteln — für
+// die punktgenaue Markierung der von der CONTRL benannten Fehlerstelle im
+// Kasten "3. Abgleich" (Auftraggeber-Feedback 13.08.2026). Läuft dieselbe
+// Trenner-/Freistellungslogik wie AhbValidator.parse() nach (Release-Zeichen
+// wird übersprungen statt aufgelöst, da hier im Rohtext markiert wird — nicht
+// im bereits entschärften Wert aus seg.elemente). el0/comp0 sind 0-basiert wie
+// überall sonst in dieser Datei (Element 0 = erstes Element NACH dem Tag).
+// ganzesElement=true markiert das komplette Element (alle Komponenten), wenn
+// die CONTRL nur DE0098 ohne DE0104 nennt. Bei einem leeren Treffer (das ist
+// gerade der Regelfall bei einer fehlenden Pflichtangabe) wird die Markierung
+// um die beiden umschließenden Trennzeichen erweitert, damit die Fehlstelle
+// überhaupt sichtbar wird — sonst wäre nichts zu markieren.
+//
+// Hinweis für eine spätere Ausweitung auf den Segmentbaum selbst (noch offener
+// Punkt): diese Logik sollte dann in AhbValidator.parse() aufgehen, statt hier
+// ein zweites Mal zu existieren.
+function positionInSegment(raw, servicezeichen, el0, comp0, ganzesElement){
+  if (!raw || !servicezeichen || el0 == null) return null;
+  const { comp, elem, rel, segTrenn } = servicezeichen;
+  let ePos = -1, cPos = 0, elStart = 0, coStart = 0;
+  const treffer = ende => ganzesElement ? { start: elStart, ende } : { start: coStart, ende };
+  for (let i = 0; i < raw.length; i++){
+    const ch = raw[i];
+    if (ch === rel && i + 1 < raw.length){ i++; continue; }
+    if (ch === comp){
+      if (ePos === el0 && cPos === comp0 && !ganzesElement) return erweitereBeiLeer(raw, treffer(i));
+      if (ePos >= 0) cPos++;
+      coStart = i + 1; continue;
+    }
+    if (ch === elem){
+      if (ePos === el0 && (ganzesElement || cPos === comp0)) return erweitereBeiLeer(raw, treffer(i));
+      ePos++; cPos = 0; elStart = i + 1; coStart = i + 1; continue;
+    }
+    if (ch === segTrenn){
+      if (ePos === el0 && (ganzesElement || cPos === comp0)) return erweitereBeiLeer(raw, treffer(i));
+      break;
+    }
+  }
+  return null;
+}
+function erweitereBeiLeer(raw, pos){
+  if (!pos || pos.start !== pos.ende) return pos;
+  return { start: pos.start > 0 ? pos.start - 1 : pos.start,
+           ende: pos.ende < raw.length ? pos.ende + 1 : pos.ende };
+}
+
+// Zielsegment-Kasten im Abgleich: Rohtext wie bisher, aber mit <mark> exakt an
+// der von der CONTRL benannten Element-/Komponentenposition (Fallback: ganzer
+// Text unmarkiert, wenn die Position nicht auflösbar ist — z. B. bei einem
+// Segment ohne die erwartete Struktur).
+function zielsegmentHtml(raw, servicezeichen, el0, comp0, ganzesElement){
+  const pos = positionInSegment(raw, servicezeichen, el0, comp0, ganzesElement);
+  if (!pos) return `<div class="zielsegment">${esc(raw)}</div>`;
+  const vor = esc(raw.slice(0, pos.start));
+  const mitte = esc(raw.slice(pos.start, pos.ende));
+  const nach = esc(raw.slice(pos.ende));
+  return `<div class="zielsegment">${vor}<mark class="fehlerpos">${mitte}</mark>${nach}</div>`;
+}
+
 let linkeEinheiten = null;   // [{label, text, parsed, det, res, karte, ref, bgm}]
 let contrlErgebnis = null;   // { dateiCode, dateiFehlercode, bloecke, parsed }
 
@@ -679,12 +748,16 @@ function aktualisiereAbgleich(){
           zielEl.appendChild(zusatz);
         }
 
+        const ganzesElement = !!(d.dePos && !d.komp);
+        const zielsegment = el0 != null
+          ? zielsegmentHtml(segTextRoh, einheit.parsed.servicezeichen, el0, comp0, ganzesElement)
+          : `<div class="zielsegment">${esc(segTextRoh)}</div>`;
         html += `<div class="ergebniskarte ${art}"><h3>SG1 Nachricht ${bi + 1} · Segment ${nummer}` +
           (d.dePos ? ` · Element ${d.dePos}${d.komp ? ', Komp. ' + d.komp : ''}${de ? ' (DE' + de + ')' : ''}` : '') +
           ` <span class="badge ${badge}">${badge === 'bestaetigt' ? 'bestätigt' : 'unklar'}</span> ` +
           `<button class="go secondary klein" onclick="springeUndHebeHervor(${unitIdx},${nummer})">im Segmentbaum zeigen</button></h3>` +
           `<div class="zeile">CONTRL-Fehlercode ${esc(d.code)} – ${esc(ft)}</div>` +
-          `<div class="zielsegment">${esc(segTextRoh)}</div>` +
+          zielsegment +
           `<div class="zeile">${text}</div></div>`;
       });
     });
