@@ -298,6 +298,12 @@ const ok = (b, t) => { console.log((b ? '  OK  ' : ' FAIL ') + t); if (!b) fails
     'Fall H: DE0085 = 26 wird als „Duplikat gefunden" aufgelöst (neu aus dem MIG CONTRL)');
   ok(/kein Segmentbezug/.test(aperak.abgleich),
     'Fall H: Ablehnung auf Datei-Ebene ohne UCM korrekt eingeordnet');
+  // AHB-Auswertung (Abschnitt 75): Anwendungsfall des Codes und die
+  // Fließtextregel des AHB zu Code 26 werden am Befund angezeigt.
+  ok(/AHB-Anwendungsfall: Syntaxfehlermeldung in der Übertragungsdatei/.test(aperak.abgleich),
+    'Fall H: AHB-Anwendungsfall des Codes wird ausgewiesen');
+  ok(/keine Syntaxfehlermeldung mit dem Fehlercode 26/.test(aperak.abgleich),
+    'Fall H: AHB-Regel zu Code 26 (Verbot bei selbst verursachtem Wiedereinspielen) wird angezeigt');
 
   // ---- Leeren-Buttons blenden Abgleich-Panel wieder aus ---------------------
   await page.click('.panel:has(#eingabeLinks) button.secondary');

@@ -111,6 +111,7 @@ Zwei Eigenheiten sind hier wichtig:
 | `lies_sts_struktur.py` | Liest den Aufbau des STS-Segments aus den MIG-DOCX → `sts-struktur.js`. |
 | `lies_nad_aufbau.py` | Liest den qualifierabhängigen NAD-Aufbau (benutzte Gruppen, Wiederholungen je DE3035-Qualifier) aus den MIG-Segmentlayouts → `nad-aufbau.js`. |
 | `lies_contrl_fehlercodes.py` | Liest die CONTRL-Codelisten DE0083/DE0085 **je Segment** (UCI/UCM/UCS/UCD) aus dem MIG CONTRL → `uci-fehlercodes.js`. Ersetzt die frühere handgepflegte Teilliste (Protokoll Abschnitt 74). |
+| `lies_contrl_ahb.py` | Liest die tabellarische Darstellung des AHB CONTRL → `contrl-ahb.js`: Zulässigkeit der Codes **je Anwendungsfall**, AHB-Status samt Bedingungen je Segment/Segmentgruppe/DE und die Fließtextregeln zu einzelnen Fehlercodes (Protokoll Abschnitt 75). |
 | `ergaenze_zeitscheiben.py` | Verwendungszeitraum (SG6 RFF + DTM+Z25/Z26) in den UTILMD-Regeldateien. |
 | `aktualisiere_utilmd_regeln.py` | Gleicht die kuratierten UTILMD-Regeldateien gegen den AHB ab. |
 | `korrigiere_prozess_meta.py` | Prozess-Meta (Transaktionsgrund, EBD-Nummer, Antwortcode) gegen AHB und EBD. |

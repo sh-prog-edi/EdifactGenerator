@@ -5,6 +5,28 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **13.08.2026** – **AHB CONTRL gelesen: Fehlercodes je Anwendungsfall,
+  AHB-Status, Coderegeln.** Neues Werkzeug `werkzeuge/lies_contrl_ahb.py` liest die
+  tabellarische Darstellung des AHB CONTRL (verschachtelte Tabellen, die
+  python-docx über `cell.text` als leer liefert) → `_engine/daten/contrl-ahb.js`.
+  **Der AHB bestätigt die MIG-Codelisten aus Abschnitt 74 vollständig** (UCI 13,
+  UCM 9, UCS 6, UCD 10 Codes — identisch); der Abgleich beider Quellen ist als
+  harte Zusicherung in der Regression verankert. Neu hinzu kommen drei Angaben,
+  die der MIG nicht enthält: (1) in welchem der drei **Anwendungsfälle**
+  (Empfangsbestätigung / Syntaxfehlermeldung in der Übertragungsdatei / … in der
+  Nachricht) ein Code verwendet werden darf — UCI DE0083 = 7 etwa nur in der
+  Empfangsbestätigung, = 4 nur in den Fehlermeldungen; (2) der **AHB-Status samt
+  Bedingungen** je Segment/Segmentgruppe/DE (u. a. SG2 „Muss [9]", SG2 UCD
+  „Soll [6]", SG1 UCM DE0085 „S [2] ∨ [3]") — genau die Angaben, die den
+  CONTRL-Formular-Metas fehlen; (3) **Regeln aus dem Fließtext**, darunter das
+  ausdrückliche Verbot, Fehlercode 26 zu senden, wenn der Empfänger die
+  Übertragungsdatei aus selbst verursachtem Grund erneut einspielt. Der
+  Ablehnungs-Abgleich zeigt jetzt den AHB-Anwendungsfall des gemeldeten Codes, warnt,
+  wenn ein Code an dieser Ebene laut AHB nicht vorgesehen ist, und blendet die
+  AHB-Regeln zum Code ein. Neuer Test `scripts/test_contrl_ahb.js`; volle
+  Regression grün (40 Läufe). → Protokoll Abschnitt 75.
+
+
 - **13.08.2026** – **CONTRL-Codelisten maschinell aus dem MIG; Falschbefund
   „RFF+TN fehlt" an positiver APERAK behoben.** Die Fehlercodeliste war von Hand
   kuratiert (12 Codes) und teils sachlich falsch — Code 28 stand als „Ungültige

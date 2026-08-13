@@ -3758,3 +3758,94 @@ Servicenachrichten-AHB nutzt ein anderes Tabellenlayout als die bereits
 unterstützten Formate, und die Formular-Metas dürfen laut Fallstrick-Liste nicht
 über das Generator-Werkzeug neu erzeugt werden, sondern nur über ein
 Nachbearbeitungsskript.
+
+## 75. AHB CONTRL gelesen: Fehlercodes je Anwendungsfall, AHB-Status, Codregeln (13.08.2026)
+
+**Auftrag.** Den AHB CONTRL lesen und analysieren, insbesondere die dort
+aufgelisteten Fehlercodes für das Programm filtern.
+
+**Warum der AHB zusätzlich zum MIG.** Abschnitt 74 hat die Codelisten aus dem
+**MIG** gelesen — der sagt, WELCHE Codes es je Segment gibt. Der **AHB** trifft
+drei weitere Aussagen, die im MIG nicht stehen:
+
+1. **Zulässigkeit je Anwendungsfall.** Die tabellarische Darstellung führt drei
+   Anwendungsfälle nebeneinander — „Empfangsbestätigung", „Syntaxfehlermeldung in
+   der Übertragungsdatei", „Syntaxfehlermeldung in der Nachricht" — und markiert
+   je Code mit „X", in welchem er verwendet werden darf.
+2. **AHB-Status samt Bedingungen** je Segment, Segmentgruppe und Datenelement.
+3. **Regeln im Fließtext** zu einzelnen Fehlercodes.
+
+**Quellenlage / Lesbarkeit.** Die Strukturtabelle des AHB besteht aus
+verschachtelten Tabellen innerhalb einer Rahmentabelle. `cell.text` von
+python-docx liefert dort **leere Zellen**, weil verschachtelte Tabellen nicht
+mitgelesen werden — ein erster Leseversuch ergab deshalb eine scheinbar leere
+Tabelle. Das neue Werkzeug `werkzeuge/lies_contrl_ahb.py` steigt über
+`zellinhalt()` rekursiv in die verschachtelten Tabellen ab.
+
+Zwei Fallen beim Parsen, beide beim Prüfen aufgefallen und behoben:
+
+- Ein Statusmuster `S.*` verschluckte die Bezeichnung „**S**yntax-Version oder
+  -ebene nicht unterstützt" — dadurch fehlte **Code 2** in der UCI-Liste. Das
+  Muster ist jetzt auf die tatsächlichen Statuswörter verankert (`STATUSFELD`).
+- Verbundene Zellen liefert python-docx als Wiederholung desselben Textes; das
+  Zusammenfassen ALLER Wiederholungen verschluckte jedoch „| Muss | Muss | Muss",
+  also den Status je Anwendungsfall. Zusammengefasst werden jetzt nur
+  Nicht-Statusfelder.
+
+**Ergebnis 1 — der AHB bestätigt die MIG-Extraktion vollständig.** Beide Quellen
+führen exakt dieselben DE0085-Codes: UCI 13, UCM 9, UCS 6, UCD 10; DE0083 UCI
+4/7, UCM 4. Das ist eine unabhängige Gegenprobe zu Abschnitt 74 und wird in
+`scripts/test_contrl_ahb.js` als harte Zusicherung geprüft — weichen die Quellen
+künftig ab, ist eine der beiden Extraktionen defekt und muss auffallen.
+
+**Ergebnis 2 — Zulässigkeit je Anwendungsfall (neu).**
+
+| Ebene | Codes | zulässig in |
+|---|---|---|
+| UCI DE0083 | 7 | nur Empfangsbestätigung |
+| UCI DE0083 | 4 | nur die beiden Syntaxfehlermeldungen |
+| UCI DE0085 | 2, 7, 12, 13, 16, 20, 21, 23, 25, 26, 28, 29, 32 | nur Syntaxfehlermeldung in der **Übertragungsdatei** |
+| SG1 UCM DE0085 | 12, 13, 16, 21, 22, 26, 28, 29, 39 | nur Syntaxfehlermeldung in der **Nachricht** |
+| SG2 UCS DE0085 | 13, 15, 16, 22, 35, 36 | dito |
+| SG2 UCD DE0085 | 12, 13, 16, 19, 21, 22, 37, 38, 39, 40 | dito |
+
+**Ergebnis 3 — AHB-Status und Bedingungen (füllt die Lücke aus Abschnitt 74 für
+CONTRL).** Gelesen wurden u. a. SG1 „Muss", **SG2 „Muss [9]"**, SG2 UCD
+„Soll [6]", SG1 UCM DE0085 „S [2] ∨ [3]", SG1 UCM DE0098/DE0104 „S [8] ∧ [1]",
+SG2 UCD DE0098 „M", UNH/UCI/UNT „Muss" in allen Anwendungsfällen — samt den
+sieben Bedingungstexten ([9] = „Wenn SG1 UCM DE0013 nicht vorhanden."). Damit
+liegt der Gruppenstatus, der den CONTRL-Formular-Metas fehlt, jetzt maschinell
+gelesen vor. Das Übertragen in die Metas ist bewusst NICHT Teil dieses Auftrags
+(Fallstrick-Liste: nur über ein Nachbearbeitungsskript) und bleibt als
+Folgepunkt offen.
+
+**Ergebnis 4 — Regel zu Fehlercode 26.** Der AHB verbietet ausdrücklich: „Muss
+der Empfänger aufgrund eines von ihm verursachten Fehlers eine Übertragungsdatei
+erneut in sein System einspielen oder erhält er aus diesem Grund eine an ihn
+bereits gesandte Übertragungsdatei erneut, so hat er sicher zu stellen, dass in
+solch einem Fall seine Systeme keine Syntaxfehlermeldung mit dem Fehlercode 26
+(= Duplikat gefunden) versenden." Das betrifft unmittelbar die vom Auftraggeber
+gemeldete CONTRL mit Code 26. Solche Fließtextaussagen werden maschinell je Code
+gesammelt (`FEHLERCODE_SATZ`) und im Abgleich am Befund angezeigt.
+
+**Nebenbefund (nicht umgesetzt, nur festgehalten).** Kapitel 2 des AHB
+beschreibt die Syntaxprüfung normativ und bestätigt dabei genau die Regel, die in
+Abschnitt 74.2 im Validator korrigiert wurde: „Falls der Status der Segmentgruppe
+‚M' oder ‚R' ist, müssen auch diese Segmente vorhanden sein. Falls der Status der
+Segmentgruppe ‚C' oder ‚D' oder ‚O' ist, müssen diese Segmente nur dann vorhanden
+sein …". Der Pflichtstatus eines Segments hängt also auch nach AHB am Status
+seiner Segmentgruppe — die Korrektur aus 74.2 ist damit unabhängig belegt.
+
+**Umsetzung in der Anwendung.** `ablehnung-abgleich.html` lädt `contrl-ahb.js`
+und zeigt am Befund (a) den AHB-Anwendungsfall des gemeldeten Codes, (b) einen
+Warnhinweis, wenn der Code an dieser Ebene laut AHB **nicht vorgesehen** ist —
+dann weicht der absendende Marktpartner vom AHB ab —, und (c) die
+Fließtextregeln des AHB zum Code. Die Ebene wird aus dem Fehlerzeiger abgeleitet
+(UCI → Datei-Ebene, UCM → Nachricht, UCS → Segment, UCD → Datenelement).
+
+**Nachweis.** Neue Regression `scripts/test_contrl_ahb.js` (25 Prüfungen,
+darunter der harte AHB-gegen-MIG-Abgleich je Ebene, die Anwendungsfall-Zuordnung
+von DE0083 = 4/7, die Ebenenschärfe von Code 35 (UCS ja, UCD nein), Gruppenstatus
+SG2 „Muss [9]" und die Code-26-Regel). Fall H in
+`scripts/test_ablehnung_abgleich.js` um die Anzeige des AHB-Anwendungsfalls und
+der Code-26-Regel erweitert. Volle Regression grün (40 Läufe).

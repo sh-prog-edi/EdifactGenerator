@@ -165,6 +165,7 @@
 <script src="_engine/daten/bedingung-eval.js"></script>
 <script src="_engine/bedingung-hilfe.js"></script>
 <script src="_engine/daten/uci-fehlercodes.js"></script>
+<script src="_engine/daten/contrl-ahb.js"></script>
 <script>
 const $ = id => document.getElementById(id);
 
@@ -580,6 +581,42 @@ function fehlertext0085(code, segment, de){
   return e.text;
 }
 
+// ---- AHB-Auswertung (Protokoll Abschnitt 75) -------------------------------
+// Der MIG sagt, WELCHE Codes es je Segment gibt; der AHB sagt zusätzlich, in
+// welchem ANWENDUNGSFALL sie verwendet werden dürfen (Empfangsbestätigung /
+// Syntaxfehlermeldung in der Übertragungsdatei / … in der Nachricht) und trifft
+// im Fließtext Aussagen zu einzelnen Codes. Quelle: _engine/daten/contrl-ahb.js.
+const AHB_PFAD = { UCI: 'UCI', UCM: 'SG1 UCM', UCS: 'SG2 UCS', UCD: 'SG2 UCD' };
+
+function ahbBefund(code, segment, de){
+  if (typeof contrlAhbZulaessig !== 'function' || !AHB_PFAD[segment]) return null;
+  const z = contrlAhbZulaessig(code, AHB_PFAD[segment], de || '0085');
+  const hinweise = (typeof contrlAhb !== 'undefined' && contrlAhb.hinweise)
+    ? (contrlAhb.hinweise[String(code)] || []) : [];
+  return { zulaessig: z, hinweise: hinweise };
+}
+
+// Zeigt an, wenn ein gemeldeter Code an dieser Ebene laut AHB nicht vorgesehen
+// ist — ein Marktpartner, der ihn dort dennoch sendet, weicht vom AHB ab.
+function ahbHinweisHtml(code, segment, de){
+  const b = ahbBefund(code, segment, de);
+  if (!b) return '';
+  let html = '';
+  if (!b.zulaessig.bekannt){
+    html += `<div class="globalbox warn" style="margin:6px 0">AHB: Fehlercode ` +
+      `${esc(code)} ist für die Ebene ${esc(segment)} im AHB CONTRL nicht ` +
+      `vorgesehen — der Absender weicht hier vom AHB ab.</div>`;
+  } else if (b.zulaessig.anwendungsfaelle.length){
+    html += `<div class="hinweistext">AHB-Anwendungsfall: ` +
+      `${b.zulaessig.anwendungsfaelle.map(esc).join(' · ')}</div>`;
+  }
+  b.hinweise.forEach(t => {
+    html += `<div class="globalbox info" style="margin:6px 0">AHB zu Fehlercode ` +
+      `${esc(code)}: ${esc(t)}</div>`;
+  });
+  return html;
+}
+
 async function pruefeRechts(){
   const text = $('eingabeRechts').value;
   const box = $('rechtsErgebnis');
@@ -713,7 +750,8 @@ function aktualisiereAbgleich(){
       `<div class="zeile">Die gesamte Übertragungsdatei wurde zurückgewiesen (Fehlercode ` +
       `${esc(contrlErgebnis.dateiFehlercode)} – ${esc(ft)}), ohne Angabe einer einzelnen Nachricht (kein SG1 UCM). ` +
       `Ein Segment-/Datenelement-Bezug ist damit nicht möglich — bitte die Rahmensegmente ` +
-      `(UNA/UNB/UNZ, Zeichensatz, MP-IDs) der linken Nachricht(en) von Hand mit dem Fehlercode abgleichen.</div></div>`;
+      `(UNA/UNB/UNZ, Zeichensatz, MP-IDs) der linken Nachricht(en) von Hand mit dem Fehlercode abgleichen.</div>` +
+      ahbHinweisHtml(contrlErgebnis.dateiFehlercode, 'UCI') + `</div>`;
   } else if (!contrlErgebnis.bloecke.length){
     html += `<div class="ergebniskarte info"><h3>Keine Ablehnung <span class="badge ok">Empfang bestätigt</span></h3>` +
       `<div class="zeile">Die CONTRL bestätigt den Empfang ohne Einwände (UCI DE0083 = 7, keine SG1 UCM) — ` +
@@ -824,6 +862,9 @@ function aktualisiereAbgleich(){
           // ob ein Duplikat der Übertragungsdatei oder der Nachricht gemeint ist.
           (eintrag.erlaeuterung
             ? `<div class="hinweistext">${esc(eintrag.erlaeuterung)}</div>` : '') +
+          // AHB-Sicht: Anwendungsfall bzw. Abweichung vom AHB, plus dessen
+          // Fließtextregeln zum Code (Abschnitt 75).
+          ahbHinweisHtml(d.code, ucEbene) +
           zielsegment +
           `<div class="zeile">${text}</div></div>`;
       });
