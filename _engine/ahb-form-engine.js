@@ -1122,8 +1122,25 @@
           if (!codes.length || codes.includes(vorgabe)) return vorgabe;
           return codes[0];
         };
-        if (q === "MS") { out.push(`NAD+MS+${ctx.abs}::${nad3055(ctx.absQ.nad)}'`); return; }
-        if (q === "MR") { out.push(`NAD+MR+${ctx.emp}::${nad3055(ctx.empQ.nad)}'`); return; }
+        // Wo der AHB der Prüf-ID im MS/MR-Segment zusätzlich Name/Anschrift als
+        // unbedingtes Muss führt (INVOIC/REMADV: DE3036 Beteiligter, DE3164 Ort,
+        // DE3251 PLZ …), entstehen Beispielangaben — wie beim Ansprechpartner
+        // (CTA) weiter unten. Ohne sie wäre die erzeugte Testnachricht laut AHB
+        // unvollständig und der eigene Validator meldete zu Recht ein fehlendes
+        // Pflicht-Datenelement. Aufbau wie in echten Marktnachrichten:
+        // NAD+MS+<MP-ID>::<3055>++<Name>:::::<3045>+<Straße>::<Nr>+<Ort>++<PLZ>+<Land>
+        const brauchtAdresse = ["3036", "3164"].some(de => {
+          const e = inst.des.find(d => d.de === de);
+          return e && /^[XxM]$/.test(String(e.expr || "").trim());
+        });
+        const adresse = () => {
+          if (!brauchtAdresse) return "";
+          const c3045 = ((inst.des.find(d => d.de === "3045") || {}).codes || []).map(c => c[0]);
+          const fmt = c3045.includes("Z02") ? "Z02" : (c3045[0] || "Z02");
+          return `++Testfirma:::::${fmt}+Teststraße::1+Teststadt++12345+DE`;
+        };
+        if (q === "MS") { out.push(`NAD+MS+${ctx.abs}::${nad3055(ctx.absQ.nad)}${adresse()}'`); return; }
+        if (q === "MR") { out.push(`NAD+MR+${ctx.emp}::${nad3055(ctx.empQ.nad)}${adresse()}'`); return; }
         const id = g("3039");
         const name = g("3036"), strasse = g("3042"), ort = g("3164"), plz = g("3251"), land = g("3207"), zusatz = g("3124");
         if (!q) { if (pflicht) errors.push(`NAD (${inst.section || ""}): Qualifier wählen.`); return; }
@@ -1164,7 +1181,21 @@
       case "LIN": {
         ctx.lin++;
         const aktion = g("1229");
-        out.push(`LIN+${ctx.lin}${aktion ? "+" + aktion : ""}'`); return;
+        // Artikel-Identifikation (C212): Wo der AHB der Prüf-ID DE7143 als
+        // unbedingtes Muss führt (INVOIC/QUOTES: Artikelnummer, Code Z01),
+        // gehört sie in die Positionszeile — Wert aus dem Formularfeld (DE7140),
+        // sonst eine gültige BDEW-Artikelnummer als Beispielangabe (Codeliste
+        // Artikelnummern, siehe _engine/daten/codelisten.js).
+        const e7143 = inst.des.find(d => d.de === "7143");
+        const brauchtArtikel = e7143 && /^[XxM]$/.test(String(e7143.expr || "").trim())
+          && (e7143.codes || []).some(c => /^[XxM]$/.test(String(c[2] || "").trim()));
+        let artikel = "";
+        if (brauchtArtikel) {
+          const nr = g("7140") || "9990001000053";
+          const code = (((e7143.codes || [])[0] || [])[0]) || "Z01";
+          artikel = `${aktion ? "" : "+"}+${edi(nr)}:${code}`;
+        }
+        out.push(`LIN+${ctx.lin}${aktion ? "+" + aktion : ""}${artikel}'`); return;
       }
       case "PIA": {
         const obis = g("7140"), liste = g("7143") || "SRW";

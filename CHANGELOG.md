@@ -12,6 +12,19 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
   Erwartungsdateien selbst bleiben bewusst NICHT im Repo (echte Zähler-/
   Rechnungsdaten möglich; zeitlich begrenzte Formatrelevanz) — nur der
   PID-Abdeckungsnachweis wird versioniert.
+- **12.08.2026** – **PID 55658: drei Validatorlücken geschlossen.** Fuzz-Analyse
+  (15 Syntaxfehler-Mutationen) deckte auf: (1) Die Muss-DE-Prüfung griff nur bei
+  STS (`pos` fehlt sonst) — `IDE+24'` ohne Vorgangsnummer oder `NAD+MS:…`
+  (Doppelpunkt statt Plus) blieben grün; jetzt DECODER-Fallback + Instanzwahl mit
+  Vorrang positiver Codetreffer. (2) af-Regeln/Codelisten waren im Test-Harness
+  und der Referenz-Suite still abgeschaltet (`const` bindet im VM-Kontext nicht
+  ans Sandbox-Objekt); dadurch entfallen ~88 falsche „nicht in Codelisten"-
+  Hinweise an echten INVOIC. (3) Doppelte Nachrichtenebene-Segmente (BGM 2×)
+  werden jetzt gegen MIG maxWdh=1 gemeldet. 15/15 Mutationen erkannt; 23 echte
+  Nachrichten weiterhin 0 Fehler. Folgefunde an den eigenen Erzeugern behoben:
+  NAD+MS/MR mit Beispiel-Name/Anschrift und LIN mit Artikelnummer, wo der AHB
+  sie als Muss führt; APERAK-Seite maskierte `+00` in DTM-Werten nicht (`?+00`).
+  → Protokoll Abschnitt 68.
 - **12.08.2026** – **Einstiegsseite: PDF-Links zu den BDEW-Lesefassungen.** Jede
   Zeile der Dokumentenstand-Liste verlinkt die konsolidierte Lesefassung (PDF) per
   Deep-Link auf die BDEW-MaKo-Plattform (`bdew-mako.de/api/downloadFile/<id>`, neuer

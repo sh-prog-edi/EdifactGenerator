@@ -3217,3 +3217,74 @@ möglich (Dateisystem-Sandbox) und ein eigener PDF-Cache bliebe bewusst außen v
 Einstiegsseite ohne Konsolenfehler; Ziel-URLs stichprobenhaft als echte PDF
 verifiziert (u. a. MSCONS AHB 12172, UTILMD Strom AHB 10553). Seiten-Smoke 416/416,
 Schnell-Regression grün.
+
+## 68. PID 55658: nicht gemeldete Syntaxfehler — drei Validatorlücken geschlossen (12.08.2026)
+
+**Meldung.** Ein Syntaxfehler in einer 55658-Nachricht wurde vom Validator nicht
+angezeigt; Auftrag: den Fehler eigenständig finden.
+
+**Vorgehen.** Da kein konkreter Fundort genannt war, wurde die 55658-Nachricht
+systematisch gefuzzt: 15 typische Syntaxfehler (fehlender Terminator, `:` statt
+`+`, leere Pflichtangaben, falsche Qualifier, Überlängen, doppelte Segmente,
+UNB≠NAD, …) einzeln eingebaut und geprüft, welche der Validator NICHT meldet.
+Vier rutschten durch — dahinter drei Ursachen:
+
+**Lücke 1 — Muss-Datenelemente nur bei STS geprüft.** Die neue Muss-Präsenz-
+prüfung (Abschnitt 62) war an die Positionsangaben `pos/sub` der Instanzdaten
+gebunden — die nur die STS-Instanzen tragen. `IDE+24'` ohne Vorgangsnummer
+(DE7402) oder `NAD+MS:9900…::293'` (Doppelpunkt statt Plus → MP-ID DE3039 nie
+belegt) blieben grün — auch im Browser. Fix: Fallback über den zentralen DECODER
+(`pos` bevorzugt, sonst DECODER-Position). Folgefix: die Instanzwahl bevorzugt
+jetzt unter konfliktfreien Kandidaten die mit den meisten POSITIVEN Codetreffern
+(`CCI+++ZB3` gehört zur Instanz mit ZB3 in der DE7037-Codeliste, nicht zur
+Leistungskurven-Instanz, die mangels Werten bloß widerspruchsfrei war — belegt an
+55639). Bewusst dokumentierte Ausnahmen (Masken lassen Anwenderwerte leer):
+CCI+Z20/Z19 DE7037 (Bilanzierungsgebiet/-kreis), IMD+Z36 DE7009
+(Identifikationslogik) — diese Meldungen sind KORREKT und im Test als
+dokumentierte Befundfamilie geführt (Selbstvalidierung 132→136 bzw. 103/104→105/106).
+
+**Lücke 2 — af-Regeln und Codelisten im Test-Harness still abgeschaltet.**
+`af-regeln.js`/`codelisten.js` binden mit `const` — im Browser teilen spätere
+`<script>`-Blöcke die globale lexikalische Umgebung, im VM-Kontext des Harness
+hängen `const`-Bindungen aber NICHT am Sandbox-Objekt. Folge: MP-ID-, NAD≠UNB-
+und Codelistenprüfungen liefen im Harness und in der Referenz-Suite nie (im
+Browser-Validator dagegen schon). Fix: Harness hebt die Bindungen explizit ans
+Sandbox-Objekt. Sichtbare Wirkung in der Referenz-Suite: die INVOIC-Fehlhinweise
+„Artikelnummer nicht in den hinterlegten Codelisten" (~88 Stück) verschwinden —
+die Artikelnummer 9990001000748 steht in der jetzt wirklich geladenen Liste;
+neu erscheint ein fachlich korrekter OBIS-Hinweis (MSCONS, 7-0:54.0.22
+„ggf. gerätespezifisch zulässig"). Hinweise gesamt: 92 → 4.
+
+**Lücke 3 — Wiederholungen nicht geprüft.** Ein doppeltes BGM (o. ä. auf
+Nachrichtenebene) blieb unbeanstandet. Fix: Instanzen ohne Segmentgruppe, die
+laut MIG-Segmentlage nur 1× vorkommen (maxWdh = 1), melden Mehrfachvorkommen
+als Fehler.
+
+**Folgefunde an den eigenen Erzeugern.** Mit den aktiven Prüfungen fielen drei
+ECHTE Lücken der eigenen Nachrichtenerzeuger auf (Antwortketten-E2E):
+* Die Formular-Engine erzeugte NAD+MS/MR nur mit MP-ID — wo der AHB zusätzlich
+  Name/Anschrift als unbedingtes Muss führt (INVOIC/REMADV: DE3036, DE3164 …),
+  entstehen jetzt Beispielangaben (wie beim Ansprechpartner CTA), Aufbau wie in
+  echten Marktnachrichten: `NAD+MS+<MP-ID>::<3055>++Testfirma:::::Z02+…+DE`.
+* LIN ohne Artikel-Identifikation — wo DE7143 unbedingtes Muss ist
+  (INVOIC/QUOTES, Code Z01), wird die C212 mit Formularwert bzw. gültiger
+  BDEW-Artikelnummer (9990001000053) erzeugt.
+* Die APERAK-Seite schrieb `+00` in DTM-Werten UNMASKIERT (ohne `?`-Escape) —
+  das Plus zerriss das Segment (DE2379 rutschte ins falsche Element). Behoben
+  (`?+00`); die zentrale Engine escapt korrekt über `edi()`.
+
+**Verlässlichkeitsgrenze der Extraktion (Kunden-NAD).** Der Komponententest
+deckte auf, dass der DECODER-Fallback zu weit griff: Im Kunden-NAD (Z65–Z70)
+markiert die AHB-Extraktion die Adress-DE (Straße/Ort/Land) flach mit „X" bzw.
+„M", obwohl die eigentliche Blockbedingung nur am Geschwister-DE PLZ erhalten
+blieb („M [268] S [166]") — Name ohne Anschrift ist dort zulässig. Der Fallback
+wertet freie Wert-DE deshalb nur in den führenden Elementen (Qualifier +
+Hauptwert: IDE DE7402, NAD DE3039, DTM C507 …) als Pflicht; positionsgenaue
+Instanzangaben (STS-Pfad) und codierte DE bleiben unverändert scharf.
+
+**Nachweis.** Fuzz-Matrix 55658: 15/15 Mutationen werden gemeldet (vorher 11/15).
+`test_de_muss_praesenz.js` erweitert (DECODER-Fallback-Wirkung, dokumentierte
+Befundfamilien als Allowlist): 553 Prüf-IDs, 0 Fehlalarme, 76/76, 18/18.
+Referenz-Suite: 23/23 Dateien, 1491/1491 Einheiten, weiterhin 0 Fehler (nun mit
+aktiven af-/Codelisten-Schichten). Antwortketten 35/35, Folgenachrichten 80/80, Validator-Komponenten 20/20.
+Regression grün.

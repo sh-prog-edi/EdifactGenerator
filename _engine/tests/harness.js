@@ -133,6 +133,20 @@ function ladeGenerator(engineDir, dataDir, opts = {}){
     for (const f of dateien) combined += '\n' + fs.readFileSync(f,'utf8') + '\n';
     vm.runInContext(combined, sandbox, { filename:'combined.js' });
 
+    // Lexikalische Top-Level-Bindungen (const/let) hängen sich im VM-Kontext NICHT
+    // an das Sandbox-Objekt — anders als im Browser, wo spätere <script>-Blöcke die
+    // globale lexikalische Umgebung teilen. af-regeln.js (const afRegeln, function
+    // gs1Pruefziffer) und codelisten.js (const codelisten) waren dadurch im Harness
+    // und in der Referenz-Suite still unwirksam (ctx.afRegeln/ctx.codelisten leer):
+    // MP-ID-/NAD-UNB-Identitäts- und Codelistenprüfungen liefen dort nie. Die
+    // Bindungen aus derselben Kontext-Umgebung explizit ans Sandbox-Objekt heben.
+    for (const name of ['afRegeln', 'codelisten', 'gs1Pruefziffer']) {
+      try {
+        const v = vm.runInContext(`typeof ${name} === 'undefined' ? undefined : ${name}`, sandbox);
+        if (v !== undefined && sandbox[name] === undefined) sandbox[name] = v;
+      } catch (e) { /* Bindung nicht vorhanden */ }
+    }
+
     // Bedingungen bereitstellen: die per-Typ-Datei _bedingungen.js legt ihre Daten
     // in eine typspezifische Variable und exportiert EdiBedingungen nur über window.
     // Im VM-Sandbox (kein window) käme sonst nichts an, sodass jede konditionale
@@ -195,6 +209,7 @@ function ladeGenerator(engineDir, dataDir, opts = {}){
             stsStruktur: ((sandbox.stsStruktur || {})[stand] || {})[migKey] || null,
             ebd: ((sandbox.ebdAntwortcodes || {})[stand] || {}).ebds || {},
             codelisten: sandbox.codelisten || {}, afRegeln: sandbox.afRegeln || null,
+            gs1Pruefziffer: sandbox.gs1Pruefziffer || null,
             ergaenzungen: sandbox.ahbErgaenzungen || [],
             cluster: (() => {
                 const m = (sandbox.prozessMeta || {})[pid];

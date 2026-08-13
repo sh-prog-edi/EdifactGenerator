@@ -588,9 +588,25 @@
           alle.push(idx);
         });
         // konfliktfreie Instanzen bevorzugen (z.B. CCI ohne Qualifier: die
-        // Instanz wählen, deren DE7037-Codeliste den Wert enthält)
+        // Instanz wählen, deren DE7037-Codeliste den Wert enthält). Unter den
+        // konfliktfreien zusätzlich die mit den meisten POSITIVEN Codetreffern
+        // voranstellen: „CCI+++ZB3" gehört zur Instanz, deren DE7037-Codeliste
+        // ZB3 führt — nicht zu einer Instanz, die mangels belegter Werte bloß
+        // keinen Widerspruch hat (belegt an UTILMD 55639, Leistungskurve Z53).
         const frei = alle.filter(idx => konflikte(seg, instanzen[idx]) === 0);
-        return frei.length ? frei : alle;
+        const basis = frei.length ? frei : alle;
+        const treffer = idx => {
+          let n = 0;
+          for (const deE of instanzen[idx].des) {
+            const codes = echteCodes(deE);
+            if (!codes.length) continue;
+            const v = deWert(seg, deE.de);
+            if (v && codes.includes(v)) n++;
+          }
+          return n;
+        };
+        const maxT = Math.max.apply(null, basis.map(treffer));
+        return maxT > 0 ? basis.filter(idx => treffer(idx) === maxT) : basis;
       }
 
       // Belegte Zusatzsegmente aus den AHB-Kapiteln außerhalb der Prüf-ID-Tabelle
@@ -666,13 +682,30 @@
         // Bedingte DE-Marker („X [nnn]") bleiben außen vor — ihre Bedingungen sind
         // nicht durchgängig maschinell entscheidbar; die konditionale Muss-Prüfung
         // erfolgt auf Segment-/Gruppenebene weiter unten.
+        // Position des DE: bevorzugt die Instanzangabe (pos/sub — nur STS trägt
+        // sie), sonst der zentrale DECODER. Ohne den Fallback blieb die Prüfung
+        // auf STS beschränkt: „IDE+24'" ohne Vorgangsnummer (DE7402) oder ein
+        // NAD+MS ohne MP-ID (DE3039) rutschten grün durch (belegt an PID 55658).
         const deUnbedingt = e => /^[XxM]$/.test(String(e == null ? "" : e).trim());
         for (const deE of inst.des) {
-          if (deE.pos == null) continue;
+          const posPaar = deE.pos != null ? [deE.pos, deE.sub || 0]
+                                          : (DECODER[seg.tag] || {})[deE.de];
+          if (!posPaar) continue;
           if (!deUnbedingt(deE.expr)) continue;
           const codeListe = deE.codes || [];
           if (codeListe.length && !codeListe.some(c => deUnbedingt(c[2]))) continue;
-          const roh = wert(seg, deE.pos, deE.sub || 0).replace(/\?(.)/g, "$1").trim();
+          // Verlässlichkeitsgrenze des Status bei freien Wert-DE über den
+          // DECODER-Fallback: „X"/„M" der AHB-Extraktion heißt bei hinteren
+          // Elementen (Adressblock im NAD: Straße/Ort/Land) nur „verwendet" bzw.
+          // „Muss, WENN der Block genutzt wird" — die eigentliche Blockbedingung
+          // steht dort an einem Geschwister-DE (PLZ „M [268] S [166]") und ging
+          // je DE verloren (belegt am Kunden-NAD Z66–Z70: Name ohne Anschrift ist
+          // zulässig). Als Pflicht gewertet wird ein freies DE über den Fallback
+          // deshalb nur in den führenden Elementen (Qualifier + Hauptwert, z. B.
+          // IDE DE7402, NAD DE3039, DTM C507). Positionsgenaue Instanzangaben
+          // (pos, STS-Pfad) und codierte DE bleiben unverändert scharf.
+          if (!codeListe.length && deE.pos == null && posPaar[0] > 2) continue;
+          const roh = wert(seg, posPaar[0], posPaar[1]).replace(/\?(.)/g, "$1").trim();
           if (roh) continue;
           const wo = deE.name ? ` (${deE.name})` : "";
           // Statt „im AHB nachschauen" die konkret erwartete Angabe nennen:
@@ -719,6 +752,23 @@
         if (seg.tag === "STS") pruefeSts(i, seg);
         pruefeEbd(i, seg, inst);
       }
+
+      // Wiederholungsprüfung auf Nachrichtenebene: eine Instanz OHNE Segmentgruppe
+      // (BGM, DTM+137, RFF+Z13 …) darf laut MIG-Segmentlage (maxWdh = 1) nur einmal
+      // vorkommen. Ein Duplikat (z. B. zweites BGM) blieb bisher unbeanstandet, weil
+      // beide Vorkommen derselben Instanz zugeordnet wurden. Gruppen-Instanzen
+      // bleiben außen vor — ihre Wiederholung ist die Wiederholung der Gruppe.
+      instanzen.forEach((inst, idx) => {
+        if (inst.sg || matchZahl[idx] <= 1) return;
+        const wdh = (mig.maxWdh || {})[inst.seg];
+        if (wdh !== 1) return;
+        const qde = QUAL_DE[inst.seg];
+        const deE = qde ? inst.des.find(d => d.de === qde) : null;
+        const ec = deE ? echteCodes(deE) : [];
+        const q = ec.length === 1 ? "+" + ec[0] : "";
+        global_.meldungen.push(`${inst.seg}${q}: ${matchZahl[idx]}× in der Nachricht, `
+          + `laut MIG ist an dieser Stelle nur 1 Wiederholung vorgesehen.`);
+      });
 
       // Fehlende Muss-Instanzen: auf Nachrichtenebene (ohne SG) immer, innerhalb
       // von Gruppen nur in Blöcken (zusammenhängenden Gruppenläufen), die in der

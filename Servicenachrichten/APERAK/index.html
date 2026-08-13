@@ -180,7 +180,7 @@ function zu303(s){
   const [_, tt, mo, jjjj, hh, mi] = m;
   const local = new Date(Number(jjjj), Number(mo)-1, Number(tt), Number(hh||"0"), Number(mi||"0"));
   const pad = n => String(n).padStart(2,'0');
-  return `${local.getUTCFullYear()}${pad(local.getUTCMonth()+1)}${pad(local.getUTCDate())}${pad(local.getUTCHours())}${pad(local.getUTCMinutes())}+00`;
+  return `${local.getUTCFullYear()}${pad(local.getUTCMonth()+1)}${pad(local.getUTCDate())}${pad(local.getUTCHours())}${pad(local.getUTCMinutes())}?+00`;
 }
 
 let darCounter = 1;
@@ -208,7 +208,7 @@ function generateAperak(){
   const unbDate = `${String(now.getUTCFullYear()).slice(2)}${pad(now.getUTCMonth()+1)}${pad(now.getUTCDate())}`;
   const unbTime = `${pad(now.getUTCHours())}${pad(now.getUTCMinutes())}`;
   const dar = `APK${unbDate.slice(2)}${unbTime}${String(darCounter++).padStart(3,'0')}`; // DE0020 an..14
-  const nowUtc = `${now.getUTCFullYear()}${pad(now.getUTCMonth()+1)}${pad(now.getUTCDate())}${pad(now.getUTCHours())}${pad(now.getUTCMinutes())}+00`;
+  const nowUtc = `${now.getUTCFullYear()}${pad(now.getUTCMonth()+1)}${pad(now.getUTCDate())}${pad(now.getUTCHours())}${pad(now.getUTCMinutes())}?+00`;
 
   const absQ = codevergabe(abs), empQ = codevergabe(emp);
   const seg = [];
