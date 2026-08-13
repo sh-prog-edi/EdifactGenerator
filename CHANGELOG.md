@@ -5,6 +5,20 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **13.08.2026** – **Neue Seite `ablehnung-abgleich.html`: Ablehnung gegen neg.
+  CONTRL abgleichen.** Zwei Spalten — links die abgelehnte Original-Nachricht,
+  rechts die erhaltene negative CONTRL. Liest den strukturierten Fehlerzeiger
+  der CONTRL aus (SG1 UCM, SG2 UCS/UCD: Segment- und Datenelementposition),
+  findet die betroffene Stelle in der links geprüften Nachricht und stellt sie
+  dem unabhängigen Validator-Befund an genau dieser Position gegenüber
+  ("bestätigt" / "unklar, nicht nachvollziehbar"), mit Sprung/Hervorhebung im
+  Segmentbaum. Deckt bewusst nur CONTRL ab — negative APERAK hat keinen
+  strukturierten Fehlerzeiger (nur Freitext in FTX+Z02) und ist als
+  eigenständiger, unterstützender Folgeschritt vorgesehen. DE0085-Fehlercode-
+  liste aus dem CONTRL-Generator nach `_engine/daten/uci-fehlercodes.js`
+  ausgelagert (gemeinsame Quelle). Verlinkt von Startseite und CONTRL-
+  Generator. Neuer Regressionstest `scripts/test_ablehnung_abgleich.js`
+  (16/16), volle Regression grün (38 Läufe). → Protokoll Abschnitt 71.
 - **13.08.2026** – **Sicherheits- und Vollständigkeitsaudit: Code, alle 553 PIDs.**
   Drei Befunde, alle behoben. (1) DOM-XSS in `validator.html`/`umbau.html`: die
   Erkennungs-/Meldungsboxen bauten UNH-Typ/-Kennung, RFF+Z13-Prüf-ID, BGM-

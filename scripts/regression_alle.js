@@ -55,6 +55,7 @@ const BROWSER_TESTS = [
     'scripts/test_umbau_pidzerlegung.js',
     'scripts/test_validator_komponenten.js',
     'scripts/test_validator_mehrfach.js',
+    'scripts/test_ablehnung_abgleich.js',
 ];
 
 let hart = 0, weich = 0;

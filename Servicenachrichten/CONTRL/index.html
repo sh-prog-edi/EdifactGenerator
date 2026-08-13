@@ -16,7 +16,9 @@
     </div>
   </div>
   <p class="sub">Syntax- und Servicebericht (CONTRL:D:3:UN:2.0b) &middot; AHB 1.0, gültig ab 01.10.2025 &middot;
-     Datenbasis: BDEW-AHB, maschinell extrahiert (siehe pruef-ids/)</p>
+     Datenbasis: BDEW-AHB, maschinell extrahiert (siehe pruef-ids/) &middot;
+     Eine erhaltene negative CONTRL gegen die abgelehnte Nachricht abgleichen:
+     <a href="../../ablehnung-abgleich.html">→ Ablehnungs-Abgleich</a></p>
 
   <div class="container">
   <div class="left-panel">
@@ -113,6 +115,7 @@
 <script>EdiStand.lade('pruef-ids/_bedingungen.js');</script>
 <script src="../../_engine/bedingung-hilfe.js"></script>
     <script src="../../_engine/daten/validator-registry.js"></script>
+    <script src="../../_engine/daten/uci-fehlercodes.js"></script>
     <script src="../../_engine/daten/prozessketten.js"></script>
     <script src="../../_engine/folgenachrichten.js"></script>
     <script src="../../_engine/layout.js"></script>
@@ -133,21 +136,9 @@ const $ = id => document.getElementById(id);
 function edi(s){ return String(s).replace(/\?/g,"??").replace(/\+/g,"?+").replace(/:/g,"?:").replace(/'/g,"?'"); }
 
 
-// UNTDID 0085 - gängige Syntax-Fehlercodes der MaKo-Praxis.
-const FEHLERCODES_0085 = [
-  ["2",  "Syntax-Version oder -ebene nicht unterstützt"],
-  ["7",  "Ungültiger Absender/Empfänger"],
-  ["12", "Ungültiger Wert"],
-  ["13", "Fehlt (Segment/Datenelement fehlt)"],
-  ["16", "Zu viele Bestandteile"],
-  ["18", "Unspezifizierter Fehler"],
-  ["21", "Ungültiges Zeichen"],
-  ["22", "Ungültiges Dienstzeichen"],
-  ["28", "Ungültige Segmentreihenfolge"],
-  ["35", "Zu viele Segment-/Gruppenwiederholungen"],
-  ["39", "Datenelement zu lang"],
-  ["40", "Datenelement zu kurz"]
-];
+// UNTDID 0085 - gängige Syntax-Fehlercodes der MaKo-Praxis, zentral in
+// _engine/daten/uci-fehlercodes.js (auch vom Ablehnungs-Abgleich genutzt).
+const FEHLERCODES_0085 = uciFehlercodes0085;
 // Referenzierbare Nachrichtentypen (SG1 UCM S009) im MaKo-Umfeld.
 const NACHRICHTENTYPEN = ["UTILMD","MSCONS","APERAK","ORDERS","ORDRSP","ORDCHG","QUOTES","REQOTE",
   "IFTSTA","INSRPT","INVOIC","REMADV","COMDIS","PRICAT","PARTIN","UTILTS"];

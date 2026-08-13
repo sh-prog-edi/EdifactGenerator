@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ablehnungs-Abgleich: Nachricht gegen neg. CONTRL</title>
+<link rel="stylesheet" href="_engine/edigen.css">
+<style>
+  :root, [data-theme="light"]{
+    --ok:#0e4d24; --ok-bg:#0e4d24; --ok-text:#e6f5ec;
+    --warn:#b3261e; --warn-bg:#8f1d16; --warn-text:#fdecea;
+    --best-bg:#0b3d63; --best-text:#e3f0fb;
+    --frag-bg:#7a5a12; --frag-text:#ffe9c2;
+  }
+  [data-theme="dark"]{
+    --ok:#1c8a4a; --ok-bg:#123d22; --ok-text:#d9f3e2;
+    --warn:#e57373; --warn-bg:#5c1512; --warn-text:#ffd9d6;
+    --best-bg:#123a5c; --best-text:#cfe6fb;
+    --frag-bg:#5c4610; --frag-text:#ffe9c2;
+  }
+  .wrap{max-width:1520px;}
+  .sub{color:var(--muted);font-size:13px;margin:0 0 18px;}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;
+    box-shadow:var(--shadow);padding:16px 18px;margin:0 0 16px;}
+  .panel h2{font-size:15px;margin:0 0 10px;color:var(--heading);}
+  .zweispaltig{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start;}
+  @media (max-width:980px){.zweispaltig{grid-template-columns:1fr;}}
+  .spalte-scroll{max-height:70vh;overflow-y:auto;overscroll-behavior:contain;padding-right:4px;}
+  .drop{border:2px dashed var(--accent);border-radius:12px;padding:16px 14px;text-align:center;
+    color:var(--muted);font-size:13px;cursor:pointer;transition:background .15s;margin-bottom:8px;}
+  .drop.aktiv{background:var(--accent-bg);color:var(--heading);}
+  textarea{width:100%;padding:9px 11px;border:1px solid var(--border);border-radius:8px;
+    background:var(--panel);color:var(--text);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+    font-size:12.5px;min-height:120px;}
+  .go{padding:9px 16px;border:none;border-radius:8px;background:var(--accent);color:#fff;
+    font-size:13.5px;font-weight:600;cursor:pointer;margin-top:8px;}
+  .go.secondary{background:var(--panel);color:var(--accent);border:1px solid var(--accent);}
+  .go.klein{padding:5px 12px;font-size:12.5px;margin-top:0;}
+  .kv{display:grid;grid-template-columns:150px 1fr;gap:2px 12px;font-size:13px;margin:8px 0;}
+  .kv dt{color:var(--muted);} .kv dd{margin:0;}
+  .badge{display:inline-block;border-radius:8px;padding:2px 10px;font-size:12px;font-weight:600;}
+  .badge.ok{background:var(--ok-bg);color:var(--ok-text);}
+  .badge.rot{background:var(--warn-bg);color:var(--warn-text);}
+  .badge.bestaetigt{background:var(--best-bg);color:var(--best-text);}
+  .badge.frag{background:var(--frag-bg);color:var(--frag-text);}
+  .seg{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;
+    border-radius:8px;padding:6px 10px;margin:4px 0;white-space:pre-wrap;word-break:break-all;
+    border:2px solid transparent;}
+  .seg.ok{background:var(--ok-bg);color:var(--ok-text);}
+  .seg.rot{background:var(--warn-bg);color:var(--warn-text);}
+  .seg .meld{display:block;font-family:inherit;font-size:12px;margin-top:3px;padding-left:12px;font-weight:600;}
+  .seg .hin{display:block;font-size:11.5px;margin-top:2px;padding-left:12px;opacity:.85;font-weight:400;}
+  .seg .segnr{display:inline-block;min-width:26px;margin-right:8px;text-align:right;
+    opacity:.65;font-weight:400;user-select:none;}
+  .seg.hervorgehoben{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg);}
+  .globalbox{border-radius:8px;padding:9px 11px;margin:7px 0;font-size:12.5px;}
+  .globalbox.rot{background:var(--warn-bg);color:var(--warn-text);}
+  .globalbox.info{background:var(--accent-bg);color:var(--heading);}
+  .msgblock{border:1px solid var(--border);border-left-width:4px;border-radius:10px;
+    padding:10px 12px;margin:10px 0;background:var(--bg);}
+  .msgblock.ok{border-left-color:var(--ok-text);}
+  .msgblock.rot{border-left-color:var(--warn-text);}
+  .msgblock > h3{margin:0 0 8px;font-size:13.5px;color:var(--heading);}
+  .ergebniskarte{border:1px solid var(--border);border-left-width:5px;border-radius:10px;
+    padding:12px 14px;margin:12px 0;background:var(--panel);}
+  .ergebniskarte.bestaetigt{border-left-color:var(--best-bg);}
+  .ergebniskarte.frag{border-left-color:var(--frag-bg);}
+  .ergebniskarte.info{border-left-color:var(--accent);}
+  .ergebniskarte h3{margin:0 0 8px;font-size:14px;color:var(--heading);
+    display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .ergebniskarte .zeile{font-size:13px;margin:4px 0;}
+  .ergebniskarte .zielsegment{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+    font-size:12.5px;background:var(--bg);border:1px solid var(--border);border-radius:6px;
+    padding:6px 9px;margin:6px 0;word-break:break-all;}
+  .ergebniskarte .befundliste{margin:6px 0 0;padding-left:18px;font-size:12.5px;}
+  .ergebniskarte .befundliste li{margin:2px 0;}
+  .lade{color:var(--muted);font-size:13px;}
+  .hinweistext{font-size:12.5px;color:var(--muted);margin:6px 0 0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumbs"><a href="index.html">Startseite</a> / <strong>Ablehnungs-Abgleich</strong></div>
+  <div class="top-bar">
+    <h1>Ablehnungs-Abgleich</h1>
+    <div class="theme-toggle">
+      <button id="tL" onclick="setTheme('light')">Hell</button><button id="tD" onclick="setTheme('dark')">Dunkel</button>
+    </div>
+  </div>
+  <p class="sub">Abgelehnte Nachricht links, negative CONTRL rechts einfügen — der Abgleich liest die
+    Fehlerzeiger der CONTRL (SG1 UCM, SG2 UCS/UCD) aus, zeigt das betroffene Segment/Datenelement in der
+    Original-Nachricht und prüft, ob der eigene Validator dort unabhängig denselben Befund liefert
+    (AHB/MIG-Abhängigkeiten, Syntax, Codelisten). Eine entsprechende Auswertung für die negative APERAK
+    ist als nächster Schritt vorgesehen — dort fehlt ein strukturierter Segment-/DE-Zeiger im Format,
+    die Fehlerangabe bleibt dort weitgehend Freitext.</p>
+
+  <div class="zweispaltig">
+    <!-- ---------------- Links: abgelehnte Nachricht ---------------- -->
+    <div class="panel">
+      <h2>1. Abgelehnte Nachricht (Original)</h2>
+      <div class="drop" id="dropLinks" onclick="document.getElementById('dateiLinks').click()">
+        Übertragungsdatei (TXT) hierher ziehen – oder klicken zum Auswählen
+        <input type="file" id="dateiLinks" accept=".txt,.edi,.edifact,text/plain" style="display:none">
+      </div>
+      <textarea id="eingabeLinks" spellcheck="false" placeholder="UNA:+.? '&#10;UNB+UNOC:3+…"></textarea>
+      <button class="go" onclick="pruefeLinks()">Nachricht prüfen</button>
+      <button class="go secondary" onclick="leerenLinks()">Leeren</button>
+      <div id="linksErgebnis"></div>
+    </div>
+
+    <!-- ---------------- Rechts: negative CONTRL ---------------- -->
+    <div class="panel">
+      <h2>2. Negative CONTRL</h2>
+      <div class="drop" id="dropRechts" onclick="document.getElementById('dateiRechts').click()">
+        Übertragungsdatei (TXT) hierher ziehen – oder klicken zum Auswählen
+        <input type="file" id="dateiRechts" accept=".txt,.edi,.edifact,text/plain" style="display:none">
+      </div>
+      <textarea id="eingabeRechts" spellcheck="false" placeholder="UNA:+.? '&#10;UNB+UNOC:3+…"></textarea>
+      <button class="go" onclick="pruefeRechts()">CONTRL auswerten</button>
+      <button class="go secondary" onclick="leerenRechts()">Leeren</button>
+      <div class="hinweistext">Kann auch über den <a href="Servicenachrichten/CONTRL/index.html">CONTRL-Generator</a>
+        erzeugt und hier eingefügt werden — vor allem gedacht ist die Maske aber für eine real erhaltene
+        negative CONTRL eines Marktpartners.</div>
+      <div id="rechtsErgebnis"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="panelAbgleich" style="display:none">
+    <h2>3. Abgleich</h2>
+    <div id="abgleichErgebnis"></div>
+  </div>
+
+  <footer>Kein Nachladen fremder Inhalte — reines Client-Side-JavaScript, funktioniert auch offline (file://).</footer>
+</div>
+
+<script src="_engine/theme.js"></script>
+<script src="_engine/version.js"></script>
+<script src="_engine/daten/validator-registry.js"></script>
+<script src="_engine/daten/mig-formate.js"></script>
+<script src="_engine/daten/nad-aufbau.js"></script>
+<script src="_engine/daten/sts-struktur.js"></script>
+<script src="_engine/daten/codelisten.js"></script>
+<script src="_engine/daten/ebd-antwortcodes.js"></script>
+<script src="_engine/daten/ebd-pfade.js"></script>
+<script src="_engine/antwortcode-auswahl.js"></script>
+<script src="_engine/daten/af-regeln.js"></script>
+<script src="_engine/daten/ahb-ergaenzungen.js"></script>
+<script src="_engine/ahb-validator.js"></script>
+<script src="_engine/umbau.js"></script>
+<script src="_engine/daten/bedingung-eval.js"></script>
+<script src="_engine/daten/uci-fehlercodes.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+
+// HTML-Escaping für alles, was aus dem Inhalt der eingefügten Nachrichten
+// stammt — siehe validator.html/umbau.html (Sicherheitsaudit, Protokoll
+// Abschnitt 70): auch hier werden bewusst nicht vertrauenswürdige Dateien
+// gelesen (Original wie CONTRL können von einem Marktpartner stammen).
+function esc(s){
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// ---- Import: Drag & Drop + Dateiauswahl, je Spalte -------------------------
+function verdrahteImport(dropId, dateiId, eingabeId){
+  const drop = $(dropId);
+  ['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('aktiv'); }));
+  ['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('aktiv'); }));
+  drop.addEventListener('drop', e => {
+    const f = e.dataTransfer.files && e.dataTransfer.files[0];
+    if (f) liesDatei(f, eingabeId);
+  });
+  $(dateiId).addEventListener('change', e => { if (e.target.files[0]) liesDatei(e.target.files[0], eingabeId); });
+}
+function liesDatei(f, eingabeId){
+  const r = new FileReader();
+  r.onload = () => {
+    $(eingabeId).value = String(r.result);
+    if (eingabeId === 'eingabeLinks') pruefeLinks(); else pruefeRechts();
+  };
+  r.readAsText(f, 'utf-8');
+}
+verdrahteImport('dropLinks', 'dateiLinks', 'eingabeLinks');
+verdrahteImport('dropRechts', 'dateiRechts', 'eingabeRechts');
+
+function leerenLinks(){
+  $('eingabeLinks').value = ''; $('linksErgebnis').innerHTML = '';
+  linkeEinheiten = null; aktualisiereAbgleich();
+}
+function leerenRechts(){
+  $('eingabeRechts').value = ''; $('rechtsErgebnis').innerHTML = '';
+  contrlErgebnis = null; aktualisiereAbgleich();
+}
+
+// ---- Dynamisches Nachladen der Prüfgrundlage (wie validator.html) ---------
+const skriptCache = {};
+const metaCache = {};
+const bedCache = {};
+async function ladeBedingungen(metaPfad){
+  const pfad = metaPfad.replace(/[^/]*$/, '_bedingungen.js');
+  if (!(pfad in bedCache)){
+    const vorher = window.EdiBedingungen;
+    window.EdiBedingungen = {};
+    try { await ladeSkript(pfad); bedCache[pfad] = window.EdiBedingungen || {}; }
+    catch(e){ bedCache[pfad] = {}; }
+    window.EdiBedingungen = vorher || {};
+  }
+  return bedCache[pfad];
+}
+function ladeSkript(pfad){
+  if (!skriptCache[pfad]) skriptCache[pfad] = new Promise((res, rej) => {
+    const s = document.createElement('script');
+    s.src = pfad; s.onload = () => res(); s.onerror = () => rej(new Error('Skript nicht ladbar: ' + pfad));
+    document.body.appendChild(s);
+  });
+  return skriptCache[pfad];
+}
+async function ladeMeta(eintrag){
+  const key = eintrag.metaPfad;
+  if (!metaCache[key]){
+    await ladeSkript(eintrag.metaPfad);
+    metaCache[key] = window[eintrag.metaVar];
+  }
+  return { alle: metaCache[key] };
+}
+
+// Übertragungsdatei in einzeln prüfbare Nachrichten (UNH…UNT) zerlegen — OHNE
+// Vorgangs-Filterung (im Unterschied zu validator.html/baueEinheiten): die
+// CONTRL-Segmentzählung (UCS DE0096) bezieht sich auf die Nachricht wie
+// TATSÄCHLICH übertragen, inklusive aller Vorgänge. Eine Aufteilung je Vorgang
+// würde Segmente herausfiltern und die Zählung gegenüber der CONTRL verschieben.
+// Bei UTILMD-Nachrichten mit mehreren Prüf-IDs (mehrere Vorgänge in einem UNH)
+// wird deshalb bewusst nur die ERSTE gefundene Prüf-ID für die AHB-Prüfung
+// herangezogen — die rein syntaktischen Prüfungen (Format, Aufbau, Wiederholung)
+// sind davon unabhängig und bleiben für die ganze Nachricht scharf.
+function zerlegeNachrichten(text){
+  const segmente = EdiUmbau.zerlege(text);
+  const nachr = EdiUmbau.nachrichten(segmente);
+  if (!nachr.length) return [{ text, label: '', ref: '' }];
+  const unb = segmente.find(s => s.tag === 'UNB') || { tag: 'UNB', elemente: [] };
+  const origUnz = segmente.find(s => s.tag === 'UNZ');
+  const interchangeRef = (unb.elemente[4] || [])[0]
+    || (origUnz && (origUnz.elemente[1] || [])[0]) || '1';
+  return nachr.map((n, idx) => {
+    const mini = [unb].concat(segmente.slice(n.von, n.bis),
+      [{ tag: 'UNZ', elemente: [['1'], [interchangeRef]] }]);
+    return {
+      text: EdiUmbau.serialisiere(mini),
+      label: nachr.length > 1 ? `Nachricht ${idx + 1}/${nachr.length}` + (n.bgm ? ` · Dokument ${n.bgm}` : '') : 'Nachricht',
+      ref: n.ref || '',
+      bgm: n.bgm || '',
+    };
+  });
+}
+
+// Erkennung + Validierung EINER Nachricht — entspricht validator.html/pruefeEinText
+// (dieselbe Ermittlung von Typ/Formatstand/Prüf-ID und derselben Prüfgrundlage),
+// hier ohne DOM-Zugriff und ohne Antwort-/Folgenachrichten-Bausteine, die für den
+// Abgleich nicht gebraucht werden.
+async function pruefeEinText(text){
+  const parsed = AhbValidator.parse(text);
+  const det = AhbValidator.erkenne(parsed, validatorRegistry);
+  if (det.fehler) return { parsed, det };
+  let e = det.eintrag;
+  const kandidatenGleich = det.alleTreffer.filter(t => t.unh === det.kennung &&
+    t.format === e.format && t.sparte === e.sparte);
+  const staende = [...new Set(det.alleTreffer.filter(t => t.unh === e.unh).map(t => t.stand))];
+  let erk =
+    `<dt>Nachrichtentyp</dt><dd>${esc(det.typ)}${e.sparte ? ' ' + e.sparte : ''}</dd>` +
+    `<dt>Formatstand</dt><dd>${staende.join(' und ')}</dd>` +
+    `<dt>Prüf-ID</dt><dd>${det.pruefi ? esc(det.pruefi) : '– (Nachricht ohne RFF+Z13)'}</dd>`;
+
+  let meta = null;
+  try {
+    if (det.pruefi && e.pruefis.includes(det.pruefi)){
+      const m = await ladeMeta(e);
+      meta = m.einzel !== undefined ? m.einzel : (m.alle || {})[det.pruefi];
+    } else if (det.pruefi){
+      erk += `<dt>Achtung</dt><dd>Prüf-ID ${esc(det.pruefi)} ist im AHB ${e.format} ${e.stand} nicht enthalten.</dd>`;
+    }
+  } catch (ex){ erk += `<dt>Achtung</dt><dd>${esc(ex.message)}</dd>`; }
+
+  const migKey = e.format === 'UTILMD' ? (e.sparte === 'Gas' ? 'UTILMD_GAS' : 'UTILMD_STROM') : e.format;
+  let bedingungen = {};
+  try { bedingungen = await ladeBedingungen(e.metaPfad); window.EdiBedingungen = bedingungen; } catch(ex){}
+  const ctx = {
+    meta, pruefi: det.pruefi, stand: e.stand, format: e.format, unhSoll: e.unh,
+    migFormat: (migFormate[e.stand] || {})[migKey] || { felder: {}, maxWdh: {} },
+    stsStruktur: ((typeof stsStruktur !== 'undefined' ? stsStruktur : {})[e.stand] || {})[migKey] || null,
+    nadAufbau: ((typeof nadAufbau !== 'undefined' ? nadAufbau : {})[e.stand] || {})[migKey] || null,
+    ebd: (ebdAntwortcodes[e.stand] || {}).ebds || {},
+    codelisten: codelisten, afRegeln: afRegeln, gs1Pruefziffer: gs1Pruefziffer,
+    condTree: window.EdiCondTree || {}, bedingungen: bedingungen,
+    cluster: (meta && meta.antwortcluster === 'ablehnung') ? 'Ablehnung'
+           : ((meta && meta.antwortcluster === 'zustimmung') ? 'Zustimmung' : ''),
+  };
+  let res;
+  if (det.pruefi && kandidatenGleich.length > 1){
+    let best = null;
+    for (const kand of kandidatenGleich){
+      if (!kand.pruefis.includes(det.pruefi)) continue;
+      let m2 = null;
+      try {
+        const g = await ladeMeta(kand);
+        m2 = g.einzel !== undefined ? g.einzel : (g.alle || {})[det.pruefi];
+      } catch (ex){ continue; }
+      const migKey2 = kand.format === 'UTILMD' ? (kand.sparte === 'Gas' ? 'UTILMD_GAS' : 'UTILMD_STROM') : kand.format;
+      const ctx2 = Object.assign({}, ctx, { meta: m2, stand: kand.stand, unhSoll: kand.unh,
+        migFormat: (migFormate[kand.stand] || {})[migKey2] || { felder: {}, maxWdh: {} },
+        stsStruktur: ((typeof stsStruktur !== 'undefined' ? stsStruktur : {})[kand.stand] || {})[migKey2] || null,
+        nadAufbau: ((typeof nadAufbau !== 'undefined' ? nadAufbau : {})[kand.stand] || {})[migKey2] || null,
+        ebd: (ebdAntwortcodes[kand.stand] || {}).ebds || {} });
+      const r2 = AhbValidator.validiere(parsed, ctx2);
+      if (!best || r2.zusammenfassung.fehler < best.res.zusammenfassung.fehler)
+        best = { kand, res: r2, meta: m2 };
+    }
+    if (best){ res = best.res; e = best.kand; meta = best.meta; }
+    else res = AhbValidator.validiere(parsed, ctx);
+  } else if (!det.pruefi){
+    try {
+      const m = await ladeMeta(e);
+      const best = AhbValidator.besteVariante(parsed, ctx, m.alle || {});
+      res = best.res;
+      erk += `<dt>AHB-Variante</dt><dd>${esc(best.key.replace(/_/g, ' '))} (beste Übereinstimmung)</dd>`;
+    } catch (ex){ res = AhbValidator.validiere(parsed, ctx); }
+  } else {
+    res = AhbValidator.validiere(parsed, ctx);
+  }
+  return { parsed, det, e, meta, res, erkennungHtml: erk };
+}
+
+// ---- Linke Segmentliste: nummeriert (ab UNH=1, wie CONTRL UCS DE0096),
+//      jedes Segment mit eindeutiger ID für Sprung/Hervorhebung durch den Abgleich.
+function segmentlisteHtml(res, unitIdx){
+  let html = '';
+  let segNr = 0;
+  res.zeilen.forEach(z => {
+    const tag = (z.raw || '').slice(0, 3);
+    if (tag === 'UNH') segNr = 1; else if (segNr > 0) segNr += 1;
+    const nummer = (segNr > 0 && tag !== 'UNZ' && tag !== 'UNB') ? segNr : '';
+    if (tag === 'UNT') segNr = 0;
+    const cls = z.status === 'fehler' ? 'rot' : 'ok';
+    const id = nummer ? ` id="lseg-${unitIdx}-${nummer}"` : '';
+    let inner = `<span class="segnr">${nummer}</span>` + esc(z.raw);
+    z.meldungen.forEach(m => { inner += `<span class="meld">✗ ${esc(m)}</span>`; });
+    z.hinweise.forEach(m => { inner += `<span class="hin">ℹ ${esc(m)}</span>`; });
+    html += `<div class="seg ${cls}"${id}>${inner}</div>`;
+  });
+  return html;
+}
+function globalHtml(res){
+  let g = '';
+  res.global.meldungen.forEach(m => { g += `<div class="globalbox rot">${esc(m)}</div>`; });
+  if (res.fehlendeMuss.length)
+    g += `<div class="globalbox rot">Fehlende Muss-Segmente laut AHB: ${res.fehlendeMuss.map(esc).join('; ')}</div>`;
+  res.global.hinweise.forEach(m => { g += `<div class="globalbox info">${esc(m)}</div>`; });
+  return g;
+}
+
+// Nummer (wie in segmentlisteHtml vergeben) -> Index in parsed.segmente/res.zeilen.
+function positionsKarte(parsed){
+  const karte = {};
+  let segNr = 0;
+  parsed.segmente.forEach((s, i) => {
+    const tag = s.tag;
+    if (tag === 'UNH') segNr = 1; else if (segNr > 0) segNr += 1;
+    if (segNr > 0 && tag !== 'UNZ' && tag !== 'UNB') karte[segNr] = i;
+    if (tag === 'UNT') segNr = 0;
+  });
+  return karte;
+}
+
+// DE-Nummer aus Element-/Komponentenposition zurückgewinnen (Umkehrung von
+// AhbValidator.DECODER) — für eine sprechende Anzeige zu UCD DE0098/DE0104.
+function deNummerVon(tag, el0, comp0){
+  const dec = (AhbValidator.DECODER || {})[tag];
+  if (!dec) return null;
+  for (const de of Object.keys(dec)){
+    const pos = dec[de];
+    if (pos[0] === el0 && (pos[1] || 0) === comp0) return de;
+  }
+  return null;
+}
+
+let linkeEinheiten = null;   // [{label, text, parsed, det, res, karte, ref, bgm}]
+let contrlErgebnis = null;   // { dateiCode, dateiFehlercode, bloecke, parsed }
+
+async function pruefeLinks(){
+  const text = $('eingabeLinks').value;
+  const box = $('linksErgebnis');
+  if (!text.trim()){ box.innerHTML = ''; linkeEinheiten = null; aktualisiereAbgleich(); return; }
+  box.innerHTML = '<p class="lade">Wird geprüft …</p>';
+  const einheiten = zerlegeNachrichten(text);
+  const ergebnisse = [];
+  for (const eh of einheiten){
+    const r = await pruefeEinText(eh.text);
+    ergebnisse.push(Object.assign({}, eh, r, { karte: r.parsed ? positionsKarte(r.parsed) : {} }));
+  }
+  linkeEinheiten = ergebnisse;
+  let html = '';
+  ergebnisse.forEach((r, i) => {
+    if (r.det && r.det.fehler){
+      html += `<div class="msgblock rot"><h3>${esc(r.label)} <span class="badge rot">nicht erkannt</span></h3>` +
+        `<div class="globalbox rot">${esc(r.det.fehler)}</div></div>`;
+      return;
+    }
+    const f = r.res.zusammenfassung.fehler;
+    const badge = f ? `<span class="badge rot">${f} Fehler</span>` : `<span class="badge ok">fehlerfrei</span>`;
+    html += `<div class="msgblock ${f ? 'rot' : 'ok'}">` +
+      `<h3>${esc(r.label)} — ${esc(r.det.typ)}${r.det.pruefi ? ' · Prüf-ID ' + esc(r.det.pruefi) : ''} ${badge}</h3>` +
+      `<div class="kv">${r.erkennungHtml}</div>` +
+      globalHtml(r.res) +
+      `<div class="spalte-scroll">${segmentlisteHtml(r.res, i)}</div>` +
+      `</div>`;
+  });
+  box.innerHTML = html;
+  aktualisiereAbgleich();
+}
+
+// ---- Rechts: negative CONTRL auslesen --------------------------------------
+function leseUcSegmente(segs, iUCM, ende){
+  const eintraege = [];
+  let aktuelles = null;
+  for (let i = iUCM + 1; i < ende; i++){
+    const s = segs[i];
+    if (s.tag === 'UCS'){
+      aktuelles = { pos: (s.elemente[0] || [])[0] || '', segCode: (s.elemente[1] || [])[0] || '', ucd: [] };
+      eintraege.push(aktuelles);
+    } else if (s.tag === 'UCD' && aktuelles){
+      const el1 = s.elemente[1] || [];
+      aktuelles.ucd.push({ code: (s.elemente[0] || [])[0] || '', dePos: el1[0] || '', komp: el1[1] || '' });
+    }
+  }
+  return eintraege;
+}
+function leseContrl(text){
+  const parsed = AhbValidator.parse(text);
+  const segs = parsed.segmente;
+  const iUNH = segs.findIndex(s => s.tag === 'UNH');
+  const typKennung = iUNH >= 0 ? (segs[iUNH].elemente[1] || [])[0] : '';
+  if (typKennung !== 'CONTRL')
+    return { fehler: `Das rechts eingefügte Dokument wird nicht als CONTRL erkannt (UNH-Nachrichtentyp „${typKennung || '—'}“).`, parsed };
+  const uci = segs.find(s => s.tag === 'UCI');
+  if (!uci) return { fehler: 'Kein UCI-Segment gefunden — keine gültige CONTRL-Struktur.', parsed };
+  const dateiCode = (uci.elemente[3] || [])[0] || '';
+  const dateiFehlercode = (uci.elemente[4] || [])[0] || '';
+  const ucmIdx = [];
+  segs.forEach((s, i) => { if (s.tag === 'UCM') ucmIdx.push(i); });
+  const bloecke = ucmIdx.map((iUCM, k) => {
+    const naechstesUCM = ucmIdx[k + 1];
+    let ende = naechstesUCM !== undefined ? naechstesUCM : -1;
+    if (ende < 0){
+      const idxUNT = segs.findIndex((s, j) => j > iUCM && s.tag === 'UNT');
+      ende = idxUNT >= 0 ? idxUNT : segs.length;
+    }
+    const s = segs[iUCM];
+    const el1 = s.elemente[1] || [];
+    return {
+      ref: (s.elemente[0] || [])[0] || '',
+      typ: el1[0] || '',
+      version: el1.slice(1).filter(Boolean).join(':'),
+      code: (s.elemente[2] || [])[0] || '',
+      fehlercode: (s.elemente[3] || [])[0] || '',
+      ucs: leseUcSegmente(segs, iUCM, ende),
+    };
+  });
+  return { parsed, dateiCode, dateiFehlercode, bloecke };
+}
+function fehlertext0085(code){
+  const eintrag = (typeof uciFehlercodes0085 !== 'undefined' ? uciFehlercodes0085 : []).find(c => c[0] === code);
+  return eintrag ? eintrag[1] : '';
+}
+
+async function pruefeRechts(){
+  const text = $('eingabeRechts').value;
+  const box = $('rechtsErgebnis');
+  if (!text.trim()){ box.innerHTML = ''; contrlErgebnis = null; aktualisiereAbgleich(); return; }
+  const c = leseContrl(text);
+  if (c.fehler){
+    box.innerHTML = `<div class="globalbox rot">${esc(c.fehler)}</div>`;
+    contrlErgebnis = null; aktualisiereAbgleich(); return;
+  }
+  contrlErgebnis = c;
+  const dateiText = c.dateiCode === '7'
+    ? 'Übertragungsdatei angenommen (UCI DE0083 = 7)'
+    : `Übertragungsdatei abgelehnt (UCI DE0083 = 4, Fehlercode ${esc(c.dateiFehlercode)} – ${esc(fehlertext0085(c.dateiFehlercode))})`;
+  let html = `<div class="kv"><dt>Datei-Ebene</dt><dd>${dateiText}</dd>` +
+    `<dt>Fehlerhafte Nachrichten</dt><dd>${c.bloecke.length}</dd></div>`;
+  c.bloecke.forEach((b, i) => {
+    const ft = fehlertext0085(b.fehlercode);
+    html += `<div class="msgblock ${b.code === '4' ? 'rot' : 'ok'}"><h3>SG1 Nachricht ${i + 1}: ` +
+      `${esc(b.typ)}${b.version ? ':' + esc(b.version) : ''} · Referenz ${esc(b.ref) || '—'}</h3>` +
+      `<div class="kv"><dt>DE0083</dt><dd>${esc(b.code)}${b.code === '4' ? ' (abgelehnt)' : ' (angenommen)'}</dd>` +
+      `<dt>DE0085</dt><dd>${b.fehlercode ? esc(b.fehlercode) + ' – ' + esc(ft) : '—'}</dd>` +
+      `<dt>SG2-Einträge</dt><dd>${b.ucs.length || '— (nur Nachrichtenebene)'}</dd></div>`;
+    b.ucs.forEach(u => {
+      html += `<div class="zeile">UCS Segmentposition ${esc(u.pos)}` +
+        (u.segCode ? ` · Code ${esc(u.segCode)} (${esc(fehlertext0085(u.segCode))})` : '') + '</div>';
+      u.ucd.forEach(d => {
+        html += `<div class="zeile" style="padding-left:16px">↳ UCD Element ${esc(d.dePos)}` +
+          (d.komp ? `, Komponente ${esc(d.komp)}` : '') +
+          ` · Code ${esc(d.code)} (${esc(fehlertext0085(d.code))})</div>`;
+      });
+    });
+    html += `</div>`;
+  });
+  box.innerHTML = html;
+  aktualisiereAbgleich();
+}
+
+// ---- Abgleich ---------------------------------------------------------------
+function springeUndHebeHervor(unitIdx, nummer){
+  document.querySelectorAll('.seg.hervorgehoben').forEach(el => el.classList.remove('hervorgehoben'));
+  const el = document.getElementById(`lseg-${unitIdx}-${nummer}`);
+  if (!el) return;
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  el.classList.add('hervorgehoben');
+  setTimeout(() => el.classList.remove('hervorgehoben'), 2500);
+}
+
+// Schwache Stichwort-Zuordnung DE0085-Code -> Art des Validator-Befunds, nur als
+// zusätzliches Signal (nicht als Ausschlusskriterium): hilft bei der Einordnung,
+// ob ein gefundener Befund tatsächlich zum gemeldeten Fehlercode passt.
+const CODE_STICHWORT = {
+  '13': /fehlt|nicht vorgesehen|Pflichtangabe/i,
+  '12': /zulässig sind|kein Code|nicht in den? Codelisten|nicht vorgesehen/i,
+  '39': /Länge \d+, erlaubt max/i,
+  '40': /Länge \d+, erlaubt genau/i,
+  '16': /übersteigt|zu viele/i,
+  '35': /Wiederholung|nur 1 Wiederholung/i,
+  '28': /nicht vorgesehen|Aufbau prüfen/i,
+  '21': /Zeichen/i,
+};
+
+function aktualisiereAbgleich(){
+  const panel = $('panelAbgleich'), box = $('abgleichErgebnis');
+  if (!linkeEinheiten || !contrlErgebnis){ panel.style.display = 'none'; box.innerHTML = ''; return; }
+  panel.style.display = '';
+  let html = '';
+
+  if (contrlErgebnis.dateiCode !== '7' && !contrlErgebnis.bloecke.length){
+    const ft = fehlertext0085(contrlErgebnis.dateiFehlercode);
+    html += `<div class="ergebniskarte frag"><h3>Ablehnung auf Datei-Ebene ` +
+      `<span class="badge frag">kein Segmentbezug</span></h3>` +
+      `<div class="zeile">Die gesamte Übertragungsdatei wurde zurückgewiesen (Fehlercode ` +
+      `${esc(contrlErgebnis.dateiFehlercode)} – ${esc(ft)}), ohne Angabe einer einzelnen Nachricht (kein SG1 UCM). ` +
+      `Ein Segment-/Datenelement-Bezug ist damit nicht möglich — bitte die Rahmensegmente ` +
+      `(UNA/UNB/UNZ, Zeichensatz, MP-IDs) der linken Nachricht(en) von Hand mit dem Fehlercode abgleichen.</div></div>`;
+  } else if (!contrlErgebnis.bloecke.length){
+    html += `<div class="ergebniskarte info"><h3>Keine Ablehnung <span class="badge ok">Empfang bestätigt</span></h3>` +
+      `<div class="zeile">Die CONTRL bestätigt den Empfang ohne Einwände (UCI DE0083 = 7, keine SG1 UCM) — ` +
+      `kein Ablehnungsgrund zum Abgleich vorhanden.</div></div>`;
+  }
+
+  contrlErgebnis.bloecke.forEach((b, bi) => {
+    const treffer = [];
+    linkeEinheiten.forEach((e, i) => { if (e.ref && b.ref && e.ref === b.ref) treffer.push(i); });
+    if (!treffer.length){
+      html += `<div class="ergebniskarte frag"><h3>SG1 Nachricht ${bi + 1}: ${esc(b.typ)} ` +
+        `<span class="badge frag">nicht zugeordnet</span></h3>` +
+        `<div class="zeile">Referenz „${esc(b.ref)}“ (UCM DE0062) findet sich in keiner der links geprüften ` +
+        `Nachrichten (UNH DE0062) — falsche Datei eingefügt, oder die passende Original-Nachricht fehlt links.</div></div>`;
+      return;
+    }
+    const unitIdx = treffer[0];
+    const einheit = linkeEinheiten[unitIdx];
+    const agoHinweis = '';
+    if (!b.ucs.length){
+      const ft = fehlertext0085(b.fehlercode);
+      const alleBefunde = (einheit.res.zeilen || []).flatMap(z => z.meldungen);
+      html += `<div class="ergebniskarte frag"><h3>SG1 Nachricht ${bi + 1}: ${esc(einheit.label)} ` +
+        `<span class="badge frag">nur Nachrichtenebene</span></h3>` +
+        `<div class="zeile">Fehlercode ${esc(b.fehlercode)} – ${esc(ft)}, ohne UCS/UCD-Segmentzeiger. ` +
+        `Alle Befunde des Validators an dieser Nachricht als Kandidaten:</div>` +
+        (alleBefunde.length
+          ? `<ul class="befundliste">${alleBefunde.map(m => `<li>${esc(m)}</li>`).join('')}</ul>`
+          : `<div class="zeile">Der Validator findet an dieser Nachricht keinen eigenen Befund — nicht nachvollziehbar, bitte fachlich prüfen.</div>`) +
+        `</div>`;
+      return;
+    }
+    b.ucs.forEach(u => {
+      const nummer = Number(u.pos);
+      const idx = einheit.karte[nummer];
+      const zeile = idx !== undefined ? einheit.res.zeilen[idx] : null;
+      const segTextRoh = zeile ? zeile.raw : null;
+      if (idx === undefined){
+        html += `<div class="ergebniskarte frag"><h3>SG1 Nachricht ${bi + 1} · Segment ${esc(u.pos)} ` +
+          `<span class="badge frag">Position nicht gefunden</span></h3>` +
+          `<div class="zeile">Segmentposition ${esc(u.pos)} (UCS DE0096) existiert in „${esc(einheit.label)}“ nicht — ` +
+          `Nachricht evtl. abweichend übertragen oder die CONTRL bezieht sich auf eine andere Fassung.</div></div>`;
+        return;
+      }
+      const codesHier = u.ucd.length ? u.ucd : [{ code: u.segCode, dePos: '', komp: '' }];
+      codesHier.forEach(d => {
+        const de = d.dePos ? deNummerVon(zeile.tag, Number(d.dePos) - 1, d.komp ? Number(d.komp) - 1 : 0) : null;
+        const ft = fehlertext0085(d.code);
+        const stichwort = CODE_STICHWORT[d.code];
+        const alleAmSegment = zeile.meldungen.concat(zeile.hinweise.map(h => h));
+        const trefferMeldungen = zeile.meldungen.filter(m =>
+          (!de || m.includes('DE' + de)) && (!stichwort || stichwort.test(m)));
+        const nurSegmentTreffer = zeile.meldungen.filter(m => !de || m.includes('DE' + de));
+        let art, badge, text;
+        if (trefferMeldungen.length){
+          art = 'bestaetigt'; badge = 'bestaetigt';
+          text = `Validator bestätigt unabhängig: ${trefferMeldungen.map(esc).join(' · ')}`;
+        } else if (nurSegmentTreffer.length){
+          art = 'bestaetigt'; badge = 'bestaetigt';
+          text = `Validator findet an diesem Segment/DE einen Befund: ${nurSegmentTreffer.map(esc).join(' · ')}`;
+        } else if (zeile.meldungen.length){
+          art = 'frag'; badge = 'frag';
+          text = `Validator findet an diesem SEGMENT Befunde, aber nicht erkennbar am selben Datenelement — ` +
+            `evtl. ungenaue Positionsangabe, bitte prüfen: ${zeile.meldungen.map(esc).join(' · ')}`;
+        } else {
+          art = 'frag'; badge = 'frag';
+          text = 'Validator findet an dieser Stelle keinen eigenen Befund — Ablehnung an dieser Position nicht nachvollziehbar, bitte fachlich prüfen.';
+        }
+        html += `<div class="ergebniskarte ${art}"><h3>SG1 Nachricht ${bi + 1} · Segment ${nummer}` +
+          (d.dePos ? ` · Element ${d.dePos}${d.komp ? ', Komp. ' + d.komp : ''}${de ? ' (DE' + de + ')' : ''}` : '') +
+          ` <span class="badge ${badge}">${badge === 'bestaetigt' ? 'bestätigt' : 'unklar'}</span> ` +
+          `<button class="go secondary klein" onclick="springeUndHebeHervor(${unitIdx},${nummer})">im Segmentbaum zeigen</button></h3>` +
+          `<div class="zeile">CONTRL-Fehlercode ${esc(d.code)} – ${esc(ft)}</div>` +
+          `<div class="zielsegment">${esc(segTextRoh)}</div>` +
+          `<div class="zeile">${text}</div></div>`;
+      });
+    });
+  });
+
+  box.innerHTML = html;
+}
+</script>
+</body>
+</html>

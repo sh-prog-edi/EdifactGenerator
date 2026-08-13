@@ -3391,3 +3391,81 @@ echten Marktnachrichten (1491 Einheiten) weiterhin 0 Fehler.
 test_edi_escaping.js` 5/5, NAD+MS/MR-Mutationssweep 553/553 (vorher 0/553),
 volle Regression grün (37 Läufe inkl. der beiden neuen Tests), Referenz-Suite
 23/23 Dateien · 1491/1491 Einheiten · 0 Fehler-Befunde.
+
+## 71. Ablehnungs-Abgleich: neg. CONTRL gegen abgelehnte Nachricht (13.08.2026)
+
+**Auftrag.** "kannst du eine weitere Maske bauen, in der man auf der einen
+Seite (links) eine abgelehnte Nachricht und auf der anderen Seite (rechts) die
+neg. CONTRL oder neg APERAK anlegt und dann die Fehlermeldung aus der neg.
+CONTRL / neg APERAK ausliest, in der abgelehnten Nachricht aufzeigt (quasi das
+Segment und Datenelement...) und diesen 'Fehler' gleich mit auf die AHB/MIG
+prüft (...) und sich damit die neg. Meldung bestätigt oder auch unberechtigt
+ist?" — zunächst auf Machbarkeit geprüft (siehe Gesprächsverlauf), dann auf
+ausdrücklichen Wunsch ("erst CONTRL, danach APERAK") in zwei Schritten
+umgesetzt. Dieser Abschnitt deckt den ersten Schritt (CONTRL) ab; APERAK folgt
+als eigenständige Erweiterung.
+
+**Warum CONTRL zuerst gut automatisierbar ist.** Die CONTRL-Syntaxfehlermeldung
+trägt einen vollständig strukturierten Fehlerzeiger: SG1 UCM (DE0062 = UNH-
+Referenz der betroffenen Nachricht), SG2 UCS (DE0096 = Segmentposition,
+1-basiert, Zählung beginnt bei jedem UNH neu bei 1 — exakt dieselbe Zählweise,
+die der eigene Validator bereits für seine Segmentliste verwendet, siehe
+Abschnitt-Vermerk in `test_validator_komponenten.js`), UCD (DE0098/DE0104 =
+Datenelement-/Komponentenposition innerhalb des Segments). Bei der APERAK ist
+der einzige dafür vorgesehene Platz (FTX+Z02, "Ortsangabe des AHB-Fehlers")
+Freitext ohne feste Struktur — dort bleibt nur eine Vorgangs-Eingrenzung über
+RFF+ACE/AGO/TN plus eine unterstützende, nicht abschließende Auswertung
+möglich.
+
+**Neue Seite `ablehnung-abgleich.html`.** Zwei Spalten: links die abgelehnte
+Original-Nachricht (Import wie bei validator.html/umbau.html: Drag&Drop,
+Dateiauswahl, Einfügen), rechts die erhaltene negative CONTRL. Beide Seiten
+werden unabhängig mit dem bestehenden Validator-Kern geprüft (`AhbValidator`,
+dieselbe Erkennungs-/Prüflogik wie `validator.html`). Aus der CONTRL werden UCI
+(Datei-Ebene: DE0083 Annahme/Ablehnung, DE0085 Fehlercode), alle SG1 UCM-Blöcke
+und ihre SG2 UCS/UCD-Einträge strukturiert ausgelesen. Für jeden UCS/UCD-Zeiger
+wird die passende Original-Nachricht (per UNH-Referenz) sowie darin die
+gezeigte Segmentposition und — über eine Umkehrung der bestehenden
+`AhbValidator.DECODER`-Tabelle — die betroffene DE-Nummer ermittelt. Das
+Ergebnis wird dem unabhängigen Validator-Befund an genau dieser Stelle
+gegenübergestellt und in eine von vier Kategorien eingeordnet: Datenelement-
+und Stichwort-Treffer ("bestätigt"), Segment-Treffer ohne exakte DE-Übereinstim-
+mung ("bestätigt"), Befunde am Segment aber nicht an der genannten Position
+("unklar, ungenaue Positionsangabe") sowie kein eigener Befund an der Stelle
+("unklar, nicht nachvollziehbar"). Ein Klick auf "im Segmentbaum zeigen"
+scrollt zur betroffenen Zeile in der linken Segmentliste und hebt sie kurz
+hervor. Randfälle werden eigens behandelt: Ablehnung auf Datei-Ebene ohne UCM
+(kein Segmentbezug möglich), UCM ohne UCS/UCD (nur Nachrichtenebene, alle
+Befunde der Nachricht als Kandidatenliste), CONTRL-Referenz ohne Entsprechung
+links ("nicht zugeordnet"), CONTRL bestätigt ohne Einwände sowie ein rechts
+eingefügtes Dokument, das gar keine CONTRL ist.
+
+**Segmentzählung: bewusst OHNE Vorgangs-Filterung.** `validator.html`s
+`baueEinheiten()` zerlegt UTILMD-Nachrichten mit mehreren Vorgängen in
+gefilterte, neu serialisierte Mini-Nachrichten je Vorgang — für die
+AHB-Prüfung richtig, würde hier aber Segmente herausfiltern und die Zählung
+gegenüber der realen CONTRL-Referenz (die immer die vollständig übertragene
+Nachricht zählt) verschieben. Der Abgleich verwendet daher eine eigene
+`zerlegeNachrichten()`, die ausschließlich nach UNH…UNT-Grenzen zerlegt, nie
+nach Vorgang. Bekannte Einschränkung: bei UTILMD-Nachrichten mit mehreren
+Prüf-IDs in einem UNH wird nur die zuerst erkannte Prüf-ID für Muss-/Code-
+Prüfungen herangezogen; rein syntaktische Prüfungen (Format, Aufbau,
+Wiederholung) bleiben davon unberührt.
+
+**Datenpflege.** Die DE0085-Fehlercode-Liste (UNTDID 0085) war bisher eine
+Konstante direkt im CONTRL-Generator; sie wurde nach `_engine/daten/
+uci-fehlercodes.js` ausgelagert, damit beide Seiten dieselbe Quelle nutzen statt
+einer zweiten, potenziell abweichenden Kopie zu pflegen.
+
+**Verlinkung.** Von der Startseite (neue Kachel "Ablehnung abgleichen (neg.
+CONTRL)") sowie vom CONTRL-Generator aus erreichbar.
+
+**Nachweis.** Neuer Regressionstest `scripts/test_ablehnung_abgleich.js`
+(16 Prüfungen): korrekte Segmentnummerierung/-markierung links, Fall
+"Treffer bestätigt" (CONTRL-Zeiger auf NAD+Z63/DE3124, identischer Befund wie
+in Abschnitt 68), Fall "nicht nachvollziehbar" (Zeiger auf unbeanstandetes
+Segment), Fall "nicht zugeordnet" (falsche UNH-Referenz), Fall "kein
+Segmentbezug" (Ablehnung auf Dateiebene ohne UCM), Fall "Empfang bestätigt"
+(CONTRL ohne Einwände), Fall "kein CONTRL" (Fehlermeldung statt Absturz),
+Hervorhebung per Klick, Leeren-Button, Datei-Import — alle 16/16 grün, keine
+Konsolen-/Seitenfehler. Volle Regression grün (38 Läufe).
