@@ -592,90 +592,41 @@ function leseContrl(text){
 }
 
 // ---- Referenzprüfung: Gehört die CONTRL zur Ursprungsnachricht? ------------
-// Muss VOR jeder inhaltlichen Auswertung stehen (Auftraggeber, 13.08.2026):
-// Bezieht sich die CONTRL auf eine andere Übertragungsdatei, ist jeder
-// Positions- und Fehlerabgleich gegenstandslos und sogar irreführend — die
-// Segmentzählung der CONTRL zeigt dann in eine fremde Nachricht.
-// Grundlage: UCI DE0020 identifiziert die Übertragungsdatei, auf die Bezug
-// genommen wird (MIG CONTRL), DE0004/DE0010 deren Absender/Empfänger.
+// Steht VOR jeder inhaltlichen Auswertung (Auftraggeber, 13.08.2026). Bezieht
+// sich die CONTRL auf eine andere Übertragungsdatei, wird NUR das gemeldet —
+// kein Positionsabgleich, keine Fehlerkarten, keine Segmentmarkierung. Jede
+// weitere Ausgabe wäre auf eine fremde Nachricht bezogen und stiftet Verwirrung.
+//
+// Maßgeblich ist allein die Datenaustauschreferenz: UCI DE0020 nennt laut MIG
+// die „Übertragungsdatei, auf die Bezug genommen wird"; die UCM-Erläuterung
+// definiert DE0062 ausdrücklich als Referenz INNERHALB dieser Datei. DE0020 ist
+// damit die übergeordnete Klammer, die der Nachrichtenzuordnung vorausgeht.
 function referenzPruefung(datei, contrl){
   if (!datei || !contrl || !contrl.bezug) return null;
-  const b = contrl.bezug;
-  const punkte = [];
   const norm = v => String(v == null ? '' : v).trim();
-
-  // 1. Datenaustauschreferenz — die eigentliche Zuordnung.
-  if (!norm(b.dar)){
-    punkte.push({ art: 'frag', titel: 'Datenaustauschreferenz (UCI DE0020) fehlt',
-      text: 'Die CONTRL nennt keine Datenaustauschreferenz — eine eindeutige Zuordnung ' +
-        'zur geprüften Übertragungsdatei ist damit nicht möglich (DE0020 ist Muss).' });
-  } else if (norm(b.dar) === norm(datei.dar)){
-    punkte.push({ art: 'ok', titel: 'Datenaustauschreferenz stimmt überein',
-      text: `UCI DE0020 „${b.dar}" = UNB DE0020 der linken Übertragungsdatei.` });
-  } else {
-    punkte.push({ art: 'rot', titel: 'Datenaustauschreferenz stimmt NICHT überein',
-      text: `Die CONTRL bezieht sich auf die Übertragungsdatei „${b.dar}" (UCI DE0020), ` +
-        `links steht aber „${datei.dar || '—'}" (UNB DE0020). Die CONTRL gehört nicht zu ` +
-        `dieser Nachricht — der weitere Abgleich ist gegenstandslos.` });
-  }
-
-  // 2. Beteiligte (UCI DE0004/DE0010) gegen die MP-IDs der geprüften Datei.
-  //
-  // BEWUSST MENGENBASIERT, nicht rollengenau: Die MIG bezeichnet S002/S003 im UCI
-  // als „Absender/Empfänger der Übertragungsdatei"; der eigene CONTRL-Generator
-  // belegt sie mit denen der GEPRÜFTEN Datei. In der Praxis kommt aber auch die
-  // getauschte Belegung vor (Sicht des CONTRL-Absenders) — die Dokumente treffen
-  // dazu keine eindeutige Aussage. Eine rollengenaue Prüfung würde deshalb reihenweise
-  // Fehlalarme erzeugen. Geprüft wird darum, ob DIESELBEN BEIDEN Marktpartner
-  // beteiligt sind; die Reihenfolge erzeugt allenfalls einen Hinweis.
-  const mpContrl = [norm(b.absender), norm(b.empfaenger)].filter(Boolean);
-  const mpDatei = [norm(datei.absender), norm(datei.empfaenger)].filter(Boolean);
-  if (mpContrl.length && mpDatei.length){
-    const fremd = mpContrl.filter(id => !mpDatei.includes(id));
-    if (fremd.length){
-      punkte.push({ art: 'rot', titel: 'Beteiligte Marktpartner weichen ab',
-        text: `Die CONTRL nennt als Beteiligte der geprüften Datei „${mpContrl.join('" und "')}" ` +
-          `(UCI DE0004/DE0010); die linke Übertragungsdatei läuft zwischen ` +
-          `„${mpDatei.join('" und "')}" (UNB S002/S003). Nicht zuordenbar: ` +
-          `„${fremd.join('", "')}".` });
-    } else if (mpContrl.length === 2 && norm(b.absender) !== norm(datei.absender)){
-      punkte.push({ art: 'ok', titel: 'Beteiligte stimmen überein (Rollen getauscht)',
-        text: `Dieselben Marktpartner, aber in getauschter Reihenfolge angegeben — ` +
-          `im Markt sind beide Lesarten von UCI DE0004/DE0010 anzutreffen. Kein Befund.` });
-    } else {
-      punkte.push({ art: 'ok', titel: 'Beteiligte Marktpartner stimmen überein',
-        text: `UCI DE0004/DE0010 nennen dieselben Marktpartner wie das UNB der linken Datei.` });
-    }
-  }
-
-  const passt = !punkte.some(p => p.art === 'rot');
-  const unsicher = punkte.some(p => p.art === 'frag');
-  return { punkte, passt, unsicher };
+  const darContrl = norm(contrl.bezug.dar);
+  const darDatei = norm(datei.dar);
+  if (!darContrl) return { passt: false, ohneAngabe: true, darContrl, darDatei };
+  return { passt: darContrl === darDatei, darContrl, darDatei };
 }
 
+// Klare Aussage statt Prüfkatalog: die referenzierte Datenaustauschreferenz
+// nennen — mehr braucht es für die Entscheidung „falsche Datei eingefügt" nicht.
 function referenzHtml(pr){
-  if (!pr) return '';
-  const art = !pr.passt ? 'rot' : (pr.unsicher ? 'frag' : 'bestaetigt');
-  const badge = !pr.passt ? '<span class="badge rot">gehört NICHT zusammen</span>'
-    : (pr.unsicher ? '<span class="badge frag">mit Einschränkung</span>'
-                   : '<span class="badge ok">zugeordnet</span>');
-  let html = `<div class="ergebniskarte referenz ${art === 'rot' ? 'frag' : art}">` +
-    `<h3>0. Referenzprüfung: Gehört die CONTRL zu dieser Nachricht? ${badge}</h3>`;
-  pr.punkte.forEach(p => {
-    const zeichen = p.art === 'ok' ? '✓' : (p.art === 'rot' ? '✗' : 'ℹ');
-    html += `<div class="zeile"><strong>${zeichen} ${esc(p.titel)}</strong> — ${esc(p.text)}</div>`;
-  });
-  if (!pr.passt)
-    html += `<div class="globalbox rot">Die folgenden Auswertungen beziehen sich auf eine ` +
-      `Nachricht, auf die sich diese CONTRL nach ihren eigenen Referenzangaben nicht ` +
-      `bezieht. Bitte zuerst die richtige Übertragungsdatei einfügen.</div>`;
-  return html + `</div>`;
+  if (!pr || pr.passt) return '';
+  if (pr.ohneAngabe)
+    return `<div class="ergebniskarte referenz frag">` +
+      `<h3>Zuordnung nicht möglich <span class="badge frag">ohne Referenz</span></h3>` +
+      `<div class="zeile">Die CONTRL nennt keine Datenaustauschreferenz ` +
+      `(UCI DE0020) — sie lässt sich keiner Übertragungsdatei zuordnen.</div></div>`;
+  return `<div class="ergebniskarte referenz frag">` +
+    `<h3>Diese CONTRL gehört nicht zu dieser Nachricht ` +
+    `<span class="badge rot">keine Zuordnung</span></h3>` +
+    `<div class="zeile">Sie bezieht sich auf die Übertragungsdatei ` +
+    `<strong>${esc(pr.darContrl)}</strong> (UCI DE0020); links eingefügt ist ` +
+    `<strong>${esc(pr.darDatei || '—')}</strong> (UNB DE0020).</div></div>`;
 }
-// Fehlercode-Klartext SEGMENTGENAU (Protokoll Abschnitt 74): DE0085 führt im UCI
-// (Übertragungsdatei), UCM (Nachricht), UCS (Segment) und UCD (Datenelement)
-// unterschiedliche Codes und Erläuterungen — Code 26 „Duplikat gefunden" meint im
-// UCI ein Duplikat der ÜBERTRAGUNGSDATEI, im UCM ein Duplikat der NACHRICHT.
-// Quelle: _engine/daten/uci-fehlercodes.js, maschinell aus dem MIG CONTRL.
+
 function fehlereintrag(code, segment, de){
   if (typeof contrlFehlereintrag === 'function') return contrlFehlereintrag(code, segment, de);
   const eintrag = (typeof uciFehlercodes0085 !== 'undefined' ? uciFehlercodes0085 : [])
@@ -856,10 +807,16 @@ function aktualisiereAbgleich(){
   panel.style.display = '';
   let html = '';
 
-  // Referenzprüfung zuerst — sie entscheidet, ob alles Weitere überhaupt
-  // aussagekräftig ist (Protokoll Abschnitt 76).
+  // Referenzprüfung zuerst — und bei fehlender Zuordnung ENDE: Ohne passende
+  // Datenaustauschreferenz bezieht sich jede weitere Ausgabe auf eine fremde
+  // Nachricht. Der frühe Ausstieg sorgt zugleich dafür, dass im linken
+  // Segmentbaum keine CONTRL-Marker gesetzt werden (zurückgesetzt wurden sie
+  // oben bereits). Protokoll Abschnitt 76.
   const refPruefung = referenzPruefung(linkeDatei, contrlErgebnis);
-  html += referenzHtml(refPruefung);
+  if (refPruefung && !refPruefung.passt){
+    box.innerHTML = referenzHtml(refPruefung);
+    return;
+  }
 
   if (contrlErgebnis.dateiCode !== '7' && !contrlErgebnis.bloecke.length){
     const ft = fehlertext0085(contrlErgebnis.dateiFehlercode, 'UCI');

@@ -164,13 +164,6 @@ liest den AHB-Status samt Bedingungen je Segment/Segmentgruppe/DE (u. a. SG2
 Es fehlt nur noch das Nachbearbeitungsskript, das diese Werte als `sgExpr`/`expr`
 in die CONTRL-Formular-Metas überträgt. Für APERAK steht die AHB-Auswertung noch aus.
 
-**Offene Rückfrage an den Auftraggeber (Abschnitt 76):** Die Referenzprüfung
-vergleicht die Beteiligten aus UCI DE0004/DE0010 mengenbasiert (dieselben beiden
-Marktpartner, Reihenfolge egal), weil die Dokumente die Rollenzuordnung nicht
-eindeutig festlegen und beide Lesarten im Markt vorkommen. Ist in der Praxis des
-Auftraggebers eine Lesart verbindlich, lässt sich daraus eine schärfere Prüfung
-machen (dann meldet auch eine getauschte Belegung eine Abweichung).
-
 **Ablehnungs-Abgleich, kleiner technischer Folgepunkt (Abschnitt 73):** Die
 zeichengenaue Markierung der Fehlerposition (bisher nur im Kasten
 "3. Abgleich") zusätzlich direkt im linken Segmentbaum — auf ausdrücklichen

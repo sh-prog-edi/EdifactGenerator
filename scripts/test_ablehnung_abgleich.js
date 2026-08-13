@@ -101,12 +101,10 @@ const CONTRL_FREMDE_DATEI =
   "UCM+844156800099+UTILMD:D:11A:UN+4+13'UCS+24+13'UCD+13+3:1'" +
   "UNT+5+1'UNZ+1+1'";
 
-// Wie CONTRL_TREFFER, aber ein FREMDER Marktpartner steht in UCI DE0004 —
-// Referenz passt, die Beteiligten nicht. (Eine bloß getauschte Reihenfolge ist
-// KEIN Befund, siehe referenzPruefung: beide Lesarten kommen im Markt vor.)
-const CONTRL_MPID_ABWEICHUNG =
+// CONTRL ohne Datenaustauschreferenz (UCI DE0020 leer) — nicht zuordenbar.
+const CONTRL_OHNE_DAR =
   "UNA:+.? 'UNB+UNOC:3+9900000000002:500+9900000000001:500+260803:0900+1++++++1'" +
-  "UNH+1+CONTRL:D:96A:UN'UCI+844156800099+9900000000009:500+9900000000002:500+4+13'" +
+  "UNH+1+CONTRL:D:96A:UN'UCI++9900000000001:500+9900000000002:500+4+13'" +
   "UCM+844156800099+UTILMD:D:11A:UN+4+13'UCS+24+13'UCD+13+3:1'" +
   "UNT+5+1'UNZ+1+1'";
 
@@ -117,10 +115,12 @@ const CONTRL_UNBEGRUENDET =
   "UCM+844156800099+UTILMD:D:11A:UN+4+13'UCS+5+13'" +
   "UNT+4+1'UNZ+1+1'";
 
-// Falsche UNH-Referenz -> keine der links geprüften Nachrichten passt.
+// Richtige Übertragungsdatei (UCI DE0020 passt), aber die CONTRL nennt eine
+// Nachrichten-Referenz (UCM DE0062), die in dieser Datei nicht vorkommt — prüft
+// die zweite Stufe der Zuordnung nach der Datei-Referenz (Abschnitt 76).
 const CONTRL_FALSCHE_REF =
   "UNA:+.? 'UNB+UNOC:3+9900000000002:500+9900000000001:500+260803:0900+1++++++1'" +
-  "UNH+1+CONTRL:D:96A:UN'UCI+999+9900000000002:500+9900000000001:500+7'" +
+  "UNH+1+CONTRL:D:96A:UN'UCI+844156800099+9900000000002:500+9900000000001:500+7'" +
   "UCM+999999999999+UTILMD:D:11A:UN+4+13'UCS+24+13'UCD+13+3:1'" +
   "UNT+5+1'UNZ+1+1'";
 
@@ -326,60 +326,47 @@ const ok = (b, t) => { console.log((b ? '  OK  ' : ' FAIL ') + t); if (!b) fails
   ok(/keine Syntaxfehlermeldung mit dem Fehlercode 26/.test(aperak.abgleich),
     'Fall H: AHB-Regel zu Code 26 (Verbot bei selbst verursachtem Wiedereinspielen) wird angezeigt');
 
-  // ---- Fall I: Referenzprüfung steht VORN und greift -----------------------
-  // Zuerst der Normalfall: passende Referenz -> zugeordnet.
+  // ---- Fall I: Referenzprüfung (Abschnitt 76) ------------------------------
+  // Passende Datenaustauschreferenz: normaler Abgleich, KEINE eigene Karte.
   await page.fill('#eingabeLinks', KAPUTT);
   await page.fill('#eingabeRechts', CONTRL_TREFFER);
   await page.click('text=neg. CONTRL gegen Nachricht prüfen');
   await page.waitForTimeout(800);
-  const refOk = await page.evaluate(() => {
-    const karten = document.querySelectorAll('#abgleichErgebnis .ergebniskarte');
-    return { ersteIstReferenz: karten[0] ? karten[0].classList.contains('referenz') : false,
-      text: karten[0] ? karten[0].innerText : '' };
-  });
-  ok(refOk.ersteIstReferenz,
-    'Fall I: Die Referenzprüfung steht als ERSTE Karte im Abgleich');
-  ok(/zugeordnet/.test(refOk.text) && /Datenaustauschreferenz stimmt überein/.test(refOk.text),
-    'Fall I: passende Datenaustauschreferenz wird als zugeordnet gemeldet');
+  const refOk = await page.evaluate(() => ({
+    referenzkarte: !!document.querySelector('#abgleichErgebnis .ergebniskarte.referenz'),
+    karten: document.querySelectorAll('#abgleichErgebnis .ergebniskarte').length,
+  }));
+  ok(!refOk.referenzkarte,
+    'Fall I: passende Referenz -> keine zusätzliche Karte (kein Schnörkel)');
+  ok(refOk.karten > 0, 'Fall I: der inhaltliche Abgleich läuft dann normal');
 
-  // Fremde Datenaustauschreferenz -> CONTRL gehört NICHT zu dieser Nachricht.
+  // Fremde Datenaustauschreferenz: NUR die klare Aussage, sonst nichts.
   await page.fill('#eingabeRechts', CONTRL_FREMDE_DATEI);
   await page.click('text=neg. CONTRL gegen Nachricht prüfen');
   await page.waitForTimeout(800);
-  const refFremd = await page.evaluate(() => {
-    const k = document.querySelector('#abgleichErgebnis .ergebniskarte.referenz');
-    return k ? k.innerText : '';
-  });
-  ok(/gehört NICHT zusammen/.test(refFremd),
-    'Fall I: fremde Datenaustauschreferenz -> „gehört NICHT zusammen“');
-  ok(/FREMDEDATEI99/.test(refFremd) && /844156800099/.test(refFremd),
-    'Fall I: beide Referenzen werden im Klartext gegenübergestellt');
-  ok(/gegenstandslos/.test(refFremd),
-    'Fall I: Hinweis, dass der weitere Abgleich gegenstandslos ist');
+  const refFremd = await page.evaluate(() => ({
+    text: document.getElementById('abgleichErgebnis').innerText,
+    karten: document.querySelectorAll('#abgleichErgebnis .ergebniskarte').length,
+    marker: document.querySelectorAll('.seg.ziel-contrl').length,
+  }));
+  ok(/gehört nicht zu dieser Nachricht/i.test(refFremd.text),
+    'Fall I: fremde Referenz -> klare Aussage „gehört nicht zu dieser Nachricht“');
+  ok(/FREMDEDATEI99/.test(refFremd.text),
+    'Fall I: die referenzierte Datenaustauschreferenz wird genannt');
+  ok(refFremd.karten === 1,
+    `Fall I: KEINE weiteren Ergebnisse (genau eine Karte, ist ${refFremd.karten})`);
+  ok(!/Segment 24|Fehlercode 13/.test(refFremd.text),
+    'Fall I: kein Positionsabgleich, keine Fehlerkarten');
+  ok(refFremd.marker === 0,
+    'Fall I: auch im linken Segmentbaum wird nichts markiert');
 
-  // MP-ID-Abweichung bei passender Referenz.
-  await page.fill('#eingabeRechts', CONTRL_MPID_ABWEICHUNG);
+  // CONTRL ohne Datenaustauschreferenz -> ebenfalls klarer Abbruch.
+  await page.fill('#eingabeRechts', CONTRL_OHNE_DAR);
   await page.click('text=neg. CONTRL gegen Nachricht prüfen');
   await page.waitForTimeout(800);
-  const refMp = await page.evaluate(() => {
-    const k = document.querySelector('#abgleichErgebnis .ergebniskarte.referenz');
-    return k ? k.innerText : '';
-  });
-  ok(/Beteiligte Marktpartner weichen ab/.test(refMp) && /9900000000009/.test(refMp),
-    'Fall I: fremde MP-ID in UCI DE0004 wird erkannt und benannt');
-
-  // Getauschte Reihenfolge derselben Marktpartner darf KEIN Befund sein.
-  await page.fill('#eingabeRechts', CONTRL_TREFFER);
-  await page.click('text=neg. CONTRL gegen Nachricht prüfen');
-  await page.waitForTimeout(800);
-  const refTausch = await page.evaluate(() => {
-    const k = document.querySelector('#abgleichErgebnis .ergebniskarte.referenz');
-    return k ? k.innerText : '';
-  });
-  ok(!/gehört NICHT zusammen/.test(refTausch),
-    'Fall I: getauschte Reihenfolge derselben Marktpartner erzeugt KEINEN Fehlalarm');
-  ok(/Rollen getauscht/.test(refTausch),
-    'Fall I: die getauschte Reihenfolge wird aber transparent benannt');
+  const refOhne = await page.evaluate(() => document.getElementById('abgleichErgebnis').innerText);
+  ok(/Zuordnung nicht möglich/.test(refOhne) && /keine Datenaustauschreferenz/.test(refOhne),
+    'Fall I: CONTRL ohne UCI DE0020 -> „Zuordnung nicht möglich“');
 
   // ---- Leeren-Buttons blenden Abgleich-Panel wieder aus ---------------------
   await page.click('.panel:has(#eingabeLinks) button.secondary');

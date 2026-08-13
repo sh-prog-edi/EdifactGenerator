@@ -7,19 +7,15 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 
 - **13.08.2026** – **Referenzprüfung: Gehört die CONTRL überhaupt zur
   Ursprungsnachricht?** Die Prüfung fehlte bislang vollständig: Aus dem UCI-Segment
-  wurden nur DE0083/DE0085 gelesen, die drei Referenzangaben davor — DE0020
-  (Datenaustauschreferenz der geprüften Datei) sowie DE0004/DE0010 (deren
-  Absender/Empfänger) — gar nicht. Eine CONTRL zu einer **fremden
-  Übertragungsdatei** lief damit unbemerkt in den vollen Positionsabgleich, und bei
-  einer Ablehnung auf Datei-Ebene ohne SG1 UCM fand überhaupt keine
-  Zuordnungsprüfung statt. Neu steht als **erste Karte** im Abgleich eine
-  Referenzprüfung: UCI DE0020 gegen UNB DE0020 der linken Datei (hart, mit
-  Gegenüberstellung beider Referenzen und dem Hinweis, dass der weitere Abgleich
-  gegenstandslos ist) sowie die beteiligten Marktpartner. Die MP-ID-Prüfung ist
-  bewusst mengenbasiert statt rollengenau — die Quellen legen die Rollenzuordnung
-  von UCI DE0004/DE0010 nicht eindeutig fest, und beide Lesarten kommen im Markt
-  vor; eine getauschte Reihenfolge wird transparent benannt, aber nicht als Fehler
-  gewertet. Fall I im Regressionstest (8 Prüfungen); volle Regression grün
+  wurden nur DE0083/DE0085 gelesen, die Datenaustauschreferenz DE0020 der geprüften
+  Datei gar nicht. Eine CONTRL zu einer **fremden Übertragungsdatei** lief damit
+  unbemerkt in den vollen Positionsabgleich, und bei einer Ablehnung auf Datei-Ebene
+  ohne SG1 UCM fand überhaupt keine Zuordnungsprüfung statt. Jetzt wird UCI DE0020
+  gegen UNB DE0020 der linken Datei geprüft, **bevor** irgendetwas ausgewertet wird.
+  Passt sie nicht, erscheint nur eine klare Aussage mit der referenzierten
+  Datenaustauschreferenz — kein Positionsabgleich, keine Fehlerkarten, keine
+  Segmentmarkierung. Passt sie, läuft der Abgleich wie bisher, ohne zusätzliche
+  Anzeige. Fall I im Regressionstest (8 Prüfungen); volle Regression grün
   (40 Läufe). → Protokoll Abschnitt 76.
 
 
