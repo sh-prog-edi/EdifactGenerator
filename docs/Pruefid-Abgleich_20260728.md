@@ -3849,3 +3849,81 @@ von DE0083 = 4/7, die Ebenenschärfe von Code 35 (UCS ja, UCD nein), Gruppenstat
 SG2 „Muss [9]" und die Code-26-Regel). Fall H in
 `scripts/test_ablehnung_abgleich.js` um die Anzeige des AHB-Anwendungsfalls und
 der Code-26-Regel erweitert. Volle Regression grün (40 Läufe).
+
+## 76. Referenzprüfung: Gehört die CONTRL überhaupt zur Ursprungsnachricht? (13.08.2026)
+
+**Rückmeldung.** Frage des Auftraggebers, ob die Prüfung enthalten sei, dass die
+CONTRL auch zur Ursprungsnachricht gehört — das sei „Pflicht zuerst zu prüfen".
+
+**Befund: die Prüfung fehlte.** `leseContrl()` las aus dem UCI-Segment nur
+`elemente[3]` (DE0083) und `elemente[4]` (DE0085). Die drei Referenzangaben
+davor wurden **gar nicht ausgelesen**:
+
+| | Bedeutung |
+|---|---|
+| UCI DE0020 (`elemente[0]`) | Datenaustauschreferenz der geprüften Übertragungsdatei |
+| UCI DE0004 (`elemente[1]`) | Absender der geprüften Datei |
+| UCI DE0010 (`elemente[2]`) | Empfänger der geprüften Datei |
+
+Zugeordnet wurde ausschließlich je Nachricht über UCM DE0062 gegen UNH DE0062.
+Daraus folgten zwei Lücken:
+
+1. Eine CONTRL zu einer **fremden Übertragungsdatei** wurde vollständig
+   ausgewertet, sofern nur irgendeine UNH-Referenz zufällig passte. Die
+   Segmentzählung der CONTRL zeigt dann in eine fremde Nachricht — der Abgleich
+   markiert Positionen, die inhaltlich nichts miteinander zu tun haben.
+2. Bei einer **Ablehnung auf Datei-Ebene ohne SG1 UCM** fand überhaupt keine
+   Zuordnungsprüfung statt. Das ist genau die Gestalt der vom Auftraggeber
+   gemeldeten CONTRL mit Fehlercode 26 (Abschnitt 74).
+
+**Quellenlage.** Der MIG CONTRL zum UCI: „DE0020: Eindeutige Referenznummer zur
+Identifizierung der Übertragungsdatei, auf die Bezug genommen wird." Die
+UCM-Erläuterung stützt das: DE0062 sei „die eindeutige Nachrichten-Referenznummer
+der fehlerhaften Nachricht, die in der Übertragungsdatei enthalten ist, **deren
+Datenaustauschreferenz in DE0020 der CONTRL angegeben ist**". DE0020 ist also die
+übergeordnete, zuerst zu prüfende Klammer; die UNH-Zuordnung setzt sie voraus.
+
+**Umsetzung.** Neue Funktion `referenzPruefung()` mit drei Prüfungen; das
+Ergebnis erscheint als Karte **„0. Referenzprüfung"** an erster Stelle im
+Abgleich, noch vor jeder inhaltlichen Auswertung, und trägt die Klasse
+`.ergebniskarte.referenz`:
+
+1. **Datenaustauschreferenz** UCI DE0020 gegen UNB DE0020 der linken Datei —
+   harte Prüfung. Bei Abweichung: „gehört NICHT zusammen", beide Referenzen im
+   Klartext gegenübergestellt, plus roter Hinweis, dass der weitere Abgleich
+   gegenstandslos ist. Fehlt DE0020 ganz, wird das als eigener Punkt gemeldet
+   (das DE ist laut MIG Muss).
+2. **Beteiligte Marktpartner** UCI DE0004/DE0010 gegen UNB S002/S003 — bewusst
+   **mengenbasiert statt rollengenau**, siehe unten.
+3. Ist die Datei-Referenz nicht auflösbar, bleibt die bisherige
+   Nachrichtenzuordnung über UCM DE0062 als zweite Stufe unverändert bestehen.
+
+**Warum die MP-ID-Prüfung mengenbasiert ist (Fehlalarm vermieden).** Der erste
+Entwurf prüfte rollengenau (UCI DE0004 = UNB-Absender). Beim Testen schlug er
+sofort an der seit Abschnitt 71 bestehenden Fixtur `CONTRL_TREFFER` an, die die
+MP-IDs im UCI **getauscht** führt. Die Quellen entscheiden das nicht eindeutig:
+Die MIG bezeichnet S002/S003 im UCI als „Absender/Empfänger der
+Übertragungsdatei" (im Kontext also der geprüften), und der eigene
+CONTRL-Generator belegt sie ebenso („Absender der geprüften Datei (UCI DE0004)");
+in der Praxis kommt aber auch die Sicht des CONTRL-Absenders vor. Eine
+rollengenaue Prüfung hätte deshalb reihenweise Fehlalarme erzeugt — genau das
+Muster, das in Abschnitt 74.2 zu beheben war. Geprüft wird darum, ob **dieselben
+beiden Marktpartner** beteiligt sind; eine getauschte Reihenfolge wird als
+unkritisch benannt („Rollen getauscht"), eine **fremde** MP-ID dagegen als
+Abweichung gemeldet. Offene Frage an den Auftraggeber: Falls in seiner Praxis
+eine der beiden Lesarten verbindlich ist, lässt sich daraus eine schärfere
+Prüfung machen.
+
+**Nebenbefund.** Die Fixturen `CONTRL_DATEI_ABGELEHNT` und `CONTRL_OK` trugen
+`UCI+999`, also eine Referenz, die zu keiner Testnachricht gehört — unbemerkt,
+weil DE0020 nie ausgewertet wurde. Beide tragen jetzt die passende Referenz,
+damit sie ihren eigentlichen Gegenstand prüfen. `CONTRL_FALSCHE_REF` behält
+bewusst die fremde Referenz.
+
+**Nachweis.** Fall I in `scripts/test_ablehnung_abgleich.js` (8 Prüfungen):
+Referenzkarte steht an erster Stelle; passende Referenz → „zugeordnet"; fremde
+Datenaustauschreferenz → „gehört NICHT zusammen" samt Gegenüberstellung und
+Gegenstandslos-Hinweis; fremde MP-ID → benannt; getauschte Reihenfolge → **kein**
+Fehlalarm, aber transparent ausgewiesen. Die bestehenden Fälle prüfen jetzt
+gezielt `.ergebniskarte:not(.referenz)`, damit sie nicht versehentlich die neue
+erste Karte greifen. Volle Regression grün (40 Läufe).

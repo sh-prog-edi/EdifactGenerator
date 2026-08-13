@@ -475,13 +475,33 @@ function zielsegmentHtml(raw, servicezeichen, el0, comp0, ganzesElement){
 }
 
 let linkeEinheiten = null;   // [{label, text, parsed, det, res, karte, ref, bgm}]
+let linkeDatei = null;       // Kopfdaten der linken Übertragungsdatei (UNB)
 let contrlErgebnis = null;   // { dateiCode, dateiFehlercode, bloecke, parsed }
+
+// Kopfdaten einer Übertragungsdatei aus dem UNB: Datenaustauschreferenz (DE0020)
+// sowie Absender (S002 DE0004) und Empfänger (S003 DE0010) — Grundlage der
+// Referenzprüfung (Protokoll Abschnitt 76). Aufbau:
+// UNB+S001+S002+S003+S004+DE0020+…  -> elemente[1]=S002, [2]=S003, [4]=DE0020.
+function leseUnb(text){
+  const segmente = EdiUmbau.zerlege(text);
+  const unb = segmente.find(s => s.tag === 'UNB');
+  if (!unb) return null;
+  return {
+    dar: (unb.elemente[4] || [])[0] || '',
+    absender: (unb.elemente[1] || [])[0] || '',
+    empfaenger: (unb.elemente[2] || [])[0] || '',
+  };
+}
 
 async function pruefeLinks(){
   const text = $('eingabeLinks').value;
   const box = $('linksErgebnis');
-  if (!text.trim()){ box.innerHTML = ''; linkeEinheiten = null; aktualisiereAbgleich(); return; }
+  if (!text.trim()){
+    box.innerHTML = ''; linkeEinheiten = null; linkeDatei = null;
+    aktualisiereAbgleich(); return;
+  }
   box.innerHTML = '<p class="lade">Wird geprüft …</p>';
+  linkeDatei = leseUnb(text);
   const einheiten = zerlegeNachrichten(text);
   const ergebnisse = [];
   for (const eh of einheiten){
@@ -536,6 +556,18 @@ function leseContrl(text){
   if (!uci) return { fehler: 'Kein UCI-Segment gefunden — keine gültige CONTRL-Struktur.', parsed };
   const dateiCode = (uci.elemente[3] || [])[0] || '';
   const dateiFehlercode = (uci.elemente[4] || [])[0] || '';
+  // UCI+<DE0020>+<S002 DE0004>+<S003 DE0010>+<DE0083>+<DE0085>+… — DE0020 nennt
+  // die Datenaustauschreferenz der GEPRÜFTEN Datei, DE0004/DE0010 deren Absender
+  // und Empfänger (nicht die der CONTRL selbst; so belegt sie auch der eigene
+  // CONTRL-Generator). Bis Abschnitt 76 wurden diese drei Werte gar nicht
+  // ausgelesen — damit fehlte jede Prüfung, ob die CONTRL überhaupt zur links
+  // eingefügten Übertragungsdatei gehört.
+  const bezug = {
+    dar: (uci.elemente[0] || [])[0] || '',
+    absender: (uci.elemente[1] || [])[0] || '',
+    empfaenger: (uci.elemente[2] || [])[0] || '',
+  };
+  const eigenesUnb = leseUnb(text);
   const ucmIdx = [];
   segs.forEach((s, i) => { if (s.tag === 'UCM') ucmIdx.push(i); });
   const bloecke = ucmIdx.map((iUCM, k) => {
@@ -556,7 +588,88 @@ function leseContrl(text){
       ucs: leseUcSegmente(segs, iUCM, ende),
     };
   });
-  return { parsed, dateiCode, dateiFehlercode, bloecke };
+  return { parsed, dateiCode, dateiFehlercode, bloecke, bezug, eigenesUnb };
+}
+
+// ---- Referenzprüfung: Gehört die CONTRL zur Ursprungsnachricht? ------------
+// Muss VOR jeder inhaltlichen Auswertung stehen (Auftraggeber, 13.08.2026):
+// Bezieht sich die CONTRL auf eine andere Übertragungsdatei, ist jeder
+// Positions- und Fehlerabgleich gegenstandslos und sogar irreführend — die
+// Segmentzählung der CONTRL zeigt dann in eine fremde Nachricht.
+// Grundlage: UCI DE0020 identifiziert die Übertragungsdatei, auf die Bezug
+// genommen wird (MIG CONTRL), DE0004/DE0010 deren Absender/Empfänger.
+function referenzPruefung(datei, contrl){
+  if (!datei || !contrl || !contrl.bezug) return null;
+  const b = contrl.bezug;
+  const punkte = [];
+  const norm = v => String(v == null ? '' : v).trim();
+
+  // 1. Datenaustauschreferenz — die eigentliche Zuordnung.
+  if (!norm(b.dar)){
+    punkte.push({ art: 'frag', titel: 'Datenaustauschreferenz (UCI DE0020) fehlt',
+      text: 'Die CONTRL nennt keine Datenaustauschreferenz — eine eindeutige Zuordnung ' +
+        'zur geprüften Übertragungsdatei ist damit nicht möglich (DE0020 ist Muss).' });
+  } else if (norm(b.dar) === norm(datei.dar)){
+    punkte.push({ art: 'ok', titel: 'Datenaustauschreferenz stimmt überein',
+      text: `UCI DE0020 „${b.dar}" = UNB DE0020 der linken Übertragungsdatei.` });
+  } else {
+    punkte.push({ art: 'rot', titel: 'Datenaustauschreferenz stimmt NICHT überein',
+      text: `Die CONTRL bezieht sich auf die Übertragungsdatei „${b.dar}" (UCI DE0020), ` +
+        `links steht aber „${datei.dar || '—'}" (UNB DE0020). Die CONTRL gehört nicht zu ` +
+        `dieser Nachricht — der weitere Abgleich ist gegenstandslos.` });
+  }
+
+  // 2. Beteiligte (UCI DE0004/DE0010) gegen die MP-IDs der geprüften Datei.
+  //
+  // BEWUSST MENGENBASIERT, nicht rollengenau: Die MIG bezeichnet S002/S003 im UCI
+  // als „Absender/Empfänger der Übertragungsdatei"; der eigene CONTRL-Generator
+  // belegt sie mit denen der GEPRÜFTEN Datei. In der Praxis kommt aber auch die
+  // getauschte Belegung vor (Sicht des CONTRL-Absenders) — die Dokumente treffen
+  // dazu keine eindeutige Aussage. Eine rollengenaue Prüfung würde deshalb reihenweise
+  // Fehlalarme erzeugen. Geprüft wird darum, ob DIESELBEN BEIDEN Marktpartner
+  // beteiligt sind; die Reihenfolge erzeugt allenfalls einen Hinweis.
+  const mpContrl = [norm(b.absender), norm(b.empfaenger)].filter(Boolean);
+  const mpDatei = [norm(datei.absender), norm(datei.empfaenger)].filter(Boolean);
+  if (mpContrl.length && mpDatei.length){
+    const fremd = mpContrl.filter(id => !mpDatei.includes(id));
+    if (fremd.length){
+      punkte.push({ art: 'rot', titel: 'Beteiligte Marktpartner weichen ab',
+        text: `Die CONTRL nennt als Beteiligte der geprüften Datei „${mpContrl.join('" und "')}" ` +
+          `(UCI DE0004/DE0010); die linke Übertragungsdatei läuft zwischen ` +
+          `„${mpDatei.join('" und "')}" (UNB S002/S003). Nicht zuordenbar: ` +
+          `„${fremd.join('", "')}".` });
+    } else if (mpContrl.length === 2 && norm(b.absender) !== norm(datei.absender)){
+      punkte.push({ art: 'ok', titel: 'Beteiligte stimmen überein (Rollen getauscht)',
+        text: `Dieselben Marktpartner, aber in getauschter Reihenfolge angegeben — ` +
+          `im Markt sind beide Lesarten von UCI DE0004/DE0010 anzutreffen. Kein Befund.` });
+    } else {
+      punkte.push({ art: 'ok', titel: 'Beteiligte Marktpartner stimmen überein',
+        text: `UCI DE0004/DE0010 nennen dieselben Marktpartner wie das UNB der linken Datei.` });
+    }
+  }
+
+  const passt = !punkte.some(p => p.art === 'rot');
+  const unsicher = punkte.some(p => p.art === 'frag');
+  return { punkte, passt, unsicher };
+}
+
+function referenzHtml(pr){
+  if (!pr) return '';
+  const art = !pr.passt ? 'rot' : (pr.unsicher ? 'frag' : 'bestaetigt');
+  const badge = !pr.passt ? '<span class="badge rot">gehört NICHT zusammen</span>'
+    : (pr.unsicher ? '<span class="badge frag">mit Einschränkung</span>'
+                   : '<span class="badge ok">zugeordnet</span>');
+  let html = `<div class="ergebniskarte referenz ${art === 'rot' ? 'frag' : art}">` +
+    `<h3>0. Referenzprüfung: Gehört die CONTRL zu dieser Nachricht? ${badge}</h3>`;
+  pr.punkte.forEach(p => {
+    const zeichen = p.art === 'ok' ? '✓' : (p.art === 'rot' ? '✗' : 'ℹ');
+    html += `<div class="zeile"><strong>${zeichen} ${esc(p.titel)}</strong> — ${esc(p.text)}</div>`;
+  });
+  if (!pr.passt)
+    html += `<div class="globalbox rot">Die folgenden Auswertungen beziehen sich auf eine ` +
+      `Nachricht, auf die sich diese CONTRL nach ihren eigenen Referenzangaben nicht ` +
+      `bezieht. Bitte zuerst die richtige Übertragungsdatei einfügen.</div>`;
+  return html + `</div>`;
 }
 // Fehlercode-Klartext SEGMENTGENAU (Protokoll Abschnitt 74): DE0085 führt im UCI
 // (Übertragungsdatei), UCM (Nachricht), UCS (Segment) und UCD (Datenelement)
@@ -742,6 +855,11 @@ function aktualisiereAbgleich(){
   if (!linkeEinheiten || !contrlErgebnis){ panel.style.display = 'none'; box.innerHTML = ''; return; }
   panel.style.display = '';
   let html = '';
+
+  // Referenzprüfung zuerst — sie entscheidet, ob alles Weitere überhaupt
+  // aussagekräftig ist (Protokoll Abschnitt 76).
+  const refPruefung = referenzPruefung(linkeDatei, contrlErgebnis);
+  html += referenzHtml(refPruefung);
 
   if (contrlErgebnis.dateiCode !== '7' && !contrlErgebnis.bloecke.length){
     const ft = fehlertext0085(contrlErgebnis.dateiFehlercode, 'UCI');

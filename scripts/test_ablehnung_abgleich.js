@@ -91,6 +91,25 @@ const CONTRL_DUPLIKAT =
   "UNH+9+CONTRL:D:96A:UN'UCI+ABC123+9900000000001:500+9900000000002:500+4+26'" +
   "UNT+3+9'UNZ+1+9'";
 
+// ---- Fall I: Referenzprüfung (Abschnitt 76) ------------------------------
+// CONTRL mit FREMDER Datenaustauschreferenz im UCI DE0020: Sie gehört zu einer
+// anderen Übertragungsdatei. Vor Abschnitt 76 wurde DE0020 gar nicht ausgelesen —
+// eine solche CONTRL lief unbemerkt in den vollen Positionsabgleich.
+const CONTRL_FREMDE_DATEI =
+  "UNA:+.? 'UNB+UNOC:3+9900000000002:500+9900000000001:500+260803:0900+1++++++1'" +
+  "UNH+1+CONTRL:D:96A:UN'UCI+FREMDEDATEI99+9900000000001:500+9900000000002:500+4+13'" +
+  "UCM+844156800099+UTILMD:D:11A:UN+4+13'UCS+24+13'UCD+13+3:1'" +
+  "UNT+5+1'UNZ+1+1'";
+
+// Wie CONTRL_TREFFER, aber ein FREMDER Marktpartner steht in UCI DE0004 —
+// Referenz passt, die Beteiligten nicht. (Eine bloß getauschte Reihenfolge ist
+// KEIN Befund, siehe referenzPruefung: beide Lesarten kommen im Markt vor.)
+const CONTRL_MPID_ABWEICHUNG =
+  "UNA:+.? 'UNB+UNOC:3+9900000000002:500+9900000000001:500+260803:0900+1++++++1'" +
+  "UNH+1+CONTRL:D:96A:UN'UCI+844156800099+9900000000009:500+9900000000002:500+4+13'" +
+  "UCM+844156800099+UTILMD:D:11A:UN+4+13'UCS+24+13'UCD+13+3:1'" +
+  "UNT+5+1'UNZ+1+1'";
+
 // CONTRL zeigt auf ein unbeanstandetes Segment (5 = CTA) -> "nicht nachvollziehbar".
 const CONTRL_UNBEGRUENDET =
   "UNA:+.? 'UNB+UNOC:3+9900000000002:500+9900000000001:500+260803:0900+1++++++1'" +
@@ -106,15 +125,17 @@ const CONTRL_FALSCHE_REF =
   "UNT+5+1'UNZ+1+1'";
 
 // Ablehnung auf Dateiebene, kein UCM -> kein Segmentbezug möglich.
+// Die Datei-Referenz (UCI DE0020) passt bewusst zur linken Nachricht, damit
+// dieser Fall den Segmentbezug prüft und nicht an der Referenzprüfung hängt.
 const CONTRL_DATEI_ABGELEHNT =
   "UNA:+.? 'UNB+UNOC:3+9900000000002:500+9900000000001:500+260803:0900+1++++++1'" +
-  "UNH+1+CONTRL:D:96A:UN'UCI+999+9900000000002:500+9900000000001:500+4+21'" +
+  "UNH+1+CONTRL:D:96A:UN'UCI+844156800099+9900000000002:500+9900000000001:500+4+21'" +
   "UNT+2+1'UNZ+1+1'";
 
-// Empfangsbestätigung ohne Einwände.
+// Empfangsbestätigung ohne Einwände (ebenfalls mit passender Datei-Referenz).
 const CONTRL_OK =
   "UNA:+.? 'UNB+UNOC:3+9900000000002:500+9900000000001:500+260803:0900+1++++++1'" +
-  "UNH+1+CONTRL:D:96A:UN'UCI+999+9900000000002:500+9900000000001:500+7'" +
+  "UNH+1+CONTRL:D:96A:UN'UCI+844156800099+9900000000002:500+9900000000001:500+7'" +
   "UNT+2+1'UNZ+1+1'";
 
 let fails = 0;
@@ -169,7 +190,7 @@ const ok = (b, t) => { console.log((b ? '  OK  ' : ' FAIL ') + t); if (!b) fails
   ok(cssCheck.rotBackgroundTransparent === true, 'Segmentbaum: fehlerhaftes Segment ohne Rot-Flächenfill');
 
   // ---- Fall A: CONTRL-Zeiger trifft exakt den bekannten Befund -------------
-  let karte = await page.evaluate(() => document.querySelector('.ergebniskarte').outerHTML);
+  let karte = await page.evaluate(() => document.querySelector('.ergebniskarte:not(.referenz)').outerHTML);
   ok(/bestaetigt/.test(karte) && /bestätigt/.test(karte), 'Fall A (Treffer DE3124): Badge „bestätigt“');
   ok(/Segment 24/.test(karte) && /Element 3, Komp\. 1/.test(karte) && /DE3124/.test(karte),
     'Fall A: Segment- und Element-Angabe korrekt (Segment 24, Element 3.1 -> DE3124)');
@@ -180,7 +201,7 @@ const ok = (b, t) => { console.log((b ? '  OK  ' : ' FAIL ') + t); if (!b) fails
   // anderes ist an der Stelle vorhanden), analog zum vom Auftraggeber
   // genannten Beispiel "Z02++++DE'" (13.08.2026).
   const markFallA = await page.evaluate(() =>
-    (document.querySelector('.ergebniskarte .zielsegment mark.fehlerpos') || {}).textContent);
+    (document.querySelector('.ergebniskarte:not(.referenz) .zielsegment mark.fehlerpos') || {}).textContent);
   ok(markFallA === '+:',
     `Fall A: exakte Fehlerposition im Zielsegment rot markiert (erwartet "+:", erhalten "${markFallA}")`);
 
@@ -205,7 +226,7 @@ const ok = (b, t) => { console.log((b ? '  OK  ' : ' FAIL ') + t); if (!b) fails
   await page.fill('#eingabeRechts', CONTRL_UNBEGRUENDET);
   await page.click('text=neg. CONTRL gegen Nachricht prüfen');
   await page.waitForTimeout(500);
-  karte = await page.evaluate(() => document.querySelector('.ergebniskarte').outerHTML);
+  karte = await page.evaluate(() => document.querySelector('.ergebniskarte:not(.referenz)').outerHTML);
   ok(/badge frag/.test(karte) && /nicht nachvollziehbar/.test(karte),
     'Fall B (Segment 5, unbeanstandet): „nicht nachvollziehbar“, Badge „unklar“');
 
@@ -256,11 +277,11 @@ const ok = (b, t) => { console.log((b ? '  OK  ' : ' FAIL ') + t); if (!b) fails
   ok(comInfo.zielContrl === true, 'Fall G: Segment 6 trotzdem mit rotem Rahmen markiert (CONTRL-Ziel)');
   ok(!!comInfo.zusatzText && /Komponente 1 ist leer/.test(comInfo.zusatzText),
     'Fall G: sprechende generische Zusatzzeile („Komponente 1 ist leer…“)');
-  karte = await page.evaluate(() => document.querySelector('.ergebniskarte').outerHTML);
+  karte = await page.evaluate(() => document.querySelector('.ergebniskarte:not(.referenz)').outerHTML);
   ok(/ergebniskarte bestaetigt/.test(karte) && /Generische Strukturprüfung/.test(karte),
     'Fall G: Ergebniskarte „bestätigt“ über generische Strukturprüfung (ohne AHB-Regel)');
   const markFallG = await page.evaluate(() =>
-    (document.querySelector('.ergebniskarte .zielsegment mark.fehlerpos') || {}).textContent);
+    (document.querySelector('.ergebniskarte:not(.referenz) .zielsegment mark.fehlerpos') || {}).textContent);
   ok(markFallG === '+:',
     `Fall G: exakte Fehlerposition auch ohne AHB-Regel markiert (erwartet "+:", erhalten "${markFallG}")`);
 
@@ -269,7 +290,7 @@ const ok = (b, t) => { console.log((b ? '  OK  ' : ' FAIL ') + t); if (!b) fails
   await page.click('text=neg. CONTRL gegen Nachricht prüfen');
   await page.waitForTimeout(700);
   const markFallG2 = await page.evaluate(() =>
-    (document.querySelector('.ergebniskarte .zielsegment mark.fehlerpos') || {}).textContent);
+    (document.querySelector('.ergebniskarte:not(.referenz) .zielsegment mark.fehlerpos') || {}).textContent);
   ok(markFallG2 === ':EM',
     `Fall G2: CONTRL ohne Komponentenangabe (nur DE0098) markiert das ganze Element, nicht nur eine Komponente (erwartet ":EM", erhalten "${markFallG2}")`);
 
@@ -304,6 +325,61 @@ const ok = (b, t) => { console.log((b ? '  OK  ' : ' FAIL ') + t); if (!b) fails
     'Fall H: AHB-Anwendungsfall des Codes wird ausgewiesen');
   ok(/keine Syntaxfehlermeldung mit dem Fehlercode 26/.test(aperak.abgleich),
     'Fall H: AHB-Regel zu Code 26 (Verbot bei selbst verursachtem Wiedereinspielen) wird angezeigt');
+
+  // ---- Fall I: Referenzprüfung steht VORN und greift -----------------------
+  // Zuerst der Normalfall: passende Referenz -> zugeordnet.
+  await page.fill('#eingabeLinks', KAPUTT);
+  await page.fill('#eingabeRechts', CONTRL_TREFFER);
+  await page.click('text=neg. CONTRL gegen Nachricht prüfen');
+  await page.waitForTimeout(800);
+  const refOk = await page.evaluate(() => {
+    const karten = document.querySelectorAll('#abgleichErgebnis .ergebniskarte');
+    return { ersteIstReferenz: karten[0] ? karten[0].classList.contains('referenz') : false,
+      text: karten[0] ? karten[0].innerText : '' };
+  });
+  ok(refOk.ersteIstReferenz,
+    'Fall I: Die Referenzprüfung steht als ERSTE Karte im Abgleich');
+  ok(/zugeordnet/.test(refOk.text) && /Datenaustauschreferenz stimmt überein/.test(refOk.text),
+    'Fall I: passende Datenaustauschreferenz wird als zugeordnet gemeldet');
+
+  // Fremde Datenaustauschreferenz -> CONTRL gehört NICHT zu dieser Nachricht.
+  await page.fill('#eingabeRechts', CONTRL_FREMDE_DATEI);
+  await page.click('text=neg. CONTRL gegen Nachricht prüfen');
+  await page.waitForTimeout(800);
+  const refFremd = await page.evaluate(() => {
+    const k = document.querySelector('#abgleichErgebnis .ergebniskarte.referenz');
+    return k ? k.innerText : '';
+  });
+  ok(/gehört NICHT zusammen/.test(refFremd),
+    'Fall I: fremde Datenaustauschreferenz -> „gehört NICHT zusammen“');
+  ok(/FREMDEDATEI99/.test(refFremd) && /844156800099/.test(refFremd),
+    'Fall I: beide Referenzen werden im Klartext gegenübergestellt');
+  ok(/gegenstandslos/.test(refFremd),
+    'Fall I: Hinweis, dass der weitere Abgleich gegenstandslos ist');
+
+  // MP-ID-Abweichung bei passender Referenz.
+  await page.fill('#eingabeRechts', CONTRL_MPID_ABWEICHUNG);
+  await page.click('text=neg. CONTRL gegen Nachricht prüfen');
+  await page.waitForTimeout(800);
+  const refMp = await page.evaluate(() => {
+    const k = document.querySelector('#abgleichErgebnis .ergebniskarte.referenz');
+    return k ? k.innerText : '';
+  });
+  ok(/Beteiligte Marktpartner weichen ab/.test(refMp) && /9900000000009/.test(refMp),
+    'Fall I: fremde MP-ID in UCI DE0004 wird erkannt und benannt');
+
+  // Getauschte Reihenfolge derselben Marktpartner darf KEIN Befund sein.
+  await page.fill('#eingabeRechts', CONTRL_TREFFER);
+  await page.click('text=neg. CONTRL gegen Nachricht prüfen');
+  await page.waitForTimeout(800);
+  const refTausch = await page.evaluate(() => {
+    const k = document.querySelector('#abgleichErgebnis .ergebniskarte.referenz');
+    return k ? k.innerText : '';
+  });
+  ok(!/gehört NICHT zusammen/.test(refTausch),
+    'Fall I: getauschte Reihenfolge derselben Marktpartner erzeugt KEINEN Fehlalarm');
+  ok(/Rollen getauscht/.test(refTausch),
+    'Fall I: die getauschte Reihenfolge wird aber transparent benannt');
 
   // ---- Leeren-Buttons blenden Abgleich-Panel wieder aus ---------------------
   await page.click('.panel:has(#eingabeLinks) button.secondary');
