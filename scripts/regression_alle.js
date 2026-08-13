@@ -34,6 +34,7 @@ const NODE_TESTS = [
     'scripts/test_de_muss_praesenz.js',
     'scripts/test_contrl_codelisten.js',
     'scripts/test_contrl_ahb.js',
+    'scripts/test_aperak_ahb.js',
 ];
 
 // Browser-Tests (Playwright; Reihenfolge wie in der Übergabe dokumentiert).

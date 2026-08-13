@@ -5,6 +5,25 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **13.08.2026** – **Ablehnungs-Abgleich wertet jetzt auch die negative APERAK aus.**
+  Bisher nur CONTRL. Der APERAK-Weg war zurückgestellt, weil sie „keinen
+  strukturierten Fehlerzeiger" habe — tatsächlich schreibt der AHB für die
+  „Ortsangabe des AHB-Fehlers" (SG5 FTX+Z02) ein auswertbares Format vor: erstes
+  DE4440 = Segmentbezeichnung laut Nachrichtenbeschreibung, **zweites DE4440 = das
+  fehlerhafte Segment im Rohtext**. Damit lässt sich die Fehlerstelle in der
+  Ursprungsnachricht wiederfinden und markieren. Neu: Zuordnungsprüfung über
+  RFF+ACE gegen die Datenaustauschreferenz (der MIG bezeichnet RFF+ACE ausdrücklich
+  als „Datenaustauschreferenz (UNB DE0020) der Übertragungsdatei") — passt sie
+  nicht, nur die klare Aussage wie bei der CONTRL; Fehlercode SG4 ERC im Klartext
+  (neues Werkzeug `werkzeuge/lies_aperak_ahb.py` liest **27 Codes** Z10…Z44 samt
+  den sieben Codes mit Pflicht-Ortsangabe aus dem AHB APERAK); Vorgangs-Eingrenzung
+  über RFF+TN; Gegenprobe des eigenen Validators am gefundenen Segment; und eine
+  Auflösung von Bedingungsnummern `[nn]` aus den Freitexten gegen die
+  `_bedingungen.js` der erkannten Prüf-ID. Neuer Test `scripts/test_aperak_ahb.js`,
+  Fall J im Ablehnungs-Abgleich-Test; volle Regression grün (41 Läufe).
+  → Protokoll Abschnitt 78.
+
+
 - **13.08.2026** – **Ablehnungs-Abgleich: Auswertung als dritte Spalte.** `3. Abgleich`
   stand bisher unterhalb der zweispaltigen Reihe und rutschte mit wachsender
   Nachrichtenlänge beliebig weit nach unten. Das Panel liegt jetzt in derselben Reihe

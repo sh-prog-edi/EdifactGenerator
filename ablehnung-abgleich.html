@@ -128,9 +128,10 @@
   <p class="sub">Abgelehnte Nachricht links, negative CONTRL rechts einfügen — der Abgleich liest die
     Fehlerzeiger der CONTRL (SG1 UCM, SG2 UCS/UCD) aus, zeigt das betroffene Segment/Datenelement in der
     Original-Nachricht und prüft, ob der eigene Validator dort unabhängig denselben Befund liefert
-    (AHB/MIG-Abhängigkeiten, Syntax, Codelisten). Eine entsprechende Auswertung für die negative APERAK
-    ist als nächster Schritt vorgesehen — dort fehlt ein strukturierter Segment-/DE-Zeiger im Format,
-    die Fehlerangabe bleibt dort weitgehend Freitext.</p>
+    (AHB/MIG-Abhängigkeiten, Syntax, Codelisten). Rechts kann ebenso eine <strong>negative APERAK</strong> eingefügt werden: Dort gibt es keinen
+    numerischen Segment-/DE-Zeiger, wohl aber den Fehlercode (SG4 ERC) und die „Ortsangabe des
+    AHB-Fehlers" (SG5 FTX+Z02), deren zweites Datenelement das fehlerhafte Segment im Rohtext
+    enthält — daraus wird die Fehlerstelle bestimmt.</p>
 
   <div class="zweispaltig">
     <!-- ---------------- Links: abgelehnte Nachricht ---------------- -->
@@ -192,6 +193,7 @@
 <script src="_engine/bedingung-hilfe.js"></script>
 <script src="_engine/daten/uci-fehlercodes.js"></script>
 <script src="_engine/daten/contrl-ahb.js"></script>
+<script src="_engine/daten/aperak-ahb.js"></script>
 <script>
 const $ = id => document.getElementById(id);
 
@@ -503,6 +505,7 @@ function zielsegmentHtml(raw, servicezeichen, el0, comp0, ganzesElement){
 let linkeEinheiten = null;   // [{label, text, parsed, det, res, karte, ref, bgm}]
 let linkeDatei = null;       // Kopfdaten der linken Übertragungsdatei (UNB)
 let contrlErgebnis = null;   // { dateiCode, dateiFehlercode, bloecke, parsed }
+let aperakErgebnis = null;   // { art, kopfRff, bloecke, parsed } — Abschnitt 78
 
 // Kopfdaten einer Übertragungsdatei aus dem UNB: Datenaustauschreferenz (DE0020)
 // sowie Absender (S002 DE0004) und Empfänger (S003 DE0010) — Grundlage der
@@ -571,13 +574,68 @@ function leseUcSegmente(segs, iUCM, ende){
   }
   return eintraege;
 }
+// ---- APERAK auslesen (Protokoll Abschnitt 78) -----------------------------
+// Die negative APERAK meldet Verarbeitbarkeitsfehler; sie hat KEINEN numerischen
+// Segment-/DE-Zeiger wie die CONTRL. Auswertbar sind trotzdem:
+//   SG2 RFF+ACE  Datenaustauschreferenz (UNB DE0020) der geprüften Datei — laut
+//                MIG APERAK ausdrücklich „der Übertragungsdatei, die den/die
+//                Geschäftsvorfall/Geschäftsvorfälle enthält". Damit ist die
+//                Zuordnung genauso hart prüfbar wie UCI DE0020 bei der CONTRL.
+//   SG4 ERC      Fehlercode DE9321 (Z10…Z44) — Klartext aus _engine/daten/aperak-ahb.js
+//   SG5 RFF+ACW  UNH DE0062 der fehlerhaften Nachricht
+//   SG5 RFF+AGO  BGM DE1004 der fehlerhaften Nachricht
+//   SG5 RFF+TN   Vorgangsnummer (UTILMD: SG4 IDE DE7402) — grenzt den Vorgang ein
+//   SG5 FTX+Z02  Ortsangabe des AHB-Fehlers: erstes DE4440 = Segmentbezeichnung
+//                laut Nachrichtenbeschreibung, zweites DE4440 = das fehlerhafte
+//                Segment im ROHTEXT. Letzteres ist unmittelbar in der
+//                Ursprungsnachricht auffindbar — daraus wird hier die
+//                Fehlerposition bestimmt.
+//   SG5 FTX+AAO  Fehlerbeschreibung (freier Text)
+//   SG4 FTX+ABO  Information über Abweichung (freier Text)
+function leseAperak(text){
+  const parsed = AhbValidator.parse(text);
+  const segs = parsed.segmente;
+  const de = (seg, el, ko) => ((seg.elemente[el] || [])[ko || 0] || '');
+  const bgm = segs.find(s => s.tag === 'BGM');
+  const art = bgm ? de(bgm, 0) : '';        // 312 = Anerkennung, 313 = Fehlermeldung
+
+  // SG2: Referenzen auf Datei-/Nachrichtenebene (vor dem ersten ERC).
+  const iErc = segs.findIndex(s => s.tag === 'ERC');
+  const kopfEnde = iErc >= 0 ? iErc : segs.length;
+  const kopfRff = {};
+  for (let i = 0; i < kopfEnde; i++)
+    if (segs[i].tag === 'RFF') kopfRff[de(segs[i], 0)] = de(segs[i], 0, 1);
+
+  // Je ERC ein Block; die folgenden RFF/FTX gehören dazu.
+  const bloecke = [];
+  let aktuell = null;
+  for (let i = 0; i < segs.length; i++){
+    const s = segs[i];
+    if (s.tag === 'ERC'){
+      aktuell = { code: de(s, 0), rff: {}, ftx: [] };
+      bloecke.push(aktuell);
+      continue;
+    }
+    if (!aktuell) continue;
+    if (s.tag === 'RFF') aktuell.rff[de(s, 0)] = de(s, 0, 1);
+    else if (s.tag === 'FTX'){
+      // FTX+<Qualifier>+++<C108: DE4440 … DE4440>
+      const c108 = s.elemente[3] || [];
+      aktuell.ftx.push({ art: de(s, 0), teile: c108.filter(x => String(x || '').trim()) });
+    }
+  }
+  return { parsed, art, kopfRff, bloecke,
+           bezug: { dar: kopfRff['ACE'] || '' }, eigenesUnb: leseUnb(text) };
+}
+
 function leseContrl(text){
   const parsed = AhbValidator.parse(text);
   const segs = parsed.segmente;
   const iUNH = segs.findIndex(s => s.tag === 'UNH');
   const typKennung = iUNH >= 0 ? (segs[iUNH].elemente[1] || [])[0] : '';
   if (typKennung !== 'CONTRL')
-    return { fehler: `Das rechts eingefügte Dokument wird nicht als CONTRL erkannt (UNH-Nachrichtentyp „${typKennung || '—'}“).`, parsed };
+    return { fehler: `Das rechts eingefügte Dokument wird weder als CONTRL noch als APERAK erkannt ` +
+      `(UNH-Nachrichtentyp „${typKennung || '—'}“).`, parsed };
   const uci = segs.find(s => s.tag === 'UCI');
   if (!uci) return { fehler: 'Kein UCI-Segment gefunden — keine gültige CONTRL-Struktur.', parsed };
   const dateiCode = (uci.elemente[3] || [])[0] || '';
@@ -627,29 +685,35 @@ function leseContrl(text){
 // die „Übertragungsdatei, auf die Bezug genommen wird"; die UCM-Erläuterung
 // definiert DE0062 ausdrücklich als Referenz INNERHALB dieser Datei. DE0020 ist
 // damit die übergeordnete Klammer, die der Nachrichtenzuordnung vorausgeht.
-function referenzPruefung(datei, contrl){
-  if (!datei || !contrl || !contrl.bezug) return null;
+function referenzPruefung(datei, antwort){
+  if (!datei || !antwort || !antwort.bezug) return null;
   const norm = v => String(v == null ? '' : v).trim();
-  const darContrl = norm(contrl.bezug.dar);
+  const darContrl = norm(antwort.bezug.dar);
   const darDatei = norm(datei.dar);
-  if (!darContrl) return { passt: false, ohneAngabe: true, darContrl, darDatei };
-  return { passt: darContrl === darDatei, darContrl, darDatei };
+  // Beide Nachrichtenarten nennen dieselbe Angabe an unterschiedlicher Stelle:
+  // CONTRL im UCI DE0020, APERAK im SG2 RFF+ACE (MIG APERAK: „Datenaustausch-
+  // referenz (UNB DE0020) der Übertragungsdatei").
+  const istAperak = !!antwort.bloecke && antwort.art !== undefined;
+  const wo = istAperak ? { typ: 'APERAK', feld: 'RFF+ACE' } : { typ: 'CONTRL', feld: 'UCI DE0020' };
+  if (!darContrl) return { passt: false, ohneAngabe: true, darContrl, darDatei, wo };
+  return { passt: darContrl === darDatei, darContrl, darDatei, wo };
 }
 
 // Klare Aussage statt Prüfkatalog: die referenzierte Datenaustauschreferenz
 // nennen — mehr braucht es für die Entscheidung „falsche Datei eingefügt" nicht.
 function referenzHtml(pr){
   if (!pr || pr.passt) return '';
+  const wo = pr.wo || { typ: 'CONTRL', feld: 'UCI DE0020' };
   if (pr.ohneAngabe)
     return `<div class="ergebniskarte referenz frag">` +
       `<h3>Zuordnung nicht möglich <span class="badge frag">ohne Referenz</span></h3>` +
-      `<div class="zeile">Die CONTRL nennt keine Datenaustauschreferenz ` +
-      `(UCI DE0020) — sie lässt sich keiner Übertragungsdatei zuordnen.</div></div>`;
+      `<div class="zeile">Die ${esc(wo.typ)} nennt keine Datenaustauschreferenz ` +
+      `(${esc(wo.feld)}) — sie lässt sich keiner Übertragungsdatei zuordnen.</div></div>`;
   return `<div class="ergebniskarte referenz frag">` +
-    `<h3>Diese CONTRL gehört nicht zu dieser Nachricht ` +
+    `<h3>Diese ${esc(wo.typ)} gehört nicht zu dieser Nachricht ` +
     `<span class="badge rot">keine Zuordnung</span></h3>` +
     `<div class="zeile">Sie bezieht sich auf die Übertragungsdatei ` +
-    `<strong>${esc(pr.darContrl)}</strong> (UCI DE0020); links eingefügt ist ` +
+    `<strong>${esc(pr.darContrl)}</strong> (${esc(wo.feld)}); links eingefügt ist ` +
     `<strong>${esc(pr.darDatei || '—')}</strong> (UNB DE0020).</div></div>`;
 }
 
@@ -707,10 +771,83 @@ function ahbHinweisHtml(code, segment, de){
   return html;
 }
 
+// Übersicht der APERAK im rechten Fenster.
+function aperakUebersichtHtml(a){
+  const artText = a.art === '312' ? 'Anerkennungsmeldung (BGM+312) — kein Fehler gemeldet'
+    : (a.art === '313' ? 'Fehlermeldung (BGM+313)' : `Dokumentenart ${esc(a.art) || '—'}`);
+  let html = `<div class="kv"><dt>Art</dt><dd>${esc(artText)}</dd>` +
+    `<dt>Bezug (RFF+ACE)</dt><dd>${esc(a.kopfRff['ACE'] || '— (keine Datenaustauschreferenz)')}</dd>` +
+    `<dt>Gemeldete Fehler</dt><dd>${a.bloecke.length || '—'}</dd></div>`;
+  a.bloecke.forEach((b, i) => {
+    const txt = typeof aperakFehlertext === 'function' ? aperakFehlertext(b.code) : '';
+    html += `<div class="msgblock rot"><h3>SG4 Fehler ${i + 1}: ERC ${esc(b.code)}</h3>` +
+      `<div class="zeile">${esc(txt || 'Code im AHB APERAK nicht geführt — bitte beim Absender klären')}</div>`;
+    Object.keys(b.rff).forEach(q => {
+      const bez = { ACW: 'Nachrichten-Referenz (UNH DE0062)', AGO: 'Dokumentennummer (BGM DE1004)',
+        TN: 'Vorgangsnummer', Z08: 'MP-ID nachfolgender Netzbetreiber' }[q] || q;
+      html += `<div class="zeile" style="padding-left:12px">RFF+${esc(q)} · ${esc(bez)}: ${esc(b.rff[q])}</div>`;
+    });
+    b.ftx.forEach(f => {
+      const bez = { Z02: 'Ortsangabe des AHB-Fehlers', AAO: 'Fehlerbeschreibung',
+        ABO: 'Information über Abweichung' }[f.art] || f.art;
+      html += `<div class="zeile" style="padding-left:12px">FTX+${esc(f.art)} · ${esc(bez)}: ` +
+        `${esc(f.teile.join(' | ')) || '—'}</div>`;
+    });
+    html += `</div>`;
+  });
+  return html;
+}
+
+// Ortsangabe eines Fehlerblocks: erstes DE4440 = Segmentbezeichnung laut
+// Nachrichtenbeschreibung, zweites DE4440 = fehlerhaftes Segment im Rohtext.
+function aperakOrtsangabe(block){
+  const f = (block.ftx || []).find(x => x.art === 'Z02');
+  if (!f) return null;
+  return { bezeichnung: (f.teile[0] || '').trim(), segmentRoh: (f.teile[1] || '').trim() };
+}
+
+// Das in der Ortsangabe genannte Segment in der geprüften Nachricht wiederfinden.
+// Vorrangig über den Rohtext des zweiten DE4440 (exakt, dann als Präfix), sonst
+// über die Segmentbezeichnung gegen die Abschnittsnamen der Prüfgrundlage.
+function findeAperakSegment(einheit, orts){
+  if (!einheit || !orts) return null;
+  const zeilen = (einheit.res && einheit.res.zeilen) || [];
+  const norm = t => String(t || '').replace(/\s+/g, '').replace(/'+$/, '');
+  if (orts.segmentRoh){
+    const gesucht = norm(orts.segmentRoh);
+    let idx = zeilen.findIndex(z => norm(z.raw) === gesucht);
+    if (idx < 0) idx = zeilen.findIndex(z => norm(z.raw).startsWith(gesucht));
+    if (idx >= 0) return { idx, art: 'rohtext' };
+  }
+  if (orts.bezeichnung){
+    const meta = einheit.meta && einheit.meta.instanzen ? einheit.meta.instanzen : [];
+    const treffer = meta.find(i => (i.section || '').trim() === orts.bezeichnung.trim());
+    if (treffer){
+      const idx = zeilen.findIndex(z => (z.raw || '').slice(0, 3) === treffer.seg);
+      if (idx >= 0) return { idx, art: 'bezeichnung', segment: treffer.seg };
+    }
+  }
+  return null;
+}
+
 async function pruefeRechts(){
   const text = $('eingabeRechts').value;
   const box = $('rechtsErgebnis');
-  if (!text.trim()){ box.innerHTML = ''; contrlErgebnis = null; aktualisiereAbgleich(); return; }
+  if (!text.trim()){
+    box.innerHTML = ''; contrlErgebnis = null; aperakErgebnis = null;
+    aktualisiereAbgleich(); return;
+  }
+  // Weiche: CONTRL (Syntaxfehler) oder APERAK (Verarbeitbarkeitsfehler)?
+  const parsedR = AhbValidator.parse(text);
+  const iUnhR = parsedR.segmente.findIndex(x => x.tag === 'UNH');
+  const typR = iUnhR >= 0 ? ((parsedR.segmente[iUnhR].elemente[1] || [])[0] || '') : '';
+  if (typR === 'APERAK'){
+    contrlErgebnis = null;
+    aperakErgebnis = leseAperak(text);
+    box.innerHTML = aperakUebersichtHtml(aperakErgebnis);
+    aktualisiereAbgleich(); return;
+  }
+  aperakErgebnis = null;
   const c = leseContrl(text);
   if (c.fehler){
     box.innerHTML = `<div class="globalbox rot">${esc(c.fehler)}</div>`;
@@ -820,6 +957,127 @@ function generischeWertPruefung(einheit, idx, el0, comp0){
   };
 }
 
+// ---- Abgleich gegen eine negative APERAK (Protokoll Abschnitt 78) ---------
+// Aufbau wie beim CONTRL-Weg: ZUERST die Zuordnung (RFF+ACE gegen UNB DE0020 der
+// links eingefügten Datei) — passt sie nicht, nur diese Aussage und Ende.
+// Danach je gemeldetem Fehler: Klartext des ERC-Codes, Vorgangs-Eingrenzung über
+// RFF+TN und, wo der AHB eine Ortsangabe verlangt, die Lokalisierung des
+// betroffenen Segments samt Gegenprobe durch den eigenen Validator.
+function aperakAbgleichHtml(){
+  const a = aperakErgebnis;
+  const ref = referenzPruefung(linkeDatei, a);
+  if (ref && !ref.passt) return referenzHtml(ref);
+
+  if (a.art === '312')
+    return `<div class="ergebniskarte info"><h3>Keine Ablehnung ` +
+      `<span class="badge ok">Anerkennungsmeldung</span></h3>` +
+      `<div class="zeile">Die APERAK bestätigt die Verarbeitbarkeit (BGM+312) — ` +
+      `kein Ablehnungsgrund zum Abgleich vorhanden.</div></div>`;
+
+  if (!a.bloecke.length)
+    return `<div class="ergebniskarte frag"><h3>Kein Fehlercode ` +
+      `<span class="badge frag">nicht auswertbar</span></h3>` +
+      `<div class="zeile">Die APERAK nennt kein SG4 ERC-Segment — ohne Fehlercode ` +
+      `lässt sich der Grund der Ablehnung nicht bestimmen.</div></div>`;
+
+  // Die APERAK bezieht sich auf eine Nachricht der Übertragungsdatei; die
+  // Zuordnung läuft über RFF+ACW (UNH DE0062). Fehlt sie, wird die erste
+  // Nachricht herangezogen — bei einer Datei mit nur einer Nachricht eindeutig.
+  let html = '';
+  a.bloecke.forEach((b, bi) => {
+    const acw = b.rff['ACW'] || '';
+    let unitIdx = acw ? linkeEinheiten.findIndex(e => e.ref && e.ref === acw) : -1;
+    if (unitIdx < 0) unitIdx = linkeEinheiten.length === 1 ? 0 : -1;
+    const einheit = unitIdx >= 0 ? linkeEinheiten[unitIdx] : null;
+
+    const codeText = typeof aperakFehlertext === 'function' ? aperakFehlertext(b.code) : '';
+    const brauchtOrt = typeof aperakBrauchtOrtsangabe === 'function'
+      && aperakBrauchtOrtsangabe(b.code);
+    const orts = aperakOrtsangabe(b);
+    const treffer = einheit && orts ? findeAperakSegment(einheit, orts) : null;
+
+    let art = 'frag', badge = 'unklar', text = '';
+    let zielHtml = '';
+    if (treffer && einheit){
+      const zeile = einheit.res.zeilen[treffer.idx];
+      const nummer = Object.keys(einheit.karte || {})
+        .find(n => einheit.karte[n] === treffer.idx);
+      // Segment im linken Baum dauerhaft markieren — wie beim CONTRL-Weg.
+      const zielEl = nummer ? document.getElementById(`lseg-${unitIdx}-${nummer}`) : null;
+      if (zielEl){
+        zielEl.classList.add('ziel-contrl');
+        if (!zielEl.querySelector('.contrl-zusatz')){
+          const zusatz = document.createElement('span');
+          zusatz.className = 'contrl-zusatz';
+          zusatz.textContent = '⚑ APERAK ' + b.code + ' – ' + (codeText || '');
+          zielEl.appendChild(zusatz);
+        }
+      }
+      zielHtml = `<div class="zielsegment">${esc(zeile.raw)}</div>`;
+      if (zeile.meldungen.length){
+        art = 'bestaetigt'; badge = 'bestätigt';
+        text = `Validator bestätigt an diesem Segment: ${zeile.meldungen.map(esc).join(' · ')}`;
+      } else {
+        text = `Der eigene Validator findet an diesem Segment keinen Befund — die ` +
+          `APERAK meldet einen fachlichen Fehler (Verarbeitbarkeit), der über die ` +
+          `reine AHB-/Syntaxprüfung hinausgehen kann. Bitte fachlich prüfen.`;
+      }
+      if (treffer.art === 'bezeichnung')
+        text += ` Zuordnung über die Segmentbezeichnung „${esc(orts.bezeichnung)}" ` +
+          `(die APERAK nennt den Segmenttext nicht).`;
+    } else if (brauchtOrt && !orts){
+      text = `Der AHB verlangt zu Fehlercode ${esc(b.code)} eine Ortsangabe ` +
+        `(FTX+Z02) — die APERAK enthält keine. Der Fehlerort ist damit nicht ` +
+        `bestimmbar; bitte beim Absender klären.`;
+    } else if (orts && !treffer){
+      text = `Die Ortsangabe der APERAK lässt sich in der links eingefügten ` +
+        `Nachricht nicht wiederfinden` +
+        (orts.segmentRoh ? ` (gesucht: „${esc(orts.segmentRoh)}")` : '') + `.`;
+    } else if (!einheit){
+      text = `Die APERAK verweist über RFF+ACW auf die Nachricht „${esc(acw)}", ` +
+        `die links nicht enthalten ist.`;
+    } else {
+      text = `Der AHB verlangt zu diesem Fehlercode keine Ortsangabe — die ` +
+        `Ablehnung betrifft den Vorgang als Ganzes, nicht ein einzelnes Segment.`;
+    }
+
+    const freitexte = (b.ftx || []).filter(f => f.art !== 'Z02');
+    html += `<div class="ergebniskarte ${art}"><h3>ERC ${esc(b.code)}` +
+      (b.rff['TN'] ? ` · Vorgang ${esc(b.rff['TN'])}` : '') +
+      ` <span class="badge ${art === 'bestaetigt' ? 'bestaetigt' : 'frag'}">${badge}</span></h3>` +
+      `<div class="zeile">${esc(codeText || 'Code im AHB APERAK nicht geführt')}</div>` +
+      (orts && orts.bezeichnung
+        ? `<div class="hinweistext">Ortsangabe laut APERAK: ${esc(orts.bezeichnung)}</div>` : '') +
+      zielHtml +
+      `<div class="zeile">${text}</div>` +
+      freitexte.map(f => `<div class="hinweistext">FTX+${esc(f.art)}: ` +
+        `${esc(f.teile.join(' | '))}</div>`).join('') +
+      bedingungsHinweisHtml(b, einheit) +
+      `</div>`;
+  });
+  return html;
+}
+
+// Freitexte der APERAK nennen häufig Bedingungsnummern der Prüfgrundlage
+// („[45]", „Bedingung 45"). Wo die Prüf-ID der geprüften Nachricht bekannt ist,
+// wird der zugehörige Bedingungstext aus _bedingungen.js aufgelöst und
+// angezeigt — sonst müsste man ihn im AHB nachschlagen.
+function bedingungsHinweisHtml(block, einheit){
+  if (!einheit) return '';
+  const texte = (block.ftx || []).map(f => f.teile.join(' ')).join(' ');
+  const nummern = [...new Set((texte.match(/\[(\d{1,4})\]/g) || [])
+    .map(x => x.replace(/[\[\]]/g, '')))];
+  if (!nummern.length) return '';
+  const bed = window.EdiBedingungen || {};
+  const zeilen = nummern.map(n => {
+    const t = bed[n];
+    return `<li>[${esc(n)}] ${t ? esc(String(t).replace(/\s+/g, ' ').trim())
+      : '<em>Bedingungstext zu dieser Prüf-ID nicht hinterlegt</em>'}</li>`;
+  });
+  return `<div class="zeile">Im Freitext genannte Bedingungen der Prüfgrundlage:</div>` +
+    `<ul class="befundliste">${zeilen.join('')}</ul>`;
+}
+
 function aktualisiereAbgleich(){
   const panel = $('panelAbgleich'), box = $('abgleichErgebnis');
   // Marker/Zusatzzeilen einer vorherigen Auswertung entfernen — sonst blieben sie
@@ -832,13 +1090,16 @@ function aktualisiereAbgleich(){
   // Die dritte Spalte nur aufspannen, solange es etwas zu zeigen gibt — sonst
   // teilen sich Nachricht und CONTRL die volle Breite (siehe .mit-abgleich).
   const reihe = panel.parentElement;
-  if (!linkeEinheiten || !contrlErgebnis){
+  if (!linkeEinheiten || (!contrlErgebnis && !aperakErgebnis)){
     panel.style.display = 'none';
     if (reihe) reihe.classList.remove('mit-abgleich');
     box.innerHTML = ''; return;
   }
   panel.style.display = '';
   if (reihe) reihe.classList.add('mit-abgleich');
+
+  // Rechts steht eine APERAK: eigener Auswertungsweg (Protokoll Abschnitt 78).
+  if (aperakErgebnis){ box.innerHTML = aperakAbgleichHtml(); return; }
   let html = '';
 
   // Referenzprüfung zuerst — und bei fehlender Zuordnung ENDE: Ohne passende

@@ -3959,3 +3959,108 @@ Zwei Fallstufen für schmalere Fenster:
 (Abgleich unter der CONTRL) geprüft. Die bestehende Regression greift den
 Ein-/Ausblendezustand weiterhin über `panelAbgleich.style.display` und läuft
 unverändert; volle Regression grün (40 Läufe).
+
+## 78. Ablehnungs-Abgleich: negative APERAK auswerten (13.08.2026)
+
+**Auftrag.** Abgleich/Analyse der negativen APERAK gegen die Ursprungsdatei —
+zuerst die Zuordnungsprüfung (RFF+ACE gegen die Datenaustauschreferenz der
+abgelehnten Nachricht), dann die Fehlercodes aus dem AHB APERAK, und die Frage,
+ob sich aus den Freitexten eine Automatisierung bauen lässt.
+
+**Ausgangslage.** Seit Abschnitt 71 war der APERAK-Modus zurückgestellt mit der
+Begründung, die negative APERAK habe „keinen strukturierten Fehlerzeiger (nur
+Freitext in FTX+Z02)". Die Auswertung von AHB und MIG zeigt: Das stimmt nur
+halb — der Freitext hat ein **vom AHB vorgeschriebenes Format**, das maschinell
+auswertbar ist.
+
+### 78.1 Quellenlage
+
+**Zuordnung (MIG APERAK zu SG2 RFF+ACE, wörtlich):** „Dieses Segment dient zur
+Angabe der Datenaustauschreferenz (UNB DE0020) der Übertragungsdatei, die den/die
+Geschäftsvorfall/Geschäftsvorfälle enthält, zu denen die Aussagen erfolgen."
+Damit ist RFF+ACE das exakte Gegenstück zu UCI DE0020 bei der CONTRL — die
+Zuordnung ist genauso hart prüfbar.
+
+**Fehlerort (MIG APERAK zu SG5 FTX+Z02):**
+
+- *Erstes DE4440*: „die Bezeichnung des Segments … genau die Bezeichnung aus der
+  zugrundeliegenden Nachrichtenbeschreibung … 1:1 zu übernehmen".
+- *Zweites DE4440*: „Hier kann das fehlerhafte Segment aus dem Geschäftsvorfall
+  übernommen werden. Der String … beginnt immer mit der Segmentbezeichnung und
+  umfasst alle Zeichen bis ausschließlich dem Segment-Endezeichen."
+
+Das zweite DE4440 ist also **roher Segmenttext** und damit unmittelbar in der
+Ursprungsnachricht auffindbar. Genau das macht die Positionsanzeige möglich.
+
+**Pflicht zur Ortsangabe.** Der AHB nennt sieben Fehlercodes, bei denen FTX+Z02
+anzugeben ist: Z21, Z29, Z35, Z38, Z39, Z40, Z41. Bei allen anderen betrifft die
+Ablehnung den Vorgang als Ganzes.
+
+**Weitere Referenzen:** SG5 RFF+ACW = UNH DE0062 der fehlerhaften Nachricht,
+RFF+AGO = BGM DE1004, RFF+TN = Vorgangsnummer (bei UTILMD SG4 IDE DE7402).
+
+### 78.2 Datenschicht
+
+Neues Werkzeug `werkzeuge/lies_aperak_ahb.py` → `_engine/daten/aperak-ahb.js`:
+**27 ERC-Fehlercodes** (Z10…Z44) mit Klartext, die sieben Codes mit
+Pflicht-Ortsangabe und 23 Bedingungstexte.
+
+Drei Parsing-Fallen, alle beim Prüfen gefunden und im Test festgehalten:
+
+- Der erste Code (Z10) folgt unmittelbar auf die DE-Nummer statt auf einen
+  Zeilenumbruch — er fehlte zunächst ganz.
+- Bei Z14 steht die Bedingungsspalte („[500] Hinweis: Für Folgeprozesse.")
+  **mitten** im Eintrag; ein Abschneiden dort verlor die Fortsetzung der
+  Bezeichnung („… nicht gefunden"). Der Hinweisblock wird jetzt herausgeschnitten,
+  nicht abgeschnitten.
+- Z40 bricht in der Tabellenzelle mitten im Wort um
+  („Segmentgruppenwiederh olbarkeit"). Da sich Wortumbrüche nicht zuverlässig von
+  Wortgrenzen unterscheiden lassen, dient der **Fließtext** des AHB — der dieselben
+  sieben Codes noch einmal sauber aufzählt — als Korrekturquelle.
+
+### 78.3 Auswertung in der Anwendung
+
+`ablehnung-abgleich.html` erkennt jetzt am UNH, ob rechts eine CONTRL oder eine
+APERAK steht, und wählt den passenden Weg. Der APERAK-Weg:
+
+1. **Zuordnung zuerst** — RFF+ACE gegen UNB DE0020 der links eingefügten Datei,
+   nach demselben Muster wie Abschnitt 76: Passt es nicht, erscheint nur die klare
+   Aussage („Diese APERAK gehört nicht zu dieser Nachricht", mit der referenzierten
+   Datenaustauschreferenz) und sonst nichts.
+2. **BGM+312** (Anerkennungsmeldung) wird als „kein Ablehnungsgrund" ausgewiesen.
+3. Je SG4 ERC: Fehlercode im **Klartext** aus dem AHB, Vorgangsnummer aus RFF+TN,
+   die Nachrichtenzuordnung über RFF+ACW.
+4. **Fehlerort:** Der Rohtext aus FTX+Z02 (zweites DE4440) wird in der geprüften
+   Nachricht gesucht — exakt, sonst als Präfix, sonst über die Segmentbezeichnung
+   (erstes DE4440) gegen die Abschnittsnamen der Prüfgrundlage. Das gefundene
+   Segment wird im linken Baum markiert wie beim CONTRL-Weg.
+5. **Gegenprobe:** Findet der eigene Validator an diesem Segment einen Befund,
+   gilt die Ablehnung als bestätigt; findet er keinen, wird ausdrücklich gesagt,
+   dass eine APERAK einen *fachlichen* Fehler meldet, der über die AHB-/
+   Syntaxprüfung hinausgehen kann — bewusst unterstützend, nicht abschließend
+   bestätigend (so bereits in Abschnitt 71 festgehalten).
+6. Verlangt der AHB zum Code eine Ortsangabe und fehlt sie, wird genau das
+   gemeldet — ein eigener, belegbarer Befund gegen den Absender.
+
+### 78.4 Freitext-Automatisierung
+
+Die Freitexte (FTX+AAO „Fehlerbeschreibung", FTX+ABO „Information über
+Abweichung") nennen in der Praxis häufig Bedingungsnummern der Prüfgrundlage.
+`bedingungsHinweisHtml()` zieht Nummern im Format `[nn]` aus allen Freitexten
+eines Fehlerblocks und löst sie gegen die bereits geladenen `_bedingungen.js` der
+erkannten Prüf-ID auf — der Bedingungstext steht damit direkt am Befund, statt im
+AHB nachgeschlagen werden zu müssen. Ist eine Nummer dort nicht hinterlegt, wird
+das kenntlich gemacht statt stillschweigend weggelassen.
+
+**Grenze, bewusst so belassen:** Weiter gehende Automatisierung (etwa das Deuten
+von Freitext ohne Bedingungsnummer) wäre Raten — die Freitexte sind bis auf die
+Ortsangabe nicht formatgebunden. Der Abgleich zeigt sie deshalb vollständig an,
+statt sie zu interpretieren.
+
+**Nachweis.** Neue Regression `scripts/test_aperak_ahb.js` (Datenschicht, u. a.
+die drei oben genannten Parsing-Fallen und die sieben Ortsangabe-Codes) und
+Fall J in `scripts/test_ablehnung_abgleich.js`: APERAK-Erkennung, ERC-Klartext,
+Vorgangs-Eingrenzung, Wiederfinden des in FTX+Z02 genannten Segments, genau eine
+Markierung im Segmentbaum, Gegenprobe des Validators, fremde RFF+ACE → klare
+Aussage ohne weitere Ergebnisse, positive APERAK → Anerkennungsmeldung.
+Volle Regression grün (41 Läufe).

@@ -138,6 +138,35 @@ const CONTRL_OK =
   "UNH+1+CONTRL:D:96A:UN'UCI+844156800099+9900000000002:500+9900000000001:500+7'" +
   "UNT+2+1'UNZ+1+1'";
 
+// ---- Fall J: negative APERAK (Protokoll Abschnitt 78) --------------------
+// Die APERAK hat keinen numerischen Fehlerzeiger. Auswertbar sind der Fehlercode
+// (SG4 ERC) und die Ortsangabe (SG5 FTX+Z02), deren zweites DE4440 laut MIG das
+// fehlerhafte Segment im ROHTEXT enthält — daraus wird die Stelle lokalisiert.
+const APERAK_NACHRICHT =
+  "UNA:+.? 'UNB+UNOC:3+9900000000001:500+9900000000002:500+260803:0800+DAR12345++++++1'" +
+  "UNH+MSG001+UTILMD:D:11A:UN:S2.1'BGM+E01+DOK77'DTM+137:202608030800?+00:303'" +
+  "NAD+MS+9900000000001::293'NAD+MR+9900000000002::293'IDE+24+VORG001'" +
+  "DTM+92:202610010000?+00:303'STS+7++E06+ZW6'RFF+Z13:55013'" +
+  "NAD+Z63++:LADEN !++Weg::3Lusan+Gera++07555+DE'UNT+11+MSG001'UNZ+1+DAR12345'";
+
+const APERAK_NEG =
+  "UNA:+.? 'UNB+UNOC:3+9900000000002:500+9900000000001:500+260813:0900+AP001++++++1'" +
+  "UNH+1+APERAK:D:07B:UN:2.1i'BGM+313+APDOK1'DTM+137:202608130900?+00:303'" +
+  "RFF+ACE:DAR12345'DTM+171:202608030800?+00:303'" +
+  "NAD+MS+9900000000002::293'NAD+MR+9900000000001::293'" +
+  "ERC+Z29'RFF+ACW:MSG001'RFF+TN:VORG001'" +
+  "FTX+Z02+++Name und Anschrift:NAD?+Z63?+?+?:LADEN !?+?+Weg?:?:3Lusan?+Gera?+?+07555?+DE'" +
+  "UNT+12+1'UNZ+1+AP001'";
+
+// Dieselbe APERAK, aber mit fremder Datenaustauschreferenz in RFF+ACE.
+const APERAK_FREMDE_DATEI = APERAK_NEG.replace('RFF+ACE:DAR12345', 'RFF+ACE:FREMD999');
+
+// Positive APERAK (Anerkennungsmeldung) -> kein Ablehnungsgrund.
+const APERAK_ANERKENNUNG = APERAK_NEG
+  .replace('BGM+313+APDOK1', 'BGM+312+APDOK1')
+  .replace("ERC+Z29'RFF+ACW:MSG001'RFF+TN:VORG001'", "")
+  .replace("FTX+Z02+++Name und Anschrift:NAD?+Z63?+?+?:LADEN !?+?+Weg?:?:3Lusan?+Gera?+?+07555?+DE'", "");
+
 let fails = 0;
 const ok = (b, t) => { console.log((b ? '  OK  ' : ' FAIL ') + t); if (!b) fails++; };
 
@@ -256,7 +285,8 @@ const ok = (b, t) => { console.log((b ? '  OK  ' : ' FAIL ') + t); if (!b) fails
   await page.click('text=neg. CONTRL gegen Nachricht prüfen');
   await page.waitForTimeout(500);
   txt = await page.evaluate(() => document.getElementById('rechtsErgebnis').innerText);
-  ok(/nicht als CONTRL erkannt/.test(txt), 'Fall F (kein CONTRL rechts): Fehlermeldung statt Absturz');
+  ok(/weder als CONTRL noch als APERAK erkannt/.test(txt),
+    'Fall F (weder CONTRL noch APERAK rechts): Fehlermeldung statt Absturz');
 
   // ---- Fall G: generische Positionsprüfung OHNE eigene AHB-Regel -----------
   // COM+:EM' — DE3148 leer, DE3155 „EM“ belegt; dafür gibt es keine eigene
@@ -367,6 +397,53 @@ const ok = (b, t) => { console.log((b ? '  OK  ' : ' FAIL ') + t); if (!b) fails
   const refOhne = await page.evaluate(() => document.getElementById('abgleichErgebnis').innerText);
   ok(/Zuordnung nicht möglich/.test(refOhne) && /keine Datenaustauschreferenz/.test(refOhne),
     'Fall I: CONTRL ohne UCI DE0020 -> „Zuordnung nicht möglich“');
+
+  // ---- Fall J: negative APERAK ---------------------------------------------
+  await page.fill('#eingabeLinks', APERAK_NACHRICHT);
+  await page.fill('#eingabeRechts', APERAK_NEG);
+  await page.click('text=neg. CONTRL gegen Nachricht prüfen');
+  await page.waitForTimeout(1200);
+  const ap = await page.evaluate(() => ({
+    rechts: document.getElementById('rechtsErgebnis').innerText,
+    abgleich: document.getElementById('abgleichErgebnis').innerText,
+    marker: document.querySelectorAll('.seg.ziel-contrl').length,
+  }));
+  ok(/Fehlermeldung \(BGM\+313\)/.test(ap.rechts),
+    'Fall J: APERAK wird erkannt und als Fehlermeldung eingeordnet');
+  ok(/Erforderliche Angabe für diesen Anwendungsfall fehlt/.test(ap.rechts),
+    'Fall J: ERC-Code Z29 wird aus dem AHB APERAK in Klartext aufgelöst');
+  ok(/Vorgang VORG001/.test(ap.abgleich),
+    'Fall J: Vorgangsnummer aus RFF+TN grenzt den Vorgang ein');
+  ok(/NAD\+Z63/.test(ap.abgleich),
+    'Fall J: das in FTX+Z02 genannte Segment wird in der Nachricht wiedergefunden');
+  ok(ap.marker === 1,
+    `Fall J: genau ein Segment im linken Baum markiert (ist ${ap.marker})`);
+  ok(/Validator bestätigt an diesem Segment/.test(ap.abgleich),
+    'Fall J: unabhängige Gegenprobe des eigenen Validators am selben Segment');
+
+  // Fremde Datenaustauschreferenz -> Zuordnungsprüfung greift, APERAK benannt.
+  await page.fill('#eingabeRechts', APERAK_FREMDE_DATEI);
+  await page.click('text=neg. CONTRL gegen Nachricht prüfen');
+  await page.waitForTimeout(900);
+  const apFremd = await page.evaluate(() => ({
+    text: document.getElementById('abgleichErgebnis').innerText,
+    karten: document.querySelectorAll('#abgleichErgebnis .ergebniskarte').length,
+    marker: document.querySelectorAll('.seg.ziel-contrl').length,
+  }));
+  ok(/Diese APERAK gehört nicht zu dieser Nachricht/.test(apFremd.text),
+    'Fall J: fremde RFF+ACE -> klare Aussage, korrekt als APERAK benannt');
+  ok(/FREMD999/.test(apFremd.text) && /RFF\+ACE/.test(apFremd.text),
+    'Fall J: referenzierte Datenaustauschreferenz und Fundstelle genannt');
+  ok(apFremd.karten === 1 && apFremd.marker === 0,
+    'Fall J: keine weiteren Ergebnisse, keine Segmentmarkierung');
+
+  // Positive APERAK -> kein Ablehnungsgrund.
+  await page.fill('#eingabeRechts', APERAK_ANERKENNUNG);
+  await page.click('text=neg. CONTRL gegen Nachricht prüfen');
+  await page.waitForTimeout(900);
+  const apOk = await page.evaluate(() => document.getElementById('abgleichErgebnis').innerText);
+  ok(/Anerkennungsmeldung/.test(apOk) && /kein Ablehnungsgrund/.test(apOk),
+    'Fall J: positive APERAK (BGM+312) wird als Anerkennung eingeordnet');
 
   // ---- Leeren-Buttons blenden Abgleich-Panel wieder aus ---------------------
   await page.click('.panel:has(#eingabeLinks) button.secondary');

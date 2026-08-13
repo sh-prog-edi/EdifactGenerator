@@ -1,7 +1,7 @@
 # Arbeitsstand / Übergabe
 
 Stand: 13.08.2026 (Phasen 2–4 abgeschlossen; zuletzt: Sicherheitsaudit Abschnitt 70,
-Ablehnungs-Abgleich CONTRL-Modus Abschnitte 71–77, zuletzt CONTRL-Prüfgrundlage aus
+Ablehnungs-Abgleich CONTRL- UND APERAK-Modus Abschnitte 71–78, Prüfgrundlagen aus
 MIG und AHB gelesen, Referenzprüfung ergänzt) ·
 Projekt: **EdifactGenerator** · Auftraggeber: Steffen Haense
 
@@ -23,7 +23,7 @@ Energiemarkts (BDEW-MaKo): 18 Nachrichtentypen in zwei Formatständen (`202604` 
 30.09.2026, `202610` ab 01.10.2026), 975 Prüf-ID-Formulare, universeller Validator,
 Antwort- und Folgenachrichten, Umbau Produktivnachricht → Testnachricht, sowie ein
 Ablehnungs-Abgleich (abgelehnte Nachricht gegen negative CONTRL, `ablehnung-
-abgleich.html`, Abschnitte 71–77). Alle Prüfgrundlagen sind **maschinell aus den frei
+abgleich.html`, und negative APERAK, Abschnitte 71–78). Alle Prüfgrundlagen sind **maschinell aus den frei
 verfügbaren Originaldokumenten** gelesen; kostenpflichtige XML-/JSON-Fassungen werden
 nicht verwendet.
 
@@ -130,20 +130,17 @@ zusätzlich die Trailer `Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
 
 ## 6. Offene Punkte
 
-**Nächster geplanter Schritt: Ablehnungs-Abgleich, APERAK-Modus.** Die neue Seite
-`ablehnung-abgleich.html` (Abschnitte 71–73) gleicht eine abgelehnte Nachricht gegen
-eine negative CONTRL ab (strukturierter Fehlerzeiger SG1 UCM/SG2 UCS/UCD, Segment-/
-DE-Position wird im linken Segmentbaum markiert und gegen den unabhängigen Validator-
-Befund geprüft — inklusive einer generischen, AHB-unabhängigen Positionsprüfung als
-Rückfallebene). Auf ausdrücklichen Wunsch des Auftraggebers („erst CONTRL, danach
-APERAK") ist der APERAK-Modus bewusst noch NICHT umgesetzt: die negative APERAK hat
-keinen strukturierten Fehlerzeiger (nur Freitext in FTX+Z02), die Fehlerlokalisierung
-müsste über RFF+ACE/AGO/TN (Vorgangs-Eingrenzung) plus Auswertung der Segmente im
-eingegrenzten Abschnitt gegen Verwendbarkeit (Kommunikationsrichtung, Quelle:
-`_engine/daten/prozessketten.js` → `quelleVon`/`quelleAn` je Prüf-ID) und fachliche
-Korrektheit (Codelisten) laufen — nur unterstützend, nie abschließend bestätigend wie
-bei CONTRL. Bei Bedarf im Gesprächsverlauf der letzten Sitzung nachlesen (RFF-Feld-
-Semantik dort bereits geklärt) oder Protokoll-Abschnitt 71 (Machbarkeitsteil).
+**Ablehnungs-Abgleich (Abschnitte 71–78) — Stand.** Die Seite
+`ablehnung-abgleich.html` wertet eine abgelehnte Nachricht sowohl gegen eine
+**negative CONTRL** (strukturierter Fehlerzeiger SG1 UCM/SG2 UCS/UCD) als auch
+gegen eine **negative APERAK** aus (Abschnitt 78). Beide Wege prüfen ZUERST die
+Zuordnung zur Übertragungsdatei (CONTRL: UCI DE0020, APERAK: SG2 RFF+ACE) und
+brechen bei fremder Referenz mit einer klaren Aussage ab. Bei der APERAK wird der
+Fehlerort aus der „Ortsangabe des AHB-Fehlers" (SG5 FTX+Z02, zweites DE4440 =
+fehlerhaftes Segment im Rohtext) in der Nachricht wiedergefunden und markiert;
+der eigene Validator dient als Gegenprobe — unterstützend, nie abschließend
+bestätigend, weil eine APERAK einen fachlichen Fehler meldet, der über die
+AHB-/Syntaxprüfung hinausgehen kann.
 
 **Wichtigster fachlicher Folgepunkt: AHB-Extraktion der Servicenachrichten
 (Abschnitte 74/75).** Für APERAK und CONTRL ist die Prüfgrundlage unvollständig: Der
