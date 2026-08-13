@@ -1,6 +1,8 @@
 # Arbeitsstand / Übergabe
 
-Stand: 04.08.2026 (Phasen 2–4 abgeschlossen) · Projekt: **EdifactGenerator** · Auftraggeber: Steffen Haense
+Stand: 13.08.2026 (Phasen 2–4 abgeschlossen; zuletzt: Sicherheitsaudit Abschnitt 70,
+Ablehnungs-Abgleich CONTRL-Modus Abschnitte 71–72) · Projekt: **EdifactGenerator** ·
+Auftraggeber: Steffen Haense
 
 **Quelle der Wahrheit ist das Git-Repository**
 (<https://github.com/sh-prog-edi/EdifactGenerator>). Der Einstieg in eine neue Sitzung:
@@ -18,12 +20,29 @@ Ein **browserbasiertes Werkzeug ohne Bauwerkzeug** (reines HTML/JS/CSS, per `fil
 lauffähig) zum Erzeugen und Validieren von EDIFACT-Testnachrichten des deutschen
 Energiemarkts (BDEW-MaKo): 18 Nachrichtentypen in zwei Formatständen (`202604` bis
 30.09.2026, `202610` ab 01.10.2026), 975 Prüf-ID-Formulare, universeller Validator,
-Antwort- und Folgenachrichten, Umbau Produktivnachricht → Testnachricht. Alle
-Prüfgrundlagen sind **maschinell aus den frei verfügbaren Originaldokumenten** gelesen;
-kostenpflichtige XML-/JSON-Fassungen werden nicht verwendet.
+Antwort- und Folgenachrichten, Umbau Produktivnachricht → Testnachricht, sowie ein
+Ablehnungs-Abgleich (abgelehnte Nachricht gegen negative CONTRL, `ablehnung-
+abgleich.html`, Abschnitte 71–72). Alle Prüfgrundlagen sind **maschinell aus den frei
+verfügbaren Originaldokumenten** gelesen; kostenpflichtige XML-/JSON-Fassungen werden
+nicht verwendet.
 
 ## 2. Verbindliche Konventionen des Auftraggebers
 
+- **„Beispielhaft" heißt „alle Prüf-IDs" (13.08.2026, wichtig).** Wenn eine Anfrage
+  Formulierungen wie „z. B.", „beispielhaft", „etc." oder „usw." verwendet — meist an
+  einer EINEN konkreten Nachricht/PID/Segment aufgehängt —, bezieht sich der Auftrag
+  IMMER auf ALLE betroffenen Prüf-IDs, nicht nur auf das genannte Beispiel. Eine
+  gemeldete Syntaxprüfungslücke an einem Segment (z. B. „PIA+5+:SRW fehlt die
+  OBIS-Kennzahl") ist als Auftrag zu lesen: das zugrundeliegende Muster über ALLE
+  Nachrichten/Segmente/Prüf-IDs suchen und dort ebenfalls beheben — nicht nur den
+  geschilderten Einzelfall patchen. Ziel: kein Flickenteppich, keine Insellösungen.
+  Vorgehen bei einem gemeldeten Einzelfund: (1) Ursache im Code lokalisieren (meist
+  eine zu enge Bedingung wie „nur prüfen, wenn Wert vorhanden"), (2) die Korrektur auf
+  Ebene der zugrundeliegenden Regel/Funktion ansetzen (nicht PID-spezifisch), (3) mit
+  einem Mutations-/Sweep-Lauf über alle Prüf-IDs bzw. der Referenz-Suite bestätigen,
+  dass die Korrektur nicht nur den gemeldeten Fall, sondern das ganze Muster abdeckt
+  (Vorbild: NAD+MS/MR-Duplikatprüfung und PIA/LIN-DE7140-Fix, Abschnitte 70/72 —
+  beide mit 553/553-Sweep bzw. 23/23-Dateien-Referenzlauf nachgewiesen).
 - **Kommunikation vollständig auf Deutsch**, einschließlich der internen Überlegungen.
 - **Web-Inhalte ausschließlich über WebFetch/WebSearch** abrufen — niemals über curl,
   wget oder HTTP-Bibliotheken.
@@ -37,6 +56,11 @@ kostenpflichtige XML-/JSON-Fassungen werden nicht verwendet.
   dieses Dokument). Ein Release entsteht über einen Git-Tag — die früheren
   ZIP-Konventionen (Namensschema `EdiGen_JJJJMMTT.zip`, Zeitstempel, README-Pflicht,
   GitHub-Fertigkeit) erfüllt jetzt der Release-Workflow automatisch.
+- **Echte, anonymisierte Marktnachrichten bleiben strikt lokal**: Ordner
+  `/home/claude/referenznachrichten/` (bzw. `EDIGEN_REFERENZEN`) — niemals ins
+  Repository committen. Gegenprobe für Validator-Änderungen:
+  `EDIGEN_REFERENZEN=/home/claude/referenznachrichten node scripts/referenz_validierung.js --streng`
+  (Stand 13.08.2026: 23/23 Dateien, 1491/1491 Einheiten fehlerfrei).
 
 ## 3. Aufbau in Kurzform
 
@@ -95,7 +119,30 @@ Punkt D) und bricht die Regression nicht.
    Release-Workflow prüft (Paket + Smoke), baut `EdiGen_JJJJMMTT.zip` per `git archive`
    und hängt es an das GitHub-Release.
 
+**Sitzungen ohne Push-Zugriff (Cloud-Sandbox ohne GitHub-Token):** Kann eine Sitzung
+nicht direkt auf `origin` pushen, ist die Auslieferung ein Git-Bundle statt eines
+direkten Pushs: `git bundle create <pfad>.bundle <letzter-bekannter-commit>..HEAD`,
+per Datei-Zustellung an den Auftraggeber übergeben. Einspielen beim Auftraggeber:
+`git pull <bundle>.bundle HEAD && git push`. Commit-Nachrichten dieser Sitzungen tragen
+zusätzlich die Trailer `Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>` und
+`Claude-Session: <Sitzungs-URL>`.
+
 ## 6. Offene Punkte
+
+**Nächster geplanter Schritt: Ablehnungs-Abgleich, APERAK-Modus.** Die neue Seite
+`ablehnung-abgleich.html` (Abschnitte 71–72) gleicht eine abgelehnte Nachricht gegen
+eine negative CONTRL ab (strukturierter Fehlerzeiger SG1 UCM/SG2 UCS/UCD, Segment-/
+DE-Position wird im linken Segmentbaum markiert und gegen den unabhängigen Validator-
+Befund geprüft — inklusive einer generischen, AHB-unabhängigen Positionsprüfung als
+Rückfallebene). Auf ausdrücklichen Wunsch des Auftraggebers („erst CONTRL, danach
+APERAK") ist der APERAK-Modus bewusst noch NICHT umgesetzt: die negative APERAK hat
+keinen strukturierten Fehlerzeiger (nur Freitext in FTX+Z02), die Fehlerlokalisierung
+müsste über RFF+ACE/AGO/TN (Vorgangs-Eingrenzung) plus Auswertung der Segmente im
+eingegrenzten Abschnitt gegen Verwendbarkeit (Kommunikationsrichtung, Quelle:
+`_engine/daten/prozessketten.js` → `quelleVon`/`quelleAn` je Prüf-ID) und fachliche
+Korrektheit (Codelisten) laufen — nur unterstützend, nie abschließend bestätigend wie
+bei CONTRL. Bei Bedarf im Gesprächsverlauf der letzten Sitzung nachlesen (RFF-Feld-
+Semantik dort bereits geklärt) oder Protokoll-Abschnitt 71 (Machbarkeitsteil).
 
 Fachlich: [`OFFENE_ASPEKTE.md`](OFFENE_ASPEKTE.md) (A–E; F ist mit dem Engine-Schritt
 geschlossen), als GitHub-Issues vorbereitet in [`ISSUES_VORLAGEN.md`](ISSUES_VORLAGEN.md)

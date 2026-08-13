@@ -5,6 +5,17 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **13.08.2026** – **`docs/UEBERGABE.md` aktualisiert.** Neue verbindliche Konvention
+  aufgenommen: Formulierungen wie „z. B."/„beispielhaft"/„etc."/„usw." in Anfragen
+  beziehen sich immer auf ALLE Prüf-IDs, nicht nur auf das genannte Beispiel — ein
+  gemeldeter Einzelfund ist als Auftrag zu lesen, das zugrundeliegende Muster über alle
+  Nachrichten/Segmente zu prüfen und zu beheben. Außerdem ergänzt: Vorgehen bei
+  Sitzungen ohne Push-Zugriff (Git-Bundle statt direktem Push), Ablage-Konvention für
+  echte Referenznachrichten, aktueller Stand (Sicherheitsaudit Abschnitt 70,
+  Ablehnungs-Abgleich Abschnitte 71–72) und nächster geplanter Schritt (APERAK-Modus
+  des Ablehnungs-Abgleichs).
+
+
 - **13.08.2026** – **Ablehnungs-Abgleich: Nutzer-Feedback nach erster
   Erprobung.** Ein Prüfen-Schalter statt zwei (rechts: "neg. CONTRL gegen
   Nachricht prüfen", prüft beide Seiten inkl. Abgleich; Datei-Import auf
