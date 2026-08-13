@@ -38,6 +38,8 @@ const NODE_TESTS = [
 const BROWSER_TESTS = [
     'scripts/test_utilmd_seiten.js',
     'scripts/test_engine_pages.js',
+    'scripts/test_html_escaping.js',
+    'scripts/test_edi_escaping.js',
     'scripts/test_folgenachrichten.js',
     'scripts/test_vorgangsnummer.js',
     'scripts/test_abhaengige_segmente.js',

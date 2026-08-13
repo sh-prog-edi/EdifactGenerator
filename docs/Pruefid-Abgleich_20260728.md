@@ -3315,3 +3315,79 @@ korrekt unbeanstandet.
 leeren NAD+Z46. Gegenproben: Kunden-NAD name-only weiter grün, Fuzz 15/15,
 553 PIDs ohne Fehlalarm, Komponenten 20/20, Antwortketten 35/35, Referenz-Suite
 23/23 (1491 Einheiten, 0 Fehler). Regression grün.
+
+## 70. Sicherheits- und Vollständigkeitsaudit: Code, alle 553 PIDs (13.08.2026)
+
+**Auftrag.** Für jede Prüf-ID: Code auf Bugs und mögliche Angriffs-Schwachstellen
+prüfen; danach je Datensegment einer EDIFACT-Nachricht Abhängigkeiten, erlaubte
+Zeichen, Syntax und fachliche Korrektheit eingehend prüfen.
+
+**Befund 1 — DOM-XSS in Validator und Umbau (behoben).** `validator.html` und
+`umbau.html` prüfen bewusst auch nicht vertrauenswürdige Dateien (Nachrichten von
+Marktpartnern). Die Erkennungs-/Meldungsboxen bauten mehrere Anzeigepfade per
+`innerHTML` direkt aus Nachrichteninhalt zusammen — UNH-Nachrichtentyp/-Kennung,
+RFF+Z13-Prüf-ID, BGM-Dokumentennummer (Mehrfachansicht), das unvollständige
+Rest-Segment am Dateiende — ohne HTML-Escaping. Eine präparierte Nachricht
+(z. B. `UNH+1+<img src=x onerror=…>:D:…'`) führte damit beim Prüfen/Einlesen zu
+Skriptausführung im Seitenkontext. Mit Playwright nachgestellt und bestätigt
+(vier unabhängige Auslösewege, `alert()` wurde real ausgelöst). `_engine/
+import-pruefung.js` (Importprüfung der 19 Generatorseiten) und `_engine/
+folgenachrichten.js` escapen bereits durchgehend über eine eigene `esc()` —
+betroffen waren ausschließlich die beiden allgemeinen Werkzeuge. Behoben mit
+einer zentralen `esc()`-Funktion in `validator.html`/`umbau.html`, angewandt an
+jeder Einfügestelle mit Nachrichteninhalt (Erkennung, globale Meldungen,
+Segmentliste, Mehrfachansicht). Regressionstest `scripts/test_html_escaping.js`
+(vier Auslösewege, 5/5).
+
+**Befund 2 — fehlendes Release-Zeichen-Escaping bei RNG/MEA/PRI (behoben).**
+Freie Eingabefelder ohne Codeliste werden vor der Ausgabe über `edi()`
+release-zeichen-escaped, damit ein EDIFACT-Sonderzeichen im Feld die Nachricht
+nicht syntaktisch zerstört. Bei RNG (DE6162/6152, Bereichsangabe — u. a. QUOTES/
+PRICAT Mengenangaben) und MEA (DE6314, Maßwert) fehlte dieser Schritt; anders
+als bei den strukturell gleichartigen QTY/MOA/PCD/TAX (dort fängt eine
+vorgeschaltete `isNaN()`-Prüfung dasselbe Problem ab) gibt es dort keine
+numerische Prüfung. Ein Apostroph im Feld (z. B. „123'999" als Tausendertrenner
+getippt) brach das Segment mitten im Wert ab und zerlegte den Rest der
+Nachricht in Fragmente. Mit Playwright an PID 15005 (QUOTES) nachgestellt:
+`RNG+Z03+H87:123'999'` wurde zu zwei Fragmenten zerlegt. MEA wird nach
+aktueller Prüf-ID-Datenlage von keiner der 553 Prüf-IDs erzeugt (toter Code,
+kein akuter Auslöseweg) — für den Fall künftiger AHB-Erweiterung dennoch
+korrigiert. PRI (DE5284/6411 Basis/Einheit) ergänzt aus demselben Grund
+vorsorglich, da die Engine dort ohne Codeliste ebenfalls ein freies Feld
+rendert. Regressionstest `scripts/test_edi_escaping.js` (Gegenprobe über
+`AhbValidator.parse()`, release-zeichen-bewusst, 5/5).
+
+**Befund 3 — doppeltes NAD+MS/NAD+MR wird nicht erkannt (behoben).** Die
+bestehende Wiederholungsprüfung (Abschnitt 68) erfasst nur Instanzen OHNE
+Segmentgruppe — Gruppeninstanzen bleiben bewusst außen vor, weil ihre
+Wiederholung die Wiederholung eines Vorgangs sein kann. NAD+MS/NAD+MR
+(Marktpartner-Identität Absender/Empfänger, Allg. Festlegungen Kap. 2.13)
+sitzen aber vor jeder Vorgangsschleife und dürfen unabhängig von ihrer
+SG-Zuordnung in der AHB-Extraktion nicht mehrfach vorkommen — ein Duplikat
+blieb unbeanstandet, weil beide Vorkommen derselben AHB-Instanz zugeordnet
+wurden. Mit einem Mutationslauf über alle 553 PIDs bestätigt (dupliziertes
+gruppiertes Pflicht-Segment mit MIG-Wiederholung 1 — 553/553 nicht erkannt vor
+der Korrektur). Behoben mit einer eigenen, engen Prüfung unabhängig von der
+Instanz-Zuordnung (zählt NAD+MS/NAD+MR direkt je Nachricht); nach der Korrektur
+553/553 erkannt.
+
+**Übrige Prüfpunkte ohne Befund.** Code-Review von `ahb-validator.js`
+(Parser, alle Regex auf ReDoS-Muster — durchweg mit fester Ober- oder
+Ziffernbegrenzung, keine verschachtelten unbegrenzten Quantoren über
+überlappenden Zeichenklassen), `ahb-form-engine.js`, `umbau.js`, `tests/
+harness.js`: kein `eval`/`new Function` auf Nachrichteninhalt, kein
+`document.write` mit nicht whitelist-geprüften Werten (`_engine/stand.js`
+liest `?stand=` nur gegen eine feste Werteliste), keine Prototype-Pollution-
+Muster (keine dynamische `obj[fremderSchlüssel]=…`-Zuweisung aus
+Nachrichteninhalt). Antwort-Weiterleitung (`#antwort=<JSON>`, validator.html →
+Generatorseiten) setzt Werte ausschließlich über `element.value=…`, nicht über
+`innerHTML` — kein zusätzlicher Injektionsweg. Je-Segment-Prüfung (Zeichen-
+/Format-Vorgaben, Abhängigkeiten, fachliche Korrektheit) über alle 553 PIDs:
+Mutationssweep auf fehlende Muss-Segmente/-Datenelemente unverändert 0 falsche
+Freigaben (Abschnitt 68/69 bereits geschlossen); Referenz-Suite an den 23
+echten Marktnachrichten (1491 Einheiten) weiterhin 0 Fehler.
+
+**Nachweis.** `scripts/test_html_escaping.js` 5/5, `scripts/
+test_edi_escaping.js` 5/5, NAD+MS/MR-Mutationssweep 553/553 (vorher 0/553),
+volle Regression grün (37 Läufe inkl. der beiden neuen Tests), Referenz-Suite
+23/23 Dateien · 1491/1491 Einheiten · 0 Fehler-Befunde.

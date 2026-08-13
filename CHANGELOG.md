@@ -5,6 +5,28 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **13.08.2026** – **Sicherheits- und Vollständigkeitsaudit: Code, alle 553 PIDs.**
+  Drei Befunde, alle behoben. (1) DOM-XSS in `validator.html`/`umbau.html`: die
+  Erkennungs-/Meldungsboxen bauten UNH-Typ/-Kennung, RFF+Z13-Prüf-ID, BGM-
+  Dokumentennummer und das unvollständige Rest-Segment ungeschützt per
+  `innerHTML` aus Nachrichteninhalt zusammen — eine präparierte Nachricht
+  (`UNH+1+<img src=x onerror=…>:…'`) führte beim Prüfen/Einlesen zu
+  Skriptausführung; mit Playwright bestätigt (`alert()` real ausgelöst).
+  `import-pruefung.js`/`folgenachrichten.js` (die 19 Generatorseiten) waren
+  bereits durchgehend escaped. Behoben mit zentraler `esc()` an jeder
+  Einfügestelle. (2) Fehlendes Release-Zeichen-Escaping bei RNG (QUOTES/PRICAT
+  Mengenangaben) und MEA: ein Apostroph im Eingabefeld (z. B. als
+  Tausendertrenner getippt) zerlegte die erzeugte Nachricht in Fragmente
+  (`RNG+Z03+H87:123'999'` → zwei Segmente); mit PID 15005 nachgestellt. Über
+  `edi()` escaped, PRI (Basis/Einheit) vorsorglich ergänzt. (3) Dupliziertes
+  NAD+MS/NAD+MR (Marktpartner-Identität, vor jeder Vorgangsschleife) wurde nicht
+  erkannt — die bestehende Wiederholungsprüfung lässt gruppierte Instanzen
+  bewusst außen vor (ihre Wiederholung kann die eines Vorgangs sein), NAD+MS/MR
+  sind davon aber ausgenommen; ein Mutationslauf über alle 553 PIDs zeigte
+  553/553 unerkannt, nach der Korrektur 553/553 erkannt. Zwei neue
+  Regressionstests (`test_html_escaping.js`, `test_edi_escaping.js`); volle
+  Regression grün (37 Läufe), Referenz-Suite 23/23 Dateien · 1491/1491 Einheiten
+  · 0 Fehler. → Protokoll Abschnitt 70.
 - **11.08.2026** – **Prüfnachweis der Gegenprobe an echten Nachrichten.** Neuer
   Vermerk `docs/REFERENZ_PRUEFNACHWEIS.md` hält dauerhaft fest, gegen welche
   realen Prüf-IDs (23 Marktnachrichten-Dateien, Formatstand 202604, 1491

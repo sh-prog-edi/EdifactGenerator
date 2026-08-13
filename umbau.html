@@ -151,6 +151,16 @@
 <script>
 const $ = id => document.getElementById(id);
 
+// HTML-Escaping für alles, was aus dem Inhalt der eingelesenen Nachricht
+// stammt (Nachrichtentyp, Erkennungsfehler …), bevor es per innerHTML
+// eingefügt wird — der Umbau liest bewusst auch nicht vertrauenswürdige,
+// von Marktpartnern erhaltene Dateien ein (siehe validator.html, dasselbe
+// esc()).
+function esc(s){
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 // ---- Import (Drag & Drop, Dateiauswahl, Einfügen) — wie im Validator ------
 const drop = $('drop');
 ['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('aktiv'); }));
@@ -242,13 +252,13 @@ function zeigeErkennung(text){
     const det = AhbValidator.erkenne(parsed, window.validatorRegistry || []);
     const unh = segmente.find(s => s.tag === 'UNH');
     const typ = det.typ || (unh ? (unh.elemente[1] || [])[0] : '') || 'unbekannt';
-    zeilen += `<dt>Nachrichtentyp</dt><dd>${typ}${det.version ? ' (Version ' + det.version + ')' : ''}</dd>`;
+    zeilen += `<dt>Nachrichtentyp</dt><dd>${esc(typ)}${det.version ? ' (Version ' + esc(det.version) + ')' : ''}</dd>`;
     if (det.eintrag && !det.fehler){
       zeilen += `<dt>Formatstand</dt><dd>${det.eintrag.stand}</dd>`;
-      zeilen += `<dt>Prüf-ID</dt><dd>${det.pruefi || '– (keine RFF+Z13)'}</dd>`;
+      zeilen += `<dt>Prüf-ID</dt><dd>${det.pruefi ? esc(det.pruefi) : '– (keine RFF+Z13)'}</dd>`;
     } else {
       zeilen += `<dt>Zuordnung</dt><dd>nicht erkannt — der Umbau arbeitet generisch weiter` +
-        (det.fehler ? ` <span style="color:var(--muted)">(${det.fehler})</span>` : '') + `</dd>`;
+        (det.fehler ? ` <span style="color:var(--muted)">(${esc(det.fehler)})</span>` : '') + `</dd>`;
     }
   } catch (e) {
     zeilen += `<dt>Zuordnung</dt><dd>nicht erkannt — der Umbau arbeitet generisch weiter</dd>`;

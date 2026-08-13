@@ -1293,7 +1293,10 @@
       case "MEA": {
         const q = g("6311"), attr = g("6313"), einheit = g("6411"), w = g("6314");
         if (!w && !pflicht) return;
-        out.push(`MEA+${q || "AAE"}+${attr || ""}+${einheit || ""}:${w || ""}'`); return;
+        // Freier Maßwert ohne Codeliste und ohne numerische Prüfung — wie RNG
+        // (oben) über edi() escapen, sonst bricht ein Release-Zeichen im
+        // Eingabefeld das Segment vorzeitig ab.
+        out.push(`MEA+${q || "AAE"}+${edi(attr || "")}+${edi(einheit || "")}:${edi(w || "")}'`); return;
       }
       case "AJT": {
         // Ablehnungsgrund (ORDRSP): DE4465 Grund-Code, DE1082 Positionsbezug/EBD-Code
@@ -1317,14 +1320,23 @@
         if (!betrag) { if (pflicht) errors.push("PRI: Preis (DE5118) angeben."); return; }
         const zahl = String(betrag).replace(",", ".");
         if (isNaN(Number(zahl))) { errors.push("PRI: Preis (DE5118) muss eine Zahl sein."); return; }
-        out.push(`PRI+${q}:${zahl}${art ? "::" + art : ""}${basis || einheit ? "+" + (basis || "") : ""}${einheit ? "+" + einheit : ""}'`); return;
+        // 5284/6411 sind i.d.R. codelistengeführt (Auswahlfeld); ohne Codeliste
+        // rendert die Engine trotzdem ein freies Eingabefeld — deshalb wie jeder
+        // andere freie Wert über edi() escapen (siehe RNG unten, selbe Ursache).
+        out.push(`PRI+${q}:${zahl}${art ? "::" + art : ""}${basis || einheit ? "+" + edi(basis || "") : ""}${einheit ? "+" + edi(einheit) : ""}'`); return;
       }
       case "RNG": {
         // Bereichsangabe: 6167 + C280 = 6411:6162:6152
         const q = g("6167"), einheit = g("6411"), von = g("6162"), bis = g("6152");
         if (!q) return;
         if (!von && !bis) { if (pflicht) errors.push(`RNG+${q}: Bereichswerte angeben.`); return; }
-        out.push(`RNG+${q}+${einheit || ""}:${von || ""}${bis ? ":" + bis : ""}'`); return;
+        // von/bis sind freie Werte OHNE Codeliste und ohne numerische Prüfung (im
+        // Unterschied zu QTY/MOA/PRI/PCD/TAX, die vor der Ausgabe mit isNaN()
+        // prüfen) — ein Release-Zeichen im Eingabefeld (z. B. ein Apostroph als
+        // Tausendertrenner) gelangte bisher unescaped in die Ausgabe und brach
+        // dort das Segment vorzeitig ab (belegt: RNG+Z03+H87:123'999' zerlegt
+        // sich in zwei Fragmente). Wie jeder andere freie Wert über edi() escapen.
+        out.push(`RNG+${q}+${einheit ? edi(einheit) : ""}:${von ? edi(von) : ""}${bis ? ":" + edi(bis) : ""}'`); return;
       }
       case "ALC": {
         // Zu-/Abschlag (INVOIC SG39): 5463 + C552 (1230 unbenutzt, 5189) -> "ALC+A+:Z01"

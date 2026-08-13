@@ -772,6 +772,24 @@
           + `laut MIG ist an dieser Stelle nur 1 Wiederholung vorgesehen.`);
       });
 
+      // NAD+MS/NAD+MR (Marktpartner-Identität Absender/Empfänger, Allg.
+      // Festlegungen Kap. 2.13): genau EIN Auftreten je Nachricht — anders als
+      // die übrigen NAD-Qualifier (Kunden-/Lieferstellenanschrift), die in
+      // Mehr-Vorgangs-Nachrichten je Vorgang wiederkehren dürfen. Die
+      // Wiederholungsprüfung oben lässt gruppierte Instanzen (inst.sg gesetzt)
+      // deshalb bewusst außen vor — NAD+MS/MR sitzen aber vor jeder
+      // Vorgangsschleife (SG2) und dürfen unabhängig von ihrer SG-Zuordnung in
+      // der AHB-Extraktion nicht mehrfach vorkommen; ein Duplikat blieb bislang
+      // unbeanstandet, weil beide Vorkommen derselben Instanz zugeordnet wurden.
+      for (const q of ["MS", "MR"]) {
+        let n = 0;
+        for (let i = a; i <= b; i++) {
+          if (segs[i].tag === "NAD" && deWert(segs[i], "3035") === q) n++;
+        }
+        if (n > 1) global_.meldungen.push(`NAD+${q}: ${n}× in der Nachricht — laut Allg. `
+          + `Festlegungen (Kap. 2.13) ist je Nachricht nur ein NAD+${q} (Marktpartner-Identität) vorgesehen.`);
+      }
+
       // Fehlende Muss-Instanzen: auf Nachrichtenebene (ohne SG) immer, innerhalb
       // von Gruppen nur in Blöcken (zusammenhängenden Gruppenläufen), die in der
       // Nachricht tatsächlich verwendet werden - optionale Zweige schlagen so

@@ -173,6 +173,18 @@
 <script>
 const $ = id => document.getElementById(id);
 
+// HTML-Escaping für alles, was (auch nur mittelbar) aus dem Inhalt der
+// geprüften Nachricht stammt (Nachrichtentyp, UNH-Kennung, Prüf-ID, Melde-
+// texte mit eingebetteten Rohwerten …), bevor es per innerHTML eingefügt
+// wird. Ohne dieses Escaping lässt sich per Skript-Nutzlast in einem
+// Datenelement (z. B. UNH-Nachrichtentyp oder RFF+Z13-Wert) beliebiges HTML
+// in die Seite einschleusen — Validator und Umbau prüfen bewusst auch nicht
+// vertrauenswürdige, von Marktpartnern erhaltene Dateien.
+function esc(s){
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 // Drag & Drop + Dateiauswahl
 const drop = $('drop');
 ['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('aktiv'); }));
@@ -278,7 +290,7 @@ function segListeHtml(parsed, res, opts){
   opts = opts || {};
   let html = '';
   if (!opts.ohneUna && parsed.una)
-    html += `<div class="seg ok"><span class="segnr"></span>${parsed.una.replace(/</g,'&lt;')}</div>`;
+    html += `<div class="seg ok"><span class="segnr"></span>${esc(parsed.una)}</div>`;
   let segNr = 0;
   res.zeilen.forEach(z => {
     const tag = (z.raw || '').slice(0, 3);
@@ -287,9 +299,9 @@ function segListeHtml(parsed, res, opts){
     const nummer = (segNr > 0 && tag !== 'UNZ' && tag !== 'UNB') ? String(segNr) : '';
     if (tag === 'UNT') segNr = 0;
     const cls = z.status === 'fehler' ? 'rot' : 'ok';
-    let inner = `<span class="segnr">${nummer}</span>` + z.raw.replace(/&/g,'&amp;').replace(/</g,'&lt;');
-    z.meldungen.forEach(m => { inner += `<span class="meld">✗ ${m.replace(/</g,'&lt;')}</span>`; });
-    z.hinweise.forEach(m => { inner += `<span class="hin">ℹ ${m.replace(/</g,'&lt;')}</span>`; });
+    let inner = `<span class="segnr">${nummer}</span>` + esc(z.raw);
+    z.meldungen.forEach(m => { inner += `<span class="meld">✗ ${esc(m)}</span>`; });
+    z.hinweise.forEach(m => { inner += `<span class="hin">ℹ ${esc(m)}</span>`; });
     html += `<div class="seg ${cls}">${inner}</div>`;
   });
   return html;
@@ -298,14 +310,14 @@ function segListeHtml(parsed, res, opts){
 // Globale Meldungsboxen (Fehler, fehlende/bedingte Muss, Hinweise) einer Einheit.
 function globalHtml(res){
   let g = '';
-  res.global.meldungen.forEach(m => { g += `<div class="globalbox rot">${m}</div>`; });
-  const exprSpan = s => `<span class="expr">${s.replace(/</g,'&lt;')}</span>`;
+  res.global.meldungen.forEach(m => { g += `<div class="globalbox rot">${esc(m)}</div>`; });
+  const exprSpan = s => `<span class="expr">${esc(s)}</span>`;
   if (res.fehlendeMuss.length)
     g += `<div class="globalbox rot">Fehlende Muss-Segmente laut AHB: ${res.fehlendeMuss.map(exprSpan).join('; ')}</div>`;
   const bmAnz = res.bedingteMuss ? res.bedingteMuss.length : 0;
   if (bmAnz)
     g += `<div class="globalbox warn">Bedingte Muss-Segmente (nur unter Bedingung Pflicht – bitte fachlich prüfen): ${res.bedingteMuss.map(exprSpan).join('; ')}</div>`;
-  res.global.hinweise.forEach(m => { g += `<div class="globalbox info">${m}</div>`; });
+  res.global.hinweise.forEach(m => { g += `<div class="globalbox info">${esc(m)}</div>`; });
   return g;
 }
 
@@ -353,7 +365,7 @@ async function starteMehrfach(einheiten, gesamtText){
   const gesamtFehler = ergebnisse.reduce((n, r) => n + (r.res ? r.res.zusammenfassung.fehler : 1), 0);
   const typen = [...new Set(ergebnisse.map(r => r.det && r.det.typ).filter(Boolean))];
   $('erkennung').innerHTML =
-    `<dt>Übertragungsdatei</dt><dd>${einheiten.length} Nachrichten/Vorgänge${typen.length ? ' (' + typen.join(', ') + ')' : ''}</dd>` +
+    `<dt>Übertragungsdatei</dt><dd>${einheiten.length} Nachrichten/Vorgänge${typen.length ? ' (' + esc(typen.join(', ')) + ')' : ''}</dd>` +
     `<dt>Prüfweise</dt><dd>jede Nachricht wird gegen ihre eigene Prüf-ID geprüft</dd>`;
   $('panelErgebnis').style.display = '';
   $('ampel').innerHTML = gesamtFehler
@@ -362,12 +374,14 @@ async function starteMehrfach(einheiten, gesamtText){
   let out = '';
   befundBloecke = [];
   ergebnisse.forEach((r, i) => {
-    const label = einheiten[i].label || `Nachricht ${i + 1}`;
+    // label kann aus der Nachricht selbst stammen (BGM-Dokumentennummer,
+    // baueEinheiten) — wie jeder andere Meldungsinhalt escapen.
+    const label = esc(einheiten[i].label || `Nachricht ${i + 1}`);
     if (r.det && r.det.fehler){
       befundBloecke.push(i);
       out += `<div class="msgblock rot" id="msgblock-${i}">` +
         `<h3>${label} <span class="badge rot">nicht erkannt</span></h3>` +
-        `<div class="globalbox rot">${r.det.fehler}</div></div>`;
+        `<div class="globalbox rot">${esc(r.det.fehler)}</div></div>`;
       return;
     }
     const res = r.res, f = res.zusammenfassung.fehler;
@@ -378,8 +392,8 @@ async function starteMehrfach(einheiten, gesamtText){
     if (f || hatHinweis) befundBloecke.push(i);
     const badge = f ? `<span class="badge rot">${f} Fehler</span>`
       : (bm ? `<span class="badge warn">fehlerfrei · ${bm} bedingte Muss</span>` : `<span class="badge ok">fehlerfrei</span>`);
-    const pid = r.det.pruefi ? ` · Prüf-ID ${r.det.pruefi}` : '';
-    const typ = `${r.det.typ || ''}${r.e && r.e.sparte ? ' ' + r.e.sparte : ''}`;
+    const pid = r.det.pruefi ? ` · Prüf-ID ${esc(r.det.pruefi)}` : '';
+    const typ = esc(`${r.det.typ || ''}${r.e && r.e.sparte ? ' ' + r.e.sparte : ''}`);
     out += `<div class="msgblock ${status}" id="msgblock-${i}">` +
       `<h3>${label} — ${typ}${pid} ${badge}</h3>` +
       globalHtml(res) + segListeHtml(r.parsed, res, { ohneUmschlag: true, ohneUna: true }) + `</div>`;
@@ -522,10 +536,10 @@ async function pruefeEinText(text){
     t.format === e.format && t.sparte === e.sparte);
   const staende = [...new Set(det.alleTreffer.filter(t => t.unh === e.unh).map(t => t.stand))];
   let erk =
-    `<dt>Nachrichtentyp</dt><dd>${det.typ}${e.sparte ? ' ' + e.sparte : ''}</dd>` +
-    `<dt>UNH-Kennung</dt><dd>${det.kennung}</dd>` +
+    `<dt>Nachrichtentyp</dt><dd>${esc(det.typ)}${e.sparte ? ' ' + e.sparte : ''}</dd>` +
+    `<dt>UNH-Kennung</dt><dd>${esc(det.kennung)}</dd>` +
     `<dt>Formatstand</dt><dd>${staende.join(' und ')} <span style="color:var(--muted)">(${e.unh})</span></dd>` +
-    `<dt>Prüf-ID</dt><dd>${det.pruefi || '– (Nachricht ohne RFF+Z13)'}</dd>`;
+    `<dt>Prüf-ID</dt><dd>${det.pruefi ? esc(det.pruefi) : '– (Nachricht ohne RFF+Z13)'}</dd>`;
 
   // Prüfgrundlage laden
   let meta = null, variantenHinweis = '';
@@ -536,7 +550,7 @@ async function pruefeEinText(text){
       const b = meta && meta.beschreibung ? meta.beschreibung : '';
       if (b) erk += `<dt>Anwendungsfall</dt><dd>${b}${meta.kommunikation ? ' · ' + meta.kommunikation : ''}</dd>`;
     } else if (det.pruefi){
-      erk += `<dt>Achtung</dt><dd>Prüf-ID ${det.pruefi} ist im AHB ${e.format} ${e.stand} nicht enthalten.</dd>`;
+      erk += `<dt>Achtung</dt><dd>Prüf-ID ${esc(det.pruefi)} ist im AHB ${e.format} ${e.stand} nicht enthalten.</dd>`;
     }
   } catch (ex){ erk += `<dt>Achtung</dt><dd>${ex.message}</dd>`; }
 
@@ -615,8 +629,8 @@ async function starteEinzeln(text){
   $('panelErkennung').style.display = '';
   $('utilmdHinweis').innerHTML = r.utilmdHinweisHtml || '';
   if (r.det.fehler){
-    $('erkennung').innerHTML = `<dt>Problem</dt><dd>${r.det.fehler}</dd>` +
-      (r.det.typ ? `<dt>UNH-Typ</dt><dd>${r.det.typ} (Version ${r.det.version || '–'})</dd>` : '');
+    $('erkennung').innerHTML = `<dt>Problem</dt><dd>${esc(r.det.fehler)}</dd>` +
+      (r.det.typ ? `<dt>UNH-Typ</dt><dd>${esc(r.det.typ)} (Version ${esc(r.det.version) || '–'})</dd>` : '');
     $('panelErgebnis').style.display = 'none';
     $('panelAntwort').style.display = 'none';
     return;
