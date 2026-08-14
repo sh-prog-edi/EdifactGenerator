@@ -38,6 +38,16 @@ nachgepflegt.
   unterschiedlichen Prüf-IDs — wählt eine **vorbelegte Checkbox je Vorgang**, welche
   Vorgänge in die Testnachricht wandern (beliebige Teilmengen, jederzeit umkehrbar),
   mit neu gezählten UNT-/UNZ-Zählern.
+- **Ablehnungs-Abgleich** (`ablehnung-abgleich.html`): die eigene Nachricht und die
+  Ablehnung des Marktpartners nebeneinander — links die Nachricht als Segmentbaum,
+  in der Mitte die gelesene Antwort, rechts die Auswertung. Bei einer **negativen
+  CONTRL** wird der Zeiger (UCS DE0096 / UCD DE0098/DE0104) auf das genaue Segment,
+  Datenelement und Zeichen zurückgerechnet, bei einer **negativen APERAK** die
+  Ortsangabe (SG5 FTX+Z02) im Rohtext wiedergefunden; der eigene Validator läuft als
+  unabhängige Gegenprobe an derselben Stelle. Fehlercodes stammen aus MIG CONTRL,
+  AHB CONTRL und AHB APERAK. **Zuerst** wird geprüft, ob die Antwort überhaupt zur
+  eingefügten Datei gehört (Datenaustauschreferenz UCI DE0020 bzw. RFF+ACE) — passt
+  sie nicht, wird nur das gemeldet.
 - **Folgenachrichten über Use-Case-Grenzen** (GPKE Teil 2): aus der Bestätigung der
   Kündigung (55017) in die Anmeldung des Lieferbeginns (55001/55077), aus der Bestätigung
   der Anmeldung (55002/55078) in die nachgelagerten Abrechnungsdaten (55218/55126) und
@@ -63,7 +73,9 @@ und Nachrichtentyp zum passenden Generator; `validator.html` prüft eine beliebi
 Nachricht ohne Vorauswahl.
 
 Die Skripte unter `scripts/` und `_engine/tests/` (Regression) benötigen Node.js und
-Playwright: `npm install playwright && npx playwright install chromium`.
+Playwright. Die Playwright-Version ist in der `package.json` **fest gepinnt** (passend
+zum mitgelieferten Browser) — deshalb `npm install` ohne Paketnamen:
+`npm install && npx playwright install chromium`.
 
 Die Extraktionswerkzeuge unter `werkzeuge/` (Python) werden nur gebraucht, wenn die
 Datenbasis aus einer neuen Fassung der BDEW-Dokumente neu erzeugt werden soll — siehe
@@ -72,7 +84,7 @@ dieses Repositorys.
 
 ## Umsetzungsstand
 
-**Stand: 03.08.2026 – Beta-Version - 1. Testphase**
+**Stand: 13.08.2026 – Beta-Version - 1. Testphase**
 
 Umgesetzt in **beiden Formatständen** `202604` (gültig 01.04.–30.09.2026) und `202610`
 (gültig ab 01.10.2026), jeweils mit eigener Generator-Seite und Golden-Snapshot:
@@ -92,10 +104,17 @@ Validator deckt dieselben Formatstände über die zentrale Registry
 (`_engine/daten/validator-registry.js`) ab. Alle Generatoren sind über die Startseite
 (`index.html`, MANIFEST) erreichbar; kein Nachrichtentyp ist nur „geplant".
 
-Die Regression läuft grün (siehe [Regression](#regression-versionsfähig)): `domsim` = alle
-Prüf-IDs erzeugen fehlerfrei, `golden` = alle vier Ziele zeichengenau gegen den
-eingefrorenen Snapshot unverändert, `pruefe_pid_konsistenz.js` = 0 Befunde im Abgleich
-gegen AHB, MIG, EBD und Prozess-Meta.
+Die Regression läuft grün (siehe [Regression](#regression-versionsfähig)): 42 Läufe —
+`domsim` = alle Prüf-IDs erzeugen fehlerfrei, `golden` = alle vier Ziele zeichengenau
+gegen den eingefrorenen Snapshot unverändert, `pruefe_pid_konsistenz.js` = 0 Befunde im
+Abgleich gegen AHB, MIG, EBD und Prozess-Meta.
+
+Seit Anfang August sind hinzugekommen: die **Feldauswahl-Datenschicht** (die kuratierten
+Regeln liegen je Ziel in einer `_regeln.js` statt in Einzeldateien), die **Prüfung
+gegen echte, anonymisierte Marktnachrichten** (`npm run referenz`, die Nachrichten selbst
+bleiben lokal — siehe `docs/REFERENZNACHRICHTEN.md`), die maschinell gelesenen
+**Fehlercodes der Servicenachrichten** (MIG CONTRL, AHB CONTRL, AHB APERAK) und der
+**Ablehnungs-Abgleich**.
 
 > Bekannte Validator-Limitierung (dokumentiert): Muss-Segmente optionaler Untergruppen werden
 > nur innerhalb tatsächlich verwendeter Gruppen geprüft (keine Ketten-Aktivierung). Offene
@@ -103,6 +122,8 @@ gegen AHB, MIG, EBD und Prozess-Meta.
 > `docs/Pruefid-Abgleich_20260728.md` und `docs/AHB-Abgleich_202607.md`.
 > Wer neu einsteigt, beginnt mit `docs/UEBERGABE.md`: Aufbau, Regressionsstand, offene
 > Punkte und die Fallstricke der bisherigen Arbeit auf wenigen Seiten.
+> Der letzte Code-Audit (Bugs und sicherheitsrelevante Lücken) steht in
+> `docs/SICHERHEITSAUDIT_20260813.md`.
 
 ### Änderungshistorie
 
@@ -119,16 +140,20 @@ EdifactGenerator/
 ├── index.html                     Startseite: Formatstand → Thema → Nachrichtentyp → Sparte
 ├── validator.html                 Universeller Import/Validator + Antwort-Panel
 ├── umbau.html                     Produktivnachricht -> Testnachricht (generischer Umbau)
+├── ablehnung-abgleich.html        Eigene Nachricht gegen die Ablehnung (neg. CONTRL / APERAK)
 ├── _engine/                       ZENTRALE Engine (formatübergreifend, einmal gepflegt)
 │   ├── ahb-form-engine.js         Formular-Engine: Formular + EDIFACT-Nachricht aus Formular-Meta
 │   ├── ahb-validator.js           Parser + Validierung (AHB / MIG / EBD / Codelisten / AF)
+│   ├── umbau.js                   Zerlegen/Serialisieren, Nachrichten- und Vorgangsgrenzen
 │   ├── import-pruefung.js         Gemeinsame Importprüfung für Masken und Validator
 │   ├── utilmd-maske.js            Kuratierte UTILMD-Masken: Feldauswahl-Sicht auf die Engine
 │   ├── antwortcode-auswahl.js     EBD-Antwortcodes: Cluster- und Prüfschritt-gerechte Auswahl
 │   ├── folgenachrichten.js        Folgeschritte des Geschäftsprozesses vorbefüllen
 │   ├── bedingung-hilfe.js         Fragezeichen-Symbol mit Klartext zu jeder AHB-Bedingung
-│   ├── _segment-registry.js       Universelle Segment-/Rahmenregeln (UNB/UNH/UNT/UNZ, DTM …)
 │   ├── _segment-struktur.js       Strukturprofile je Segment (Elemente/Komponenten)
+│   ├── stand.js                   Formatstand aus URL-Parameter bzw. Kalender-Zuständigkeit
+│   ├── version.js                 Versions-/Standanzeige im Seitenkopf
+│   ├── kapitel-sort.js            Kapitelreihenfolge des AHB für Auswahllisten
 │   ├── edigen.css / theme.js      Gemeinsames Design, globales Theme (hell/dunkel)
 │   ├── kalender.js                Kalenderblatt der Datumsfelder (selbst positioniert)
 │   ├── layout.js                  Spaltenhöhe an den sichtbaren Bildschirm binden
@@ -137,20 +162,30 @@ EdifactGenerator/
 │   │   ├── validator-registry.js  Registry (Typ/Formatstand/Prüf-ID → Meta-Pfad + Seite)
 │   │   ├── mig-formate.js         Feldformate je Segment + Datenelement
 │   │   ├── sts-struktur.js        Aufbau des STS-Segments je Nachricht (Gruppen C601/C555/C556)
+│   │   ├── nad-aufbau.js          Qualifierabhängiger NAD-Aufbau laut MIG-Segmentlayout
 │   │   ├── codelisten.js          Codelisten
 │   │   ├── ebd-antwortcodes.js    EBD-Antwortcodes mit Cluster (EBD 4.2/4.3)
 │   │   ├── ebd-pfade.js           Prüfschritte der Entscheidungsbäume und zwingende Antworten
 │   │   ├── prozessketten.js       Geschäftsprozesse für die Folgenachrichten
 │   │   ├── af-regeln.js           Allgemeine Festlegungen (GLN-Prüfziffer, UNB↔NAD, Zählungen)
+│   │   ├── ahb-ergaenzungen.js    Regeln aus dem AHB-Fließtext, die nicht in der Tabelle stehen
+│   │   ├── bedingung-eval.js      Auswertbare Form der AHB-Bedingungen (ohne JS-Interpreter)
+│   │   ├── uci-fehlercodes.js     CONTRL-Codelisten DE0083/DE0085 je Segment (MIG CONTRL)
+│   │   ├── contrl-ahb.js          AHB CONTRL: Zulässigkeit je Anwendungsfall, Status, Coderegeln
+│   │   ├── aperak-ahb.js          AHB APERAK: Fehlercodes SG4 ERC, Pflicht-Ortsangaben, Bedingungen
+│   │   ├── dokumentenstand.js     Fassung und Gültigkeit der zugrunde liegenden BDEW-Dokumente
 │   │   ├── antwort-mappings.js    Kuratierte Antwort-Zuordnungen
 │   │   └── antwort-mappings-generiert.js   Aus der Anwendungsübersicht generierte Zuordnungen
 │   └── tests/                     Versionsfähige Regression (harness, domsim, selfvalidate, golden)
 ├── scripts/                       Regression (Node) und Hilfsskripte
 ├── werkzeuge/                     Extraktion aus den BDEW-Dokumenten (Python, siehe werkzeuge/LIESMICH.md)
 ├── docs/                          Dokumentation (Übersicht in docs/README.md)
+├── .github/workflows/             CI (ci.yml) und Veröffentlichung (release.yml)
 ├── <Thema>/<Typ>[/Sparte]/        GENERATOR-SEITEN — je Nachrichtentyp genau EINE Seite;
 │   ├── index.html                 der Formatstand kommt als URL-Parameter (?stand=JJJJMM,
-│   └── vollformular.html          Auflösung in _engine/stand.js). Themen: Berichte (IFTSTA,
+│   └── vollformular.html          Auflösung in _engine/stand.js). Nur UTILMD Strom und Gas
+│                                  führen zusätzlich ein Vollformular (alle AHB-Felder ohne
+│                                  kuratierte Feldauswahl). Themen: Berichte (IFTSTA,
 │                                  INSRPT), Bestellvorgang (ORDCHG, ORDERS, ORDRSP, QUOTES,
 │                                  REQOTE), Bewegungsdaten (MSCONS), Rechnungsstellung (COMDIS,
 │                                  INVOIC, PRICAT, REMADV), Servicenachrichten (APERAK, CONTRL),
@@ -193,8 +228,10 @@ Golden-Ziele plus sämtliche Testskripte:
 ```bash
 npm install            # einmalig: Playwright (Version passend zum Browser gepinnt)
 npm run smoke          # Node-Kern ohne Browser (< 1 Minute)
-npm run regression     # volle Regression inkl. Browser-Tests (~6 Minuten)
+npm run regression     # volle Regression: 42 Läufe, rund 11 Minuten
 npm run golden:update  # Golden-Snapshots NEU einfrieren — nur bei GEWOLLTER Änderung
+npm run paket          # Paketprüfung: nichts im Repo, was nicht hineingehört
+npm run referenz       # echte (lokale) Referenznachrichten prüfen, siehe docs/REFERENZNACHRICHTEN.md
 ```
 
 Einzelläufe wie bisher:
@@ -203,18 +240,45 @@ Einzelläufe wie bisher:
 # Ziel wählen (Standard: 202610 UTILMD Strom)
 export EDIGEN_TARGET=202604/Stammdaten/UTILMD/Strom
 
+# Je Ziel (vier Ziele: 202604/202610 x UTILMD Strom/Gas)
 node _engine/tests/domsim.js           # Generator-Regression (UNT-Zähler, Testflag) aller PIDs
 node _engine/tests/selfvalidate.js     # Selbstvalidierung (nur leere Muss-Platzhalterfelder erwartet)
 node _engine/tests/golden.js           # Golden-Master: erzeugte Nachrichten zeichengenau vs. Snapshot
 node _engine/tests/golden.js --update  # Snapshot nach GEWOLLTER Änderung neu einfrieren
+
+# Node-Tests ohne Browser (laufen im smoke mit)
+node scripts/pruefe_paket.js           # keine Originaldokumente/Referenznachrichten im Paket
+node scripts/pruefe_pid_konsistenz.js  # alle Prüf-IDs gegen AHB, MIG, EBD und Prozess-Meta
+node scripts/test_bedingung_hart.js    # harte vs. bedingte Muss-Klassifikation
+node scripts/test_muss_validierung.js  # fehlendes Muss -> Fehler, bedingtes Muss -> Warnung
 node scripts/test_sts_aufbau.js        # STS-Segment: jeder Code an seiner Stelle laut MIG
-node scripts/test_ebd_abhaengigkeiten.js  # Antwortcodes: nur, was der Entscheidungsbaum erreicht
+node scripts/test_de_muss_praesenz.js  # Muss-Datenelemente innerhalb vorhandener Segmente
+node scripts/test_edi_zerlegung.js     # beide Leser zerlegen zeichengleich; Nachricht ohne UNT
+node scripts/test_contrl_codelisten.js # CONTRL-Codelisten DE0083/DE0085 gegen das MIG
+node scripts/test_contrl_ahb.js        # AHB CONTRL: Zulässigkeit je Anwendungsfall
+node scripts/test_aperak_ahb.js        # AHB APERAK: Fehlercodes und Pflicht-Ortsangaben
+
+# Browser-Tests (Playwright)
+node scripts/test_utilmd_seiten.js     # kuratierte UTILMD-Masken
+node scripts/test_engine_pages.js      # alle Generator-Seiten laden und erzeugen fehlerfrei
+node scripts/test_html_escaping.js     # keine unmaskierten Fremdwerte in der Ausgabe
+node scripts/test_edi_escaping.js      # Release-Zeichen in freien Eingabefeldern
+node scripts/test_folgenachrichten.js  # Folgeschritte über Use-Case-Grenzen
 node scripts/test_vorgangsnummer.js    # Vorgangsnummer (SG4 IDE): einheitlicher Namensaufbau
+node scripts/test_abhaengige_segmente.js  # Segmente, die einander bedingen
+node scripts/test_antwortcodes.js      # Antwortcode-Auswahl je Prüfschritt
+node scripts/test_antwortketten.js     # Antwortnachricht aus importierter Nachricht
+node scripts/test_bedingung_hilfe.js   # Klartext zu jeder angezeigten AHB-Bedingung
+node scripts/test_ebd_abhaengigkeiten.js  # Antwortcodes: nur, was der Entscheidungsbaum erreicht
+node scripts/test_version_zustaendigkeit.js  # Kalender-Zuständigkeit der Formatstände
+node scripts/test_zeitscheiben.js      # Verwendungszeiträume (SG6 RFF + DTM+Z25/Z26)
 node scripts/test_layout_kalender.js   # Eingabemaske und Kalender bleiben im Fenster sichtbar
 node scripts/test_nachricht_speichern.js  # Übertragungsdatei: Name und Inhalt marktkonform
 node scripts/test_umbau.js             # Produktivnachricht -> Testnachricht (umbau.html)
+node scripts/test_umbau_pidzerlegung.js   # Vorgangsauswahl bei mehreren Prüf-IDs je Nachricht
 node scripts/test_validator_komponenten.js  # Komponentenlage und Segmentzähler im Validator
-node scripts/pruefe_pid_konsistenz.js  # alle Prüf-IDs gegen AHB, MIG, EBD und Prozess-Meta
+node scripts/test_validator_mehrfach.js   # mehrere Nachrichten in einer Übertragungsdatei
+node scripts/test_ablehnung_abgleich.js   # neg. CONTRL / APERAK gegen die eigene Nachricht
 ```
 
 **Golden-Master + ältere Versionen:** Jede Version hält einen eingefrorenen Snapshot ihrer

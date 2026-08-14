@@ -1,8 +1,9 @@
 # Arbeitsstand / Übergabe
 
-Stand: 13.08.2026 (Phasen 2–4 abgeschlossen; zuletzt: Sicherheitsaudit Abschnitt 70,
-Ablehnungs-Abgleich CONTRL- UND APERAK-Modus Abschnitte 71–78, Prüfgrundlagen aus
-MIG und AHB gelesen, Referenzprüfung ergänzt) ·
+Stand: 13.08.2026 (Phasen 2–4 abgeschlossen; zuletzt: Ablehnungs-Abgleich CONTRL-
+UND APERAK-Modus Abschnitte 71–78, Prüfgrundlagen aus MIG und AHB gelesen,
+Referenzprüfung ergänzt, **Code-Audit Abschnitt 79** — 12 Befunde behoben, davon
+einer sicherheitsrelevant) ·
 Projekt: **EdifactGenerator** · Auftraggeber: Steffen Haense
 
 **Quelle der Wahrheit ist das Git-Repository**
@@ -100,7 +101,7 @@ eigenen Erzeugungsweg (`generator.js`) gibt es nicht mehr (Abschnitt 40).
 ```bash
 npm install            # einmalig (Playwright 1.56.1, exakt gepinnt)
 npm run smoke          # Node-Kern ohne Browser (< 1 Minute)
-npm run regression     # volle Regression inkl. Browser-Tests (~6–8 Minuten)
+npm run regression     # volle Regression: 42 Läufe, rund 11 Minuten
 npm run paket          # nur die Paket-/Repo-Prüfung
 npm run golden:update  # Golden-Snapshots NEU einfrieren — nur bei GEWOLLTER Änderung
 ```
@@ -160,6 +161,25 @@ liest den AHB-Status samt Bedingungen je Segment/Segmentgruppe/DE (u. a. SG2
 „Muss [9]", SG2 UCD „Soll [6]") nach `_engine/daten/contrl-ahb.js` (Abschnitt 75).
 Es fehlt nur noch das Nachbearbeitungsskript, das diese Werte als `sgExpr`/`expr`
 in die CONTRL-Formular-Metas überträgt. Für APERAK steht die AHB-Auswertung noch aus.
+
+**Code-Audit vom 13.08.2026 (Abschnitt 79, vollständig in
+[`SICHERHEITSAUDIT_20260813.md`](SICHERHEITSAUDIT_20260813.md)).** 12 Befunde,
+alle behoben — kein offener Punkt daraus. Zwei Dinge bleiben für die Weiterarbeit
+wichtig:
+
+* **`ablehnung-abgleich.html` baut ihre Ausgabe aus Template-Strings mit
+  `innerHTML`.** Die Sicherheit hängt damit vollständig an der lückenlosen
+  Anwendung von `esc()` auf jeden Fremdwert; eine einzige vergessene
+  Interpolation genügte für einen nachweisbaren DOM-XSS über die
+  CONTRL-Positionszeiger. Bei jeder neuen Ausgabezeile gegen die Nachbarzeile
+  gegenlesen. `scripts/test_html_escaping.js` deckt die Ausgabewege ab.
+* **Zwei Leser für dasselbe Format.** `EdiUmbau.zerlege` und
+  `AhbValidator.parse` lösen dieselbe Aufgabe; sie waren in der Release-Logik
+  auseinandergelaufen (Segment nach `??` verschluckt → verschobene
+  Segmentzählung gegenüber der CONTRL). Beide sind jetzt zeichengleich und über
+  `scripts/test_edi_zerlegung.js` aneinander gebunden. Der saubere Ausweg wäre,
+  `EdiUmbau.zerlege` mittelfristig auf `AhbValidator.parse` zurückzuführen —
+  **nicht** die Logik ein drittes Mal zu schreiben.
 
 **Ablehnungs-Abgleich, kleiner technischer Folgepunkt (Abschnitt 73):** Die
 zeichengenaue Markierung der Fehlerposition (bisher nur im Kasten

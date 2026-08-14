@@ -230,11 +230,15 @@ verdrahteImport('dropRechts', 'dateiRechts', 'eingabeRechts');
 
 function leerenLinks(){
   $('eingabeLinks').value = ''; $('linksErgebnis').innerHTML = '';
-  linkeEinheiten = null; aktualisiereAbgleich();
+  linksLauf++;                 // ein noch laufender Prüflauf schreibt nicht mehr zurück
+  linkeEinheiten = null; linkeDatei = null; aktualisiereAbgleich();
 }
 function leerenRechts(){
+  // BEIDE Auswertungen zurücksetzen — sonst blieb nach dem Leeren die zuletzt
+  // gelesene APERAK aktiv und wurde samt Segmentmarkierung weiter angezeigt
+  // (Audit 13.08.2026, B3).
   $('eingabeRechts').value = ''; $('rechtsErgebnis').innerHTML = '';
-  contrlErgebnis = null; aktualisiereAbgleich();
+  contrlErgebnis = null; aperakErgebnis = null; aktualisiereAbgleich();
 }
 
 // Einziger Auslöser für den vollständigen Ablauf (Button rechts, Datei-Import
@@ -522,21 +526,33 @@ function leseUnb(text){
   };
 }
 
+// Laufmarke: Die Prüfung ist asynchron (Prüfgrundlagen werden nachgeladen).
+// Tippt jemand nach, startet ein zweiter Lauf, während der erste noch wartet.
+// Ohne Marke schriebe der ältere Lauf danach sein Ergebnis über den neueren —
+// Kopfdaten (linkeDatei) und Nachrichten (linkeEinheiten) stammten dann aus
+// verschiedenen Eingaben und die Referenzprüfung liefe gegen die falsche Datei
+// (Audit 13.08.2026, B12).
+let linksLauf = 0;
+
 async function pruefeLinks(){
   const text = $('eingabeLinks').value;
   const box = $('linksErgebnis');
+  const lauf = ++linksLauf;
   if (!text.trim()){
     box.innerHTML = ''; linkeEinheiten = null; linkeDatei = null;
     aktualisiereAbgleich(); return;
   }
   box.innerHTML = '<p class="lade">Wird geprüft …</p>';
-  linkeDatei = leseUnb(text);
+  const datei = leseUnb(text);
   const einheiten = zerlegeNachrichten(text);
   const ergebnisse = [];
   for (const eh of einheiten){
     const r = await pruefeEinText(eh.text);
+    if (lauf !== linksLauf) return;      // überholt — Ergebnis verwerfen
     ergebnisse.push(Object.assign({}, eh, r, { karte: r.parsed ? positionsKarte(r.parsed) : {} }));
   }
+  if (lauf !== linksLauf) return;
+  linkeDatei = datei;
   linkeEinheiten = ergebnisse;
   let html = '';
   ergebnisse.forEach((r, i) => {
@@ -617,11 +633,22 @@ function leseAperak(text){
       continue;
     }
     if (!aktuell) continue;
-    if (s.tag === 'RFF') aktuell.rff[de(s, 0)] = de(s, 0, 1);
+    if (s.tag === 'RFF'){
+      // SG5 ist wiederholbar: Zu EINEM ERC können mehrere RFF+TN (mehrere
+      // betroffene Vorgänge) stehen. Deshalb je Qualifier eine LISTE — ein
+      // einfaches Überschreiben verlöre alle bis auf die letzte Referenz
+      // (Audit 13.08.2026, B6).
+      const q = de(s, 0);
+      (aktuell.rff[q] = aktuell.rff[q] || []).push(de(s, 0, 1));
+    }
     else if (s.tag === 'FTX'){
       // FTX+<Qualifier>+++<C108: DE4440 … DE4440>
+      // Die Komponentenlage trägt die Bedeutung (erstes DE4440 =
+      // Segmentbezeichnung, zweites = Rohtext des Segments). Leere Komponenten
+      // werden deshalb NICHT herausgefiltert — das würde den Rohtext auf die
+      // Position der Bezeichnung rutschen lassen (Audit 13.08.2026, B11).
       const c108 = s.elemente[3] || [];
-      aktuell.ftx.push({ art: de(s, 0), teile: c108.filter(x => String(x || '').trim()) });
+      aktuell.ftx.push({ art: de(s, 0), teile: c108.map(x => String(x || '').trim()) });
     }
   }
   return { parsed, art, kopfRff, bloecke,
@@ -686,10 +713,19 @@ function leseContrl(text){
 // definiert DE0062 ausdrücklich als Referenz INNERHALB dieser Datei. DE0020 ist
 // damit die übergeordnete Klammer, die der Nachrichtenzuordnung vorausgeht.
 function referenzPruefung(datei, antwort){
-  if (!datei || !antwort || !antwort.bezug) return null;
+  if (!antwort || !antwort.bezug) return null;
   const norm = v => String(v == null ? '' : v).trim();
   const darContrl = norm(antwort.bezug.dar);
-  const darDatei = norm(datei.dar);
+  const darDatei = norm(datei && datei.dar);
+  const istAperakVorab = !!antwort.bloecke && antwort.art !== undefined;
+  // Fehlt links das UNB (oder dessen DE0020), lässt sich die Zugehörigkeit NICHT
+  // feststellen. Vorher lieferte die Prüfung hier still `null` und die Antwort
+  // wurde vollständig ausgewertet — auch wenn sie zu einer fremden Datei gehörte
+  // (Audit 13.08.2026, B5).
+  if (!darDatei)
+    return { passt: false, ohneLinkeAngabe: true, darContrl, darDatei,
+      wo: istAperakVorab ? { typ: 'APERAK', feld: 'RFF+ACE' }
+                         : { typ: 'CONTRL', feld: 'UCI DE0020' } };
   // Beide Nachrichtenarten nennen dieselbe Angabe an unterschiedlicher Stelle:
   // CONTRL im UCI DE0020, APERAK im SG2 RFF+ACE (MIG APERAK: „Datenaustausch-
   // referenz (UNB DE0020) der Übertragungsdatei").
@@ -704,6 +740,15 @@ function referenzPruefung(datei, antwort){
 function referenzHtml(pr){
   if (!pr || pr.passt) return '';
   const wo = pr.wo || { typ: 'CONTRL', feld: 'UCI DE0020' };
+  if (pr.ohneLinkeAngabe)
+    return `<div class="ergebniskarte referenz frag">` +
+      `<h3>Zuordnung nicht prüfbar <span class="badge frag">links keine Referenz</span></h3>` +
+      `<div class="zeile">Die links eingefügte Nachricht enthält keine ` +
+      `Datenaustauschreferenz (UNB DE0020) — ob die ${esc(wo.typ)} zu ihr gehört, ` +
+      `lässt sich nicht feststellen. Bitte die vollständige Übertragungsdatei ` +
+      `einschließlich UNB einfügen.` +
+      (pr.darContrl ? ` Die ${esc(wo.typ)} bezieht sich auf ` +
+        `<strong>${esc(pr.darContrl)}</strong>.` : '') + `</div></div>`;
   if (pr.ohneAngabe)
     return `<div class="ergebniskarte referenz frag">` +
       `<h3>Zuordnung nicht möglich <span class="badge frag">ohne Referenz</span></h3>` +
@@ -774,7 +819,7 @@ function ahbHinweisHtml(code, segment, de){
 // Übersicht der APERAK im rechten Fenster.
 function aperakUebersichtHtml(a){
   const artText = a.art === '312' ? 'Anerkennungsmeldung (BGM+312) — kein Fehler gemeldet'
-    : (a.art === '313' ? 'Fehlermeldung (BGM+313)' : `Dokumentenart ${esc(a.art) || '—'}`);
+    : (a.art === '313' ? 'Fehlermeldung (BGM+313)' : `Dokumentenart ${a.art || '—'}`);
   let html = `<div class="kv"><dt>Art</dt><dd>${esc(artText)}</dd>` +
     `<dt>Bezug (RFF+ACE)</dt><dd>${esc(a.kopfRff['ACE'] || '— (keine Datenaustauschreferenz)')}</dd>` +
     `<dt>Gemeldete Fehler</dt><dd>${a.bloecke.length || '—'}</dd></div>`;
@@ -785,13 +830,14 @@ function aperakUebersichtHtml(a){
     Object.keys(b.rff).forEach(q => {
       const bez = { ACW: 'Nachrichten-Referenz (UNH DE0062)', AGO: 'Dokumentennummer (BGM DE1004)',
         TN: 'Vorgangsnummer', Z08: 'MP-ID nachfolgender Netzbetreiber' }[q] || q;
-      html += `<div class="zeile" style="padding-left:12px">RFF+${esc(q)} · ${esc(bez)}: ${esc(b.rff[q])}</div>`;
+      html += `<div class="zeile" style="padding-left:12px">RFF+${esc(q)} · ${esc(bez)}: ` +
+        `${esc((b.rff[q] || []).join(', '))}</div>`;
     });
     b.ftx.forEach(f => {
       const bez = { Z02: 'Ortsangabe des AHB-Fehlers', AAO: 'Fehlerbeschreibung',
         ABO: 'Information über Abweichung' }[f.art] || f.art;
       html += `<div class="zeile" style="padding-left:12px">FTX+${esc(f.art)} · ${esc(bez)}: ` +
-        `${esc(f.teile.join(' | ')) || '—'}</div>`;
+        `${esc(f.teile.filter(Boolean).join(' | ')) || '—'}</div>`;
     });
     html += `</div>`;
   });
@@ -856,7 +902,10 @@ async function pruefeRechts(){
   contrlErgebnis = c;
   const dateiText = c.dateiCode === '7'
     ? 'Übertragungsdatei angenommen (UCI DE0083 = 7)'
-    : `Übertragungsdatei abgelehnt (UCI DE0083 = 4, Fehlercode ${esc(c.dateiFehlercode)} – ${esc(fehlertext0085(c.dateiFehlercode, 'UCI'))})`;
+    : `Übertragungsdatei abgelehnt (UCI DE0083 = ${esc(c.dateiCode) || '— (fehlt)'}` +
+      (c.dateiFehlercode
+        ? `, Fehlercode ${esc(c.dateiFehlercode)} – ${esc(fehlertext0085(c.dateiFehlercode, 'UCI'))})`
+        : ', ohne Fehlercode DE0085)');
   let html = `<div class="kv"><dt>Datei-Ebene</dt><dd>${dateiText}</dd>` +
     `<dt>Fehlerhafte Nachrichten</dt><dd>${c.bloecke.length}</dd></div>`;
   c.bloecke.forEach((b, i) => {
@@ -985,7 +1034,7 @@ function aperakAbgleichHtml(){
   // Nachricht herangezogen — bei einer Datei mit nur einer Nachricht eindeutig.
   let html = '';
   a.bloecke.forEach((b, bi) => {
-    const acw = b.rff['ACW'] || '';
+    const acw = (b.rff['ACW'] || [])[0] || '';
     let unitIdx = acw ? linkeEinheiten.findIndex(e => e.ref && e.ref === acw) : -1;
     if (unitIdx < 0) unitIdx = linkeEinheiten.length === 1 ? 0 : -1;
     const einheit = unitIdx >= 0 ? linkeEinheiten[unitIdx] : null;
@@ -1025,6 +1074,15 @@ function aperakAbgleichHtml(){
       if (treffer.art === 'bezeichnung')
         text += ` Zuordnung über die Segmentbezeichnung „${esc(orts.bezeichnung)}" ` +
           `(die APERAK nennt den Segmenttext nicht).`;
+    } else if (!einheit && acw){
+      // Zuerst die Zuordnung: Steht die gemeinte Nachricht gar nicht links, sagt
+      // eine Aussage über die Ortsangabe nichts aus (Audit 13.08.2026, B7).
+      text = `Die APERAK verweist über RFF+ACW auf die Nachricht „${esc(acw)}", ` +
+        `die links nicht enthalten ist.`;
+    } else if (!einheit){
+      text = `Die APERAK nennt keine Nachrichten-Referenz (RFF+ACW), links liegen ` +
+        `aber ${linkeEinheiten.length} Nachrichten — welche gemeint ist, lässt sich ` +
+        `nicht bestimmen. Bitte die betroffene Nachricht einzeln einfügen.`;
     } else if (brauchtOrt && !orts){
       text = `Der AHB verlangt zu Fehlercode ${esc(b.code)} eine Ortsangabe ` +
         `(FTX+Z02) — die APERAK enthält keine. Der Fehlerort ist damit nicht ` +
@@ -1033,9 +1091,6 @@ function aperakAbgleichHtml(){
       text = `Die Ortsangabe der APERAK lässt sich in der links eingefügten ` +
         `Nachricht nicht wiederfinden` +
         (orts.segmentRoh ? ` (gesucht: „${esc(orts.segmentRoh)}")` : '') + `.`;
-    } else if (!einheit){
-      text = `Die APERAK verweist über RFF+ACW auf die Nachricht „${esc(acw)}", ` +
-        `die links nicht enthalten ist.`;
     } else {
       text = `Der AHB verlangt zu diesem Fehlercode keine Ortsangabe — die ` +
         `Ablehnung betrifft den Vorgang als Ganzes, nicht ein einzelnes Segment.`;
@@ -1043,7 +1098,8 @@ function aperakAbgleichHtml(){
 
     const freitexte = (b.ftx || []).filter(f => f.art !== 'Z02');
     html += `<div class="ergebniskarte ${art}"><h3>ERC ${esc(b.code)}` +
-      (b.rff['TN'] ? ` · Vorgang ${esc(b.rff['TN'])}` : '') +
+      ((b.rff['TN'] || []).length
+        ? ` · Vorgang ${esc(b.rff['TN'].join(', '))}` : '') +
       ` <span class="badge ${art === 'bestaetigt' ? 'bestaetigt' : 'frag'}">${badge}</span></h3>` +
       `<div class="zeile">${esc(codeText || 'Code im AHB APERAK nicht geführt')}</div>` +
       (orts && orts.bezeichnung
@@ -1051,7 +1107,7 @@ function aperakAbgleichHtml(){
       zielHtml +
       `<div class="zeile">${text}</div>` +
       freitexte.map(f => `<div class="hinweistext">FTX+${esc(f.art)}: ` +
-        `${esc(f.teile.join(' | '))}</div>`).join('') +
+        `${esc(f.teile.filter(Boolean).join(' | '))}</div>`).join('') +
       bedingungsHinweisHtml(b, einheit) +
       `</div>`;
   });
@@ -1140,7 +1196,19 @@ function aktualisiereAbgleich(){
     }
     const unitIdx = treffer[0];
     const einheit = linkeEinheiten[unitIdx];
-    const agoHinweis = '';
+    // Wurde die Nachricht links gar nicht erkannt, liefert pruefeEinText() nur
+    // { parsed, det } — ohne res/zeilen. Die Zuordnung über UCM DE0062 greift
+    // trotzdem, deshalb hier abfangen: sonst bricht die ganze Auswertung ab und
+    // im Kasten bleibt das VORHERIGE Ergebnis stehen (Audit 13.08.2026, B2).
+    if (!einheit || !einheit.res){
+      html += `<div class="ergebniskarte frag"><h3>SG1 Nachricht ${bi + 1}: ${esc(b.typ)} ` +
+        `<span class="badge frag">Nachricht nicht auswertbar</span></h3>` +
+        `<div class="zeile">Die zugehörige Nachricht links konnte nicht erkannt werden ` +
+        `(${esc((einheit && einheit.det && einheit.det.fehler) || 'unbekannter Nachrichtentyp')}) — ` +
+        `ein Segmentabgleich ist damit nicht möglich. Häufig ist genau das der Grund ` +
+        `der Ablehnung.</div></div>`;
+      return;
+    }
     if (!b.ucs.length){
       const ft = fehlertext0085(b.fehlercode, 'UCM');
       const alleBefunde = (einheit.res.zeilen || []).flatMap(z => z.meldungen);
@@ -1174,8 +1242,12 @@ function aktualisiereAbgleich(){
 
       const codesHier = u.ucd.length ? u.ucd : [{ code: u.segCode, dePos: '', komp: '' }];
       codesHier.forEach(d => {
-        const el0 = d.dePos ? Number(d.dePos) - 1 : null;
-        const comp0 = d.dePos ? (d.komp ? Number(d.komp) - 1 : 0) : null;
+        // DE0098/DE0104 sind laut MIG 1-basiert. Ein "0" (oder etwas
+        // Nichtnumerisches) ergäbe sonst einen negativen Index und damit einen
+        // frei erfundenen Befund (Audit 13.08.2026, B9).
+        const posZahl = v => { const n = Number(v); return Number.isInteger(n) && n >= 1 ? n : null; };
+        const el0 = posZahl(d.dePos) != null ? posZahl(d.dePos) - 1 : null;
+        const comp0 = el0 == null ? null : (d.komp ? (posZahl(d.komp) != null ? posZahl(d.komp) - 1 : 0) : 0);
         const de = el0 != null ? deNummerVon(zeile.tag, el0, comp0) : null;
         // Ein Code aus einem UCD-Eintrag gehört zur Datenelementebene, ein Code
         // direkt am UCS zur Segmentebene — die Codelisten unterscheiden sich.
@@ -1222,7 +1294,7 @@ function aktualisiereAbgleich(){
           ? zielsegmentHtml(segTextRoh, einheit.parsed.servicezeichen, el0, comp0, ganzesElement)
           : `<div class="zielsegment">${esc(segTextRoh)}</div>`;
         html += `<div class="ergebniskarte ${art}"><h3>SG1 Nachricht ${bi + 1} · Segment ${nummer}` +
-          (d.dePos ? ` · Element ${d.dePos}${d.komp ? ', Komp. ' + d.komp : ''}${de ? ' (DE' + de + ')' : ''}` : '') +
+          (d.dePos ? ` · Element ${esc(d.dePos)}${d.komp ? ', Komp. ' + esc(d.komp) : ''}${de ? ' (DE' + esc(de) + ')' : ''}` : '') +
           ` <span class="badge ${badge}">${badge === 'bestaetigt' ? 'bestätigt' : 'unklar'}</span> ` +
           `<button class="go secondary klein" onclick="springeUndHebeHervor(${unitIdx},${nummer})">im Segmentbaum zeigen</button></h3>` +
           `<div class="zeile">CONTRL-Fehlercode ${esc(d.code)} – ${esc(ft)}` +

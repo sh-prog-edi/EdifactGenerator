@@ -32,6 +32,7 @@ const NODE_TESTS = [
     'scripts/test_muss_validierung.js',
     'scripts/test_sts_aufbau.js',
     'scripts/test_de_muss_praesenz.js',
+    'scripts/test_edi_zerlegung.js',
     'scripts/test_contrl_codelisten.js',
     'scripts/test_contrl_ahb.js',
     'scripts/test_aperak_ahb.js',

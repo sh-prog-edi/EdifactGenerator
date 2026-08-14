@@ -4064,3 +4064,110 @@ Vorgangs-Eingrenzung, Wiederfinden des in FTX+Z02 genannten Segments, genau eine
 Markierung im Segmentbaum, Gegenprobe des Validators, fremde RFF+ACE → klare
 Aussage ohne weitere Ergebnisse, positive APERAK → Anerkennungsmeldung.
 Volle Regression grün (41 Läufe).
+
+## 79. Code-Audit: Bugs und sicherheitsrelevante Lücken (13.08.2026)
+
+**Auftrag.** „Bitte checke den Code an dieser Stelle auf Bugs und eventuelle
+sicherheitsrelevante Lücken. Stelle das Audit in eine MD-Datei. Schau auch, ob
+die Readme noch auf den aktuellen Stand ist."
+
+**Ergebnis in einem Satz:** 12 Befunde, davon einer sicherheitsrelevant (DOM-XSS),
+alle behoben und durch Regression abgesichert. Das vollständige Audit mit
+Bedrohungsmodell, Nachstellung je Befund und der Liste des ohne Befund Geprüften
+steht in **`docs/SICHERHEITSAUDIT_20260813.md`**; hier nur, was für die weitere
+Arbeit am Code wichtig bleibt.
+
+### 79.1 Der sicherheitsrelevante Befund
+
+Die Positionszeiger einer CONTRL (UCD DE0098/DE0104) gingen an einer Stelle
+unmaskiert über `innerHTML` in die Seite. Eine präparierte CONTRL mit
+`UCD+13+<img src=x onerror=…>:1'` führte den Code aus — nachgestellt und gemessen
+(`xssAusgefuehrt: true`), nach der Korrektur mit `esc()` nicht mehr.
+
+Bemerkenswert ist weniger der Fehler als seine Umgebung: Dieselben Werte liefen
+an anderer Stelle derselben Datei korrekt über `esc()`. Die Seite baut ihre
+Ausgabe durchgehend aus Template-Strings; die Sicherheit hängt damit vollständig
+an der lückenlosen Anwendung von `esc()`, und eine einzige vergessene
+Interpolation genügt. **Für künftige Erweiterungen dieser Seite gilt deshalb:
+jeder Fremdwert durch `esc()`, im Zweifel gegen die Nachbarzeile gegenlesen.**
+
+### 79.2 Zwei Befunde, die die Aussage des Werkzeugs verfälscht haben
+
+Von den elf funktionalen Befunden sind zwei über den Ablehnungs-Abgleich hinaus
+bedeutsam, weil sie in der **Engine** saßen:
+
+**Die beiden Leser zerlegten dieselbe Datei unterschiedlich (B10).**
+`EdiUmbau.zerlege` trennte über einen Lookbehind `(?<!?)'` — der sieht nur *ein*
+Zeichen zurück. Bei einem freigestellten Freistellungszeichen (`??`) hält das
+zweite `?` den folgenden Trenner fälschlich für freigestellt: Das Segmentende
+verschwindet, zwei Segmente verschmelzen.
+
+```
+… BGM+E01+AB??'DTM+137:…'UNT+4+1' …
+zerlege:  UNB, UNH, BGM, UNT, UNZ        <- DTM verschluckt
+parse:    UNB, UNH, BGM, DTM, UNT, UNZ   <- richtig
+```
+
+Im Umbau geht damit ein Segment verloren; im Ablehnungs-Abgleich verschiebt sich
+die Segmentzählung gegenüber der CONTRL (UCS DE0096) — **der Zeiger der Ablehnung
+landet auf dem falschen Segment.** Das Werkzeug hätte der Gegenseite an einer
+Stelle widersprochen, an der die Gegenseite recht hat. `zerlege` scannt jetzt
+zeichenweise mit derselben Release-Logik wie `AhbValidator.parse`.
+
+Der eigentliche Grund für den Befund ist struktureller Art: **Zwei Leser lösen
+dieselbe Aufgabe.** Beide sind jetzt durch `scripts/test_edi_zerlegung.js`
+aneinander gebunden; der saubere Ausweg wäre, `EdiUmbau.zerlege` mittelfristig
+auf `AhbValidator.parse` zurückzuführen.
+
+**Nachricht ohne UNT verschwand spurlos (B8).** `EdiUmbau.nachrichten()` schloss
+eine Nachricht ausschließlich am UNT — fehlt es, wurde die offene Nachricht nie
+in die Liste aufgenommen. Das trifft genau den Anlassfall: Eine wegen fehlenden
+UNT abgelehnte Datei ist die Datei, die man mit der Ablehnung vergleichen will,
+und sie war im Werkzeug unsichtbar. Eine offene Nachricht wird jetzt am nächsten
+UNH, am UNZ oder am Dateiende geschlossen und als `unvollstaendig` gekennzeichnet.
+
+### 79.3 Die übrigen Befunde (Kurzfassung)
+
+| | Befund | Wirkung |
+|---|---|---|
+| B1 | Aktionscode DE0083 hart als „= 4" verdrahtet | Ablehnung im Bericht, obwohl angenommen (Code 7) |
+| B2 | Zugriff auf `einheit.res` ohne Prüfung | Absturz bei unbekanntem Nachrichtentyp; **das vorherige Ergebnis blieb stehen** |
+| B3 | `leerenRechts()` ohne `aperakErgebnis` | APERAK-Auswertung und Segmentmarkierung blieben nach dem Leeren |
+| B4 | doppelte HTML-Maskierung | `&amp;` statt `&` |
+| B5 | linke Nachricht ohne UNB | Referenzprüfung lieferte still `null` → fremde CONTRL wurde voll ausgewertet |
+| B6 | SG5 RFF je Qualifier überschrieben | von mehreren betroffenen Vorgängen blieb nur der letzte |
+| B7 | Zweigreihenfolge/leere Referenz | Begründung behauptete eine Referenz, die nicht dasteht |
+| B9 | Positionszeiger ohne Plausibilitätsprüfung | `"0"` → Index −1 → erfundene Fundstelle |
+| B11 | leere C108-Komponenten herausgefiltert | Rohtext rutschte auf den Platz der Segmentbezeichnung |
+| B12 | Wettlauf zweier asynchroner Prüfläufe | Kopfdaten und Nachrichten aus verschiedenen Eingaben |
+
+B5 ist der inhaltlich schwerste: Er hebelte genau die Reihenfolge aus, die als
+Pflicht festgelegt war — **zuerst prüfen, ob die Antwort überhaupt zur Datei
+gehört.** Fehlt links die Datenaustauschreferenz, sagt das Werkzeug jetzt
+„Zuordnung nicht prüfbar" und bittet um die vollständige Übertragungsdatei,
+statt eine Auswertung vorzutäuschen.
+
+### 79.4 Nachweis
+
+Neu: **`scripts/test_edi_zerlegung.js`** — beide Leser zerlegen zeichengleich
+(fünf Lagen, dazu der Rundlauf zerlegen → serialisieren → zerlegen), Nachrichten
+ohne UNT bleiben erhalten (vier Lagen). In `scripts/test_ablehnung_abgleich.js`
+neu die Fälle **K** (mehrfache RFF unter einem ERC), **L** (fehlendes RFF+ACW bei
+mehreren Nachrichten) und **M** (Nachricht ohne UNT bleibt sichtbar).
+
+Volle Regression grün (42 Läufe). Die Golden-Master aller vier Ziele sind
+unverändert — die Korrekturen an `_engine/umbau.js` berühren nur Eingaben, die
+vorher falsch zerlegt wurden.
+
+### 79.5 README und Dokumentationsübersicht nachgezogen
+
+Beim selben Durchgang geprüft und berichtigt: `ablehnung-abgleich.html` fehlte im
+Funktionsumfang und im Ordnerbaum vollständig; der Baum nannte eine Datei
+(`_engine/_segment-registry.js`), die es seit dem Umbau nicht mehr gibt, und
+listete 10 von 17 Datendateien und 12 von 16 Engine-Dateien; die Einzellauf-Liste
+nannte 7 von 24 Testskripten; die npm-Skripte `paket` und `referenz` fehlten; der
+Installationshinweis empfahl `npm install playwright`, obwohl die Version in der
+`package.json` gepinnt ist; `vollformular.html` stand im Baum, als gäbe es sie
+überall statt nur bei UTILMD Strom und Gas; Stand und Regressionsdauer waren
+veraltet. `docs/README.md` führte 9 von 22 Dokumenten — die Übersicht ist jetzt
+vollständig und nach Zweck gegliedert.

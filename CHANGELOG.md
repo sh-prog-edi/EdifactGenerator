@@ -5,6 +5,31 @@ Umsetzungsstand steht in der [README](README.md), die ausführliche Arbeitschron
 `docs/Pruefid-Abgleich_20260728.md`.
 
 
+- **13.08.2026** – **Code-Audit: 12 Befunde behoben, davon einer sicherheitsrelevant.**
+  Geprüft wurden der Ablehnungs-Abgleich und die von ihm benutzten Engine-Bausteine;
+  jeder gemeldete Befund wurde vor der Aufnahme einzeln nachgestellt. **Sicherheit:**
+  Die Positionszeiger einer CONTRL (UCD DE0098/DE0104) gingen an einer Stelle
+  unmaskiert über `innerHTML` in die Seite — eine präparierte CONTRL führte
+  nachweislich Code aus (DOM-XSS, nachgestellt und gemessen); behoben mit `esc()`.
+  **Engine:** `EdiUmbau.zerlege` trennte über ein Lookbehind und verschluckte nach
+  einem freigestellten Freistellungszeichen (`??`) das folgende Segmentende — im
+  Umbau ging ein Segment verloren, im Abgleich verschob sich die Segmentzählung
+  gegenüber der CONTRL, der Zeiger der Ablehnung landete auf dem falschen Segment;
+  jetzt zeichenweises Scannen wie in `AhbValidator.parse`. Eine Nachricht ohne UNT
+  verschwand aus `EdiUmbau.nachrichten()` — also genau die abgelehnte, kaputte
+  Datei; sie wird jetzt am nächsten UNH, am UNZ oder am Dateiende geschlossen und
+  als unvollständig gekennzeichnet. **Abgleich:** fehlendes UNB links hebelte die
+  Referenzprüfung aus (eine fremde CONTRL wurde voll ausgewertet), ein Absturz bei
+  unbekanntem Nachrichtentyp ließ das vorherige Ergebnis stehen, mehrfache RFF unter
+  einem ERC gingen bis auf den letzten verloren, unplausible Positionszeiger
+  erzeugten erfundene Fundstellen, zwei asynchrone Prüfläufe konnten sich
+  überholen. Neuer Test `scripts/test_edi_zerlegung.js`, neue Fälle K/L/M im
+  Ablehnungs-Abgleich-Test; volle Regression grün (42 Läufe), Golden-Master
+  unverändert. Audit in `docs/SICHERHEITSAUDIT_20260813.md`; README und
+  `docs/README.md` auf den aktuellen Stand gebracht.
+  → Protokoll Abschnitt 79.
+
+
 - **13.08.2026** – **Ablehnungs-Abgleich wertet jetzt auch die negative APERAK aus.**
   Bisher nur CONTRL. Der APERAK-Weg war zurückgestellt, weil sie „keinen
   strukturierten Fehlerzeiger" habe — tatsächlich schreibt der AHB für die

@@ -445,6 +445,56 @@ const ok = (b, t) => { console.log((b ? '  OK  ' : ' FAIL ') + t); if (!b) fails
   ok(/Anerkennungsmeldung/.test(apOk) && /kein Ablehnungsgrund/.test(apOk),
     'Fall J: positive APERAK (BGM+312) wird als Anerkennung eingeordnet');
 
+  // ---- Fall K: mehrere RFF+TN unter EINEM ERC (Audit 13.08.2026, B6) --------
+  // SG5 ist wiederholbar. Wurde je Qualifier nur EIN Wert gehalten, verschwanden
+  // alle betroffenen Vorgänge bis auf den letzten aus der Auswertung.
+  await page.fill('#eingabeLinks', APERAK_NACHRICHT);
+  await page.fill('#eingabeRechts',
+    APERAK_NEG.replace("RFF+TN:VORG001'", "RFF+TN:VORG001'RFF+TN:VORG002'"));
+  await page.click('text=neg. CONTRL gegen Nachricht prüfen');
+  await page.waitForTimeout(1000);
+  const apMehr = await page.evaluate(() => ({
+    rechts: document.getElementById('rechtsErgebnis').innerText,
+    abgleich: document.getElementById('abgleichErgebnis').innerText,
+  }));
+  ok(/VORG001/.test(apMehr.abgleich) && /VORG002/.test(apMehr.abgleich),
+    'Fall K: beide RFF+TN eines ERC-Blocks bleiben erhalten (kein Überschreiben)');
+  ok(/VORG001/.test(apMehr.rechts) && /VORG002/.test(apMehr.rechts),
+    'Fall K: die Übersicht rechts listet ebenfalls beide Vorgangsnummern');
+
+  // ---- Fall L: APERAK ohne RFF+ACW bei mehreren Nachrichten (Audit B7) ------
+  // Ohne Nachrichten-Referenz ist bei mehreren Nachlichten keine Zuordnung
+  // möglich; die Begründung darf dann keine leere Referenz behaupten.
+  const ZWEI_NACHRICHTEN = APERAK_NACHRICHT
+    .replace("UNT+11+MSG001'UNZ+1+DAR12345'",
+      "UNT+11+MSG001'UNH+MSG002+UTILMD:D:11A:UN:S2.1'BGM+E01+DOK78'" +
+      "DTM+137:202608030800?+00:303'NAD+MS+9900000000001::293'" +
+      "NAD+MR+9900000000002::293'IDE+24+VORG002'RFF+Z13:55013'" +
+      "UNT+8+MSG002'UNZ+2+DAR12345'");
+  await page.fill('#eingabeLinks', ZWEI_NACHRICHTEN);
+  await page.fill('#eingabeRechts', APERAK_NEG.replace("RFF+ACW:MSG001'", ""));
+  await page.click('text=neg. CONTRL gegen Nachricht prüfen');
+  await page.waitForTimeout(1200);
+  const apOhneAcw = await page.evaluate(() => document.getElementById('abgleichErgebnis').innerText);
+  ok(/keine Nachrichten-Referenz \(RFF\+ACW\)/.test(apOhneAcw),
+    'Fall L: fehlende RFF+ACW wird als solche benannt');
+  ok(!/auf die Nachricht „“/.test(apOhneAcw),
+    'Fall L: keine Begründung mit leerer Referenz mehr');
+
+  // ---- Fall M: unvollständige Nachricht ohne UNT (Audit 13.08.2026, B8) -----
+  // Genau der Fall, den eine Ablehnung betrifft: Die Datei ist kaputt. Die
+  // Nachricht darf nicht stillschweigend aus der Auswertung verschwinden.
+  await page.fill('#eingabeLinks', APERAK_NACHRICHT.replace("UNT+11+MSG001'", ""));
+  await page.fill('#eingabeRechts', APERAK_NEG);
+  await page.click('text=neg. CONTRL gegen Nachricht prüfen');
+  await page.waitForTimeout(1200);
+  const ohneUnt = await page.evaluate(() => ({
+    links: document.getElementById('linksErgebnis').innerText,
+    segmente: document.querySelectorAll('#linksErgebnis .seg').length,
+  }));
+  ok(ohneUnt.segmente > 0 && /NAD/.test(ohneUnt.links),
+    `Fall M: Nachricht ohne UNT bleibt sichtbar (${ohneUnt.segmente} Segmente gelistet)`);
+
   // ---- Leeren-Buttons blenden Abgleich-Panel wieder aus ---------------------
   await page.click('.panel:has(#eingabeLinks) button.secondary');
   await page.waitForTimeout(150);

@@ -43,14 +43,29 @@
       komponente = una[1][0]; element = una[1][1]; frei = una[1][3]; ende = una[1][5];
       roh = roh.slice(9);
     }
-    var esc = function (z) { return z.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); };
-    var vor = function (t) { return new RegExp("(?<!" + esc(frei) + ")" + esc(t), "g"); };
-    var freiWeg = new RegExp(esc(frei) + "(.)", "g");
-    return roh.split(vor(ende)).map(function (s) {
+    // Trennen mit Release-Logik: Ein Freistellungszeichen stellt IMMER das
+    // Folgezeichen frei — auch ein weiteres Freistellungszeichen. Ein Blick
+    // allein auf das Vorzeichen (Lookbehind) hält deshalb das zweite Zeichen
+    // eines freigestellten Paares "??" für eine Freistellung und verschluckt
+    // den darauf folgenden Trenner. Gescannt wird darum zeichenweise, genau
+    // wie in AhbValidator.parse — sonst laufen die Segmentzählungen beider
+    // Leser auseinander (Ablehnungs-Abgleich: CONTRL UCS DE0096).
+    var trenne = function (s, trenner, aufloesen) {
+      var teile = [], akt = "";
+      for (var i = 0; i < s.length; i++) {
+        var z = s[i];
+        if (z === frei && i + 1 < s.length) { akt += (aufloesen ? "" : z) + s[i + 1]; i++; continue; }
+        if (z === trenner) { teile.push(akt); akt = ""; continue; }
+        akt += z;
+      }
+      teile.push(akt);
+      return teile;
+    };
+    return trenne(roh, ende, false).map(function (s) {
       s = s.trim();
       if (!s) return null;
-      var el = s.split(vor(element)).map(function (e) {
-        return e.split(vor(komponente)).map(function (k) { return k.replace(freiWeg, "$1"); });
+      var el = trenne(s, element, false).map(function (e) {
+        return trenne(e, komponente, true);
       });
       return { tag: (el.shift() || [""])[0], elemente: el };
     }).filter(Boolean);
@@ -244,19 +259,33 @@
   // UNH-Bereiche der Übertragungsdatei: je Nachricht {von, bis, typ, ref, bgm}.
   // `bis` zeigt HINTER das UNT; ref = Nachrichten-Referenz (UNH DE0062),
   // bgm = Dokumentennummer (BGM DE1004, z. B. die Rechnungsnummer der INVOIC).
+  // Fehlt das UNT (abgelehnte, syntaktisch unvollständige Datei), wird die
+  // Nachricht am nächsten UNH, am UNZ oder am Dateiende geschlossen und mit
+  // `unvollstaendig: true` gekennzeichnet — sonst verschwände sie stillschweigend
+  // aus jeder Auswahl und aus dem Ablehnungs-Abgleich.
   function nachrichten(segmente) {
     var liste = [];
     var offen = null;
+    var schliesse = function (bis, vollstaendig) {
+      if (!offen) return;
+      offen.bis = bis;
+      if (!vollstaendig) offen.unvollstaendig = true;
+      liste.push(offen);
+      offen = null;
+    };
     segmente.forEach(function (seg, i) {
       if (seg.tag === "UNH") {
+        schliesse(i, false);
         offen = { von: i, bis: -1, typ: typVon(seg), ref: (seg.elemente[0] || [])[0] || "", bgm: "" };
         return;
       }
       if (!offen) return;
       if (seg.tag === "BGM" && !offen.bgm)
         offen.bgm = (seg.elemente[1] || [])[0] || "";
-      if (seg.tag === "UNT") { offen.bis = i + 1; liste.push(offen); offen = null; }
+      if (seg.tag === "UNT") { schliesse(i + 1, true); return; }
+      if (seg.tag === "UNZ") { schliesse(i, false); return; }
     });
+    schliesse(segmente.length, false);
     return liste;
   }
 
